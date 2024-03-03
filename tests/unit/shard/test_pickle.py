@@ -11,10 +11,6 @@ from iden.utils.io import load_json, save_pickle
 if TYPE_CHECKING:
     from pathlib import Path
 
-#################################
-#     Tests for PickleShard     #
-#################################
-
 
 @pytest.fixture(scope="module")
 def path(tmp_path_factory: pytest.TempPathFactory) -> Path:
@@ -28,6 +24,11 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
     uri_ = tmp_path_factory.mktemp("tmp").joinpath("uri").as_uri()
     save_uri_file(uri=uri_, path=path)
     return uri_
+
+
+#################################
+#     Tests for PickleShard     #
+#################################
 
 
 def test_pickle_shard_str(uri: str, path: Path) -> None:
