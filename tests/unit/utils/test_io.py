@@ -174,7 +174,7 @@ def test_save_pickle(tmp_path: Path, protocol: int, to_save: dict) -> None:
     save_pickle(to_save, file_path, protocol)
     assert file_path.is_file()
     with Path.open(file_path, mode="rb") as file:
-        data = pickle.load(file)
+        data = pickle.load(file)  # noqa: S301
     assert objects_are_equal(data, to_save)
 
 
