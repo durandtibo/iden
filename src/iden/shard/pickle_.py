@@ -87,11 +87,9 @@ def save_uri_file(uri: str, path: Path | str) -> None:
     ```pycon
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.shard import PickleShard
-    >>> from iden.utils.io import save_pickle
+    >>> from iden.shard.pickle_ import save_uri_file
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_pickle([1, 2, 3], path)
     ...     save_uri_file(uri="file:///data/1234456789", path=path)  # xdoctest: +SKIP()
     ...
 
