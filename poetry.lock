@@ -15,24 +15,6 @@ files = [
 dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
-name = "batchtensor"
-version = "0.0.2"
-description = "Functions to manipulate batches of PyTorch tensors"
-optional = false
-python-versions = ">=3.9,<3.13"
-files = [
-    {file = "batchtensor-0.0.2-py3-none-any.whl", hash = "sha256:f1bf35c8858dc4ec5fd6da004b087a7cb0952b1e98acb32e931ff91f0f04c50f"},
-    {file = "batchtensor-0.0.2.tar.gz", hash = "sha256:324ed3ed5890e8e6f282909d00279a860bce6067bdb24a79c55a0a00f6f0b79f"},
-]
-
-[package.dependencies]
-coola = ">=0.1,<1.0"
-torch = ">=1.11,<3.0"
-
-[package.extras]
-all = ["numpy (>=1.21,<2.0)"]
-
-[[package]]
 name = "black"
 version = "24.2.0"
 description = "The uncompromising code formatter."
@@ -419,13 +401,13 @@ dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
 name = "griffe"
-version = "0.41.1"
+version = "0.41.2"
 description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "griffe-0.41.1-py3-none-any.whl", hash = "sha256:9b71b82d0177a278467ce362827296957f0ca59ff5437ee41a0d6247aee257fa"},
-    {file = "griffe-0.41.1.tar.gz", hash = "sha256:09d12f955004102d7deeec2e1d87d07434fb2d42905d21b4e03c7cbf9cf78754"},
+    {file = "griffe-0.41.2-py3-none-any.whl", hash = "sha256:a3e1824bc8d5c3190b7e05fbfde36e1e794d9c409c646783a57366c947d7816b"},
+    {file = "griffe-0.41.2.tar.gz", hash = "sha256:662094e8066c1340d6993880ac46bdb3c42e639fe2b93995459503079332ec8f"},
 ]
 
 [package.dependencies]
@@ -1021,6 +1003,20 @@ files = [
 ]
 
 [[package]]
+name = "objectory"
+version = "0.1.2"
+description = "A light library for general purpose object factories"
+optional = false
+python-versions = ">=3.9,<3.13"
+files = [
+    {file = "objectory-0.1.2-py3-none-any.whl", hash = "sha256:b7ead22aa40b93193238b8642fac9ec8c1293e6bedf9cc86e799bd9afd7c887a"},
+    {file = "objectory-0.1.2.tar.gz", hash = "sha256:1903db68b486e5efefa0b412bcac058fe6624a4ed27f42334c625937692fc6d4"},
+]
+
+[package.dependencies]
+tornado = ">=6.0,<7.0"
+
+[[package]]
 name = "packaging"
 version = "23.2"
 description = "Core utilities for Python packages"
@@ -1149,13 +1145,13 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pytest"
-version = "8.0.2"
+version = "8.1.0"
 description = "pytest: simple powerful testing with Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytest-8.0.2-py3-none-any.whl", hash = "sha256:edfaaef32ce5172d5466b5127b42e0d6d35ebbe4453f0e3505d96afd93f6b096"},
-    {file = "pytest-8.0.2.tar.gz", hash = "sha256:d4051d623a2e0b7e51960ba963193b09ce6daeb9759a451844a21e4ddedfc1bd"},
+    {file = "pytest-8.1.0-py3-none-any.whl", hash = "sha256:ee32db7af8de4629a455806befa90559f307424c07b8413ccfc30bf5b221dd7e"},
+    {file = "pytest-8.1.0.tar.gz", hash = "sha256:f8fa04ab8f98d185113ae60ea6d79c22f8143b14bc1caeced44a0ab844928323"},
 ]
 
 [package.dependencies]
@@ -1163,11 +1159,11 @@ colorama = {version = "*", markers = "sys_platform == \"win32\""}
 exceptiongroup = {version = ">=1.0.0rc8", markers = "python_version < \"3.11\""}
 iniconfig = "*"
 packaging = "*"
-pluggy = ">=1.3.0,<2.0"
-tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
+pluggy = ">=1.4,<2.0"
+tomli = {version = ">=1", markers = "python_version < \"3.11\""}
 
 [package.extras]
-testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
+testing = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
 name = "pytest-cov"
@@ -1681,6 +1677,26 @@ opt-einsum = ["opt-einsum (>=3.3)"]
 optree = ["optree (>=0.9.1)"]
 
 [[package]]
+name = "tornado"
+version = "6.4"
+description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
+optional = false
+python-versions = ">= 3.8"
+files = [
+    {file = "tornado-6.4-cp38-abi3-macosx_10_9_universal2.whl", hash = "sha256:02ccefc7d8211e5a7f9e8bc3f9e5b0ad6262ba2fbb683a6443ecc804e5224ce0"},
+    {file = "tornado-6.4-cp38-abi3-macosx_10_9_x86_64.whl", hash = "sha256:27787de946a9cffd63ce5814c33f734c627a87072ec7eed71f7fc4417bb16263"},
+    {file = "tornado-6.4-cp38-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f7894c581ecdcf91666a0912f18ce5e757213999e183ebfc2c3fdbf4d5bd764e"},
+    {file = "tornado-6.4-cp38-abi3-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e43bc2e5370a6a8e413e1e1cd0c91bedc5bd62a74a532371042a18ef19e10579"},
+    {file = "tornado-6.4-cp38-abi3-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f0251554cdd50b4b44362f73ad5ba7126fc5b2c2895cc62b14a1c2d7ea32f212"},
+    {file = "tornado-6.4-cp38-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:fd03192e287fbd0899dd8f81c6fb9cbbc69194d2074b38f384cb6fa72b80e9c2"},
+    {file = "tornado-6.4-cp38-abi3-musllinux_1_1_i686.whl", hash = "sha256:88b84956273fbd73420e6d4b8d5ccbe913c65d31351b4c004ae362eba06e1f78"},
+    {file = "tornado-6.4-cp38-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:71ddfc23a0e03ef2df1c1397d859868d158c8276a0603b96cf86892bff58149f"},
+    {file = "tornado-6.4-cp38-abi3-win32.whl", hash = "sha256:6f8a6c77900f5ae93d8b4ae1196472d0ccc2775cc1dfdc9e7727889145c45052"},
+    {file = "tornado-6.4-cp38-abi3-win_amd64.whl", hash = "sha256:10aeaa8006333433da48dec9fe417877f8bcc21f48dda8d661ae79da357b2a63"},
+    {file = "tornado-6.4.tar.gz", hash = "sha256:72291fa6e6bc84e626589f1c29d90a5a6d593ef5ae68052ee2ef000dfd273dee"},
+]
+
+[[package]]
 name = "triton"
 version = "2.2.0"
 description = "A language and compiler for custom Deep Learning operations"
@@ -1860,4 +1876,4 @@ all = ["safetensors"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "081c070a0a8bb56b33bbc32ee96112e32221263acdf75bfe76c6a2de33e48976"
+content-hash = "5b281721444f1e22c7b88bc875dff74f088d5b70b9a6fbd52c0d349e16dab89f"
