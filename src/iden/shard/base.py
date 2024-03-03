@@ -20,7 +20,7 @@ class BaseShard(Generic[T], ABC):
         Returns:
             The data in the shard.
         """
-        # TODO: maybe we can add an option to copy data
+        # TODO(tibo): maybe we can add an option to copy data  # noqa: TD003
 
     @abstractmethod
     def get_uri(self) -> str | None:

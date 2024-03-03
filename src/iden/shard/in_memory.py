@@ -1,3 +1,5 @@
+r"""Contain in-memory shard implementations."""
+
 from __future__ import annotations
 
 __all__ = ["InMemoryShard"]
