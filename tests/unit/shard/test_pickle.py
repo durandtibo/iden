@@ -30,5 +30,13 @@ def test_pickle_shard_get_data(path: Path) -> None:
     assert PickleShard(path).get_data() == [1, 2, 3]
 
 
+def test_pickle_shard_get_data_multiple_calls(path: Path) -> None:
+    shard = PickleShard(path)
+    assert shard.get_data() == [1, 2, 3]
+    assert shard.get_data() == [1, 2, 3]
+    shard.get_data().append(4)
+    assert shard.get_data() == [1, 2, 3, 4]
+
+
 def test_pickle_shard_get_uri(path: Path) -> None:
     assert PickleShard(path).get_uri() == path.as_uri()
