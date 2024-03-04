@@ -4,7 +4,9 @@ from __future__ import annotations
 
 __all__ = ["InMemoryShard"]
 
-from typing import TypeVar
+from typing import Any, TypeVar
+
+from coola import objects_are_equal
 
 from iden.shard.base import BaseShard
 
@@ -33,6 +35,11 @@ class InMemoryShard(BaseShard[T]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        return objects_are_equal(self._data, other._data)
 
     def get_data(self) -> T:
         return self._data
