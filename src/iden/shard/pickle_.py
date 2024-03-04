@@ -6,6 +6,9 @@ __all__ = ["PickleShard", "save_uri_file"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
+from objectory import OBJECT_TARGET
+
+from iden.constants import KWARGS, LOADER
 from iden.shard.base import BaseShard
 from iden.utils.io import load_json, load_pickle, save_json
 from iden.utils.path import sanitize_path
@@ -72,11 +75,12 @@ class PickleShard(BaseShard[T]):
     @classmethod
     def from_uri(cls, uri: str) -> PickleShard:
         config = load_json(sanitize_path(uri))
-        return cls(uri=uri, path=config["path"])
+        return cls(uri=uri, **config[KWARGS])
 
 
 def save_uri_file(uri: str, path: Path | str) -> None:
-    r"""Save the Uniform Resource Identifier (URI) file.
+    r"""Save the Uniform Resource Identifier (URI) file for a
+    ``PickleShard``.
 
     Args:
         uri: The URI associated to the shard.
@@ -90,9 +94,13 @@ def save_uri_file(uri: str, path: Path | str) -> None:
     >>> from iden.shard.pickle_ import save_uri_file
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_uri_file(uri="file:///data/1234456789", path=path)  # xdoctest: +SKIP()
+    ...     save_uri_file(uri="file:///data/my_uri", path=path)  # xdoctest: +SKIP()
     ...
 
     ```
     """
-    save_json({"path": sanitize_path(path).as_posix()}, sanitize_path(uri))
+    config = {
+        KWARGS: {"path": sanitize_path(path).as_posix()},
+        LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
+    }
+    save_json(config, sanitize_path(uri))

@@ -3,7 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+from objectory import OBJECT_TARGET
 
+from iden.constants import KWARGS, LOADER
 from iden.shard import PickleShard
 from iden.shard.pickle_ import save_uri_file
 from iden.utils.io import load_json, save_pickle
@@ -87,4 +89,7 @@ def test_save_uri_file(tmp_path: Path) -> None:
     path = tmp_path.joinpath("data.pkl")
     save_uri_file(uri=uri.as_uri(), path=path)
     assert uri.is_file()
-    assert load_json(uri) == {"path": path.as_posix()}
+    assert load_json(uri) == {
+        KWARGS: {"path": path.as_posix()},
+        LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
+    }
