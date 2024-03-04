@@ -38,5 +38,5 @@ def test_load_from_uri(uri: str, path: Path) -> None:
 
 
 def test_load_from_uri_missing() -> None:
-    with pytest.raises(RuntimeError):
+    with pytest.raises(FileNotFoundError, match="uri file does not exist:"):
         load_from_uri("file:///data/my_uri")
