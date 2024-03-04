@@ -2,7 +2,7 @@ r"""Contain in-memory shard implementations."""
 
 from __future__ import annotations
 
-__all__ = ["PickleShard", "save_uri_file"]
+__all__ = ["PickleShard", "create_pickle_shard", "save_uri_file"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
@@ -10,7 +10,7 @@ from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.shard.base import BaseShard
-from iden.utils.io import load_json, load_pickle, save_json
+from iden.utils.io import load_json, load_pickle, save_json, save_pickle
 from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
@@ -76,6 +76,41 @@ class PickleShard(BaseShard[T]):
     def from_uri(cls, uri: str) -> PickleShard:
         config = load_json(sanitize_path(uri))
         return cls(uri=uri, **config[KWARGS])
+
+
+def create_pickle_shard(data: T, uri: str) -> PickleShard:
+    r"""Create a ``PickleShard`` from data.
+
+    Note:
+        It is a utility function to create a ``PickleShard`` from its
+            data and URI. It is possible to create a ``PickleShard``
+            in other ways.
+
+    Args:
+        data: The data to save in the pickle file.
+        uri: The URI associated to the shard.
+
+    Returns:
+        The ``PickleShard`` object.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.shard.pickle_ import create_pickle_shard
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     shard = create_pickle_shard([1, 2, 3], uri = Path(tmpdir).joinpath("my_uri").as_uri())
+    ...     shard.get_data()
+    ...
+    [1, 2, 3]
+
+    ```
+    """
+    path = sanitize_path(uri + ".pkl")
+    save_pickle(data, path)
+    save_uri_file(uri, path)
+    return PickleShard(uri, path)
 
 
 def save_uri_file(uri: str, path: Path | str) -> None:
