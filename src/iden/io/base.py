@@ -3,7 +3,7 @@ object."""
 
 from __future__ import annotations
 
-__all__ = ["BaseSaver", "BaseFileSaver"]
+__all__ = ["BaseLoader", "BaseSaver", "BaseFileSaver"]
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Generic, TypeVar
@@ -14,6 +14,21 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 T = TypeVar("T")
+
+
+class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
+    r"""Define the base class to implement a data loader."""
+
+    @abstractmethod
+    def load(self, path: Path) -> T:
+        r"""Save the data into the given path.
+
+        Args:
+            path: The path with the data to load.
+
+        Returns:
+            The data
+        """
 
 
 class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
