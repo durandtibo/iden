@@ -7,7 +7,7 @@ from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.shard import PickleShard
-from iden.shard.pickle_ import save_uri_file
+from iden.shard.pickle_ import create_pickle_shard, save_uri_file
 from iden.utils.io import load_json, save_pickle
 
 if TYPE_CHECKING:
@@ -76,6 +76,18 @@ def test_pickle_shard_get_uri(uri: str, path: Path) -> None:
 def test_pickle_shard_from_uri(uri: str, path: Path) -> None:
     shard = PickleShard.from_uri(uri)
     assert shard.equal(PickleShard(uri=uri, path=path))
+    assert shard.get_data() == [1, 2, 3]
+
+
+#########################################
+#     Tests for create_pickle_shard     #
+#########################################
+
+
+def test_create_pickle_shard(tmp_path: Path) -> None:
+    uri = tmp_path.joinpath("my_uri").as_uri()
+    shard = create_pickle_shard([1, 2, 3], uri)
+    assert shard.equal(PickleShard(uri=uri, path=tmp_path.joinpath("my_uri.pkl")))
     assert shard.get_data() == [1, 2, 3]
 
 
