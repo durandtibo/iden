@@ -7,7 +7,7 @@ import pytest
 from coola.testing import numpy_available, torch_available
 from coola.utils import is_numpy_available, is_torch_available
 
-from iden.io.safetensors import NumpySafetensorsSaver, TorchSafetensorsSaver
+from iden.io.safetensors import NumpySaver, TorchSaver
 from iden.testing import safetensors_available
 from iden.utils.io import save_text
 
@@ -25,135 +25,135 @@ else:  # pragma: no cover
     torch = Mock()
 
 
-###########################################
-#     Tests for NumpySafetensorsSaver     #
-###########################################
+################################
+#     Tests for NumpySaver     #
+################################
 
 
 @safetensors_available
 @numpy_available
-def test_numpy_safetensors_saver_str() -> None:
-    assert str(NumpySafetensorsSaver()).startswith("NumpySafetensorsSaver(")
+def test_numpy_saver_str() -> None:
+    assert str(NumpySaver()).startswith("NumpySafetensorsSaver(")
 
 
 @safetensors_available
 @numpy_available
-def test_numpy_safetensors_saver_save(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
-    saver = NumpySafetensorsSaver()
+def test_numpy_saver_save(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
+    saver = NumpySaver()
     saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path)
     assert path.is_file()
 
 
 @safetensors_available
 @numpy_available
-def test_numpy_safetensors_saver_save_file_exist(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+def test_numpy_saver_save_file_exist(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
-    saver = NumpySafetensorsSaver()
+    saver = NumpySaver()
     with pytest.raises(FileExistsError, match="path .* already exists."):
         saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path)
 
 
 @safetensors_available
 @numpy_available
-def test_numpy_safetensors_saver_save_file_exist_ok(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+def test_numpy_saver_save_file_exist_ok(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
-    saver = NumpySafetensorsSaver()
+    saver = NumpySaver()
     saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path, exist_ok=True)
     assert path.is_file()
 
 
 @safetensors_available
 @numpy_available
-def test_numpy_safetensors_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+def test_numpy_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
     path.mkdir(parents=True, exist_ok=True)
-    saver = NumpySafetensorsSaver()
+    saver = NumpySaver()
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path)
 
 
-def test_numpy_safetensors_saver_no_safetensors() -> None:
+def test_numpy_saver_no_safetensors() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
         pytest.raises(RuntimeError, match="`safetensors` package is required but not installed."),
     ):
-        NumpySafetensorsSaver()
+        NumpySaver()
 
 
-def test_numpy_safetensors_saver_no_numpy() -> None:
+def test_numpy_saver_no_numpy() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_numpy_available", lambda: False),
         pytest.raises(RuntimeError, match="`numpy` package is required but not installed."),
     ):
-        NumpySafetensorsSaver()
+        NumpySaver()
 
 
-###########################################
-#     Tests for TorchSafetensorsSaver     #
-###########################################
-
-
-@safetensors_available
-@torch_available
-def test_torch_safetensors_saver_str() -> None:
-    assert str(TorchSafetensorsSaver()).startswith("TorchSafetensorsSaver(")
+################################
+#     Tests for TorchSaver     #
+################################
 
 
 @safetensors_available
 @torch_available
-def test_torch_safetensors_saver_save(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
-    saver = TorchSafetensorsSaver()
+def test_torch_saver_str() -> None:
+    assert str(TorchSaver()).startswith("TorchSafetensorsSaver(")
+
+
+@safetensors_available
+@torch_available
+def test_torch_saver_save(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
+    saver = TorchSaver()
     saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path)
     assert path.is_file()
 
 
 @safetensors_available
 @torch_available
-def test_torch_safetensors_saver_save_file_exist(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+def test_torch_saver_save_file_exist(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
-    saver = TorchSafetensorsSaver()
+    saver = TorchSaver()
     with pytest.raises(FileExistsError, match="path .* already exists."):
         saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path)
 
 
 @safetensors_available
 @torch_available
-def test_torch_safetensors_saver_save_file_exist_ok(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+def test_torch_saver_save_file_exist_ok(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
-    saver = TorchSafetensorsSaver()
+    saver = TorchSaver()
     saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path, exist_ok=True)
     assert path.is_file()
 
 
 @safetensors_available
 @torch_available
-def test_torch_safetensors_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+def test_torch_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.safetensors")
     path.mkdir(parents=True, exist_ok=True)
-    saver = TorchSafetensorsSaver()
+    saver = TorchSaver()
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path)
 
 
-def test_torch_safetensors_saver_no_safetensors() -> None:
+def test_torch_saver_no_safetensors() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
         pytest.raises(RuntimeError, match="`safetensors` package is required but not installed."),
     ):
-        TorchSafetensorsSaver()
+        TorchSaver()
 
 
-def test_torch_safetensors_saver_no_torch() -> None:
+def test_torch_saver_no_torch() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_torch_available", lambda: False),
         pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
     ):
-        TorchSafetensorsSaver()
+        TorchSaver()

@@ -77,6 +77,7 @@ class BaseFileSaver(BaseSaver[T]):
                 f"Please use `exist_ok=True` if you want to overwrite the setter for this name"
             )
             raise FileExistsError(msg)
+        path.parent.mkdir(exist_ok=True, parents=True)
         self._save_file(to_save, path)
 
     @abstractmethod
