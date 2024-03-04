@@ -39,7 +39,7 @@ def test_numpy_safetensors_saver_str() -> None:
 @safetensors_available
 @numpy_available
 def test_numpy_safetensors_saver_save(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     saver = NumpySafetensorsSaver()
     saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path)
     assert path.is_file()
@@ -48,7 +48,7 @@ def test_numpy_safetensors_saver_save(tmp_path: Path) -> None:
 @safetensors_available
 @numpy_available
 def test_numpy_safetensors_saver_save_file_exist(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
     saver = NumpySafetensorsSaver()
     with pytest.raises(FileExistsError, match="path .* already exists."):
@@ -58,7 +58,7 @@ def test_numpy_safetensors_saver_save_file_exist(tmp_path: Path) -> None:
 @safetensors_available
 @numpy_available
 def test_numpy_safetensors_saver_save_file_exist_ok(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
     saver = NumpySafetensorsSaver()
     saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path, exist_ok=True)
@@ -68,7 +68,7 @@ def test_numpy_safetensors_saver_save_file_exist_ok(tmp_path: Path) -> None:
 @safetensors_available
 @numpy_available
 def test_numpy_safetensors_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     path.mkdir(parents=True, exist_ok=True)
     saver = NumpySafetensorsSaver()
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
@@ -106,7 +106,7 @@ def test_torch_safetensors_saver_str() -> None:
 @safetensors_available
 @torch_available
 def test_torch_safetensors_saver_save(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     saver = TorchSafetensorsSaver()
     saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path)
     assert path.is_file()
@@ -115,7 +115,7 @@ def test_torch_safetensors_saver_save(tmp_path: Path) -> None:
 @safetensors_available
 @torch_available
 def test_torch_safetensors_saver_save_file_exist(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
     saver = TorchSafetensorsSaver()
     with pytest.raises(FileExistsError, match="path .* already exists."):
@@ -125,7 +125,7 @@ def test_torch_safetensors_saver_save_file_exist(tmp_path: Path) -> None:
 @safetensors_available
 @torch_available
 def test_torch_safetensors_saver_save_file_exist_ok(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
     saver = TorchSafetensorsSaver()
     saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path, exist_ok=True)
@@ -135,7 +135,7 @@ def test_torch_safetensors_saver_save_file_exist_ok(tmp_path: Path) -> None:
 @safetensors_available
 @torch_available
 def test_torch_safetensors_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("data.safetensors")
+    path = tmp_path.joinpath("tmp/data.safetensors")
     path.mkdir(parents=True, exist_ok=True)
     saver = TorchSafetensorsSaver()
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
