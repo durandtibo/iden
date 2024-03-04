@@ -1,16 +1,17 @@
-r"""Contain implementation of savers that use the safetensors format."""
+r"""Contain loaders to load data in a safetensors format."""
 
 from __future__ import annotations
 
-__all__ = ["NumpySafetensorsSaver", "TorchSafetensorsSaver"]
+__all__ = ["NumpySafetensorsLoader", "TorchSafetensorsLoader"]
 
 from typing import TYPE_CHECKING
 from unittest.mock import Mock
 
 from coola.utils import check_numpy, check_torch, is_numpy_available, is_torch_available
 
-from iden.io.base import BaseFileSaver
+from iden.io.base import BaseLoader
 from iden.utils.imports import check_safetensors, is_safetensors_available
+from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -33,11 +34,9 @@ else:  # pragma: no cover
     torch = Mock()
 
 
-class NumpySafetensorsSaver(BaseFileSaver[dict[str, np.ndarray]]):
-    r"""Implement a file saver to save ``numpy.ndarray``s with the
+class NumpySafetensorsLoader(BaseLoader[dict[str, np.ndarray]]):
+    r"""Implement a file loader to load ``numpy.ndarray``s in the
     safetensors format.
-
-    This saver can only save a dictionary of ``numpy.ndarray``s.
 
     Link: https://huggingface.co/docs/safetensors/en/index
     """
@@ -49,25 +48,24 @@ class NumpySafetensorsSaver(BaseFileSaver[dict[str, np.ndarray]]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def _save_file(self, to_save: dict[str, np.ndarray], path: Path) -> None:
-        sn.save_file(to_save, path)
+    def load(self, path: Path) -> dict[str, np.ndarray]:
+        return sn.load_file(sanitize_path(path))
 
 
-class TorchSafetensorsSaver(BaseFileSaver[dict[str, torch.Tensor]]):
-    r"""Implement a file saver to save ``torch.Tensor``s with the
+class TorchSafetensorsLoader(BaseLoader[dict[str, torch.Tensor]]):
+    r"""Implement a file loader to load ``torch.Tensor``s in the
     safetensors format.
-
-    This saver can only save a dictionary of ``torch.Tensor``s.
 
     Link: https://huggingface.co/docs/safetensors/en/index
     """
 
-    def __init__(self) -> None:
+    def __init__(self, device: str | dict = "cpu") -> None:
         check_safetensors()
         check_torch()
+        self._device = device
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__qualname__}()"
+        return f"{self.__class__.__qualname__}(device={self._device})"
 
-    def _save_file(self, to_save: dict[str, torch.Tensor], path: Path) -> None:
-        st.save_file(to_save, path)
+    def load(self, path: Path) -> dict[str, torch.Tensor]:
+        return st.load_file(sanitize_path(path), device=self._device)
