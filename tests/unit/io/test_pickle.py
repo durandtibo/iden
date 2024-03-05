@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import pickle
 from typing import TYPE_CHECKING
 
 import pytest
+from coola import objects_are_equal
 
-from iden.io import PickleLoader, PickleSaver
-from iden.utils.io import load_pickle, save_text
+from iden.io import PickleLoader, PickleSaver, load_pickle, save_pickle, save_text
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -70,3 +71,64 @@ def test_pickle_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     saver = PickleSaver()
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
+
+
+@pytest.mark.parametrize("protocol", list(range(1, pickle.HIGHEST_PROTOCOL + 1)))
+def test_pickle_saver_save_protocol(tmp_path: Path, protocol: int) -> None:
+    path = tmp_path.joinpath("tmp/data.pkl")
+    data = {"key1": [1, 2, 3], "key2": "abc"}
+    saver = PickleSaver(protocol=protocol)
+    saver.save(data, path)
+    assert path.is_file()
+    assert objects_are_equal(load_pickle(path), data)
+
+
+#################################
+#     Tests for load_pickle     #
+#################################
+
+
+def test_load_pickle(path_pickle: Path) -> None:
+    assert load_pickle(path_pickle) == {"key1": [1, 2, 3], "key2": "abc"}
+
+
+#################################
+#     Tests for save_pickle     #
+#################################
+
+
+def test_save_pickle(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.pkl")
+    save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+    assert path.is_file()
+
+
+def test_save_pickle_file_exist(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.pkl")
+    save_text("hello", path)
+    with pytest.raises(FileExistsError, match="path .* already exists."):
+        save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+
+
+def test_save_pickle_file_exist_ok(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.pkl")
+    save_text("hello", path)
+    save_pickle({"key1": [3, 2, 1], "key2": "abc"}, path, exist_ok=True)
+    assert path.is_file()
+    assert load_pickle(path) == {"key1": [3, 2, 1], "key2": "abc"}
+
+
+def test_save_pickle_file_exist_ok_dir(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.pkl")
+    path.mkdir(parents=True, exist_ok=True)
+    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+        save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+
+
+@pytest.mark.parametrize("protocol", list(range(1, pickle.HIGHEST_PROTOCOL + 1)))
+def test_save_pickle_protocol(tmp_path: Path, protocol: int) -> None:
+    path = tmp_path.joinpath("data", "data.pkl")
+    data = {"key1": [1, 2, 3], "key2": "abc"}
+    save_pickle(data, path, protocol=protocol)
+    assert path.is_file()
+    assert objects_are_equal(load_pickle(path), data)
