@@ -36,9 +36,9 @@ class PickleShard(BaseShard[T]):
     >>> from iden.shard import PickleShard
     >>> from iden.io import save_pickle
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_pickle([1, 2, 3], path)
-    ...     shard = PickleShard(uri="file:///data/1234456789", path=path)
+    ...     file = Path(tmpdir).joinpath("data.pkl")
+    ...     save_pickle([1, 2, 3], file)
+    ...     shard = PickleShard(uri="file:///data/1234456789", path=file)
     ...     shard.get_data()
     ...
     [1, 2, 3]
@@ -128,8 +128,8 @@ def save_uri_file(uri: str, path: Path | str) -> None:
     >>> from pathlib import Path
     >>> from iden.shard.pickle import save_uri_file
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_uri_file(uri="file:///data/my_uri", path=path)  # xdoctest: +SKIP()
+    ...     file = Path(tmpdir).joinpath("data.pkl")
+    ...     save_uri_file(uri="file:///data/my_uri", path=file)  # xdoctest: +SKIP()
     ...
 
     ```
