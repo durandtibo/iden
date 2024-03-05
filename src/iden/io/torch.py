@@ -1,51 +1,63 @@
-r"""Contain JSON-based data loaders and savers."""
+r"""Contain torch-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["JsonLoader", "JsonSaver", "load_json", "save_json"]
+__all__ = ["TorchLoader", "TorchSaver", "load_torch", "save_torch"]
 
-import json
-from pathlib import Path
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any
+from unittest.mock import Mock
+
+from coola.utils import check_torch, is_torch_available
 
 from iden.io.base import BaseFileSaver, BaseLoader
 
-T = TypeVar("T")
+if is_torch_available():
+    import torch
+else:  # pragma: no cover
+    torch = Mock()
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
-class JsonLoader(BaseLoader[Any]):
+class TorchLoader(BaseLoader[Any]):
     r"""Implement a data loader to load data in a JSON file.
 
     Example usage:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import JsonLoader
-    >>> data = JsonLoader().load(Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import TorchLoader
+    >>> data = TorchLoader().load(Path("/path/to/data.pt"))  # xdoctest: +SKIP()
 
     ```
     """
+
+    def __init__(self) -> None:
+        check_torch()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
     def load(self, path: Path) -> Any:
-        with Path.open(path, mode="rb") as file:
-            return json.load(file)
+        return torch.load(path)
 
 
-class JsonSaver(BaseFileSaver[Any]):
+class TorchSaver(BaseFileSaver[Any]):
     r"""Implement a file saver to save data with a JSON file.
 
     Example usage:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import JsonSaver
-    >>> JsonSaver().save({"key": "value"}, Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import TorchSaver
+    >>> TorchSaver().save({"key": "value"}, Path("/path/to/data.pt"))  # xdoctest: +SKIP()
 
     ```
     """
+
+    def __init__(self) -> None:
+        check_torch()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
@@ -54,12 +66,11 @@ class JsonSaver(BaseFileSaver[Any]):
         # Save to tmp, then commit by moving the file in case the job gets
         # interrupted while writing the file
         tmp_path = path.parents[0].joinpath(f"{path.name}.tmp")
-        with Path.open(tmp_path, "w") as file:
-            json.dump(to_save, file, sort_keys=False)
+        torch.save(to_save, tmp_path)
         tmp_path.rename(path)
 
 
-def load_json(path: Path) -> Any:
+def load_torch(path: Path) -> Any:
     r"""Load the data from a given JSON file.
 
     Args:
@@ -72,15 +83,15 @@ def load_json(path: Path) -> Any:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import load_json
-    >>> data = load_json(Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import load_torch
+    >>> data = load_torch(Path("/path/to/data.pt"))  # xdoctest: +SKIP()
 
     ```
     """
-    return JsonLoader().load(path)
+    return TorchLoader().load(path)
 
 
-def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
+def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     r"""Save the given data in a JSON file.
 
     Args:
@@ -100,9 +111,9 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import save_json
-    >>> save_json({"key": "value"}, Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_torch
+    >>> save_torch({"key": "value"}, Path("/path/to/data.pt"))  # xdoctest: +SKIP()
 
     ```
     """
-    JsonSaver().save(to_save, path, exist_ok=exist_ok)
+    TorchSaver().save(to_save, path, exist_ok=exist_ok)
