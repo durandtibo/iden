@@ -6,7 +6,7 @@ import pytest
 
 from iden.io import save_pickle
 from iden.shard.loader import PickleShardLoader
-from iden.shard.pickle_ import PickleShard, save_uri_file
+from iden.shard.pickle import PickleShard, save_uri_file
 
 if TYPE_CHECKING:
     from pathlib import Path

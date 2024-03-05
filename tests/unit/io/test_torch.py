@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import pytest
 from coola import objects_are_equal
@@ -46,6 +46,14 @@ def test_torch_loader_load(path_torch: Path) -> None:
             "key3": torch.arange(5),
         },
     )
+
+
+def test_torch_loader_no_torch() -> None:
+    with (
+        patch("coola.utils.imports.is_torch_available", lambda: False),
+        pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
+    ):
+        TorchLoader()
 
 
 ################################
@@ -96,6 +104,14 @@ def test_torch_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
         saver.save({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
 
 
+def test_torch_saver_no_torch() -> None:
+    with (
+        patch("coola.utils.imports.is_torch_available", lambda: False),
+        pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
+    ):
+        TorchSaver()
+
+
 ################################
 #     Tests for load_torch     #
 ################################
@@ -106,6 +122,14 @@ def test_load_torch(path_torch: Path) -> None:
     assert objects_are_equal(
         load_torch(path_torch), {"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}
     )
+
+
+def test_load_torch_no_torch(tmp_path: Path) -> None:
+    with (
+        patch("coola.utils.imports.is_torch_available", lambda: False),
+        pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
+    ):
+        load_torch(tmp_path)
 
 
 ################################
@@ -145,3 +169,14 @@ def test_save_torch_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         save_torch({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
+
+
+def test_save_torch_no_torch(tmp_path: Path) -> None:
+    with (
+        patch("coola.utils.imports.is_torch_available", lambda: False),
+        pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
+    ):
+        save_torch(
+            {"key1": [1, 2, 3], "key2": "abc"},
+            tmp_path,
+        )

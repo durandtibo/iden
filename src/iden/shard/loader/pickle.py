@@ -7,7 +7,7 @@ __all__ = ["PickleShardLoader"]
 from typing import TypeVar
 
 from iden.shard.loader.base import BaseShardLoader
-from iden.shard.pickle_ import PickleShard
+from iden.shard.pickle import PickleShard
 
 T = TypeVar("T")
 
