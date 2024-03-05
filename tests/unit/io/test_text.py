@@ -84,7 +84,7 @@ def test_text_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 ###############################
 
 
-def test_load_text_load(path_text: Path) -> None:
+def test_load_text(path_text: Path) -> None:
     assert load_text(path_text) == "hello"
 
 

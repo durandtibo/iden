@@ -83,7 +83,7 @@ def load_text(path: Path) -> str:
     return TextLoader().load(path)
 
 
-def save_text(to_save: Any, path: Path, exist_ok: bool = False) -> None:
+def save_text(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     r"""Save the given data in a text file.
 
     Args:
@@ -95,6 +95,9 @@ def save_text(to_save: Any, path: Path, exist_ok: bool = False) -> None:
             ``FileExistsError`` will not be raised unless the
             given path already exists in the file system and is
             not a file.
+
+    Raises:
+        FileExistsError: if the file already exists.
 
     Note:
         If the data to save is not a string, it is converted to
