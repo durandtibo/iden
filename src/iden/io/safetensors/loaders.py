@@ -16,21 +16,19 @@ from iden.utils.path import sanitize_path
 if TYPE_CHECKING:
     from pathlib import Path
 
-if is_numpy_available():
-    import numpy as np
-else:
-    np = Mock()  # pragma: no cover
 
-if is_safetensors_available():
+if is_safetensors_available() and is_numpy_available():
+    import numpy as np
     from safetensors import numpy as sn
+else:  # pragma: no cover
+    np = Mock()
+    sn = Mock()
+
+if is_safetensors_available() and is_torch_available():
+    import torch
     from safetensors import torch as st
 else:  # pragma: no cover
-    sn = Mock()
     st = Mock()
-
-if is_torch_available():
-    import torch
-else:  # pragma: no cover
     torch = Mock()
 
 
