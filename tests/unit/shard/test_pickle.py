@@ -6,9 +6,9 @@ import pytest
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
+from iden.io import load_json, save_pickle
 from iden.shard import PickleShard
 from iden.shard.pickle_ import create_pickle_shard, save_uri_file
-from iden.utils.io import load_json, save_pickle
 
 if TYPE_CHECKING:
     from pathlib import Path

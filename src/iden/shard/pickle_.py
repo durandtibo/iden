@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Any, TypeVar
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
+from iden.io import load_json, load_pickle, save_json, save_pickle
 from iden.shard.base import BaseShard
-from iden.utils.io import load_json, load_pickle, save_json, save_pickle
 from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
@@ -34,7 +34,7 @@ class PickleShard(BaseShard[T]):
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import PickleShard
-    >>> from iden.utils.io import save_pickle
+    >>> from iden.io import save_pickle
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     path = Path(tmpdir).joinpath("data.pkl")
     ...     save_pickle([1, 2, 3], path)
