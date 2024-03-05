@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 @pytest.fixture(scope="module")
 def path_json(tmp_path_factory: pytest.TempPathFactory) -> Path:
-    path = tmp_path_factory.mktemp("tmp").joinpath("data.txt")
+    path = tmp_path_factory.mktemp("tmp").joinpath("data.json")
     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
     return path
 
@@ -40,14 +40,14 @@ def test_json_saver_str() -> None:
 
 
 def test_json_saver_save(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     saver = JsonSaver()
     saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
     assert path.is_file()
 
 
 def test_json_saver_save_file_exist(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
     saver = JsonSaver()
     with pytest.raises(FileExistsError, match="path .* already exists."):
@@ -55,7 +55,7 @@ def test_json_saver_save_file_exist(tmp_path: Path) -> None:
 
 
 def test_json_saver_save_file_exist_ok(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
     saver = JsonSaver()
     saver.save({"key1": [3, 2, 1], "key2": "meow"}, path, exist_ok=True)
@@ -64,7 +64,7 @@ def test_json_saver_save_file_exist_ok(tmp_path: Path) -> None:
 
 
 def test_json_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     path.mkdir(parents=True, exist_ok=True)
     saver = JsonSaver()
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
@@ -86,20 +86,20 @@ def test_load_json(path_json: Path) -> None:
 
 
 def test_save_json(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
     assert path.is_file()
 
 
 def test_save_json_file_exist(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
     with pytest.raises(FileExistsError, match="path .* already exists."):
         save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
 def test_save_json_file_exist_ok(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
     save_json({"key1": [3, 2, 1], "key2": "meow"}, path, exist_ok=True)
     assert path.is_file()
@@ -107,7 +107,7 @@ def test_save_json_file_exist_ok(tmp_path: Path) -> None:
 
 
 def test_save_json_file_exist_ok_dir(tmp_path: Path) -> None:
-    path = tmp_path.joinpath("tmp/data.txt")
+    path = tmp_path.joinpath("tmp/data.json")
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
