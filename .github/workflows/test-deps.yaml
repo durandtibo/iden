@@ -30,7 +30,7 @@ jobs:
       - name: Install packages
         run: |
           poetry run make config-poetry
-          poetry run make install-all
+          poetry run make install
 
       - name: Install NumPy
         run: |
@@ -72,7 +72,7 @@ jobs:
       - name: Install packages
         run: |
           poetry run make config-poetry
-          poetry run make install-all
+          poetry run make install
 
       - name: Install NumPy
         run: |
@@ -181,7 +181,7 @@ jobs:
       - name: Install packages
         run: |
           poetry run make config-poetry
-          poetry run make install-all
+          poetry run make install
 
       - name: Install PyTorch
         run: |
