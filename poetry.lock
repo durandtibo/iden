@@ -1871,9 +1871,9 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["safetensors", "torch"]
+all = ["numpy", "safetensors", "torch"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "89de65ac8755f644e329fd244a9c8846208c575a3e2a1a666391a27218d5f768"
+content-hash = "333b4f824fabc61dac7da406bf4159026a6dca92deb67a952b2d4a0070e913b2"
