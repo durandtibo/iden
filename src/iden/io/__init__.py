@@ -10,8 +10,10 @@ __all__ = [
     "PickleSaver",
     "TextLoader",
     "TextSaver",
+    "load_text",
+    "save_text",
 ]
 
 from iden.io.base import BaseFileSaver, BaseLoader, BaseSaver
 from iden.io.pickle import PickleLoader, PickleSaver
-from iden.io.text import TextLoader, TextSaver
+from iden.io.text import TextLoader, TextSaver, load_text, save_text
