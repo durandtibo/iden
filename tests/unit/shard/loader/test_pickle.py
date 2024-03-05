@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING
 
 import pytest
 
+from iden.io import save_pickle
 from iden.shard.loader import PickleShardLoader
 from iden.shard.pickle_ import PickleShard, save_uri_file
-from iden.utils.io import save_pickle
 
 if TYPE_CHECKING:
     from pathlib import Path
