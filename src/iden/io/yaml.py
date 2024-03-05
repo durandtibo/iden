@@ -1,27 +1,28 @@
-r"""Contain JSON-based data loaders and savers."""
+r"""Contain YAML-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["JsonLoader", "JsonSaver", "load_json", "save_json"]
+__all__ = ["YamlLoader", "YamlSaver", "load_yaml", "save_yaml"]
 
-import json
 from pathlib import Path
 from typing import Any, TypeVar
+
+import yaml
 
 from iden.io.base import BaseFileSaver, BaseLoader
 
 T = TypeVar("T")
 
 
-class JsonLoader(BaseLoader[Any]):
-    r"""Implement a data loader to load data in a JSON file.
+class YamlLoader(BaseLoader[Any]):
+    r"""Implement a data loader to load data in a YAML file.
 
     Example usage:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import load_json
-    >>> data = JsonLoader().load(Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import load_yaml
+    >>> data = YamlLoader().load(Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
 
     ```
     """
@@ -31,18 +32,18 @@ class JsonLoader(BaseLoader[Any]):
 
     def load(self, path: Path) -> Any:
         with Path.open(path, mode="rb") as file:
-            return json.load(file)
+            return yaml.safe_load(file)
 
 
-class JsonSaver(BaseFileSaver[Any]):
-    r"""Implement a file saver to save data with a JSON file.
+class YamlSaver(BaseFileSaver[Any]):
+    r"""Implement a file saver to save data with a YAML file.
 
     Example usage:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import JsonSaver
-    >>> JsonSaver().save({"key": "value"}, Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import YamlSaver
+    >>> YamlSaver().save({"key": "value"}, Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
 
     ```
     """
@@ -54,38 +55,38 @@ class JsonSaver(BaseFileSaver[Any]):
         # Save to tmp, then commit by moving the file in case the job gets
         # interrupted while writing the file
         tmp_path = path.parents[0].joinpath(f"{path.name}.tmp")
-        with Path.open(tmp_path, "w") as file:
-            json.dump(to_save, file, sort_keys=False)
+        with Path.open(tmp_path, mode="w") as file:
+            yaml.dump(to_save, file, Dumper=yaml.Dumper)
         tmp_path.rename(path)
 
 
-def load_json(path: Path) -> Any:
-    r"""Load the data from a given JSON file.
+def load_yaml(path: Path) -> Any:
+    r"""Load the data from a given YAML file.
 
     Args:
-        path: Specifies the path to the JSON file.
+        path: Specifies the path to the YAML file.
 
     Returns:
-        The data from the JSON file.
+        The data from the YAML file.
 
     Example usage:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import load_json
-    >>> data = load_json(Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import load_yaml
+    >>> data = load_yaml(Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
 
     ```
     """
-    return JsonLoader().load(path)
+    return YamlLoader().load(path)
 
 
-def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
-    r"""Save the given data in a JSON file.
+def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
+    r"""Save the given data in a YAML file.
 
     Args:
-        to_save: Specifies the data to write in a JSON file.
-        path: Specifies the path where to write the JSON file.
+        to_save: Specifies the data to write in a YAML file.
+        path: Specifies the path where to write the YAML file.
         exist_ok: If ``exist_ok`` is ``False`` (the default),
             ``FileExistsError`` is raised if the target file
             already exists. If ``exist_ok`` is ``True``,
@@ -100,9 +101,9 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
 
     ```pycon
     >>> from pathlib import Path
-    >>> from iden.io import save_json
-    >>> save_json({"key": "value"}, Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_yaml
+    >>> save_yaml({"key": "value"}, Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
 
     ```
     """
-    JsonSaver().save(to_save, path, exist_ok=exist_ok)
+    YamlSaver().save(to_save, path, exist_ok=exist_ok)
