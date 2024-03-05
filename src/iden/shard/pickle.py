@@ -98,7 +98,7 @@ def create_pickle_shard(data: T, uri: str) -> PickleShard:
     ```pycon
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.shard.pickle_ import create_pickle_shard
+    >>> from iden.shard.pickle import create_pickle_shard
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shard = create_pickle_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
     ...     shard.get_data()
@@ -126,7 +126,7 @@ def save_uri_file(uri: str, path: Path | str) -> None:
     ```pycon
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.shard.pickle_ import save_uri_file
+    >>> from iden.shard.pickle import save_uri_file
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     path = Path(tmpdir).joinpath("data.pkl")
     ...     save_uri_file(uri="file:///data/my_uri", path=path)  # xdoctest: +SKIP()
