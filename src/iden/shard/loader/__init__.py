@@ -9,4 +9,4 @@ from iden.shard.loader.base import (
     is_shard_loader_config,
     setup_shard_loader,
 )
-from iden.shard.loader.pickle_ import PickleShardLoader
+from iden.shard.loader.pickle import PickleShardLoader

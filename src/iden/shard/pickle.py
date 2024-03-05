@@ -100,7 +100,7 @@ def create_pickle_shard(data: T, uri: str) -> PickleShard:
     >>> from pathlib import Path
     >>> from iden.shard.pickle_ import create_pickle_shard
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shard = create_pickle_shard([1, 2, 3], uri = Path(tmpdir).joinpath("my_uri").as_uri())
+    ...     shard = create_pickle_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
     ...     shard.get_data()
     ...
     [1, 2, 3]
