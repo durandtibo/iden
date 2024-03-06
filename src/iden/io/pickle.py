@@ -2,7 +2,7 @@ r"""Contain pickle-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["PickleLoader", "PickleSaver", "load_pickle", "save_pickle"]
+__all__ = ["PickleLoader", "PickleSaver", "load_pickle", "save_pickle", "get_loader_mapping"]
 
 import pickle
 from pathlib import Path
@@ -25,6 +25,9 @@ class PickleLoader(BaseLoader[Any]):
 
     ```
     """
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
@@ -117,3 +120,22 @@ def save_pickle(
     ```
     """
     PickleSaver(protocol=protocol).save(to_save, path, exist_ok=exist_ok)
+
+
+def get_loader_mapping() -> dict[str, BaseLoader]:
+    r"""Get a default mapping between the file extensions and loaders.
+
+    Returns:
+        The mapping between the file extensions and loaders.
+
+    Example usage:
+
+    ```pycon
+    >>> from iden.io.pickle import get_loader_mapping
+    >>> get_loader_mapping()
+    {'pkl': PickleLoader(), 'pickle': PickleLoader()}
+
+    ```
+    """
+    loader = PickleLoader()
+    return {"pkl": loader, "pickle": loader}

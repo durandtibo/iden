@@ -2,7 +2,7 @@ r"""Contain YAML-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["YamlLoader", "YamlSaver", "load_yaml", "save_yaml"]
+__all__ = ["YamlLoader", "YamlSaver", "load_yaml", "save_yaml", "get_loader_mapping"]
 
 from pathlib import Path
 from typing import Any, TypeVar
@@ -27,6 +27,9 @@ class YamlLoader(BaseLoader[Any]):
     ```
     """
 
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__)
+
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
@@ -47,6 +50,9 @@ class YamlSaver(BaseFileSaver[Any]):
 
     ```
     """
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
@@ -107,3 +113,22 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     ```
     """
     YamlSaver().save(to_save, path, exist_ok=exist_ok)
+
+
+def get_loader_mapping() -> dict[str, BaseLoader]:
+    r"""Get a default mapping between the file extensions and loaders.
+
+    Returns:
+        The mapping between the file extensions and loaders.
+
+    Example usage:
+
+    ```pycon
+    >>> from iden.io.yaml import get_loader_mapping
+    >>> get_loader_mapping()
+    {'yaml': YamlLoader(), 'yml': YamlLoader()}
+
+    ```
+    """
+    loader = YamlLoader()
+    return {"yaml": loader, "yml": loader}

@@ -9,6 +9,7 @@ from coola.testing import torch_available
 from coola.utils import is_torch_available
 
 from iden.io import TorchLoader, TorchSaver, load_torch, save_torch
+from iden.io.torch import get_loader_mapping
 
 if is_torch_available():
     import torch
@@ -34,6 +35,16 @@ def path_torch(tmp_path_factory: pytest.TempPathFactory) -> Path:
 @torch_available
 def test_torch_loader_str() -> None:
     assert str(TorchLoader()).startswith("TorchLoader(")
+
+
+@torch_available
+def test_torch_loader_eq_true() -> None:
+    assert TorchLoader() == TorchLoader()
+
+
+@torch_available
+def test_torch_loader_eq_false() -> None:
+    assert TorchLoader() != TorchSaver()
 
 
 @torch_available
@@ -64,6 +75,16 @@ def test_torch_loader_no_torch() -> None:
 @torch_available
 def test_torch_saver_str() -> None:
     assert str(TorchSaver()).startswith("TorchSaver(")
+
+
+@torch_available
+def test_torch_saver_eq_true() -> None:
+    assert TorchSaver() == TorchSaver()
+
+
+@torch_available
+def test_torch_saver_eq_false() -> None:
+    assert TorchSaver() != TorchLoader()
 
 
 @torch_available
@@ -180,3 +201,18 @@ def test_save_torch_no_torch(tmp_path: Path) -> None:
             {"key1": [1, 2, 3], "key2": "abc"},
             tmp_path,
         )
+
+
+########################################
+#     Tests for get_loader_mapping     #
+########################################
+
+
+@torch_available
+def test_get_loader_mapping() -> None:
+    assert get_loader_mapping() == {"pt": TorchLoader()}
+
+
+def test_get_loader_mapping_no_torch() -> None:
+    with patch("iden.io.torch.is_torch_available", lambda: False):
+        assert get_loader_mapping() == {}
