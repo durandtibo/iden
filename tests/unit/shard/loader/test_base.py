@@ -36,8 +36,8 @@ def test_is_shard_loader_config_false() -> None:
 
 
 def test_setup_shard_loader_object() -> None:
-    generator = PickleShardLoader()
-    assert setup_shard_loader(generator) is generator
+    loader = PickleShardLoader()
+    assert setup_shard_loader(loader) is loader
 
 
 def test_setup_shard_loader_dict() -> None:

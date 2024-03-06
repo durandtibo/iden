@@ -16,6 +16,8 @@ __all__ = [
     "TorchSaver",
     "YamlLoader",
     "YamlSaver",
+    "is_loader_config",
+    "is_saver_config",
     "load_json",
     "load_pickle",
     "load_text",
@@ -26,9 +28,19 @@ __all__ = [
     "save_text",
     "save_torch",
     "save_yaml",
+    "setup_loader",
+    "setup_saver",
 ]
 
-from iden.io.base import BaseFileSaver, BaseLoader, BaseSaver
+from iden.io.base import (
+    BaseFileSaver,
+    BaseLoader,
+    BaseSaver,
+    is_loader_config,
+    is_saver_config,
+    setup_loader,
+    setup_saver,
+)
 from iden.io.json import JsonLoader, JsonSaver, load_json, save_json
 from iden.io.pickle import PickleLoader, PickleSaver, load_pickle, save_pickle
 from iden.io.text import TextLoader, TextSaver, load_text, save_text
