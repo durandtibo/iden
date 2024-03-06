@@ -1,3 +1,5 @@
+r"""Contain file-based shard implementations."""
+
 from __future__ import annotations
 
 __all__ = ["FileShard"]

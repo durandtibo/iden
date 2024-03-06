@@ -1,4 +1,4 @@
-r"""Contain in-memory shard implementations."""
+r"""Contain pickle-based shard implementations."""
 
 from __future__ import annotations
 
