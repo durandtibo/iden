@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from iden.io import TextLoader, TextSaver, load_text, save_text
+from iden.io.text import get_loader_mapping
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -26,6 +27,14 @@ def test_text_loader_str() -> None:
     assert str(TextLoader()).startswith("TextLoader(")
 
 
+def test_text_loader_eq_true() -> None:
+    assert TextLoader() == TextLoader()
+
+
+def test_text_loader_eq_false() -> None:
+    assert TextLoader() != TextSaver()
+
+
 def test_text_loader_load(path_text: Path) -> None:
     assert TextLoader().load(path_text) == "hello"
 
@@ -37,6 +46,14 @@ def test_text_loader_load(path_text: Path) -> None:
 
 def test_text_saver_str() -> None:
     assert str(TextSaver()).startswith("TextSaver(")
+
+
+def test_text_saver_eq_true() -> None:
+    assert TextSaver() == TextSaver()
+
+
+def test_text_saver_eq_false() -> None:
+    assert TextSaver() != TextLoader()
 
 
 def test_text_saver_save(tmp_path: Path) -> None:
@@ -126,3 +143,12 @@ def test_save_text_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         save_text("hello", path)
+
+
+########################################
+#     Tests for get_loader_mapping     #
+########################################
+
+
+def test_get_loader_mapping() -> None:
+    assert get_loader_mapping() == {"txt": TextLoader()}

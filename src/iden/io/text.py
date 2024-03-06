@@ -2,7 +2,7 @@ r"""Contain text-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["TextLoader", "TextSaver", "load_text", "save_text"]
+__all__ = ["TextLoader", "TextSaver", "load_text", "save_text", "get_loader_mapping"]
 
 from pathlib import Path
 from typing import Any, TypeVar
@@ -24,6 +24,9 @@ class TextLoader(BaseLoader[Any]):
 
     ```
     """
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
@@ -49,6 +52,9 @@ class TextSaver(BaseFileSaver[Any]):
 
     ```
     """
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
@@ -113,3 +119,21 @@ def save_text(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     ```
     """
     TextSaver().save(to_save, path, exist_ok)
+
+
+def get_loader_mapping() -> dict[str, BaseLoader]:
+    r"""Get a default mapping between the file extensions and loaders.
+
+    Returns:
+        The mapping between the file extensions and loaders.
+
+    Example usage:
+
+    ```pycon
+    >>> from iden.io.text import get_loader_mapping
+    >>> get_loader_mapping()
+    {'txt': TextLoader()}
+
+    ```
+    """
+    return {"txt": TextLoader()}

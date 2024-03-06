@@ -2,7 +2,7 @@ r"""Contain torch-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["TorchLoader", "TorchSaver", "load_torch", "save_torch"]
+__all__ = ["TorchLoader", "TorchSaver", "load_torch", "save_torch", "get_loader_mapping"]
 
 from typing import TYPE_CHECKING, Any
 from unittest.mock import Mock
@@ -36,6 +36,9 @@ class TorchLoader(BaseLoader[Any]):
     def __init__(self) -> None:
         check_torch()
 
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__)
+
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
@@ -58,6 +61,9 @@ class TorchSaver(BaseFileSaver[Any]):
 
     def __init__(self) -> None:
         check_torch()
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
@@ -117,3 +123,23 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     ```
     """
     TorchSaver().save(to_save, path, exist_ok=exist_ok)
+
+
+def get_loader_mapping() -> dict[str, BaseLoader]:
+    r"""Get a default mapping between the file extensions and loaders.
+
+    Returns:
+        The mapping between the file extensions and loaders.
+
+    Example usage:
+
+    ```pycon
+    >>> from iden.io.torch import get_loader_mapping
+    >>> get_loader_mapping()
+    {'pt': TorchLoader()}
+
+    ```
+    """
+    if not is_torch_available():
+        return {}
+    return {"pt": TorchLoader()}

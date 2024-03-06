@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from iden.io import JsonLoader, JsonSaver, load_json, save_json
+from iden.io.json import get_loader_mapping
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -26,6 +27,14 @@ def test_json_loader_str() -> None:
     assert str(JsonLoader()).startswith("JsonLoader(")
 
 
+def test_json_loader_eq_true() -> None:
+    assert JsonLoader() == JsonLoader()
+
+
+def test_json_loader_eq_false() -> None:
+    assert JsonLoader() != JsonSaver()
+
+
 def test_json_loader_load(path_json: Path) -> None:
     assert JsonLoader().load(path_json) == {"key1": [1, 2, 3], "key2": "abc"}
 
@@ -37,6 +46,14 @@ def test_json_loader_load(path_json: Path) -> None:
 
 def test_json_saver_str() -> None:
     assert str(JsonSaver()).startswith("JsonSaver(")
+
+
+def test_json_saver_eq_true() -> None:
+    assert JsonSaver() == JsonSaver()
+
+
+def test_json_saver_eq_false() -> None:
+    assert JsonSaver() != JsonLoader()
 
 
 def test_json_saver_save(tmp_path: Path) -> None:
@@ -111,3 +128,12 @@ def test_save_json_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+
+
+########################################
+#     Tests for get_loader_mapping     #
+########################################
+
+
+def test_get_loader_mapping() -> None:
+    assert get_loader_mapping() == {"json": JsonLoader()}

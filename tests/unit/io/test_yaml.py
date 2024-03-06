@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from iden.io import YamlLoader, YamlSaver, load_yaml, save_yaml
+from iden.io.yaml import get_loader_mapping
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -26,6 +27,14 @@ def test_yaml_loader_str() -> None:
     assert str(YamlLoader()).startswith("YamlLoader(")
 
 
+def test_yaml_loader_eq_true() -> None:
+    assert YamlLoader() == YamlLoader()
+
+
+def test_yaml_loader_eq_false() -> None:
+    assert YamlLoader() != YamlSaver()
+
+
 def test_yaml_loader_load(path_yaml: Path) -> None:
     assert YamlLoader().load(path_yaml) == {"key1": [1, 2, 3], "key2": "abc"}
 
@@ -37,6 +46,14 @@ def test_yaml_loader_load(path_yaml: Path) -> None:
 
 def test_yaml_saver_str() -> None:
     assert str(YamlSaver()).startswith("YamlSaver(")
+
+
+def test_yaml_saver_eq_true() -> None:
+    assert YamlSaver() == YamlSaver()
+
+
+def test_yaml_saver_eq_false() -> None:
+    assert YamlSaver() != YamlLoader()
 
 
 def test_yaml_saver_save(tmp_path: Path) -> None:
@@ -111,3 +128,12 @@ def test_save_yaml_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+
+
+########################################
+#     Tests for get_loader_mapping     #
+########################################
+
+
+def test_get_loader_mapping() -> None:
+    assert get_loader_mapping() == {"yaml": YamlLoader(), "yml": YamlLoader()}
