@@ -3,12 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+from coola import objects_are_equal
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.io import load_json
-from iden.shard import PickleShard
-from iden.shard.pickle import create_pickle_shard
+from iden.shard import PickleShard, create_pickle_shard
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -56,15 +56,15 @@ def test_pickle_shard_equal_false_different_type(uri: str, path: Path) -> None:
 
 
 def test_pickle_shard_get_data(uri: str, path: Path) -> None:
-    assert PickleShard(uri=uri, path=path).get_data() == [1, 2, 3]
+    assert objects_are_equal(PickleShard(uri=uri, path=path).get_data(), [1, 2, 3])
 
 
 def test_pickle_shard_get_data_multiple_calls(uri: str, path: Path) -> None:
     shard = PickleShard(uri=uri, path=path)
-    assert shard.get_data() == [1, 2, 3]
-    assert shard.get_data() == [1, 2, 3]
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
     shard.get_data().append(4)
-    assert shard.get_data() == [1, 2, 3, 4]
+    assert objects_are_equal(shard.get_data(), [1, 2, 3, 4])
 
 
 def test_pickle_shard_get_uri(uri: str, path: Path) -> None:
@@ -74,7 +74,7 @@ def test_pickle_shard_get_uri(uri: str, path: Path) -> None:
 def test_pickle_shard_from_uri(uri: str, path: Path) -> None:
     shard = PickleShard.from_uri(uri)
     assert shard.equal(PickleShard(uri=uri, path=path))
-    assert shard.get_data() == [1, 2, 3]
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
 
 
 def test_pickle_shard_generate_uri_config(path: Path) -> None:
@@ -101,7 +101,7 @@ def test_create_pickle_shard(tmp_path: Path) -> None:
         LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
     }
     assert shard.equal(PickleShard(uri=uri, path=path))
-    assert shard.get_data() == [1, 2, 3]
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
 
 
 def test_create_pickle_shard_with_data(tmp_path: Path) -> None:
@@ -115,4 +115,4 @@ def test_create_pickle_shard_with_data(tmp_path: Path) -> None:
         LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
     }
     assert shard.equal(PickleShard(uri=uri, path=path))
-    assert shard.get_data() == [1, 2, 3]
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
