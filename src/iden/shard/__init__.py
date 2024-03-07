@@ -9,6 +9,8 @@ __all__ = [
     "PickleShard",
     "load_from_uri",
     "create_pickle_shard",
+    "TorchSafetensorsShard",
+    "create_torch_safetensors_shard",
 ]
 
 from iden.shard.base import BaseShard
@@ -16,3 +18,4 @@ from iden.shard.file import FileShard
 from iden.shard.in_memory import InMemoryShard
 from iden.shard.loading import load_from_uri
 from iden.shard.pickle import PickleShard, create_pickle_shard
+from iden.shard.safetensors import TorchSafetensorsShard, create_torch_safetensors_shard
