@@ -1,25 +1,29 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from unittest.mock import Mock
 
 import pytest
+from coola import objects_are_equal
+from coola.testing import torch_available
+from coola.utils import is_torch_available
 
-from iden.shard import PickleShard, create_pickle_shard, load_from_uri
+from iden.shard import (
+    PickleShard,
+    TorchSafetensorsShard,
+    create_pickle_shard,
+    create_torch_safetensors_shard,
+    load_from_uri,
+)
+from iden.testing import safetensors_available
 
 if TYPE_CHECKING:
     from pathlib import Path
 
-
-@pytest.fixture(scope="module")
-def path(tmp_path_factory: pytest.TempPathFactory) -> Path:
-    return tmp_path_factory.mktemp("tmp").joinpath("data.pkl")
-
-
-@pytest.fixture(scope="module")
-def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
-    uri_ = tmp_path_factory.mktemp("tmp").joinpath("uri").as_uri()
-    create_pickle_shard(data=[1, 2, 3], uri=uri_, path=path)
-    return uri_
+if is_torch_available():
+    import torch
+else:  # pragma: no cover
+    torch = Mock()
 
 
 ###################################
@@ -27,10 +31,26 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 ###################################
 
 
-def test_load_from_uri(uri: str, path: Path) -> None:
+def test_load_from_uri_pickle(tmp_path: Path) -> None:
+    uri = tmp_path.joinpath("my_uri").as_uri()
+    path = tmp_path.joinpath("my_uri.pkl")
+    create_pickle_shard(data=[1, 2, 3], uri=uri, path=path)
     shard = load_from_uri(uri)
     assert shard.equal(PickleShard(uri=uri, path=path))
-    assert shard.get_data() == [1, 2, 3]
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
+
+
+@safetensors_available
+@torch_available
+def test_load_from_uri_torch_safetensors(tmp_path: Path) -> None:
+    uri = tmp_path.joinpath("my_uri").as_uri()
+    path = tmp_path.joinpath("my_uri.safetensors")
+    create_torch_safetensors_shard(
+        data={"key1": torch.ones(2, 3), "key2": torch.arange(5)}, uri=uri, path=path
+    )
+    shard = load_from_uri(uri)
+    assert shard.equal(TorchSafetensorsShard(uri=uri, path=path))
+    assert objects_are_equal(shard.get_data(), {"key1": torch.ones(2, 3), "key2": torch.arange(5)})
 
 
 def test_load_from_uri_missing() -> None:
