@@ -6,9 +6,9 @@ import pytest
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
-from iden.io import load_json, save_pickle
+from iden.io import load_json
 from iden.shard import PickleShard
-from iden.shard.pickle import create_pickle_shard, save_uri_file
+from iden.shard.pickle import create_pickle_shard
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -16,15 +16,13 @@ if TYPE_CHECKING:
 
 @pytest.fixture(scope="module")
 def path(tmp_path_factory: pytest.TempPathFactory) -> Path:
-    path_ = tmp_path_factory.mktemp("tmp").joinpath("data.pkl")
-    save_pickle([1, 2, 3], path_)
-    return path_
+    return tmp_path_factory.mktemp("tmp").joinpath("data.pkl")
 
 
 @pytest.fixture(scope="module")
 def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
     uri_ = tmp_path_factory.mktemp("tmp").joinpath("uri").as_uri()
-    save_uri_file(uri=uri_, path=path)
+    create_pickle_shard(data=[1, 2, 3], uri=uri_, path=path)
     return uri_
 
 
@@ -79,29 +77,42 @@ def test_pickle_shard_from_uri(uri: str, path: Path) -> None:
     assert shard.get_data() == [1, 2, 3]
 
 
+def test_pickle_shard_generate_uri_config(path: Path) -> None:
+    assert PickleShard.generate_uri_config(path) == {
+        KWARGS: {"path": path.as_posix()},
+        LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
+    }
+
+
 #########################################
 #     Tests for create_pickle_shard     #
 #########################################
 
 
 def test_create_pickle_shard(tmp_path: Path) -> None:
-    uri = tmp_path.joinpath("my_uri").as_uri()
-    shard = create_pickle_shard([1, 2, 3], uri)
-    assert shard.equal(PickleShard(uri=uri, path=tmp_path.joinpath("my_uri.pkl")))
-    assert shard.get_data() == [1, 2, 3]
+    uri_file = tmp_path.joinpath("my_uri")
+    uri = uri_file.as_uri()
+    path = tmp_path.joinpath("my_uri.pkl")
+    shard = create_pickle_shard(data=[1, 2, 3], uri=uri)
 
-
-###################################
-#     Tests for save_uri_file     #
-###################################
-
-
-def test_save_uri_file(tmp_path: Path) -> None:
-    uri = tmp_path.joinpath("uri")
-    path = tmp_path.joinpath("data.pkl")
-    save_uri_file(uri=uri.as_uri(), path=path)
-    assert uri.is_file()
-    assert load_json(uri) == {
+    assert uri_file.is_file()
+    assert load_json(uri_file) == {
         KWARGS: {"path": path.as_posix()},
         LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
     }
+    assert shard.equal(PickleShard(uri=uri, path=path))
+    assert shard.get_data() == [1, 2, 3]
+
+
+def test_create_pickle_shard_with_data(tmp_path: Path) -> None:
+    uri_file = tmp_path.joinpath("my_uri")
+    uri = uri_file.as_uri()
+    path = tmp_path.joinpath("data.pkl")
+    shard = create_pickle_shard(data=[1, 2, 3], uri=uri, path=path)
+
+    assert load_json(uri_file) == {
+        KWARGS: {"path": path.as_posix()},
+        LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
+    }
+    assert shard.equal(PickleShard(uri=uri, path=path))
+    assert shard.get_data() == [1, 2, 3]
