@@ -4,9 +4,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from iden.io import save_pickle
-from iden.shard import load_from_uri
-from iden.shard.pickle import PickleShard, save_uri_file
+from iden.shard import PickleShard, create_pickle_shard, load_from_uri
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -14,15 +12,13 @@ if TYPE_CHECKING:
 
 @pytest.fixture(scope="module")
 def path(tmp_path_factory: pytest.TempPathFactory) -> Path:
-    path_ = tmp_path_factory.mktemp("tmp").joinpath("data.pkl")
-    save_pickle([1, 2, 3], path_)
-    return path_
+    return tmp_path_factory.mktemp("tmp").joinpath("data.pkl")
 
 
 @pytest.fixture(scope="module")
 def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
     uri_ = tmp_path_factory.mktemp("tmp").joinpath("uri").as_uri()
-    save_uri_file(uri=uri_, path=path)
+    create_pickle_shard(data=[1, 2, 3], uri=uri_, path=path)
     return uri_
 
 

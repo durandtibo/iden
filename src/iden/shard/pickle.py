@@ -2,9 +2,10 @@ r"""Contain pickle-based shard implementations."""
 
 from __future__ import annotations
 
-__all__ = ["PickleShard", "create_pickle_shard", "save_uri_file"]
+__all__ = ["PickleShard", "create_pickle_shard"]
 
-from typing import TYPE_CHECKING, TypeVar
+import logging
+from typing import TYPE_CHECKING, Any
 
 from objectory import OBJECT_TARGET
 
@@ -16,10 +17,10 @@ from iden.utils.path import sanitize_path
 if TYPE_CHECKING:
     from pathlib import Path
 
-T = TypeVar("T")
+logger = logging.getLogger(__name__)
 
 
-class PickleShard(FileShard[T]):
+class PickleShard(FileShard[Any]):
     r"""Implement a pickle shard.
 
     The data are stored in a pickle file.
@@ -49,8 +50,23 @@ class PickleShard(FileShard[T]):
     def __init__(self, uri: str, path: Path | str) -> None:
         super().__init__(uri, path, loader=PickleLoader())
 
+    @classmethod
+    def generate_uri_config(cls, path: Path) -> dict:
+        r"""Generate the minimum config that is used to load the shard
+        from its URI.
 
-def create_pickle_shard(data: T, uri: str) -> PickleShard:
+        The config must be compatible with the JSON format.
+
+        Args:
+            path: The path to the pickle file.
+        """
+        return {
+            KWARGS: {"path": sanitize_path(path).as_posix()},
+            LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
+        }
+
+
+def create_pickle_shard(data: Any, uri: str, path: Path | None = None) -> PickleShard:
     r"""Create a ``PickleShard`` from data.
 
     Note:
@@ -61,6 +77,8 @@ def create_pickle_shard(data: T, uri: str) -> PickleShard:
     Args:
         data: The data to save in the pickle file.
         uri: The URI associated to the shard.
+        path: The path to the pickle file. If ``None``, a path is
+            automatically based on the URI.
 
     Returns:
         The ``PickleShard`` object.
@@ -79,35 +97,10 @@ def create_pickle_shard(data: T, uri: str) -> PickleShard:
 
     ```
     """
-    path = sanitize_path(uri + ".pkl")
+    if path is None:
+        path = sanitize_path(uri + ".pkl")
+    logger.info(f"Saving URI file {uri}")
+    save_json(PickleShard.generate_uri_config(path), sanitize_path(uri))
+    logger.info(f"Saving pickle file {path}")
     save_pickle(data, path)
-    save_uri_file(uri, path)
     return PickleShard(uri, path)
-
-
-def save_uri_file(uri: str, path: Path | str) -> None:
-    r"""Save the Uniform Resource Identifier (URI) file for a
-    ``PickleShard``.
-
-    Args:
-        uri: The URI associated to the shard.
-        path: Specifies the path to the pickle file.
-
-    Example usage:
-
-    ```pycon
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard.pickle import save_uri_file
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     file = Path(tmpdir).joinpath("data.pkl")
-    ...     save_uri_file(uri="file:///data/my_uri", path=file)  # xdoctest: +SKIP()
-    ...
-
-    ```
-    """
-    config = {
-        KWARGS: {"path": sanitize_path(path).as_posix()},
-        LOADER: {OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"},
-    }
-    save_json(config, sanitize_path(uri))
