@@ -57,9 +57,6 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
 
     def __init__(self, uri: str, path: Path | str) -> None:
         super().__init__(uri, path, loader=TorchLoader())
-        self._uri = uri
-        self._path = sanitize_path(path)
-        self._data = None
 
     @classmethod
     def generate_uri_config(cls, path: Path) -> dict:

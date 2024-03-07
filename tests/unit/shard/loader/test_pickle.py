@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+from coola import objects_are_equal
 
 from iden.shard import PickleShard, create_pickle_shard
 from iden.shard.loader import PickleShardLoader
@@ -35,4 +36,4 @@ def test_pickle_shard_loader_str() -> None:
 def test_pickle_shard_loader_load(uri: str, path: Path) -> None:
     shard = PickleShardLoader().load(uri)
     assert shard.equal(PickleShard(uri=uri, path=path))
-    assert shard.get_data() == [1, 2, 3]
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
