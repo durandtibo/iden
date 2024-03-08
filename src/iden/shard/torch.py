@@ -36,6 +36,9 @@ class TorchShard(FileShard[Any]):
         uri: The URI associated to the shard.
         path: Specifies the path to the PyTorch file.
 
+    Raises:
+        RuntimeError: if ``torch`` is not installed.
+
     Example usage:
 
     ```pycon
@@ -108,6 +111,9 @@ def create_torch_shard(
 
     Returns:
         The ``TorchShard`` object.
+
+    Raises:
+        RuntimeError: if ``torch`` is not installed.
 
     Example usage:
 

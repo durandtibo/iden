@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import pytest
 from coola import objects_are_equal
@@ -129,6 +129,23 @@ def test_torch_safetensors_shard_generate_uri_config(path: Path) -> None:
         KWARGS: {"path": path.as_posix()},
         LOADER: {OBJECT_TARGET: "iden.shard.loader.TorchSafetensorsShardLoader"},
     }
+
+
+def test_torch_safetensors_shard_no_safetensors(tmp_path: Path) -> None:
+    with (
+        patch("iden.utils.imports.is_safetensors_available", lambda: False),
+        pytest.raises(RuntimeError, match="`safetensors` package is required but not installed."),
+    ):
+        TorchSafetensorsShard(uri="", path=tmp_path)
+
+
+def test_torch_safetensors_shard_no_torch(tmp_path: Path) -> None:
+    with (
+        patch("iden.utils.imports.is_safetensors_available", lambda: True),
+        patch("coola.utils.imports.is_torch_available", lambda: False),
+        pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
+    ):
+        TorchSafetensorsShard(uri="", path=tmp_path)
 
 
 ####################################################

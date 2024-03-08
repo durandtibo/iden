@@ -6,12 +6,21 @@ __all__ = ["TorchShardLoader"]
 
 from typing import Any
 
+from coola.utils import check_torch
+
 from iden.shard.loader.base import BaseShardLoader
 from iden.shard.torch import TorchShard
 
 
 class TorchShardLoader(BaseShardLoader[Any]):
-    r"""Implement a PyTorch shard loader."""
+    r"""Implement a PyTorch shard loader.
+
+    Raises:
+        RuntimeError: if ``torch`` is not installed.
+    """
+
+    def __init__(self) -> None:
+        check_torch()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"

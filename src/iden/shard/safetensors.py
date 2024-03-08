@@ -37,6 +37,9 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
         uri: The URI associated to the shard.
         path: Specifies the path to the safetensors file.
 
+    Raises:
+        RuntimeError: if ``safetensors`` or ``torch`` is not installed.
+
     Example usage:
 
     ```pycon
@@ -109,6 +112,9 @@ def create_torch_safetensors_shard(
 
     Returns:
         The ``TorchSafetensorsShard`` object.
+
+    Raises:
+        RuntimeError: if ``safetensors`` or ``torch`` is not installed.
 
     Example usage:
 
