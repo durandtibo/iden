@@ -9,7 +9,6 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
 
     from iden.shard import BaseShard
 
@@ -24,6 +23,33 @@ class BaseDataset(Generic[T], ABC):
     Note this dataset class is very different from the PyTorch dataset
     class because it has a different goal. One of the goals is to help
     to organize and manage shards.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.dataset import VanillaDataset
+    >>> from iden.shard import create_json_shard
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     shards = {
+    ...         "train": [
+    ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
+    ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+    ...         ],
+    ...         "val": [],
+    ...     }
+    ...     dataset = VanillaDataset(shards)
+    ...     print(dataset)
+    ...
+    VanillaDataset(
+      (shards):
+        (train): 2
+        (val): 0
+      (assets): []
+    )
+
+    ```
     """
 
     @abstractmethod
@@ -42,11 +68,25 @@ class BaseDataset(Generic[T], ABC):
         Raises:
             AssetNotFoundError: if the asset does not exist.
 
-        Example:
+        Example usage:
+
         ```pycon
-        >>> from iden.dataset import BaseDataset
-        >>> dataset: BaseDataset = ...  # Instantiate a sharded dataset
-        >>> my_asset = dataset.get_asset("my_asset_id")
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": [
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...         ],
+        ...         "val": [],
+        ...     }
+        ...     dataset = VanillaDataset(shards, assets={'mean': 42})
+        ...     print(dataset.get_asset('mean'))
+        ...
+        42
 
         ```
         """
@@ -61,58 +101,63 @@ class BaseDataset(Generic[T], ABC):
         Returns:
             ``True`` if the asset exists, otherwise ``False``.
 
-        Example:
+        Example usage:
+
         ```pycon
-        >>> from iden.dataset import BaseDataset
-        >>> dataset: BaseDataset = ...  # Instantiate a sharded dataset
-        >>> dataset.has_asset('my_asset_id')
-        True  # If the asset exists
-        >>> dataset.has_asset('my_asset_id')
-        False  # If the asset does not exist
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": [
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...         ],
+        ...         "val": [],
+        ...     }
+        ...     dataset = VanillaDataset(shards, assets={'mean': 42})
+        ...     print(dataset.has_asset('mean'))
+        ...     print(dataset.has_asset('missing'))
+        ...
+        True
+        False
 
         ```
         """
 
     @abstractmethod
-    def get_shards(self, split: str) -> Iterable[BaseShard[T]]:
+    def get_shards(self, split: str) -> tuple[BaseShard[T], ...]:
         r"""Get the shards for a given split.
 
         Returns:
-            iterable: The shards for a given split. The shards are
+            The shards for a given split. The shards are
                 sorted by ascending order of URI.
 
         Raises:
             ``SplitNotFoundError``: if the split does not exist.
 
-        Example:
+        Example usage:
+
         ```pycon
-        >>> from iden.dataset import BaseDataset
-        >>> dataset: BaseDataset = ...  # Instantiate a sharded dataset
-        >>> train_shards = dataset.get_shards('train')
-        >>> val_shards = dataset.get_shards('val')
-
-        ```
-        """
-
-    @abstractmethod
-    def get_metadata(self, split: str) -> dict:
-        r"""Get the metadata for a given split.
-
-        The values in the metadata dict depends on the sharded dataset
-        implementation.
-
-        Returns:
-            The sharded dataset metadata.
-
-        Raises:
-            ``SplitNotFoundError``: if the split does not exist.
-
-        Example:
-        ```pycon
-        >>> from iden.dataset import BaseDataset
-        >>> dataset: BaseDataset = ...  # Instantiate a sharded dataset
-        >>> dataset.get_metadata('train')
-        {...}
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": [
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...         ],
+        ...         "val": [],
+        ...     }
+        ...     dataset = VanillaDataset(shards)
+        ...     print(dataset.get_shards('train'))
+        ...     print(dataset.get_shards('val'))
+        ...
+        (JsonShard(uri=file:///.../uri1), JsonShard(uri=file:///.../uri2))
+        ()
 
         ```
         """
@@ -127,12 +172,30 @@ class BaseDataset(Generic[T], ABC):
         Raises:
             ``SplitNotFoundError``: if the split does not exist.
 
-        Example:
+        Returns:
+            The dataset splits.
+
+        Example usage:
+
         ```pycon
-        >>> from iden.dataset import BaseDataset
-        >>> dataset: BaseDataset = ...  # Instantiate a sharded dataset
-        >>> dataset.get_num_shards('train')
-        12  # Assume there are 12 shards for the train split
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": [
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...         ],
+        ...         "val": [],
+        ...     }
+        ...     dataset = VanillaDataset(shards)
+        ...     print(dataset.get_num_shards('train'))
+        ...     print(dataset.get_num_shards('val'))
+        ...
+        2
+        0
 
         ```
         """
@@ -144,12 +207,25 @@ class BaseDataset(Generic[T], ABC):
         Returns:
             The dataset splits.
 
-        Example:
+        Example usage:
+
         ```pycon
-        >>> from iden.dataset import BaseDataset
-        >>> dataset: BaseDataset = ...  # Instantiate a sharded dataset
-        >>> dataset.get_splits()
-        {'train', 'val'}  # Assume the splits are 'train' and 'val'
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": [
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...         ],
+        ...         "val": [],
+        ...     }
+        ...     dataset = VanillaDataset(shards)
+        ...     print(sorted(dataset.get_splits()))
+        ...
+        ['train', 'val']
 
         ```
         """
@@ -161,18 +237,27 @@ class BaseDataset(Generic[T], ABC):
         Returns:
             ``True`` of the split exists, otherwise ``False``
 
-        Example:
+        Example usage:
+
         ```pycon
-        >>> from iden.dataset import BaseDataset
-        >>> dataset: BaseDataset = ...  # Instantiate a sharded dataset
-        >>> dataset.has_split('train')
-        True  # Assume the train split exists
-        >>> dataset.has_split('test')
-        False  # Assume the tes split does not exist
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": [
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...         ],
+        ...         "val": [],
+        ...     }
+        ...     dataset = VanillaDataset(shards)
+        ...     print(dataset.has_split('train'))
+        ...     print(dataset.has_split('missing'))
+        ...
+        True
+        False
 
         ```
         """
-
-
-class SplitNotFoundError(Exception):
-    r"""Raised when trying to access a split that does not exist."""
