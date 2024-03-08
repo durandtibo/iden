@@ -5,13 +5,24 @@ from __future__ import annotations
 __all__ = ["BaseShard"]
 
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 T = TypeVar("T")
 
 
 class BaseShard(Generic[T], ABC):
     r"""Define the base class to implement a shard."""
+
+    @abstractmethod
+    def equal(self, other: Any) -> bool:
+        r"""Indicate if two shards are equal or not.
+
+        Args:
+            other: The object to compare with.
+
+        Returns:
+            ``True`` if the two shards are equal, otherwise ``False``.
+        """
 
     @abstractmethod
     def get_data(self) -> T:
