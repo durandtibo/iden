@@ -1,6 +1,7 @@
-name: Test - Dependencies
+name: Nightly Dependency Tests
 on:
-  workflow_call:
+  schedule:
+    - cron: '10 11 * * *' # run at 11:10 AM UTC
   workflow_dispatch:  # to trigger manually
 
 jobs:
@@ -13,7 +14,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
-        coola-version: [ 0.4.0 ]
 
     steps:
       - name: Checkout
@@ -34,7 +34,7 @@ jobs:
 
       - name: Install coola
         run: |
-          poetry run pip install coola==${{ matrix.coola-version }}
+          poetry run pip install --upgrade --pre coola
 
       - name: Show installed packages
         run: |
@@ -55,7 +55,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
-        objectory-version: [ 0.1.2 ]
 
     steps:
       - name: Checkout
@@ -76,7 +75,7 @@ jobs:
 
       - name: Install objectory
         run: |
-          poetry run pip install objectory==${{ matrix.objectory-version }}
+          poetry run pip install --upgrade --pre objectory
 
       - name: Show installed packages
         run: |
@@ -86,6 +85,7 @@ jobs:
       - name: Run unit tests
         run: |
           poetry run make unit-test-cov
+
 
   #################################
   #     Optional dependencies     #
@@ -100,22 +100,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
-        numpy-version: [ 1.26.4, 1.25.2, 1.24.3, 1.23.5, 1.22.4, 1.21.6 ]
-        exclude:
-          # python 3.11
-          - numpy-version: 1.21.6
-            python-version: '3.11'
-          # python 3.12
-          - numpy-version: 1.21.6
-            python-version: '3.12'
-          - numpy-version: 1.22.4
-            python-version: '3.12'
-          - numpy-version: 1.23.5
-            python-version: '3.12'
-          - numpy-version: 1.24.3
-            python-version: '3.12'
-          - numpy-version: 1.25.2
-            python-version: '3.12'
 
     steps:
       - name: Checkout
@@ -134,9 +118,9 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install NumPy
+      - name: Install numpy
         run: |
-          poetry run pip install numpy==${{ matrix.numpy-version }}
+          poetry run pip install numpy --upgrade --pre -i https://pypi.anaconda.org/scipy-wheels-nightly/simple
 
       - name: Show installed packages
         run: |
@@ -157,7 +141,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
-        safetensors-version: [ 0.4.2 ]
 
     steps:
       - name: Checkout
@@ -174,11 +157,11 @@ jobs:
       - name: Install packages
         run: |
           poetry run make config-poetry
-          poetry run make install-all
+          poetry run make install
 
       - name: Install safetensors
         run: |
-          poetry run pip install safetensors==${{ matrix.safetensors-version }}
+          poetry run pip install safetensors --upgrade --pre
 
       - name: Show installed packages
         run: |
@@ -199,28 +182,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
-        torch-version: [ 2.2.1, 2.1.2, 2.0.1, 1.13.1, 1.12.1, 1.11.0 ]
-        exclude:
-          # python 3.11
-          - torch-version: 1.10.2
-            python-version: 3.11
-          - torch-version: 1.11.0
-            python-version: 3.11
-          - torch-version: 1.12.1
-            python-version: 3.11
-          # python 3.12
-          - torch-version: 1.10.2
-            python-version: 3.12
-          - torch-version: 1.11.0
-            python-version: 3.12
-          - torch-version: 1.12.1
-            python-version: 3.12
-          - torch-version: 1.13.1
-            python-version: 3.12
-          - torch-version: 2.0.1
-            python-version: 3.12
-          - torch-version: 2.1.2
-            python-version: 3.12
 
     steps:
       - name: Checkout
@@ -239,9 +200,9 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install PyTorch
+      - name: Install torch
         run: |
-          poetry run pip install torch==${{ matrix.torch-version }}
+          poetry run pip install torch --upgrade --pre --index-url https://download.pytorch.org/whl/nightly/cu121
 
       - name: Show installed packages
         run: |
