@@ -59,6 +59,10 @@ def test_vanilla_dataset_str(dataset: VanillaDataset) -> None:
     assert str(dataset).startswith("VanillaDataset(")
 
 
+def test_vanilla_dataset_str_empty() -> None:
+    assert str(VanillaDataset(shards={})).startswith("VanillaDataset(")
+
+
 def test_vanilla_dataset_get_asset(dataset: VanillaDataset) -> None:
     assert dataset.get_asset("mean") == 42
 
