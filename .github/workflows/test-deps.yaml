@@ -74,7 +74,7 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install NumPy
+      - name: Install objectory
         run: |
           poetry run pip install objectory==${{ matrix.objectory-version }}
 
@@ -176,7 +176,7 @@ jobs:
           poetry run make config-poetry
           poetry run make install-all
 
-      - name: Install NumPy
+      - name: Install safetensors
         run: |
           poetry run pip install safetensors==${{ matrix.safetensors-version }}
 
