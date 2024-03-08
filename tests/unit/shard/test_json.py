@@ -22,7 +22,7 @@ def path(tmp_path_factory: pytest.TempPathFactory) -> Path:
 @pytest.fixture(scope="module")
 def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
     uri_ = tmp_path_factory.mktemp("tmp").joinpath("uri").as_uri()
-    create_json_shard(data=[1, 2, 3], uri=uri_, path=path)
+    create_json_shard(data={"key1": [1, 2, 3], "key2": "abc"}, uri=uri_, path=path)
     return uri_
 
 
@@ -56,15 +56,17 @@ def test_json_shard_equal_false_different_type(uri: str, path: Path) -> None:
 
 
 def test_json_shard_get_data(uri: str, path: Path) -> None:
-    assert objects_are_equal(JsonShard(uri=uri, path=path).get_data(), [1, 2, 3])
+    assert objects_are_equal(
+        JsonShard(uri=uri, path=path).get_data(), {"key1": [1, 2, 3], "key2": "abc"}
+    )
 
 
 def test_json_shard_get_data_multiple_calls(uri: str, path: Path) -> None:
     shard = JsonShard(uri=uri, path=path)
-    assert objects_are_equal(shard.get_data(), [1, 2, 3])
-    assert objects_are_equal(shard.get_data(), [1, 2, 3])
-    shard.get_data().append(4)
-    assert objects_are_equal(shard.get_data(), [1, 2, 3, 4])
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
+    shard.get_data()["key1"].append(4)
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3, 4], "key2": "abc"})
 
 
 def test_json_shard_get_uri(uri: str, path: Path) -> None:
@@ -74,7 +76,7 @@ def test_json_shard_get_uri(uri: str, path: Path) -> None:
 def test_json_shard_from_uri(uri: str, path: Path) -> None:
     shard = JsonShard.from_uri(uri)
     assert shard.equal(JsonShard(uri=uri, path=path))
-    assert objects_are_equal(shard.get_data(), [1, 2, 3])
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
 
 
 def test_json_shard_generate_uri_config(path: Path) -> None:
@@ -93,7 +95,7 @@ def test_create_json_shard(tmp_path: Path) -> None:
     uri_file = tmp_path.joinpath("my_uri")
     uri = uri_file.as_uri()
     path = tmp_path.joinpath("my_uri.json")
-    shard = create_json_shard(data=[1, 2, 3], uri=uri)
+    shard = create_json_shard(data={"key1": [1, 2, 3], "key2": "abc"}, uri=uri)
 
     assert uri_file.is_file()
     assert load_json(uri_file) == {
@@ -101,18 +103,18 @@ def test_create_json_shard(tmp_path: Path) -> None:
         LOADER: {OBJECT_TARGET: "iden.shard.loader.JsonShardLoader"},
     }
     assert shard.equal(JsonShard(uri=uri, path=path))
-    assert objects_are_equal(shard.get_data(), [1, 2, 3])
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
 
 
 def test_create_json_shard_with_data(tmp_path: Path) -> None:
     uri_file = tmp_path.joinpath("my_uri")
     uri = uri_file.as_uri()
     path = tmp_path.joinpath("data.json")
-    shard = create_json_shard(data=[1, 2, 3], uri=uri, path=path)
+    shard = create_json_shard(data={"key1": [1, 2, 3], "key2": "abc"}, uri=uri, path=path)
 
     assert load_json(uri_file) == {
         KWARGS: {"path": path.as_posix()},
         LOADER: {OBJECT_TARGET: "iden.shard.loader.JsonShardLoader"},
     }
     assert shard.equal(JsonShard(uri=uri, path=path))
-    assert objects_are_equal(shard.get_data(), [1, 2, 3])
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
