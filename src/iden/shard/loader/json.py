@@ -1,4 +1,4 @@
-r"""Contain the JSON shard loader implementations."""
+r"""Contain JSON shard loader implementations."""
 
 from __future__ import annotations
 

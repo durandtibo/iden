@@ -1,4 +1,4 @@
-r"""Contain the YAML shard loader implementations."""
+r"""Contain YAML shard loader implementations."""
 
 from __future__ import annotations
 
