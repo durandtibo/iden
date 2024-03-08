@@ -112,12 +112,12 @@ def test_torch_shard_generate_uri_config(path: Path) -> None:
     }
 
 
-def test_torch_shard_no_torch(uri: str, path: Path) -> None:
+def test_torch_shard_no_torch(tmp_path: Path) -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
         pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
     ):
-        TorchShard(uri=uri, path=path)
+        TorchShard(uri="", path=tmp_path)
 
 
 ########################################
