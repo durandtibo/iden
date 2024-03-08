@@ -118,6 +118,6 @@ def create_json_shard(data: Any, uri: str, path: Path | None = None) -> JsonShar
         path = sanitize_path(uri + ".json")
     logger.info(f"Saving URI file {uri}")
     JsonSaver().save(JsonShard.generate_uri_config(path), sanitize_path(uri))
-    logger.info(f"Saving json file {path}")
+    logger.info(f"Saving data in file {path}")
     JsonSaver().save(data, path)
     return JsonShard(uri, path)

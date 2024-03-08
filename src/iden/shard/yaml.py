@@ -118,6 +118,6 @@ def create_yaml_shard(data: Any, uri: str, path: Path | None = None) -> YamlShar
         path = sanitize_path(uri + ".yaml")
     logger.info(f"Saving URI file {uri}")
     JsonSaver().save(YamlShard.generate_uri_config(path), sanitize_path(uri))
-    logger.info(f"Saving yaml file {path}")
+    logger.info(f"Saving data in file {path}")
     YamlSaver().save(data, path)
     return YamlShard(uri, path)

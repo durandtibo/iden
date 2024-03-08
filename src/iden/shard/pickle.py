@@ -118,6 +118,6 @@ def create_pickle_shard(data: Any, uri: str, path: Path | None = None) -> Pickle
         path = sanitize_path(uri + ".pkl")
     logger.info(f"Saving URI file {uri}")
     JsonSaver().save(PickleShard.generate_uri_config(path), sanitize_path(uri))
-    logger.info(f"Saving pickle file {path}")
+    logger.info(f"Saving data in file {path}")
     PickleSaver().save(data, path)
     return PickleShard(uri, path)
