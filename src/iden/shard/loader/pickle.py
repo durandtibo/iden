@@ -1,4 +1,4 @@
-r"""Contain the pickle shard loader implementations."""
+r"""Contain pickle shard loader implementations."""
 
 from __future__ import annotations
 
