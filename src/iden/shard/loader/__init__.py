@@ -4,6 +4,7 @@ from __future__ import annotations
 
 __all__ = [
     "BaseShardLoader",
+    "JsonShardLoader",
     "PickleShardLoader",
     "TorchSafetensorsShardLoader",
     "is_shard_loader_config",
@@ -15,5 +16,6 @@ from iden.shard.loader.base import (
     is_shard_loader_config,
     setup_shard_loader,
 )
+from iden.shard.loader.json import JsonShardLoader
 from iden.shard.loader.pickle import PickleShardLoader
 from iden.shard.loader.safetensors import TorchSafetensorsShardLoader
