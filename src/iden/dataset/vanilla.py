@@ -114,6 +114,8 @@ def prepare_shards(
 ) -> dict[str, tuple[BaseShard[T], ...]]:
     r"""Prepare the shards.
 
+    The shards are sorted by ascending order of URIs.
+
     Args:
         shards: The shards to prepare. Each item in the mapping
             represent a dataset split, where the key is the dataset
