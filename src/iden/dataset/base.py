@@ -65,7 +65,7 @@ class BaseDataset(Generic[T], ABC):
         that are not available before to load/preprocess the data.
 
         Args:
-            asset_id: Specifies the ID of the asset.
+            asset_id: The asset ID used to find the asset.
 
         Returns:
             The asset.
@@ -101,7 +101,7 @@ class BaseDataset(Generic[T], ABC):
         r"""Indicate if the asset exists or not.
 
         Args:
-            asset_id: Specifies the ID of the asset.
+            asset_id: The asset ID used to find the asset.
 
         Returns:
             ``True`` if the asset exists, otherwise ``False``.
