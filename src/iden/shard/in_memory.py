@@ -36,10 +36,10 @@ class InMemoryShard(BaseShard[T]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def equal(self, other: Any) -> bool:
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
             return False
-        return objects_are_equal(self._data, other._data)
+        return objects_are_equal(self._data, other._data, equal_nan=equal_nan)
 
     def get_data(self) -> T:
         return self._data
