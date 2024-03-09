@@ -93,9 +93,7 @@ class TorchShard(FileShard[Any]):
         }
 
 
-def create_torch_shard(
-    data: dict[str, torch.Tensor], uri: str, path: Path | None = None
-) -> TorchShard:
+def create_torch_shard(data: Any, uri: str, path: Path | None = None) -> TorchShard:
     r"""Create a ``TorchShard`` from data.
 
     Note:

@@ -72,6 +72,15 @@ def test_torch_shard_equal_false_different_type(uri: str, path: Path) -> None:
 
 
 @torch_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_torch_shard_equal_nan(tmp_path: Path, equal_nan: bool) -> None:
+    shard = create_torch_shard(
+        data={"key1": [1, 2, float("nan")], "key2": "abc"}, uri=tmp_path.joinpath("uri").as_uri()
+    )
+    assert shard.equal(TorchShard.from_uri(uri=shard.get_uri()), equal_nan=equal_nan)
+
+
+@torch_available
 def test_torch_shard_get_data(uri: str, path: Path) -> None:
     assert objects_are_equal(
         TorchShard(uri=uri, path=path).get_data(),
