@@ -54,5 +54,5 @@ class BaseAsset(ABC):
         r"""Get the Uniform Resource Identifier (URI) of the asset.
 
         Returns:
-            The Uniform Resource Identifier (URI).
+            The asset's URI.
         """
