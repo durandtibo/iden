@@ -6,7 +6,7 @@ import pytest
 
 from iden.constants import KWARGS, LOADER
 from iden.io import save_json
-from iden.shard import FileShard
+from iden.shard import FileShard, create_json_shard
 from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
@@ -55,6 +55,16 @@ def test_file_shard_equal_false_different_path(uri: str, path: Path, tmp_path: P
 
 def test_file_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not FileShard(uri=uri, path=path).equal(42)
+
+
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_file_shard_equal_nan(tmp_path: Path, equal_nan: bool) -> None:
+    shard = create_json_shard(
+        data={"key1": [1, 2, float("nan")], "key2": "abc"}, uri=tmp_path.joinpath("uri").as_uri()
+    )
+    assert FileShard.from_uri(uri=shard.get_uri()).equal(
+        FileShard.from_uri(uri=shard.get_uri()), equal_nan=equal_nan
+    )
 
 
 def test_file_shard_get_data(uri: str, path: Path) -> None:

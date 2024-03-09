@@ -14,11 +14,13 @@ class BaseShard(Generic[T], ABC):
     r"""Define the base class to implement a shard."""
 
     @abstractmethod
-    def equal(self, other: Any) -> bool:
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
         r"""Indicate if two shards are equal or not.
 
         Args:
             other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
 
         Returns:
             ``True`` if the two shards are equal, otherwise ``False``.
