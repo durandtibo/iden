@@ -34,15 +34,20 @@ class BaseDataset(Generic[T], ABC):
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shards = {
     ...         "train": [
-    ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
-    ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+    ...             create_json_shard(
+    ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+    ...             ),
+    ...             create_json_shard(
+    ...                 [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+    ...             ),
     ...         ],
     ...         "val": [],
     ...     }
-    ...     dataset = VanillaDataset(shards)
+    ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
     ...     print(dataset)
     ...
     VanillaDataset(
+      (uri): file:///.../uri
       (shards):
         (train): 2
         (val): 0
@@ -78,12 +83,12 @@ class BaseDataset(Generic[T], ABC):
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": [
-        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
-        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()),
         ...         ],
         ...         "val": [],
         ...     }
-        ...     dataset = VanillaDataset(shards, assets={'mean': 42})
+        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets={'mean': 42})
         ...     print(dataset.get_asset('mean'))
         ...
         42
@@ -111,12 +116,12 @@ class BaseDataset(Generic[T], ABC):
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": [
-        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
-        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()),
         ...         ],
         ...         "val": [],
         ...     }
-        ...     dataset = VanillaDataset(shards, assets={'mean': 42})
+        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets={'mean': 42})
         ...     print(dataset.has_asset('mean'))
         ...     print(dataset.has_asset('missing'))
         ...
@@ -147,12 +152,12 @@ class BaseDataset(Generic[T], ABC):
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": [
-        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
-        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()),
         ...         ],
         ...         "val": [],
         ...     }
-        ...     dataset = VanillaDataset(shards)
+        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
         ...     print(dataset.get_shards('train'))
         ...     print(dataset.get_shards('val'))
         ...
@@ -185,12 +190,12 @@ class BaseDataset(Generic[T], ABC):
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": [
-        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
-        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()),
         ...         ],
         ...         "val": [],
         ...     }
-        ...     dataset = VanillaDataset(shards)
+        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
         ...     print(dataset.get_num_shards('train'))
         ...     print(dataset.get_num_shards('val'))
         ...
@@ -217,12 +222,12 @@ class BaseDataset(Generic[T], ABC):
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": [
-        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
-        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()),
         ...         ],
         ...         "val": [],
         ...     }
-        ...     dataset = VanillaDataset(shards)
+        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
         ...     print(sorted(dataset.get_splits()))
         ...
         ['train', 'val']
@@ -247,12 +252,12 @@ class BaseDataset(Generic[T], ABC):
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": [
-        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("uri1").as_uri()),
-        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri2").as_uri()),
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()),
         ...         ],
         ...         "val": [],
         ...     }
-        ...     dataset = VanillaDataset(shards)
+        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
         ...     print(dataset.has_split('train'))
         ...     print(dataset.has_split('missing'))
         ...

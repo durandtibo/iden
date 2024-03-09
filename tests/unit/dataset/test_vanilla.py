@@ -4,14 +4,18 @@ from typing import TYPE_CHECKING
 
 import pytest
 from coola import objects_are_equal
+from objectory import OBJECT_TARGET
 
+from iden.constants import LOADER, SHARDS
 from iden.dataset import VanillaDataset
 from iden.dataset.exceptions import AssetNotFoundError, SplitNotFoundError
-from iden.dataset.vanilla import prepare_shards
+from iden.dataset.vanilla import create_vanilla_dataset, prepare_shards
+from iden.io import JsonSaver
 from iden.shard import BaseShard, JsonShard, create_json_shard
+from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Mapping
+    from collections.abc import Iterable, Mapping, Sequence
     from pathlib import Path
 
 
@@ -48,8 +52,15 @@ def shards(tmp_path_factory: pytest.TempPathFactory) -> Mapping[str, Iterable[Ba
 
 
 @pytest.fixture(scope="module")
-def dataset(shards: Mapping[str, Iterable[BaseShard]]) -> VanillaDataset:
-    return VanillaDataset(shards=shards, assets={"mean": 42})
+def uri(tmp_path_factory: pytest.TempPathFactory, shards: Mapping[str, Iterable[BaseShard]]) -> str:
+    uri_ = tmp_path_factory.mktemp("tmp").joinpath("uri").as_uri()
+    JsonSaver().save(VanillaDataset.generate_uri_config(shards), sanitize_path(uri_))
+    return uri_
+
+
+@pytest.fixture(scope="module")
+def dataset(uri: str, shards: Mapping[str, Iterable[BaseShard]]) -> VanillaDataset:
+    return VanillaDataset(uri=uri, shards=shards, assets={"mean": 42})
 
 
 ####################################
@@ -61,8 +72,42 @@ def test_vanilla_dataset_str(dataset: VanillaDataset) -> None:
     assert str(dataset).startswith("VanillaDataset(")
 
 
-def test_vanilla_dataset_str_empty() -> None:
-    assert str(VanillaDataset(shards={})).startswith("VanillaDataset(")
+def test_vanilla_dataset_str_empty(uri: str) -> None:
+    assert str(VanillaDataset(uri=uri, shards={})).startswith("VanillaDataset(")
+
+
+def test_vanilla_dataset_equal_true(uri: str, shards: Mapping[str, Iterable[BaseShard]]) -> None:
+    assert VanillaDataset(uri=uri, shards=shards, assets={"mean": 42}).equal(
+        VanillaDataset(uri=uri, shards=shards, assets={"mean": 42})
+    )
+
+
+def test_vanilla_dataset_equal_false_different_uri(
+    uri: str, shards: Mapping[str, Iterable[BaseShard]]
+) -> None:
+    assert not VanillaDataset(uri=uri, shards=shards).equal(
+        VanillaDataset(uri=uri + "123", shards=shards)
+    )
+
+
+def test_vanilla_dataset_equal_false_different_shards(
+    uri: str, shards: Mapping[str, Iterable[BaseShard]]
+) -> None:
+    assert not VanillaDataset(uri=uri, shards=shards).equal(VanillaDataset(uri=uri, shards={}))
+
+
+def test_vanilla_dataset_equal_false_different_asset(
+    uri: str, shards: Mapping[str, Iterable[BaseShard]]
+) -> None:
+    assert not VanillaDataset(uri=uri, shards=shards, assets={"mean": 42}).equal(
+        VanillaDataset(uri=uri, shards=shards, assets={"mean": 2})
+    )
+
+
+def test_vanilla_dataset_equal_false_different_type(
+    uri: str, shards: Mapping[str, Iterable[BaseShard]]
+) -> None:
+    assert not VanillaDataset(uri=uri, shards=shards).equal("meow")
 
 
 def test_vanilla_dataset_get_asset(dataset: VanillaDataset) -> None:
@@ -112,8 +157,8 @@ def test_vanilla_dataset_get_splits(dataset: VanillaDataset) -> None:
     assert dataset.get_splits() == {"train", "val", "test"}
 
 
-def test_vanilla_dataset_get_splits_empty() -> None:
-    assert VanillaDataset(shards={}).get_splits() == set()
+def test_vanilla_dataset_get_splits_empty(uri: str) -> None:
+    assert VanillaDataset(uri=uri, shards={}).get_splits() == set()
 
 
 @pytest.mark.parametrize("split", ["train", "val", "test"])
@@ -123,6 +168,41 @@ def test_vanilla_dataset_has_split_true(dataset: VanillaDataset, split: str) -> 
 
 def test_vanilla_dataset_has_split_false(dataset: VanillaDataset) -> None:
     assert not dataset.has_split("missing")
+
+
+def test_vanilla_dataset_get_uri(dataset: VanillaDataset, uri: str) -> None:
+    assert dataset.get_uri() == uri
+
+
+def test_vanilla_dataset_generate_uri_config(shards: Mapping[str, Sequence[BaseShard]]) -> None:
+    config = VanillaDataset.generate_uri_config(shards)
+    assert objects_are_equal(
+        config,
+        {
+            LOADER: {OBJECT_TARGET: "iden.dataset.loader.VanillaDatasetLoader"},
+            SHARDS: {
+                "train": (
+                    shards["train"][0].get_uri(),
+                    shards["train"][1].get_uri(),
+                    shards["train"][2].get_uri(),
+                ),
+                "val": (),
+                "test": (shards["test"][0].get_uri(),),
+            },
+        },
+    )
+
+
+############################################
+#     Tests for create_vanilla_dataset     #
+############################################
+
+
+def test_create_vanilla_dataset(shards: Mapping[str, Iterable[BaseShard]], tmp_path: Path) -> None:
+    uri_file = tmp_path.joinpath("data/uri")
+    dataset = create_vanilla_dataset(shards=shards, uri=uri_file.as_uri())
+    assert uri_file.is_file()
+    assert isinstance(dataset, VanillaDataset)
 
 
 ####################################
