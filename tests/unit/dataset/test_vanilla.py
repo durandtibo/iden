@@ -3,14 +3,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+from coola import objects_are_equal
 
 from iden.dataset import VanillaDataset
 from iden.dataset.exceptions import AssetNotFoundError, SplitNotFoundError
 from iden.dataset.vanilla import prepare_shards
-from iden.shard import BaseShard, create_json_shard
+from iden.shard import BaseShard, JsonShard, create_json_shard
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping
+    from pathlib import Path
 
 
 @pytest.fixture(scope="module")
@@ -129,10 +131,43 @@ def test_vanilla_dataset_has_split_false(dataset: VanillaDataset) -> None:
 
 
 def test_prepare_shards(shards: Mapping[str, Iterable[BaseShard]]) -> None:
-    assert prepare_shards(shards) == {
-        split: tuple(shards[split]) for split in ["train", "val", "test"]
-    }
+    assert objects_are_equal(
+        prepare_shards(shards), {split: tuple(shards[split]) for split in ["train", "val", "test"]}
+    )
 
 
 def test_prepare_shards_empty() -> None:
     assert prepare_shards({}) == {}
+
+
+def test_prepare_shards_sort_shards(tmp_path: Path) -> None:
+    shards = {
+        "train": [
+            create_json_shard(
+                data=[4, 5, 6],
+                uri=tmp_path.joinpath("train/uri2").as_uri(),
+                path=tmp_path.joinpath("train/data2.json"),
+            ),
+            create_json_shard(
+                data=[7, 8],
+                uri=tmp_path.joinpath("train/uri3").as_uri(),
+                path=tmp_path.joinpath("train/data3.json"),
+            ),
+            create_json_shard(
+                data=[1, 2, 3],
+                uri=tmp_path.joinpath("train/uri1").as_uri(),
+                path=tmp_path.joinpath("train/data1.json"),
+            ),
+        ],
+    }
+    assert objects_are_equal(
+        prepare_shards(shards),
+        {
+            "train": (
+                JsonShard.from_uri(uri=tmp_path.joinpath("train/uri1").as_uri()),
+                JsonShard.from_uri(uri=tmp_path.joinpath("train/uri2").as_uri()),
+                JsonShard.from_uri(uri=tmp_path.joinpath("train/uri3").as_uri()),
+            ),
+        },
+        show_difference=True,
+    )

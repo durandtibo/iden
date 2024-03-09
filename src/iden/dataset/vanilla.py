@@ -122,4 +122,7 @@ def prepare_shards(
     Returns:
         The prepared shards.
     """
-    return {split: tuple(data) for split, data in shards.items()}
+    return {
+        split: tuple(sorted(data, key=lambda item: item.get_uri()))
+        for split, data in shards.items()
+    }
