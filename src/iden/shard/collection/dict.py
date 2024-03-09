@@ -44,7 +44,7 @@ class ShardDict:
     ...     sd.add_shard("test", shard)
     ...     print(sd)
     ...
-    ShardMapping(
+    ShardDict(
       (train): JsonShard(uri=file:///.../shard/uri1)
       (val): JsonShard(uri=file:///.../shard/uri2)
       (test): JsonShard(uri=file:///.../shard/uri3)
