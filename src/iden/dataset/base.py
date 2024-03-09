@@ -58,6 +58,44 @@ class BaseDataset(Generic[T], ABC):
     """
 
     @abstractmethod
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two datasets are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two datasets are equal, otherwise ``False``.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": [
+        ...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+        ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()),
+        ...         ],
+        ...         "val": [],
+        ...     }
+        ...     dataset1 = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets={'mean': 42}
+        ...     )
+        ...     dataset2 = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
+        ...     print(dataset1.equal(dataset2))
+        ...
+        False
+
+        ```
+        """
+
+    @abstractmethod
     def get_asset(self, asset_id: str) -> Any:
         r"""Get a data asset from this sharded dataset.
 
@@ -263,6 +301,28 @@ class BaseDataset(Generic[T], ABC):
         ...
         True
         False
+
+        ```
+        """
+
+    @abstractmethod
+    def get_uri(self) -> str:
+        r"""Get the Uniform Resource Identifier (URI) of the dataset.
+
+        Returns:
+            The dataset's URI.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards={})
+        ...     print(dataset.get_uri())
+        ...
+        file:///.../uri
 
         ```
         """
