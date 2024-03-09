@@ -19,6 +19,7 @@ __all__ = [
     "load_from_uri",
 ]
 
+from iden.shard import comparators  # noqa: F401
 from iden.shard.base import BaseShard
 from iden.shard.file import FileShard
 from iden.shard.in_memory import InMemoryShard
