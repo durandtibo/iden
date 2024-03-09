@@ -55,6 +55,14 @@ def test_yaml_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not YamlShard(uri=uri, path=path).equal(42)
 
 
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_yaml_shard_equal_nan(tmp_path: Path, equal_nan: bool) -> None:
+    shard = create_yaml_shard(
+        data={"key1": [1, 2, float("nan")], "key2": "abc"}, uri=tmp_path.joinpath("uri").as_uri()
+    )
+    assert shard.equal(YamlShard.from_uri(uri=shard.get_uri()), equal_nan=equal_nan)
+
+
 def test_yaml_shard_get_data(uri: str, path: Path) -> None:
     assert objects_are_equal(
         YamlShard(uri=uri, path=path).get_data(), {"key1": [1, 2, 3], "key2": "abc"}

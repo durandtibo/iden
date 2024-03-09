@@ -6,6 +6,8 @@ __all__ = ["FileShard"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
+from coola import objects_are_equal
+
 from iden.constants import KWARGS
 from iden.io import AutoFileLoader, BaseLoader, load_json, setup_loader
 from iden.shard.base import BaseShard
@@ -62,10 +64,12 @@ class FileShard(BaseShard[T]):
         r"""The path to the file with data."""
         return self._path
 
-    def equal(self, other: Any) -> bool:
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
             return False
-        return self.get_uri() == other.get_uri() and self.path == other.path
+        return objects_are_equal(
+            self.get_uri(), other.get_uri(), equal_nan=equal_nan
+        ) and objects_are_equal(self.path, other.path, equal_nan=equal_nan)
 
     def get_data(self) -> T:
         if not self._is_initialized:

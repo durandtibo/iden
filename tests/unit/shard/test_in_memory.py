@@ -19,6 +19,18 @@ def test_in_memory_shard_equal_false_different_data() -> None:
     assert not InMemoryShard([1, 2, 3]).equal(InMemoryShard([1, 2, 4]))
 
 
+def test_in_memory_shard_equal_equal_nan_true() -> None:
+    assert InMemoryShard([1, 2, float("nan")]).equal(
+        InMemoryShard([1, 2, float("nan")]), equal_nan=True
+    )
+
+
+def test_in_memory_shard_equal_equal_nan_false() -> None:
+    assert not InMemoryShard([1, 2, float("nan")]).equal(
+        InMemoryShard([1, 2, float("nan")]), equal_nan=False
+    )
+
+
 def test_in_memory_shard_equal_false_different_type() -> None:
     assert not InMemoryShard([1, 2, 3]).equal([1, 2, 4])
 
