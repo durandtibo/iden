@@ -1,8 +1,8 @@
-r"""Contain a data structure to manage a mapping of shards."""
+r"""Contain a data structure to manage a dictionary of shards."""
 
 from __future__ import annotations
 
-__all__ = ["ShardMapping"]
+__all__ = ["ShardDict"]
 
 import copy
 from typing import TYPE_CHECKING, Any
@@ -16,11 +16,11 @@ if TYPE_CHECKING:
     from iden.shard.base import BaseShard
 
 
-class ShardMapping:
-    r"""Implement a data structure to manage a mapping of shards.
+class ShardDict:
+    r"""Implement a data structure to manage a dictionary of shards.
 
     Args:
-        shards: The mapping of shards.
+        shards: The dictionary of shards.
 
     Example usage:
 
@@ -29,7 +29,7 @@ class ShardMapping:
     >>> from pathlib import Path
     >>> from iden.dataset import VanillaDataset
     >>> from iden.shard import create_json_shard
-    >>> from iden.shard.collection import ShardMapping
+    >>> from iden.shard.collection import ShardDict
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shards = {
     ...         "train": create_json_shard(
@@ -39,12 +39,12 @@ class ShardMapping:
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     }
-    ...     mapping = ShardMapping(shards)
+    ...     sd = ShardDict(shards)
     ...     shard = create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri())
-    ...     mapping.add_shard("test", shard)
-    ...     print(mapping)
+    ...     sd.add_shard("test", shard)
+    ...     print(sd)
     ...
-    ShardMapping(
+    ShardDict(
       (train): JsonShard(uri=file:///.../shard/uri1)
       (val): JsonShard(uri=file:///.../shard/uri2)
       (test): JsonShard(uri=file:///.../shard/uri3)
@@ -86,7 +86,7 @@ class ShardMapping:
         >>> from pathlib import Path
         >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
-        >>> from iden.shard.collection import ShardMapping
+        >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": create_json_shard(
@@ -96,9 +96,9 @@ class ShardMapping:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     mapping = ShardMapping(shards)
-        ...     mapping.add_shard("test", create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri()))
-        ...     print(mapping.has_shard("test"))
+        ...     sd = ShardDict(shards)
+        ...     sd.add_shard("test", create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri()))
+        ...     print(sd.has_shard("test"))
         ...
         True
 
@@ -132,7 +132,7 @@ class ShardMapping:
         >>> from pathlib import Path
         >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
-        >>> from iden.shard.collection import ShardMapping
+        >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": create_json_shard(
@@ -142,13 +142,13 @@ class ShardMapping:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     print(ShardMapping(shards).equal(ShardMapping(shards)))
+        ...     print(ShardDict(shards).equal(ShardDict(shards)))
         ...
         True
 
         ```
         """
-        if not isinstance(other, ShardMapping):
+        if not isinstance(other, ShardDict):
             return False
         return objects_are_equal(self._shards, other._shards, equal_nan=equal_nan)
 
@@ -171,7 +171,7 @@ class ShardMapping:
         >>> from pathlib import Path
         >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
-        >>> from iden.shard.collection import ShardMapping
+        >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": create_json_shard(
@@ -181,8 +181,8 @@ class ShardMapping:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     mapping = ShardMapping(shards)
-        ...     print(mapping.get_shard("train"))
+        ...     sd = ShardDict(shards)
+        ...     print(sd.get_shard("train"))
         ...
         JsonShard(uri=file:///.../uri1)
 
@@ -194,10 +194,10 @@ class ShardMapping:
         return self._shards[shard_id]
 
     def get_shards(self) -> dict[str, BaseShard]:
-        r"""Get the mapping of shards.
+        r"""Get the dictionary of shards.
 
         Returns:
-            The mapping of shards.
+            The dictionary of shards.
 
         Example usage:
 
@@ -206,7 +206,7 @@ class ShardMapping:
         >>> from pathlib import Path
         >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
-        >>> from iden.shard.collection import ShardMapping
+        >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": create_json_shard(
@@ -216,8 +216,8 @@ class ShardMapping:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     mapping = ShardMapping(shards)
-        ...     print(mapping.get_shards())
+        ...     sd = ShardDict(shards)
+        ...     print(sd.get_shards())
         ...
         {'train': JsonShard(uri=file:///.../uri1), 'val': JsonShard(uri=file:///.../uri2)}
 
@@ -241,7 +241,7 @@ class ShardMapping:
         >>> from pathlib import Path
         >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
-        >>> from iden.shard.collection import ShardMapping
+        >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": create_json_shard(
@@ -251,9 +251,9 @@ class ShardMapping:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     mapping = ShardMapping(shards)
-        ...     print(mapping.has_shard("train"))
-        ...     print(mapping.has_shard("test"))
+        ...     sd = ShardDict(shards)
+        ...     print(sd.has_shard("train"))
+        ...     print(sd.has_shard("test"))
         ...
         True
         False
@@ -278,7 +278,7 @@ class ShardMapping:
         >>> from pathlib import Path
         >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
-        >>> from iden.shard.collection import ShardMapping
+        >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = {
         ...         "train": create_json_shard(
@@ -288,9 +288,9 @@ class ShardMapping:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     mapping = ShardMapping(shards)
-        ...     mapping.remove_shard("train")
-        ...     print(mapping.has_shard("train"))
+        ...     sd = ShardDict(shards)
+        ...     sd.remove_shard("train")
+        ...     print(sd.has_shard("train"))
         ...
         False
 
