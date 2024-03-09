@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.io import save_json
@@ -83,9 +84,14 @@ def test_file_shard_get_uri(uri: str, path: Path) -> None:
     assert FileShard(uri=uri, path=path).get_uri() == uri
 
 
-# TODO(tibo): add later
-#  2
-# def test_file_shard_from_uri(uri: str, path: Path) -> None:
-#     shard = FileShard.from_uri(uri)
-#     assert shard.equal(FileShard(uri=uri, path=path))
-#     assert shard.get_data() == [1, 2, 3]
+def test_file_shard_from_uri(uri: str, path: Path) -> None:
+    shard = FileShard.from_uri(uri)
+    assert shard.equal(FileShard(uri=uri, path=path))
+    assert shard.get_data() == [1, 2, 3]
+
+
+def test_json_shard_generate_uri_config(path: Path) -> None:
+    assert FileShard.generate_uri_config(path) == {
+        KWARGS: {"path": path.as_posix()},
+        LOADER: {OBJECT_TARGET: "iden.shard.loader.FileShardLoader"},
+    }
