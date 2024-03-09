@@ -8,7 +8,9 @@ from coola import objects_are_equal
 from coola.testing import torch_available
 from coola.utils import is_torch_available
 
+from iden.io import JsonSaver
 from iden.shard import (
+    FileShard,
     JsonShard,
     PickleShard,
     TorchSafetensorsShard,
@@ -22,6 +24,7 @@ from iden.shard import (
     load_from_uri,
 )
 from iden.testing import safetensors_available
+from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -35,6 +38,17 @@ else:  # pragma: no cover
 ###################################
 #     Tests for load_from_uri     #
 ###################################
+
+
+def test_load_from_uri_file(tmp_path: Path) -> None:
+    uri = tmp_path.joinpath("my_uri").as_uri()
+    path = tmp_path.joinpath("my_uri.json")
+    JsonSaver().save(FileShard.generate_uri_config(path), sanitize_path(uri))
+    JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+
+    shard = load_from_uri(uri)
+    assert shard.equal(FileShard(uri=uri, path=path))
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
 
 
 def test_load_from_uri_json(tmp_path: Path) -> None:

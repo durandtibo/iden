@@ -7,8 +7,9 @@ __all__ = ["FileShard"]
 from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola import objects_are_equal
+from objectory import OBJECT_TARGET
 
-from iden.constants import KWARGS
+from iden.constants import KWARGS, LOADER
 from iden.io import AutoFileLoader, BaseLoader, load_json, setup_loader
 from iden.shard.base import BaseShard
 from iden.utils.path import sanitize_path
@@ -84,3 +85,35 @@ class FileShard(BaseShard[T]):
     def from_uri(cls, uri: str) -> FileShard:
         config = load_json(sanitize_path(uri))
         return cls(uri=uri, **config[KWARGS])
+
+    @classmethod
+    def generate_uri_config(cls, path: Path) -> dict:
+        r"""Generate the minimal config that is used to load the shard
+        from its URI.
+
+        The config must be compatible with the JSON format.
+
+        Args:
+            path: The path to the json file.
+
+        Returns:
+            The minimal config to load the shard from its URI.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import FileShard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     file = Path(tmpdir).joinpath("data.json")
+        ...     FileShard.generate_uri_config(file)
+        ...
+        {'kwargs': {'path': '.../data.json'}, 'loader': {'_target_': 'iden.shard.loader.FileShardLoader'}}
+
+        ```
+        """
+        return {
+            KWARGS: {"path": sanitize_path(path).as_posix()},
+            LOADER: {OBJECT_TARGET: "iden.shard.loader.FileShardLoader"},
+        }
