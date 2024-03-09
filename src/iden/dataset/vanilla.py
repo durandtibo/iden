@@ -11,6 +11,7 @@ from coola.utils import str_indent, str_mapping
 
 from iden.dataset.base import BaseDataset
 from iden.dataset.exceptions import AssetNotFoundError, SplitNotFoundError
+from iden.shard import sort_by_uri
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping
@@ -124,7 +125,4 @@ def prepare_shards(
     Returns:
         The prepared shards.
     """
-    return {
-        split: tuple(sorted(data, key=lambda item: item.get_uri()))
-        for split, data in shards.items()
-    }
+    return {split: tuple(sort_by_uri(data)) for split, data in shards.items()}

@@ -146,17 +146,14 @@ def test_prepare_shards_sort_shards(tmp_path: Path) -> None:
             create_json_shard(
                 data=[4, 5, 6],
                 uri=tmp_path.joinpath("train/uri2").as_uri(),
-                path=tmp_path.joinpath("train/data2.json"),
             ),
             create_json_shard(
                 data=[7, 8],
                 uri=tmp_path.joinpath("train/uri3").as_uri(),
-                path=tmp_path.joinpath("train/data3.json"),
             ),
             create_json_shard(
                 data=[1, 2, 3],
                 uri=tmp_path.joinpath("train/uri1").as_uri(),
-                path=tmp_path.joinpath("train/data1.json"),
             ),
         ],
     }
