@@ -12,7 +12,7 @@ from coola.utils import repr_indent, repr_sequence, str_indent, str_sequence
 from objectory import OBJECT_TARGET
 
 from iden.constants import LOADER, SHARDS
-from iden.io import JsonSaver
+from iden.io import JsonSaver, load_json
 from iden.shard.base import BaseShard
 from iden.shard.utils import get_list_uris
 from iden.utils.path import sanitize_path
@@ -122,11 +122,49 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     def get_uri(self) -> str:
         return self._uri
 
-    # @classmethod
-    # def from_uri(cls, uri: str) -> ShardTuple:
-    #     config = load_json(sanitize_path(uri))
-    #     shards = tuple(load_from_uri(shard) for shard in config[SHARDS])
-    #     return cls(uri=uri, shards=shards)
+    @classmethod
+    def from_uri(cls, uri: str) -> ShardTuple:
+        r"""Instantiate a shard from its URI.
+
+        Args:
+            uri: The URI.
+
+        Returns:
+            The instantiated shard.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import ShardTuple, create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = [
+        ...         create_json_shard(
+        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+        ...         ),
+        ...         create_json_shard(
+        ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+        ...         ),
+        ...     ]
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     create_shard_tuple(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+        ...     shard = ShardTuple.from_uri(uri)
+        ...     print(shard)
+        ...
+        ShardTuple(
+          (0): JsonShard(uri=file:///.../shard/uri1)
+          (1): JsonShard(uri=file:///.../shard/uri2)
+        )
+
+        ```
+        """
+        # local import to avoid cyclic dependencies
+        from iden.shard.loading import load_from_uri
+
+        config = load_json(sanitize_path(uri))
+        shards = [load_from_uri(shard) for shard in config[SHARDS]]
+        return cls(uri=uri, shards=shards)
 
     @classmethod
     def generate_uri_config(cls, shards: Iterable[BaseShard]) -> dict:
@@ -159,13 +197,13 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         ...     ShardTuple.generate_uri_config(shards)
         ...
         {'shards': ['file:///.../shard/uri1', 'file:///.../shard/uri2'],
-         'loader': {'_target_': 'iden.shard.loader.ShardListLoader'}}
+         'loader': {'_target_': 'iden.shard.loader.ShardTupleLoader'}}
 
         ```
         """
         return {
             SHARDS: get_list_uris(shards),
-            LOADER: {OBJECT_TARGET: "iden.shard.loader.ShardListLoader"},
+            LOADER: {OBJECT_TARGET: "iden.shard.loader.ShardTupleLoader"},
         }
 
 
