@@ -232,7 +232,7 @@ class ShardDict(BaseShard):
         ```
         """
         # local import to avoid cyclic dependencies
-        from iden.shard.loading import load_from_uri
+        from iden.shard import load_from_uri
 
         config = load_json(sanitize_path(uri))
         shards = {key: load_from_uri(shard) for key, shard in config[SHARDS].items()}

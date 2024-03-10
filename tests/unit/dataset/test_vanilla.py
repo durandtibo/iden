@@ -6,7 +6,7 @@ import pytest
 from coola import objects_are_equal
 from objectory import OBJECT_TARGET
 
-from iden.constants import LOADER, SHARDS
+from iden.constants import ASSETS, LOADER, SHARDS
 from iden.dataset import VanillaDataset
 from iden.dataset.exceptions import AssetNotFoundError, SplitNotFoundError
 from iden.dataset.vanilla import check_shards, create_vanilla_dataset
@@ -78,9 +78,15 @@ def shards(tmp_path_factory: pytest.TempPathFactory) -> ShardDict[ShardTuple[Bas
 
 
 @pytest.fixture(scope="module")
-def uri(tmp_path_factory: pytest.TempPathFactory, shards: ShardDict[ShardTuple[BaseShard]]) -> str:
+def uri(
+    tmp_path_factory: pytest.TempPathFactory,
+    shards: ShardDict[ShardTuple[BaseShard]],
+    assets: ShardDict,
+) -> str:
     uri_ = tmp_path_factory.mktemp("tmp").joinpath("uri").as_uri()
-    JsonSaver().save(VanillaDataset.generate_uri_config(shards), sanitize_path(uri_))
+    JsonSaver().save(
+        VanillaDataset.generate_uri_config(shards=shards, assets=assets), sanitize_path(uri_)
+    )
     return uri_
 
 
@@ -221,13 +227,26 @@ def test_vanilla_dataset_get_uri(dataset: VanillaDataset, uri: str) -> None:
     assert dataset.get_uri() == uri
 
 
-def test_vanilla_dataset_generate_uri_config(shards: ShardDict[ShardTuple[BaseShard]]) -> None:
-    config = VanillaDataset.generate_uri_config(shards)
+def test_vanilla_dataset_from_uri(
+    uri: str,
+    shards: ShardDict[ShardTuple[BaseShard]],
+    assets: ShardDict,
+) -> None:
+    shard = VanillaDataset.from_uri(uri)
+    assert shard.equal(VanillaDataset(uri=uri, shards=shards, assets=assets))
+
+
+def test_vanilla_dataset_generate_uri_config(
+    shards: ShardDict[ShardTuple[BaseShard]],
+    assets: ShardDict,
+) -> None:
+    config = VanillaDataset.generate_uri_config(shards=shards, assets=assets)
     assert objects_are_equal(
         config,
         {
             LOADER: {OBJECT_TARGET: "iden.dataset.loader.VanillaDatasetLoader"},
             SHARDS: shards.get_uri(),
+            ASSETS: assets.get_uri(),
         },
     )
 
@@ -259,7 +278,7 @@ def test_check_shards_empty(tmp_path: Path) -> None:
     check_shards(create_shard_dict(shards={}, uri=tmp_path.joinpath("uri").as_uri()))
 
 
-def test_check_shards_incorrect(tmp_path: Path) -> None:
+def test_check_shards_incorrect_order(tmp_path: Path) -> None:
     shards = create_shard_dict(
         {
             "train": create_shard_tuple(
@@ -289,4 +308,15 @@ def test_check_shards_incorrect(tmp_path: Path) -> None:
     with pytest.raises(
         RuntimeError, match="split 'train' is not sorted by ascending order of URIs"
     ):
+        check_shards(shards)
+
+
+def test_check_shards_incorrect_type(tmp_path: Path) -> None:
+    shards = create_json_shard(
+        data=[1, 2, 3],
+        uri=tmp_path.joinpath("train/uri1").as_uri(),
+        path=tmp_path.joinpath("train/data1.json"),
+    )
+
+    with pytest.raises(TypeError, match="Incorrect shard type:"):
         check_shards(shards)
