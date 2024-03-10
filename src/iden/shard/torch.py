@@ -33,7 +33,7 @@ class TorchShard(FileShard[Any]):
     The data are stored in a PyTorch file.
 
     Args:
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: Specifies the path to the PyTorch file.
 
     Raises:
@@ -104,7 +104,7 @@ def create_torch_shard(data: Any, uri: str, path: Path | None = None) -> TorchSh
 
     Args:
         data: The data to save in the PyTorch file.
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: The path to the PyTorch file. If ``None``, a path is
             automatically based on the URI.
 

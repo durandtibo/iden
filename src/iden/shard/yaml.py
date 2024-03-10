@@ -26,7 +26,7 @@ class YamlShard(FileShard[Any]):
     The data are stored in a YAML file.
 
     Args:
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: Specifies the path to the YAML file.
 
     Example usage:
@@ -94,7 +94,7 @@ def create_yaml_shard(data: Any, uri: str, path: Path | None = None) -> YamlShar
 
     Args:
         data: The data to save in the yaml file.
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: The path to the YAML file. If ``None``, a path is
             automatically based on the URI.
 
