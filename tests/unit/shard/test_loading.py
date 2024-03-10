@@ -13,11 +13,13 @@ from iden.shard import (
     FileShard,
     JsonShard,
     PickleShard,
+    ShardTuple,
     TorchSafetensorsShard,
     TorchShard,
     YamlShard,
     create_json_shard,
     create_pickle_shard,
+    create_shard_tuple,
     create_torch_safetensors_shard,
     create_torch_shard,
     create_yaml_shard,
@@ -90,6 +92,28 @@ def test_load_from_uri_torch(tmp_path: Path) -> None:
     shard = load_from_uri(uri)
     assert shard.equal(TorchShard(uri=uri, path=path))
     assert objects_are_equal(shard.get_data(), {"key1": torch.ones(2, 3), "key2": torch.arange(5)})
+
+
+def test_load_from_uri_tuple(tmp_path: Path) -> None:
+    shards = (
+        create_json_shard([1, 2, 3], uri=tmp_path.joinpath("uri1").as_uri()),
+        create_json_shard([4, 5, 6, 7], uri=tmp_path.joinpath("uri2").as_uri()),
+        create_json_shard([8], uri=tmp_path.joinpath("uri3").as_uri()),
+    )
+
+    uri = tmp_path.joinpath("my_uri").as_uri()
+    create_shard_tuple(shards=shards, uri=uri)
+
+    shard = load_from_uri(uri)
+    assert shard.equal(ShardTuple(uri=uri, shards=shards))
+    assert objects_are_equal(
+        shard.get_data(),
+        (
+            JsonShard.from_uri(uri=tmp_path.joinpath("uri1").as_uri()),
+            JsonShard.from_uri(uri=tmp_path.joinpath("uri2").as_uri()),
+            JsonShard.from_uri(uri=tmp_path.joinpath("uri3").as_uri()),
+        ),
+    )
 
 
 def test_load_from_uri_yaml(tmp_path: Path) -> None:

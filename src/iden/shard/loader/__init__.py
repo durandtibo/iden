@@ -7,6 +7,7 @@ __all__ = [
     "FileShardLoader",
     "JsonShardLoader",
     "PickleShardLoader",
+    "ShardTupleLoader",
     "TorchSafetensorsShardLoader",
     "TorchShardLoader",
     "YamlShardLoader",
@@ -24,4 +25,5 @@ from iden.shard.loader.json import JsonShardLoader
 from iden.shard.loader.pickle import PickleShardLoader
 from iden.shard.loader.safetensors import TorchSafetensorsShardLoader
 from iden.shard.loader.torch import TorchShardLoader
+from iden.shard.loader.tuple import ShardTupleLoader
 from iden.shard.loader.yaml import YamlShardLoader

@@ -113,6 +113,19 @@ def test_shard_tuple_get_data_empty(
     assert objects_are_equal(ShardTuple(uri=uri, shards=[]).get_data(), ())
 
 
+def test_shard_tuple_from_uri(uri: str, shards: Sequence[BaseShard], path_shard: Path) -> None:
+    shard = ShardTuple.from_uri(uri)
+    assert shard.equal(ShardTuple(uri=uri, shards=shards))
+    assert objects_are_equal(
+        shard.get_data(),
+        (
+            JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
+            JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
+            JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
+        ),
+    )
+
+
 def test_shard_tuple_generate_uri_config(shards: Sequence[BaseShard], path_shard: Path) -> None:
     assert ShardTuple.generate_uri_config(shards) == {
         SHARDS: [
@@ -120,7 +133,7 @@ def test_shard_tuple_generate_uri_config(shards: Sequence[BaseShard], path_shard
             path_shard.joinpath("uri2").as_uri(),
             path_shard.joinpath("uri3").as_uri(),
         ],
-        LOADER: {OBJECT_TARGET: "iden.shard.loader.ShardListLoader"},
+        LOADER: {OBJECT_TARGET: "iden.shard.loader.ShardTupleLoader"},
     }
 
 
@@ -143,7 +156,7 @@ def test_create_shard_tuple(tmp_path: Path, shards: Sequence[BaseShard], path_sh
                 path_shard.joinpath("uri2").as_uri(),
                 path_shard.joinpath("uri3").as_uri(),
             ],
-            LOADER: {OBJECT_TARGET: "iden.shard.loader.ShardListLoader"},
+            LOADER: {OBJECT_TARGET: "iden.shard.loader.ShardTupleLoader"},
         },
     )
     assert shard.equal(ShardTuple(uri=uri, shards=shards))
