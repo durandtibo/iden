@@ -34,7 +34,7 @@ def get_list_uris(shards: Iterable[BaseShard]) -> list[str]:
     ...     ]
     ...     print(get_list_uris(shards))
     ...
-    ('file:///.../shard/uri1', 'file:///.../shard/uri2')
+    ['file:///.../shard/uri1', 'file:///.../shard/uri2']
 
     ```
     """

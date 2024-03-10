@@ -158,7 +158,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         ...     ]
         ...     ShardTuple.generate_uri_config(shards)
         ...
-        {'shards': ('file:///.../shard/uri1', 'file:///.../shard/uri2'),
+        {'shards': ['file:///.../shard/uri1', 'file:///.../shard/uri2'],
          'loader': {'_target_': 'iden.shard.loader.ShardListLoader'}}
 
         ```
