@@ -1,4 +1,4 @@
-r"""Contain code to load a shard from its Uniform Resource Identifier
+r"""Contain code to load a dataset from its Uniform Resource Identifier
 (URI)."""
 
 from __future__ import annotations
@@ -8,22 +8,22 @@ __all__ = ["load_from_uri"]
 from typing import TYPE_CHECKING
 
 from iden.constants import LOADER
+from iden.dataset.loader.base import setup_dataset_loader
 from iden.io import load_json
-from iden.shard.loader import setup_shard_loader
 from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
-    from iden.shard import BaseShard
+    from iden.dataset import BaseDataset
 
 
-def load_from_uri(uri: str) -> BaseShard:
-    r"""Load a shard from its Uniform Resource Identifier (URI).
+def load_from_uri(uri: str) -> BaseDataset:
+    r"""Load a dataset from its Uniform Resource Identifier (URI).
 
     Args:
-        uri: The URI of the shard.
+        uri: The URI of the dataset.
 
     Returns:
-        The shard associated to the URI.
+        The dataset associated to the URI.
 
     Raises:
         FileNotFoundError: if the URI file does not exist.
@@ -33,5 +33,5 @@ def load_from_uri(uri: str) -> BaseShard:
         msg = f"uri file does not exist: {path}"
         raise FileNotFoundError(msg)
     config = load_json(path)
-    loader = setup_shard_loader(config[LOADER])
+    loader = setup_dataset_loader(config[LOADER])
     return loader.load(uri)

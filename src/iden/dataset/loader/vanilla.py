@@ -7,8 +7,8 @@ __all__ = ["VanillaDatasetLoader"]
 
 from typing import TypeVar
 
-from iden.dataset import VanillaDataset
 from iden.dataset.loader.base import BaseDatasetLoader
+from iden.dataset.vanilla import VanillaDataset
 
 T = TypeVar("T")
 
