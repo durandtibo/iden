@@ -129,6 +129,36 @@ class ShardDict(BaseShard):
             raise ShardNotFoundError(msg)
         return shard
 
+    def get_shard_ids(self) -> set[str]:
+        r"""Get the shard IDs.
+
+        Returns:
+            The shard IDs.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_json_shard, ShardDict
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": create_json_shard(
+        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+        ...         ),
+        ...         "val": create_json_shard(
+        ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+        ...         ),
+        ...     }
+        ...     sd = ShardDict(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
+        ...     sorted(sd.get_shard_ids())
+        ...
+        ['train', 'val']
+
+        ```
+        """
+        return set(self._shards.keys())
+
     def has_shard(self, shard_id: str) -> bool:
         r"""Indicate if the shard exists or not.
 

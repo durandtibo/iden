@@ -96,6 +96,21 @@ def test_shard_dict_equal_false_different_type(uri: str, shards: dict[str, BaseS
     assert not ShardDict(uri=uri, shards=shards).equal({})
 
 
+def test_shard_dict_get_data(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
+    assert objects_are_equal(
+        ShardDict(uri=uri, shards=shards).get_data(),
+        {
+            "001": JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
+            "002": JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
+            "003": JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
+        },
+    )
+
+
+def test_shard_dict_get_data_empty(uri: str) -> None:
+    assert objects_are_equal(ShardDict(uri=uri, shards={}).get_data(), {})
+
+
 def test_shard_dict_get_shard(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
     sd = ShardDict(uri=uri, shards=shards)
     assert sd.get_shard("001").equal(JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()))
@@ -109,19 +124,12 @@ def test_shard_dict_get_shard_missing(uri: str) -> None:
         sd.get_shard("missing")
 
 
-def test_shard_dict_get_data(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
-    assert objects_are_equal(
-        ShardDict(uri=uri, shards=shards).get_data(),
-        {
-            "001": JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
-            "002": JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
-            "003": JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
-        },
-    )
+def test_shard_dict_get_shard_ids(uri: str, shards: dict[str, BaseShard]) -> None:
+    assert ShardDict(uri=uri, shards=shards).get_shard_ids() == {"001", "002", "003"}
 
 
-def test_shard_dict_get_shards_empty(uri: str) -> None:
-    assert objects_are_equal(ShardDict(uri=uri, shards={}).get_data(), {})
+def test_shard_dict_get_shard_ids_empty(uri: str) -> None:
+    assert ShardDict(uri=uri, shards={}).get_shard_ids() == set()
 
 
 def test_shard_dict_has_shard_true(uri: str, shards: dict[str, BaseShard]) -> None:
