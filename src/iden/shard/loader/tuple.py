@@ -19,5 +19,5 @@ class ShardTupleLoader(BaseShardLoader[tuple[BaseShard, ...]]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def load(self, uri: str) -> ShardTuple[tuple[BaseShard, ...]]:
+    def load(self, uri: str) -> ShardTuple:
         return ShardTuple.from_uri(uri)

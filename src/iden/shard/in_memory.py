@@ -4,16 +4,14 @@ from __future__ import annotations
 
 __all__ = ["InMemoryShard"]
 
-from typing import Any, TypeVar
+from typing import Any
 
 from coola import objects_are_equal
 
 from iden.shard.base import BaseShard
 
-T = TypeVar("T")
 
-
-class InMemoryShard(BaseShard[T]):
+class InMemoryShard(BaseShard[Any]):
     r"""Implement an in-memory shard.
 
     This shard does not have valid URI as the data are stored
@@ -30,7 +28,7 @@ class InMemoryShard(BaseShard[T]):
     ```
     """
 
-    def __init__(self, data: T) -> None:
+    def __init__(self, data: Any) -> None:
         self._data = data
 
     def __repr__(self) -> str:
@@ -41,7 +39,7 @@ class InMemoryShard(BaseShard[T]):
             return False
         return objects_are_equal(self._data, other._data, equal_nan=equal_nan)
 
-    def get_data(self) -> T:
+    def get_data(self) -> Any:
         return self._data
 
     def get_uri(self) -> str | None:
