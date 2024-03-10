@@ -212,7 +212,8 @@ class VanillaDataset(BaseDataset[T]):
         ...     config = VanillaDataset.generate_uri_config(shards)
         ...     config
         ...
-        {'loader': {'_target_': 'iden.dataset.loader.VanillaDatasetLoader'}, 'shards': 'file:///.../uri'}
+        {'loader': {'_target_': 'iden.dataset.loader.VanillaDatasetLoader'},
+         'shards': 'file:///.../uri_shards'}
 
         ```
         """

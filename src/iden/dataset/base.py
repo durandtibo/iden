@@ -135,7 +135,9 @@ class BaseDataset(Generic[T], ABC):
         ...     dataset1 = VanillaDataset(
         ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
         ...     )
-        ...     dataset2 = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("uri_asset2").as_uri(),)
+        ...     dataset2 = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri2").as_uri(), shards=shards, assets=assets
+        ...     )
         ...     dataset1.equal(dataset2)
         ...
         False
