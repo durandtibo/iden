@@ -1,16 +1,13 @@
-r"""Contain YAML shard loader implementations."""
+r"""Contain shard loader implementations."""
 
 from __future__ import annotations
 
 __all__ = ["ShardTupleLoader"]
 
-from typing import TypeVar
 
 from iden.shard.base import BaseShard
 from iden.shard.loader.base import BaseShardLoader
 from iden.shard.tuple import ShardTuple
-
-T = TypeVar("T")
 
 
 class ShardTupleLoader(BaseShardLoader[tuple[BaseShard, ...]]):

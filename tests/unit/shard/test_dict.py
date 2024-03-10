@@ -110,6 +110,19 @@ def test_shard_dict_has_shard_false(uri: str) -> None:
     assert not ShardDict(uri=uri, shards={}).has_shard("missing")
 
 
+def test_shard_dict_from_uri(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
+    shard = ShardDict.from_uri(uri)
+    assert shard.equal(ShardDict(uri=uri, shards=shards))
+    assert objects_are_equal(
+        shard.get_data(),
+        {
+            "001": JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
+            "002": JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
+            "003": JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
+        },
+    )
+
+
 def test_shard_dict_generate_uri_config(shards: dict[str, BaseShard], path_shard: Path) -> None:
     assert ShardDict.generate_uri_config(shards) == {
         SHARDS: {
