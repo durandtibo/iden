@@ -232,8 +232,8 @@ def create_shard_dict(shards: dict[str, BaseShard], uri: str) -> ShardDict:
     ...     print(shard)
     ...
     ShardDict(
-      (0): JsonShard(uri=file:///.../shard/uri1)
-      (1): JsonShard(uri=file:///.../shard/uri2)
+      (train): JsonShard(uri=file:///.../shard/uri1)
+      (val): JsonShard(uri=file:///.../shard/uri2)
     )
 
     ```
