@@ -7,6 +7,7 @@ __all__ = [
     "FileShardLoader",
     "JsonShardLoader",
     "PickleShardLoader",
+    "ShardDictLoader",
     "ShardTupleLoader",
     "TorchSafetensorsShardLoader",
     "TorchShardLoader",
@@ -20,6 +21,7 @@ from iden.shard.loader.base import (
     is_shard_loader_config,
     setup_shard_loader,
 )
+from iden.shard.loader.dict import ShardDictLoader
 from iden.shard.loader.file import FileShardLoader
 from iden.shard.loader.json import JsonShardLoader
 from iden.shard.loader.pickle import PickleShardLoader

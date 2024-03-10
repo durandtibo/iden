@@ -12,7 +12,7 @@ from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 from objectory import OBJECT_TARGET
 
 from iden.constants import LOADER, SHARDS
-from iden.io import JsonSaver
+from iden.io import JsonSaver, load_json
 from iden.shard.base import BaseShard
 from iden.shard.exceptions import ShardNotFoundError
 from iden.shard.utils import get_dict_uris
@@ -156,6 +156,50 @@ class ShardDict(BaseShard):
         ```
         """
         return shard_id in self._shards
+
+    @classmethod
+    def from_uri(cls, uri: str) -> ShardDict:
+        r"""Instantiate a shard from its URI.
+
+        Args:
+            uri: The URI.
+
+        Returns:
+            The instantiated shard.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import ShardDict, create_json_shard, create_shard_dict
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": create_json_shard(
+        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+        ...         ),
+        ...         "val": create_json_shard(
+        ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+        ...         ),
+        ...     }
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     create_shard_dict(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+        ...     shard = ShardDict.from_uri(uri)
+        ...     print(shard)
+        ...
+        ShardDict(
+          (train): JsonShard(uri=file:///.../shard/uri1)
+          (val): JsonShard(uri=file:///.../shard/uri2)
+        )
+
+        ```
+        """
+        # local import to avoid cyclic dependencies
+        from iden.shard.loading import load_from_uri
+
+        config = load_json(sanitize_path(uri))
+        shards = {key: load_from_uri(shard) for key, shard in config[SHARDS].items()}
+        return cls(uri=uri, shards=shards)
 
     @classmethod
     def generate_uri_config(cls, shards: dict[str, BaseShard]) -> dict:
