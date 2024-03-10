@@ -303,8 +303,8 @@ class VanillaDataset(BaseDataset[T]):
         ...     config
         ...
         {'loader': {'_target_': 'iden.dataset.loader.VanillaDatasetLoader'},
-         'shards': 'file:///.../uri_shards'
-         'shards': 'file:///.../uri_assets'}
+         'shards': 'file:///.../uri_shards',
+         'assets': 'file:///.../uri_assets'}
 
         ```
         """
