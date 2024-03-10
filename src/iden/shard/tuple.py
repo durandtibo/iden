@@ -123,6 +123,17 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     def get_uri(self) -> str:
         return self._uri
 
+    def is_sorted_by_uri(self) -> bool:
+        r"""Indicate if the shards are sorted by ascending order of URIs
+        or not.
+
+        Returns:
+            ``True`` if the shards are sorted by ascending order of
+                URIs, otherwise ``False``.
+        """
+        uris = get_list_uris(self._shards)
+        return uris == sorted(uris)
+
     @classmethod
     def from_uri(cls, uri: str) -> ShardTuple:
         r"""Instantiate a shard from its URI.
