@@ -47,6 +47,31 @@ def test_shard_dict_len(uri: str, shards: dict[str, BaseShard]) -> None:
     assert len(ShardDict(uri=uri, shards=shards)) == 3
 
 
+def test_shard_dict_contain_true(uri: str, shards: dict[str, BaseShard]) -> None:
+    sd = ShardDict(uri=uri, shards=shards)
+    assert "001" in sd
+    assert "002" in sd
+    assert "003" in sd
+
+
+def test_shard_dict_contain_false(uri: str) -> None:
+    sd = ShardDict(uri=uri, shards={})
+    assert "missing" not in sd
+
+
+def test_shard_dict_getitem(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
+    sd = ShardDict(uri=uri, shards=shards)
+    assert sd["001"].equal(JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()))
+    assert sd["002"].equal(JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()))
+    assert sd["003"].equal(JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()))
+
+
+def test_shard_dict_getitem_missing(uri: str) -> None:
+    sd = ShardDict(uri=uri, shards={})
+    with pytest.raises(KeyError, match="'missing'"):
+        _ = sd["missing"]
+
+
 def test_shard_dict_repr(uri: str, shards: dict[str, BaseShard]) -> None:
     assert repr(ShardDict(uri=uri, shards=shards)).startswith("ShardDict(")
 

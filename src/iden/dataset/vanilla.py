@@ -2,20 +2,20 @@ r"""Contain the base class to implement a dataset object."""
 
 from __future__ import annotations
 
-__all__ = ["VanillaDataset", "prepare_shards"]
+__all__ = ["VanillaDataset", "create_vanilla_dataset", "prepare_shards"]
 
 import logging
 from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola import objects_are_equal
-from coola.utils import str_indent, str_mapping
+from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 from objectory import OBJECT_TARGET
 
 from iden.constants import LOADER, SHARDS
 from iden.dataset.base import BaseDataset
 from iden.dataset.exceptions import AssetNotFoundError, SplitNotFoundError
 from iden.io import JsonSaver
-from iden.shard import sort_by_uri
+from iden.shard import ShardDict, sort_by_uri
 from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
@@ -72,24 +72,31 @@ class VanillaDataset(BaseDataset[T]):
     """
 
     def __init__(
-        self, uri: str, shards: Mapping[str, Iterable[BaseShard[T]]], assets: dict[str, Any] = None
+        self, uri: str, shards: Mapping[str, Iterable[BaseShard[T]]], assets: ShardDict
     ) -> None:
         self._uri = str(uri)
         self._shards = prepare_shards(shards)
-        self._assets = assets or {}
+        self._assets = assets
 
     def __repr__(self) -> str:
-        shards = str_indent(
-            str_mapping({split: f"{len(shards):,}" for split, shards in self._shards.items()})
+        args = repr_indent(
+            repr_mapping(
+                {
+                    "uri": self._uri,
+                    "shards": self._shards,
+                    "assets": self._assets,
+                }
+            )
         )
-        if shards:
-            shards = "\n" + shards
+        return f"{self.__class__.__qualname__}(\n  {args}\n)"
+
+    def __str__(self) -> str:
         args = str_indent(
             str_mapping(
                 {
                     "uri": self._uri,
-                    "shards": shards,
-                    "assets": sorted(self._assets.keys()),
+                    "shards": self._shards,
+                    "assets": self._assets,
                 }
             )
         )
@@ -104,14 +111,14 @@ class VanillaDataset(BaseDataset[T]):
             and objects_are_equal(self._assets, other._assets, equal_nan=equal_nan)
         )
 
-    def get_asset(self, asset_id: str) -> Any:
+    def get_asset(self, asset_id: str) -> BaseShard:
         if asset_id not in self._assets:
             msg = f"asset '{asset_id}' does not exist"
             raise AssetNotFoundError(msg)
-        return self._assets[asset_id]
+        return self._assets.get_shard(asset_id)
 
     def has_asset(self, asset_id: str) -> bool:
-        return asset_id in self._assets
+        return self._assets.has_shard(asset_id)
 
     def get_shards(self, split: str) -> tuple[BaseShard[T], ...]:
         if split not in self._shards:
@@ -186,8 +193,8 @@ class VanillaDataset(BaseDataset[T]):
 
 def create_vanilla_dataset(
     shards: Mapping[str, Iterable[BaseShard[T]]],
+    assets: ShardDict,
     uri: str,
-    assets: dict[str, Any] = None,
 ) -> VanillaDataset:
     r"""Create a ``VanillaDataset`` from its shards.
 
@@ -200,11 +207,11 @@ def create_vanilla_dataset(
         shards: The dataset's shards. Each item in the mapping
             represent a dataset split, where the key is the dataset
             split and the value is the shards.
-        uri: The URI associated to the dataset.
         assets: The dataset's assets.
+        uri: The URI associated to the dataset.
 
     Returns:
-        The ``JsonShard`` object.
+        The instantited ``VanillaDataset`` object.
 
     Example usage:
 
