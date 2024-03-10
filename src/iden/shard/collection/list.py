@@ -25,7 +25,6 @@ class ShardList:
     ```pycon
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.dataset import VanillaDataset
     >>> from iden.shard import create_json_shard
     >>> from iden.shard.collection import ShardList
     >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -78,7 +77,6 @@ class ShardList:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardList
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -124,7 +122,6 @@ class ShardList:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardList
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -163,7 +160,6 @@ class ShardList:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardList
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -195,7 +191,6 @@ class ShardList:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardList
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -235,7 +230,6 @@ class ShardList:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardList
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -259,3 +253,34 @@ class ShardList:
         ```
         """
         return self._shards.pop(index)
+
+    def get_uris(self) -> list[str]:
+        r"""Get the list of shard's URI.
+
+        Returns:
+            The list of shard's URI.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_json_shard
+        >>> from iden.shard.collection import ShardList
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = [
+        ...         create_json_shard(
+        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+        ...         ),
+        ...         create_json_shard(
+        ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+        ...         ),
+        ...     ]
+        ...     sl = ShardList(shards)
+        ...     print(sl.get_uris())
+        ...
+        ['file:///.../shard/uri1', 'file:///.../shard/uri2']
+
+        ```
+        """
+        return [shard.get_uri() for shard in self._shards]
