@@ -136,3 +136,15 @@ def test_shard_list_pop_missing_index(shards: list[BaseShard]) -> None:
     sl = ShardList(shards)
     with pytest.raises(IndexError, match="pop index out of range"):
         sl.pop(5)
+
+
+def test_shard_list_get_uris(shards: list[BaseShard], path_shard: Path) -> None:
+    assert ShardList(shards).get_uris() == [
+        path_shard.joinpath("uri1").as_uri(),
+        path_shard.joinpath("uri2").as_uri(),
+        path_shard.joinpath("uri3").as_uri(),
+    ]
+
+
+def test_shard_list_get_uris_empty() -> None:
+    assert ShardList().get_uris() == []

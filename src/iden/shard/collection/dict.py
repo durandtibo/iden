@@ -84,7 +84,6 @@ class ShardDict:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -97,7 +96,9 @@ class ShardDict:
         ...         ),
         ...     }
         ...     sd = ShardDict(shards)
-        ...     sd.add_shard("test", create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri()))
+        ...     sd.add_shard("test",
+        ...         create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri())
+        ...     )
         ...     print(sd.has_shard("test"))
         ...
         True
@@ -130,7 +131,6 @@ class ShardDict:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -169,7 +169,6 @@ class ShardDict:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -204,7 +203,6 @@ class ShardDict:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -239,7 +237,6 @@ class ShardDict:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -276,7 +273,6 @@ class ShardDict:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
         >>> from iden.shard import create_json_shard
         >>> from iden.shard.collection import ShardDict
         >>> with tempfile.TemporaryDirectory() as tmpdir:
@@ -300,3 +296,34 @@ class ShardDict:
             msg = f"shard `{shard_id}` does not exist so it is not possible to remove it"
             raise ShardNotFoundError(msg)
         del self._shards[shard_id]
+
+    def get_uris(self) -> dict[str, str]:
+        r"""Get the dictionary of shard's URI.
+
+        Returns:
+            The dictionary of shard's URI.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_json_shard
+        >>> from iden.shard.collection import ShardDict
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": create_json_shard(
+        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+        ...         ),
+        ...         "val": create_json_shard(
+        ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+        ...         ),
+        ...     }
+        ...     sd = ShardDict(shards)
+        ...     print(sd.get_uris())
+        ...
+        {'train': 'file:///.../shard/uri1', 'val': 'file:///.../shard/uri2'}
+
+        ```
+        """
+        return {key: shard.get_uri() for key, shard in self._shards.items()}

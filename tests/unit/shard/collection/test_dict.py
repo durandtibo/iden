@@ -160,3 +160,14 @@ def test_shard_dict_remove_shard_missing() -> None:
     sd = ShardDict()
     with pytest.raises(ShardNotFoundError, match="shard `missing` does not exist"):
         sd.remove_shard("missing")
+
+
+def test_shard_dict_get_uris(shards: dict[str, BaseShard], path_shard: Path) -> None:
+    assert objects_are_equal(
+        ShardDict(shards).get_uris(),
+        {
+            "001": path_shard.joinpath("uri1").as_uri(),
+            "002": path_shard.joinpath("uri2").as_uri(),
+            "003": path_shard.joinpath("uri3").as_uri(),
+        },
+    )
