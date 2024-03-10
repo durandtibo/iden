@@ -13,7 +13,26 @@ T = TypeVar("T")
 
 
 class PickleShardLoader(BaseShardLoader[Any]):
-    r"""Implement a pickle shard loader."""
+    r"""Implement a pickle shard loader.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.shard import create_pickle_shard
+    >>> from iden.shard.loader import PickleShardLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+    ...     _ = create_pickle_shard([1, 2, 3], uri=uri)
+    ...     loader = PickleShardLoader()
+    ...     shard = loader.load(uri)
+    ...     shard
+    ...
+    PickleShard(uri=file:///.../my_uri)
+
+    ```
+    """
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"

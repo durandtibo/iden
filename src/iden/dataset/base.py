@@ -44,7 +44,7 @@ class BaseDataset(Generic[T], ABC):
     ...         "val": [],
     ...     }
     ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-    ...     print(dataset)
+    ...     dataset
     ...
     VanillaDataset(
       (uri): file:///.../uri
@@ -88,7 +88,7 @@ class BaseDataset(Generic[T], ABC):
         ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets={'mean': 42}
         ...     )
         ...     dataset2 = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-        ...     print(dataset1.equal(dataset2))
+        ...     dataset1.equal(dataset2)
         ...
         False
 
@@ -127,7 +127,7 @@ class BaseDataset(Generic[T], ABC):
         ...         "val": [],
         ...     }
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets={'mean': 42})
-        ...     print(dataset.get_asset('mean'))
+        ...     dataset.get_asset('mean')
         ...
         42
 
@@ -160,8 +160,8 @@ class BaseDataset(Generic[T], ABC):
         ...         "val": [],
         ...     }
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets={'mean': 42})
-        ...     print(dataset.has_asset('mean'))
-        ...     print(dataset.has_asset('missing'))
+        ...     dataset.has_asset('mean')
+        ...     dataset.has_asset('missing')
         ...
         True
         False
@@ -196,8 +196,8 @@ class BaseDataset(Generic[T], ABC):
         ...         "val": [],
         ...     }
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-        ...     print(dataset.get_shards('train'))
-        ...     print(dataset.get_shards('val'))
+        ...     dataset.get_shards('train')
+        ...     dataset.get_shards('val')
         ...
         (JsonShard(uri=file:///.../uri1), JsonShard(uri=file:///.../uri2))
         ()
@@ -234,8 +234,8 @@ class BaseDataset(Generic[T], ABC):
         ...         "val": [],
         ...     }
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-        ...     print(dataset.get_num_shards('train'))
-        ...     print(dataset.get_num_shards('val'))
+        ...     dataset.get_num_shards('train')
+        ...     dataset.get_num_shards('val')
         ...
         2
         0
@@ -266,7 +266,7 @@ class BaseDataset(Generic[T], ABC):
         ...         "val": [],
         ...     }
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-        ...     print(sorted(dataset.get_splits()))
+        ...     sorted(dataset.get_splits())
         ...
         ['train', 'val']
 
@@ -296,8 +296,8 @@ class BaseDataset(Generic[T], ABC):
         ...         "val": [],
         ...     }
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-        ...     print(dataset.has_split('train'))
-        ...     print(dataset.has_split('missing'))
+        ...     dataset.has_split('train')
+        ...     dataset.has_split('missing')
         ...
         True
         False
@@ -320,7 +320,7 @@ class BaseDataset(Generic[T], ABC):
         >>> from iden.dataset import VanillaDataset
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards={})
-        ...     print(dataset.get_uri())
+        ...     dataset.get_uri()
         ...
         file:///.../uri
 

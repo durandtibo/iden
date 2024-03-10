@@ -38,7 +38,7 @@ class ShardList:
     ...     sl.append(
     ...         create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri())
     ...     )
-    ...     print(sl)
+    ...     sl
     ...
     ShardList(
       (0): JsonShard(uri=file:///.../shard/uri1)
@@ -92,7 +92,7 @@ class ShardList:
         ...     sl.append(
         ...         create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri())
         ...     )
-        ...     print(sl)
+        ...     sl
         ...
         ShardList(
           (0): JsonShard(uri=file:///.../shard/uri1)
@@ -133,7 +133,7 @@ class ShardList:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     ]
-        ...     print(ShardList(shards).equal(ShardList(shards)))
+        ...     ShardList(shards).equal(ShardList(shards))
         ...
         True
 
@@ -172,7 +172,7 @@ class ShardList:
         ...         ),
         ...     ]
         ...     sl = ShardList(shards)
-        ...     print(sl.get(0))
+        ...     sl.get(0)
         ...
         JsonShard(uri=file:///.../uri1)
 
@@ -203,7 +203,7 @@ class ShardList:
         ...         ),
         ...     ]
         ...     sl = ShardList(shards)
-        ...     print(sl.get_shards())
+        ...     sl.get_shards()
         ...
         [JsonShard(uri=file:///.../uri1), JsonShard(uri=file:///.../uri2)]
 
@@ -242,8 +242,8 @@ class ShardList:
         ...         ),
         ...     ]
         ...     sl = ShardList(shards)
-        ...     print(sl.pop(0))
-        ...     print(sl)
+        ...     sl.pop(0)
+        ...     sl
         ...
         JsonShard(uri=file:///.../shard/uri1)
         ShardList(
@@ -277,7 +277,7 @@ class ShardList:
         ...         ),
         ...     ]
         ...     sl = ShardList(shards)
-        ...     print(sl.get_uris())
+        ...     sl.get_uris()
         ...
         ['file:///.../shard/uri1', 'file:///.../shard/uri2']
 

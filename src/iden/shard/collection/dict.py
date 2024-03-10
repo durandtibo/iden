@@ -42,7 +42,7 @@ class ShardDict:
     ...     sd = ShardDict(shards)
     ...     shard = create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri())
     ...     sd.add_shard("test", shard)
-    ...     print(sd)
+    ...     sd
     ...
     ShardDict(
       (train): JsonShard(uri=file:///.../shard/uri1)
@@ -99,7 +99,7 @@ class ShardDict:
         ...     sd.add_shard("test",
         ...         create_json_shard([8, 9], uri=Path(tmpdir).joinpath("shard/uri3").as_uri())
         ...     )
-        ...     print(sd.has_shard("test"))
+        ...     sd.has_shard("test")
         ...
         True
 
@@ -142,7 +142,7 @@ class ShardDict:
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     print(ShardDict(shards).equal(ShardDict(shards)))
+        ...     ShardDict(shards).equal(ShardDict(shards))
         ...
         True
 
@@ -181,7 +181,7 @@ class ShardDict:
         ...         ),
         ...     }
         ...     sd = ShardDict(shards)
-        ...     print(sd.get_shard("train"))
+        ...     sd.get_shard("train")
         ...
         JsonShard(uri=file:///.../uri1)
 
@@ -215,7 +215,7 @@ class ShardDict:
         ...         ),
         ...     }
         ...     sd = ShardDict(shards)
-        ...     print(sd.get_shards())
+        ...     sd.get_shards()
         ...
         {'train': JsonShard(uri=file:///.../uri1), 'val': JsonShard(uri=file:///.../uri2)}
 
@@ -249,8 +249,8 @@ class ShardDict:
         ...         ),
         ...     }
         ...     sd = ShardDict(shards)
-        ...     print(sd.has_shard("train"))
-        ...     print(sd.has_shard("test"))
+        ...     sd.has_shard("train")
+        ...     sd.has_shard("test")
         ...
         True
         False
@@ -286,7 +286,7 @@ class ShardDict:
         ...     }
         ...     sd = ShardDict(shards)
         ...     sd.remove_shard("train")
-        ...     print(sd.has_shard("train"))
+        ...     sd.has_shard("train")
         ...
         False
 
@@ -320,7 +320,7 @@ class ShardDict:
         ...         ),
         ...     }
         ...     sd = ShardDict(shards)
-        ...     print(sd.get_uris())
+        ...     sd.get_uris()
         ...
         {'train': 'file:///.../shard/uri1', 'val': 'file:///.../shard/uri2'}
 
