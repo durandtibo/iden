@@ -34,7 +34,7 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
     The data are stored in a safetensors file.
 
     Args:
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: Specifies the path to the safetensors file.
 
     Raises:
@@ -107,7 +107,7 @@ def create_torch_safetensors_shard(
 
     Args:
         data: The data to save in the safetensors file.
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: The path to the safetensors file. If ``None``, a path is
             automatically based on the URI.
 

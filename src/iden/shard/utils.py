@@ -3,7 +3,7 @@ r"""Contain code to load a shard from its Uniform Resource Identifier
 
 from __future__ import annotations
 
-__all__ = ["get_list_uris", "sort_by_uri"]
+__all__ = ["get_dict_uris", "get_list_uris", "sort_by_uri"]
 
 from typing import TYPE_CHECKING
 
@@ -13,8 +13,44 @@ if TYPE_CHECKING:
     from iden.shard.base import BaseShard
 
 
+def get_dict_uris(shards: dict[str, BaseShard]) -> dict[str, str]:
+    r"""Get the dictionary of shard's URI.
+
+    Args:
+        shards: The dictionary of shards.
+
+    Returns:
+        The dictionary of shard's URI.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.shard import create_json_shard, get_dict_uris
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     shards = {
+    ...         "train": create_json_shard(
+    ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+    ...         ),
+    ...         "val": create_json_shard(
+    ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+    ...         ),
+    ...     }
+    ...     print(get_dict_uris(shards))
+    ...
+    {'train': 'file:///.../shard/uri1', 'val': 'file:///.../shard/uri2'}
+
+    ```
+    """
+    return {key: shard.get_uri() for key, shard in shards.items()}
+
+
 def get_list_uris(shards: Iterable[BaseShard]) -> list[str]:
     r"""Get the list of shard's URI.
+
+    Args:
+        shards: The shards.
 
     Returns:
         The tuple of shard's URI.

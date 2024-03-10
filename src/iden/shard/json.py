@@ -26,7 +26,7 @@ class JsonShard(FileShard[Any]):
     The data are stored in a JSON file.
 
     Args:
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: Specifies the path to the JSON file.
 
     Example usage:
@@ -94,7 +94,7 @@ def create_json_shard(data: Any, uri: str, path: Path | None = None) -> JsonShar
 
     Args:
         data: The data to save in the json file.
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: The path to the JSON file. If ``None``, a path is
             automatically based on the URI.
 

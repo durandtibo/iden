@@ -23,11 +23,6 @@ def path_shard(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 
 @pytest.fixture(scope="module")
-def shard(path_shard: Path) -> BaseShard:
-    return create_json_shard([10, 11], uri=path_shard.joinpath("uri4").as_uri())
-
-
-@pytest.fixture(scope="module")
 def shards(path_shard: Path) -> tuple[BaseShard, ...]:
     return (
         create_json_shard([1, 2, 3], uri=path_shard.joinpath("uri1").as_uri()),

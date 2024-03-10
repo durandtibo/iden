@@ -27,6 +27,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     r"""Implement a data structure to manage a tuple of shards.
 
     Args:
+        uri: The shard's URI.
         shards: The tuple of shards.
 
     Example usage:
@@ -73,7 +74,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         return f"{self.__class__.__qualname__}({args})"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, ShardTuple):
+        if not isinstance(other, self.__class__):
             return False
         return objects_are_equal(
             self.get_uri(), other.get_uri(), equal_nan=equal_nan
@@ -217,7 +218,7 @@ def create_shard_tuple(shards: Iterable[BaseShard], uri: str) -> ShardTuple:
 
     Args:
         shards: The shards.
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
 
     Returns:
         The ``ShardTuple`` object.
@@ -227,7 +228,7 @@ def create_shard_tuple(shards: Iterable[BaseShard], uri: str) -> ShardTuple:
     ```pycon
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.shard import ShardTuple, create_json_shard
+    >>> from iden.shard import ShardTuple, create_json_shard, create_shard_tuple
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shards = [
     ...         create_json_shard(

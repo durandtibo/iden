@@ -25,7 +25,7 @@ class FileShard(BaseShard[T]):
     file.
 
     Args:
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: Specifies the path to the pickle file.
         loader: The data loader or its configuration.
 

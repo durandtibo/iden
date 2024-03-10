@@ -26,7 +26,7 @@ class PickleShard(FileShard[Any]):
     The data are stored in a pickle file.
 
     Args:
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: Specifies the path to the pickle file.
 
     Example usage:
@@ -94,7 +94,7 @@ def create_pickle_shard(data: Any, uri: str, path: Path | None = None) -> Pickle
 
     Args:
         data: The data to save in the pickle file.
-        uri: The URI associated to the shard.
+        uri: The shard's URI.
         path: The path to the pickle file. If ``None``, a path is
             automatically based on the URI.
 
