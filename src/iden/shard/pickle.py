@@ -73,7 +73,8 @@ class PickleShard(FileShard[Any]):
         ...     file = Path(tmpdir).joinpath("data.pkl")
         ...     PickleShard.generate_uri_config(file)
         ...
-        {'kwargs': {'path': '.../data.pkl'}, 'loader': {'_target_': 'iden.shard.loader.PickleShardLoader'}}
+        {'kwargs': {'path': '.../data.pkl'},
+         'loader': {'_target_': 'iden.shard.loader.PickleShardLoader'}}
 
         ```
         """

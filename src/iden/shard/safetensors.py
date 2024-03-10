@@ -84,7 +84,8 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
         ...     file = Path(tmpdir).joinpath("data.safetensors")
         ...     TorchSafetensorsShard.generate_uri_config(file)
         ...
-        {'kwargs': {'path': '.../data.safetensors'}, 'loader': {'_target_': 'iden.shard.loader.TorchSafetensorsShardLoader'}}
+        {'kwargs': {'path': '.../data.safetensors'},
+         'loader': {'_target_': 'iden.shard.loader.TorchSafetensorsShardLoader'}}
 
         ```
         """
