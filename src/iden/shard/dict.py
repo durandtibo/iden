@@ -59,6 +59,12 @@ class ShardDict(BaseShard):
         self._uri = uri
         self._shards = shards.copy()
 
+    def __contains__(self, item: str) -> bool:
+        return item in self._shards
+
+    def __getitem__(self, item: str) -> BaseShard:
+        return self._shards[item]
+
     def __len__(self) -> int:
         return len(self._shards)
 
@@ -117,10 +123,11 @@ class ShardDict(BaseShard):
 
         ```
         """
-        if shard_id not in self._shards:
+        shard = self._shards.get(shard_id, None)
+        if shard is None:
             msg = f"shard `{shard_id}` does not exist"
             raise ShardNotFoundError(msg)
-        return self._shards[shard_id]
+        return shard
 
     def has_shard(self, shard_id: str) -> bool:
         r"""Indicate if the shard exists or not.
@@ -155,7 +162,7 @@ class ShardDict(BaseShard):
 
         ```
         """
-        return shard_id in self._shards
+        return shard_id in self
 
     @classmethod
     def from_uri(cls, uri: str) -> ShardDict:
