@@ -11,14 +11,15 @@ from coola import objects_are_equal
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 from objectory import OBJECT_TARGET
 
-from iden.constants import LOADER, SHARDS
+from iden.constants import ASSETS, LOADER, SHARDS
 from iden.dataset.base import BaseDataset
 from iden.dataset.exceptions import AssetNotFoundError, SplitNotFoundError
-from iden.io import JsonSaver
+from iden.io import JsonSaver, load_json
+from iden.shard import ShardDict
 from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
-    from iden.shard import BaseShard, ShardDict, ShardTuple
+    from iden.shard import BaseShard, ShardTuple
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +71,7 @@ class VanillaDataset(BaseDataset[T]):
     ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
     ...             )
     ...         },
-    ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+    ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
     ...     )
     ...     dataset = VanillaDataset(
     ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
@@ -166,7 +167,87 @@ class VanillaDataset(BaseDataset[T]):
         return self._uri
 
     @classmethod
-    def generate_uri_config(cls, shards: ShardDict[ShardTuple[BaseShard[T]]]) -> dict:
+    def from_uri(cls, uri: str) -> VanillaDataset:
+        r"""Instantiate a shard from its URI.
+
+        Args:
+            uri: The URI.
+
+        Returns:
+            The instantiated shard.
+
+        Example usage:
+
+        ```pycon
+
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import create_vanilla_dataset
+        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = create_shard_dict(
+        ...         shards={
+        ...             "train": create_shard_tuple(
+        ...                 [
+        ...                     create_json_shard(
+        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+        ...                     ),
+        ...                     create_json_shard(
+        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+        ...                     ),
+        ...                 ],
+        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+        ...             ),
+        ...             "val": create_shard_tuple(
+        ...                 shards=[],
+        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+        ...             ),
+        ...         },
+        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+        ...     )
+        ...     assets = create_shard_dict(
+        ...         shards={
+        ...             "stats": create_json_shard(
+        ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...             )
+        ...         },
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+        ...     )
+        ...     uri = Path(tmpdir).joinpath("uri").as_uri()
+        ...     _ = create_vanilla_dataset(uri=uri, shards=shards, assets=assets)
+        ...     dataset = VanillaDataset.from_uri(uri)
+        ...     dataset
+        ...
+        VanillaDataset(
+          (uri): file:///.../uri
+          (shards): ShardDict(
+              (train): ShardTuple(
+                  (0): JsonShard(uri=file:///.../shard/uri1)
+                  (1): JsonShard(uri=file:///.../shard/uri2)
+                )
+              (val): ShardTuple()
+            )
+          (assets): ShardDict(
+              (stats): JsonShard(uri=file:///.../uri_stats)
+            )
+        )
+
+        ```
+        """
+        # local import to avoid cyclic dependencies
+        from iden.shard import load_from_uri
+
+        config = load_json(sanitize_path(uri))
+        shards = load_from_uri(config[SHARDS])
+        assets = load_from_uri(config[ASSETS])
+        return cls(uri=uri, shards=shards, assets=assets)
+
+    @classmethod
+    def generate_uri_config(
+        cls,
+        shards: ShardDict[ShardTuple[BaseShard[T]]],
+        assets: ShardDict,
+    ) -> dict:
         r"""Generate the minimal config that is used to load the dataset
         from its URI.
 
@@ -176,6 +257,7 @@ class VanillaDataset(BaseDataset[T]):
             shards: The shards in the dataset. Each item in the mapping
                 represent a dataset split, where the key is the dataset
                 split and the value is the shards.
+            assets: The dataset's assets.
 
         Returns:
             The minimal config to load the shard from its URI.
@@ -209,17 +291,27 @@ class VanillaDataset(BaseDataset[T]):
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
         ...     )
-        ...     config = VanillaDataset.generate_uri_config(shards)
+        ...     assets = create_shard_dict(
+        ...         shards={
+        ...             "stats": create_json_shard(
+        ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...             )
+        ...         },
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+        ...     )
+        ...     config = VanillaDataset.generate_uri_config(shards=shards, assets=assets)
         ...     config
         ...
         {'loader': {'_target_': 'iden.dataset.loader.VanillaDatasetLoader'},
-         'shards': 'file:///.../uri_shards'}
+         'shards': 'file:///.../uri_shards'
+         'shards': 'file:///.../uri_assets'}
 
         ```
         """
         return {
             LOADER: {OBJECT_TARGET: "iden.dataset.loader.VanillaDatasetLoader"},
             SHARDS: shards.get_uri(),
+            ASSETS: assets.get_uri(),
         }
 
 
@@ -280,9 +372,11 @@ def create_vanilla_dataset(
     ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
     ...             )
     ...         },
-    ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+    ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
     ...     )
-    ...     dataset = create_vanilla_dataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
+    ...     dataset = create_vanilla_dataset(
+    ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+    ...     )
     ...     dataset
     ...
     VanillaDataset(
@@ -302,11 +396,13 @@ def create_vanilla_dataset(
     ```
     """
     logger.info(f"Saving URI file {uri}")
-    JsonSaver().save(VanillaDataset.generate_uri_config(shards), sanitize_path(uri))
+    JsonSaver().save(
+        VanillaDataset.generate_uri_config(shards=shards, assets=assets), sanitize_path(uri)
+    )
     return VanillaDataset(uri=uri, shards=shards, assets=assets)
 
 
-def check_shards(shards: ShardDict[ShardTuple[BaseShard[T]]]) -> None:
+def check_shards(shards: BaseShard) -> None:
     r"""Check if the shards have a valid configuration.
 
     The shards must be sorted by ascending order of URIs.
@@ -315,8 +411,12 @@ def check_shards(shards: ShardDict[ShardTuple[BaseShard[T]]]) -> None:
         shards: The shards to check.
 
     Raises:
+        TypeError: if the type is incorrect.
         RuntimeError: if the shard configuration is incorrect.
     """
+    if not isinstance(shards, ShardDict):
+        msg = f"Incorrect shard type: {type(shards)}"
+        raise TypeError(msg)
     for shard_id in shards.get_shard_ids():
         if not shards.get_shard(shard_id).is_sorted_by_uri():
             msg = f"split '{shard_id}' is not sorted by ascending order of URIs"

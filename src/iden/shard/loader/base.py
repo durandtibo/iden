@@ -2,7 +2,7 @@ r"""Contain the base class to implement a shard loader object."""
 
 from __future__ import annotations
 
-__all__ = ["BaseShardLoader", "setup_shard_loader"]
+__all__ = ["BaseShardLoader", "is_shard_loader_config", "setup_shard_loader"]
 
 import logging
 from abc import ABC, abstractmethod
