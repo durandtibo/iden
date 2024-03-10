@@ -37,7 +37,7 @@ def get_dict_uris(shards: dict[str, BaseShard]) -> dict[str, str]:
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     }
-    ...     print(get_dict_uris(shards))
+    ...     get_dict_uris(shards)
     ...
     {'train': 'file:///.../shard/uri1', 'val': 'file:///.../shard/uri2'}
 
@@ -68,7 +68,7 @@ def get_list_uris(shards: Iterable[BaseShard]) -> list[str]:
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     ]
-    ...     print(get_list_uris(shards))
+    ...     get_list_uris(shards)
     ...
     ['file:///.../shard/uri1', 'file:///.../shard/uri2']
 
@@ -102,7 +102,7 @@ def sort_by_uri(shards: Iterable[BaseShard], /, *, reverse: bool = False) -> lis
     ...             create_json_shard([4, 5, 6, 7], uri=Path(tmpdir).joinpath("uri1").as_uri()),
     ...         ]
     ...     )
-    ...     print(shards)
+    ...     shards
     ...
     [JsonShard(uri=file:///.../uri1), JsonShard(uri=file:///.../uri2), JsonShard(uri=file:///.../uri3)]
 

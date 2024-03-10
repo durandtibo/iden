@@ -23,6 +23,27 @@ class TorchSafetensorsShardLoader(BaseShardLoader[dict[str, torch.Tensor]]):
 
     Raises:
         RuntimeError: if ``safetensors`` or ``torch`` is not installed.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> import torch
+    >>> from pathlib import Path
+    >>> from iden.shard import create_torch_safetensors_shard
+    >>> from iden.shard.loader import TorchSafetensorsShardLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+    ...     _ = create_torch_safetensors_shard(
+    ...         {"key1": torch.ones(2, 3), "key2": torch.arange(5)}, uri=uri
+    ...     )
+    ...     loader = TorchSafetensorsShardLoader()
+    ...     shard = loader.load(uri)
+    ...     shard
+    ...
+    TorchSafetensorsShard(uri=file:///.../my_uri)
+
+    ```
     """
 
     def __init__(self) -> None:

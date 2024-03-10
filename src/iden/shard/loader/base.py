@@ -24,6 +24,23 @@ class BaseShardLoader(Generic[T], ABC, metaclass=AbstractFactory):
 
     A shard loader object allows to load a ``BaseShard`` object from
     its Uniform Resource Identifier (URI).
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.shard import create_json_shard
+    >>> from iden.shard.loader import JsonShardLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+    ...     _ = create_json_shard([1, 2, 3], uri=uri)
+    ...     loader = JsonShardLoader()
+    ...     loader
+    ...
+    JsonShardLoader()
+
+    ```
     """
 
     @abstractmethod
@@ -35,6 +52,24 @@ class BaseShardLoader(Generic[T], ABC, metaclass=AbstractFactory):
 
         Returns:
             The loaded shard.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_json_shard
+        >>> from iden.shard.loader import JsonShardLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     _ = create_json_shard([1, 2, 3], uri=uri)
+        ...     loader = JsonShardLoader()
+        ...     shard = loader.load(uri)
+        ...     shard
+        ...
+        JsonShard(uri=file:///.../my_uri)
+
+        ```
         """
 
 

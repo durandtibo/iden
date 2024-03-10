@@ -58,7 +58,7 @@ class VanillaDataset(BaseDataset[T]):
     ...         "val": [],
     ...     }
     ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-    ...     print(dataset)
+    ...     dataset
     ...
     VanillaDataset(
       (uri): file:///.../uri
@@ -169,7 +169,7 @@ class VanillaDataset(BaseDataset[T]):
         ...         "val": [],
         ...     }
         ...     config = VanillaDataset.generate_uri_config(shards)
-        ...     print(config)
+        ...     config
         ...
         {'loader': {'_target_': 'iden.dataset.loader.VanillaDatasetLoader'},
          'shards': {'train': ('file:///.../uri1', 'file:///.../uri2'), 'val': ()}}

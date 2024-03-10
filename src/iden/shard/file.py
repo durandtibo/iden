@@ -39,7 +39,8 @@ class FileShard(BaseShard[T]):
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     file = Path(tmpdir).joinpath("data.json")
     ...     save_json([1, 2, 3], file)
-    ...     shard = FileShard(uri="file:///data/1234456789", path=file, loader=JsonLoader())
+    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+    ...     shard = FileShard(uri=uri, path=file, loader=JsonLoader())
     ...     shard.get_data()
     ...
     [1, 2, 3]
@@ -83,6 +84,30 @@ class FileShard(BaseShard[T]):
 
     @classmethod
     def from_uri(cls, uri: str) -> FileShard:
+        r"""Instantiate a shard from its URI.
+
+        Args:
+            uri: The URI.
+
+        Returns:
+            The instantiated shard.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import FileShard, create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     _ = create_json_shard([1, 2, 3], uri=uri)
+        ...     shard = FileShard.from_uri(uri)
+        ...     shard
+        ...
+        FileShard(uri=file:///.../my_uri)
+
+        ```
+        """
         config = load_json(sanitize_path(uri))
         return cls(uri=uri, **config[KWARGS])
 

@@ -45,7 +45,7 @@ class ShardDict(BaseShard):
     ...         ),
     ...     }
     ...     sd = ShardDict(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
-    ...     print(sd)
+    ...     sd
     ...
     ShardDict(
       (train): JsonShard(uri=file:///.../shard/uri1)
@@ -111,7 +111,7 @@ class ShardDict(BaseShard):
         ...         ),
         ...     }
         ...     sd = ShardDict(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
-        ...     print(sd.get_shard("train"))
+        ...     sd.get_shard("train")
         ...
         JsonShard(uri=file:///.../uri1)
 
@@ -147,8 +147,8 @@ class ShardDict(BaseShard):
         ...         ),
         ...     }
         ...     sd = ShardDict(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
-        ...     print(sd.has_shard("train"))
-        ...     print(sd.has_shard("test"))
+        ...     sd.has_shard("train")
+        ...     sd.has_shard("test")
         ...
         True
         False
@@ -183,9 +183,9 @@ class ShardDict(BaseShard):
         ...         ),
         ...     }
         ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-        ...     create_shard_dict(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+        ...     _ = create_shard_dict(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
         ...     shard = ShardDict.from_uri(uri)
-        ...     print(shard)
+        ...     shard
         ...
         ShardDict(
           (train): JsonShard(uri=file:///.../shard/uri1)
@@ -273,7 +273,7 @@ def create_shard_dict(shards: dict[str, BaseShard], uri: str) -> ShardDict:
     ...         ),
     ...     }
     ...     shard = create_shard_dict(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
-    ...     print(shard)
+    ...     shard
     ...
     ShardDict(
       (train): JsonShard(uri=file:///.../shard/uri1)

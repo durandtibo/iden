@@ -45,7 +45,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     ...         ),
     ...     ]
     ...     sl = ShardTuple(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
-    ...     print(sl)
+    ...     sl
     ...
     ShardTuple(
       (0): JsonShard(uri=file:///.../shard/uri1)
@@ -109,7 +109,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         ...         ),
         ...     ]
         ...     sl = ShardTuple(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
-        ...     print(sl.get(0))
+        ...     sl.get(0)
         ...
         JsonShard(uri=file:///.../uri1)
 
@@ -151,7 +151,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
         ...     create_shard_tuple(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
         ...     shard = ShardTuple.from_uri(uri)
-        ...     print(shard)
+        ...     shard
         ...
         ShardTuple(
           (0): JsonShard(uri=file:///.../shard/uri1)
@@ -239,7 +239,7 @@ def create_shard_tuple(shards: Iterable[BaseShard], uri: str) -> ShardTuple:
     ...         ),
     ...     ]
     ...     shard = create_shard_tuple(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
-    ...     print(shard)
+    ...     shard
     ...
     ShardTuple(
       (0): JsonShard(uri=file:///.../shard/uri1)
