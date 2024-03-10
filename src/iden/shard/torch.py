@@ -83,7 +83,8 @@ class TorchShard(FileShard[Any]):
         ...     file = Path(tmpdir).joinpath("data.pt")
         ...     TorchShard.generate_uri_config(file)
         ...
-        {'kwargs': {'path': '.../data.pt'}, 'loader': {'_target_': 'iden.shard.loader.TorchShardLoader'}}
+        {'kwargs': {'path': '.../data.pt'},
+         'loader': {'_target_': 'iden.shard.loader.TorchShardLoader'}}
 
         ```
         """

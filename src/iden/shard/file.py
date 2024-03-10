@@ -109,7 +109,8 @@ class FileShard(BaseShard[T]):
         ...     file = Path(tmpdir).joinpath("data.json")
         ...     FileShard.generate_uri_config(file)
         ...
-        {'kwargs': {'path': '.../data.json'}, 'loader': {'_target_': 'iden.shard.loader.FileShardLoader'}}
+        {'kwargs': {'path': '.../data.json'},
+         'loader': {'_target_': 'iden.shard.loader.FileShardLoader'}}
 
         ```
         """

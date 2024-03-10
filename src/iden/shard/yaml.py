@@ -73,7 +73,8 @@ class YamlShard(FileShard[Any]):
         ...     file = Path(tmpdir).joinpath("data.yaml")
         ...     YamlShard.generate_uri_config(file)
         ...
-        {'kwargs': {'path': '.../data.yaml'}, 'loader': {'_target_': 'iden.shard.loader.YamlShardLoader'}}
+        {'kwargs': {'path': '.../data.yaml'},
+         'loader': {'_target_': 'iden.shard.loader.YamlShardLoader'}}
 
         ```
         """
