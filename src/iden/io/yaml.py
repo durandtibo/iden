@@ -6,10 +6,16 @@ __all__ = ["YamlLoader", "YamlSaver", "load_yaml", "save_yaml", "get_loader_mapp
 
 from pathlib import Path
 from typing import Any, TypeVar
-
-import yaml
+from unittest.mock import Mock
 
 from iden.io.base import BaseFileSaver, BaseLoader
+from iden.utils.imports import check_yaml, is_yaml_available
+
+if is_yaml_available():
+    import yaml
+else:  # pragma: no cover
+    yaml = Mock()
+
 
 T = TypeVar("T")
 
@@ -26,6 +32,9 @@ class YamlLoader(BaseLoader[Any]):
 
     ```
     """
+
+    def __init__(self) -> None:
+        check_yaml()
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
@@ -50,6 +59,9 @@ class YamlSaver(BaseFileSaver[Any]):
 
     ```
     """
+
+    def __init__(self) -> None:
+        check_yaml()
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
@@ -130,5 +142,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     ```
     """
+    if not is_yaml_available():
+        return {}
     loader = YamlLoader()
     return {"yaml": loader, "yml": loader}
