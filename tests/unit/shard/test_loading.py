@@ -25,7 +25,7 @@ from iden.shard import (
     create_yaml_shard,
     load_from_uri,
 )
-from iden.testing import safetensors_available
+from iden.testing import safetensors_available, yaml_available
 from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
@@ -116,6 +116,7 @@ def test_load_from_uri_tuple(tmp_path: Path) -> None:
     )
 
 
+@yaml_available
 def test_load_from_uri_yaml(tmp_path: Path) -> None:
     uri = tmp_path.joinpath("my_uri").as_uri()
     path = tmp_path.joinpath("my_uri.yaml")
