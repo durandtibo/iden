@@ -47,7 +47,7 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
     r"""Define the base class to implement a data saver."""
 
     @abstractmethod
-    def save(self, to_save: T, path: Path, exist_ok: bool = False) -> None:
+    def save(self, to_save: T, path: Path, *, exist_ok: bool = False) -> None:
         r"""Save the data into the given path.
 
         Args:
@@ -63,7 +63,7 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
 class BaseFileSaver(BaseSaver[T]):
     r"""Define the base class to implement a file saver."""
 
-    def save(self, to_save: T, path: Path, exist_ok: bool = False) -> None:
+    def save(self, to_save: T, path: Path, *, exist_ok: bool = False) -> None:
         r"""Save the data into the given path.
 
         Args:
