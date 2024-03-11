@@ -304,3 +304,32 @@ jobs:
       - name: Run some checks
         run: |
           python tests/package_checks.py
+
+
+  yaml:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ '3.12', '3.11', '3.10', '3.9' ]
+        yaml-version: [ 6.0.1 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: |
+          pip install iden pyyaml==${{ matrix.yaml-version }}
+
+      - name: Run some checks
+        run: |
+          python tests/package_checks.py
