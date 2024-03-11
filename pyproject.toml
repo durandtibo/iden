@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iden"
-version = "0.0.1a1"
+version = "0.0.1a2"
 description = ""
 readme = "README.md"
 authors = ["Thibaut Durand <durand.tibo+gh@gmail.com>"]
@@ -34,15 +34,15 @@ packages = [
 coola = ">=0.4,<1.0"
 objectory = ">=0.1,<1.0"
 python = ">=3.9,<3.13"
-pyyaml = ">=6.0,<7.0"
 
 # Optional dependencies
 numpy = { version = ">=1.22,<2.0", optional = true }
+pyyaml = { version = ">=6.0,<7.0", optional = true }
 safetensors = { version = ">=0.4,<1.0", optional = true }
 torch = { version = ">=1.11,<3.0", optional = true }
 
 [tool.poetry.extras]
-all = ["numpy", "safetensors", "torch"]
+all = ["numpy", "pyyaml", "safetensors", "torch"]
 
 [tool.poetry.group.docs]
 optional = true

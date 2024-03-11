@@ -16,6 +16,7 @@ from iden.io import (
     save_json,
     save_text,
 )
+from iden.testing import yaml_available
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -89,15 +90,19 @@ def test_auto_file_loader_load_txt(tmp_path: Path) -> None:
 
 
 def test_auto_file_loader_registry_default() -> None:
-    assert len(AutoFileLoader.registry) >= 6
+    assert len(AutoFileLoader.registry) >= 4
     assert isinstance(AutoFileLoader.registry["json"], JsonLoader)
     assert isinstance(AutoFileLoader.registry["pickle"], PickleLoader)
     assert isinstance(AutoFileLoader.registry["pkl"], PickleLoader)
     assert isinstance(AutoFileLoader.registry["txt"], TextLoader)
-    assert isinstance(AutoFileLoader.registry["yaml"], YamlLoader)
-    assert isinstance(AutoFileLoader.registry["yml"], YamlLoader)
 
 
 @torch_available
 def test_auto_file_loader_registry_torch() -> None:
     assert isinstance(AutoFileLoader.registry["pt"], TorchLoader)
+
+
+@yaml_available
+def test_auto_file_loader_registry_yaml() -> None:
+    assert isinstance(AutoFileLoader.registry["yaml"], YamlLoader)
+    assert isinstance(AutoFileLoader.registry["yml"], YamlLoader)

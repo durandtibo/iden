@@ -8,6 +8,7 @@ from typing import Any, TypeVar
 
 from iden.shard.loader.base import BaseShardLoader
 from iden.shard.yaml import YamlShard
+from iden.utils.imports import check_yaml
 
 T = TypeVar("T")
 
@@ -33,6 +34,9 @@ class YamlShardLoader(BaseShardLoader[Any]):
 
     ```
     """
+
+    def __init__(self) -> None:
+        check_yaml()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
