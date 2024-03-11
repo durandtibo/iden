@@ -118,7 +118,7 @@ def save_text(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
 
     ```
     """
-    TextSaver().save(to_save, path, exist_ok)
+    TextSaver().save(to_save, path, exist_ok=exist_ok)
 
 
 def get_loader_mapping() -> dict[str, BaseLoader]:
