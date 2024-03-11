@@ -81,7 +81,7 @@ class BaseDatasetLoader(Generic[T], ABC, metaclass=AbstractFactory):
         ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     uri = Path(tmpdir).joinpath("uri").as_uri()
         ...     _ = create_vanilla_dataset(uri=uri, shards=shards, assets=assets)
@@ -92,14 +92,23 @@ class BaseDatasetLoader(Generic[T], ABC, metaclass=AbstractFactory):
         VanillaDataset(
           (uri): file:///.../uri
           (shards): ShardDict(
-              (train): ShardTuple(
-                  (0): JsonShard(uri=file:///.../shard/uri1)
-                  (1): JsonShard(uri=file:///.../shard/uri2)
-                )
-              (val): ShardTuple()
+              (uri): file:///.../uri_shards
+              (shards):
+                (train): ShardTuple(
+                    (uri): file:///.../uri_train
+                    (shards):
+                      (0): JsonShard(uri=file:///.../shard/uri1)
+                      (1): JsonShard(uri=file:///.../shard/uri2)
+                  )
+                (val): ShardTuple(
+                    (uri): file:///.../uri_val
+                    (shards):
+                  )
             )
           (assets): ShardDict(
-              (stats): JsonShard(uri=file:///.../uri_stats)
+              (uri): file:///.../uri_assets
+              (shards):
+                (stats): JsonShard(uri=file:///.../uri_stats)
             )
         )
 
