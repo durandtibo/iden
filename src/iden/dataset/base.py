@@ -59,7 +59,7 @@ class BaseDataset(Generic[T], ABC):
     ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
     ...             )
     ...         },
-    ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+    ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
     ...     )
     ...     dataset = VanillaDataset(
     ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
@@ -69,14 +69,23 @@ class BaseDataset(Generic[T], ABC):
     VanillaDataset(
       (uri): file:///.../uri
       (shards): ShardDict(
-          (train): ShardTuple(
-              (0): JsonShard(uri=file:///.../shard/uri1)
-              (1): JsonShard(uri=file:///.../shard/uri2)
-            )
-          (val): ShardTuple()
+          (uri): file:///.../uri_shards
+          (shards):
+            (train): ShardTuple(
+                (uri): file:///.../uri_train
+                (shards):
+                  (0): JsonShard(uri=file:///.../shard/uri1)
+                  (1): JsonShard(uri=file:///.../shard/uri2)
+              )
+            (val): ShardTuple(
+                (uri): file:///.../uri_val
+                (shards):
+              )
         )
       (assets): ShardDict(
-          (stats): JsonShard(uri=file:///.../uri_stats)
+          (uri): file:///.../uri_assets
+          (shards):
+            (stats): JsonShard(uri=file:///.../uri_stats)
         )
     )
 
@@ -130,7 +139,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset1 = VanillaDataset(
         ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
@@ -196,7 +205,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
         ...     dataset.get_asset('stats').get_data()
@@ -251,7 +260,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
         ...     dataset.has_asset('stats')
@@ -309,7 +318,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
         ...     dataset.get_shards('train')
@@ -369,7 +378,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
         ...     dataset.get_num_shards('train')
@@ -423,7 +432,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
         ...     sorted(dataset.get_splits())
@@ -475,7 +484,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
         ...     dataset.has_split('train')
@@ -529,7 +538,7 @@ class BaseDataset(Generic[T], ABC):
         ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_asset").as_uri(),
+        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
         ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
         ...     dataset.get_uri()

@@ -44,12 +44,14 @@ class ShardDict(BaseShard):
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     }
-    ...     sd = ShardDict(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
+    ...     sd = ShardDict(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
     ...     sd
     ...
     ShardDict(
-      (train): JsonShard(uri=file:///.../shard/uri1)
-      (val): JsonShard(uri=file:///.../shard/uri2)
+      (uri): file:///.../uri
+      (shards):
+        (train): JsonShard(uri=file:///.../shard/uri1)
+        (val): JsonShard(uri=file:///.../shard/uri2)
     )
 
     ```
@@ -69,12 +71,14 @@ class ShardDict(BaseShard):
         return len(self._shards)
 
     def __repr__(self) -> str:
-        args = f"\n  {repr_indent(repr_mapping(self._shards))}\n" if self._shards else ""
-        return f"{self.__class__.__qualname__}({args})"
+        shards = f"\n{repr_mapping(self._shards)}" if self._shards else ""
+        args = repr_indent(repr_mapping({"uri": self._uri, "shards": shards}))
+        return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
     def __str__(self) -> str:
-        args = f"\n  {str_indent(str_mapping(self._shards))}\n" if self._shards else ""
-        return f"{self.__class__.__qualname__}({args})"
+        shards = f"\n{str_mapping(self._shards)}" if self._shards else ""
+        args = str_indent(str_mapping({"uri": self._uri, "shards": shards}))
+        return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
@@ -219,14 +223,16 @@ class ShardDict(BaseShard):
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     }
-        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-        ...     _ = create_shard_dict(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+        ...     uri = Path(tmpdir).joinpath("uri").as_uri()
+        ...     _ = create_shard_dict(shards, uri=uri)
         ...     shard = ShardDict.from_uri(uri)
         ...     shard
         ...
         ShardDict(
-          (train): JsonShard(uri=file:///.../shard/uri1)
-          (val): JsonShard(uri=file:///.../shard/uri2)
+          (uri): file:///.../uri
+          (shards):
+            (train): JsonShard(uri=file:///.../shard/uri1)
+            (val): JsonShard(uri=file:///.../shard/uri2)
         )
 
         ```
@@ -309,12 +315,14 @@ def create_shard_dict(shards: dict[str, BaseShard], uri: str) -> ShardDict:
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     }
-    ...     shard = create_shard_dict(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+    ...     shard = create_shard_dict(shards, uri=Path(tmpdir).joinpath("uri").as_uri())
     ...     shard
     ...
     ShardDict(
-      (train): JsonShard(uri=file:///.../shard/uri1)
-      (val): JsonShard(uri=file:///.../shard/uri2)
+      (uri): file:///.../uri
+      (shards):
+        (train): JsonShard(uri=file:///.../shard/uri1)
+        (val): JsonShard(uri=file:///.../shard/uri2)
     )
 
     ```
