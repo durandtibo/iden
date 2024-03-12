@@ -55,6 +55,20 @@ def test_shard_tuple_str(uri: str, shards: Sequence[BaseShard]) -> None:
     assert str(ShardTuple(uri=uri, shards=shards)).startswith("ShardTuple(")
 
 
+def test_shard_tuple_clear_not_initialized(uri: str, shards: Sequence[BaseShard]) -> None:
+    shard = ShardTuple(uri=uri, shards=shards)
+    shard.clear()
+    assert not shard.is_initialized()
+
+
+def test_shard_tuple_clear_is_initialized(uri: str, shards: Sequence[BaseShard]) -> None:
+    shard = ShardTuple(uri=uri, shards=shards)
+    assert objects_are_equal(shard.get_data()[0].get_data(), [1, 2, 3])
+    assert shard.is_initialized()
+    shard.clear()
+    assert not shard.is_initialized()
+
+
 def test_shard_tuple_equal_true(uri: str, shards: Sequence[BaseShard]) -> None:
     assert ShardTuple(uri=uri, shards=shards).equal(ShardTuple(uri=uri, shards=shards))
 
@@ -106,6 +120,23 @@ def test_shard_tuple_get_data_empty(
     uri: str,
 ) -> None:
     assert objects_are_equal(ShardTuple(uri=uri, shards=[]).get_data(), ())
+
+
+def test_shard_tuple_is_initialized_false(uri: str, shards: Sequence[BaseShard]) -> None:
+    shard = ShardTuple(uri=uri, shards=shards)
+    assert not shard.is_initialized()
+
+
+def test_shard_tuple_is_initialized_true_partial(uri: str, shards: Sequence[BaseShard]) -> None:
+    shard = ShardTuple(uri=uri, shards=shards)
+    shard.get_data()[0].get_data()
+    assert shard.is_initialized()
+
+
+def test_shard_tuple_is_initialized_true_all(uri: str, shards: Sequence[BaseShard]) -> None:
+    shard = ShardTuple(uri=uri, shards=shards)
+    [shard.get_data() for shard in shard.get_data()]
+    assert shard.is_initialized()
 
 
 def test_shard_tuple_is_sorted_by_uri_true(uri: str, shards: Sequence[BaseShard]) -> None:

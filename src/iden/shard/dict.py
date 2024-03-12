@@ -80,6 +80,10 @@ class ShardDict(BaseShard):
         args = str_indent(str_mapping({"uri": self._uri, "shards": shards}))
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
+    def clear(self) -> None:
+        for shard in self._shards.values():
+            shard.clear()
+
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
             return False
@@ -197,6 +201,9 @@ class ShardDict(BaseShard):
         ```
         """
         return shard_id in self
+
+    def is_initialized(self) -> bool:
+        return any(shard.is_initialized() for shard in self._shards.values())
 
     @classmethod
     def from_uri(cls, uri: str) -> ShardDict:

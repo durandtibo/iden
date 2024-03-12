@@ -84,6 +84,10 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         args = str_indent(str_mapping({"uri": self._uri, "shards": shards}))
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
+    def clear(self) -> None:
+        for shard in self._shards:
+            shard.clear()
+
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
             return False
@@ -133,6 +137,9 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
 
     def get_uri(self) -> str:
         return self._uri
+
+    def is_initialized(self) -> bool:
+        return any(shard.is_initialized() for shard in self._shards)
 
     def is_sorted_by_uri(self) -> bool:
         r"""Indicate if the shards are sorted by ascending order of URIs

@@ -80,6 +80,20 @@ def test_shard_dict_str(uri: str, shards: dict[str, BaseShard]) -> None:
     assert str(ShardDict(uri=uri, shards=shards)).startswith("ShardDict(")
 
 
+def test_shard_dict_clear_not_initialized(uri: str, shards: dict[str, BaseShard]) -> None:
+    shard = ShardDict(uri=uri, shards=shards)
+    shard.clear()
+    assert not shard.is_initialized()
+
+
+def test_shard_dict_clear_is_initialized(uri: str, shards: dict[str, BaseShard]) -> None:
+    shard = ShardDict(uri=uri, shards=shards)
+    assert objects_are_equal(shard.get_data()["001"].get_data(), [1, 2, 3])
+    assert shard.is_initialized()
+    shard.clear()
+    assert not shard.is_initialized()
+
+
 def test_shard_dict_equal_true(uri: str, shards: dict[str, BaseShard]) -> None:
     assert ShardDict(uri=uri, shards=shards).equal(ShardDict(uri=uri, shards=shards))
 
@@ -141,6 +155,23 @@ def test_shard_dict_has_shard_true(uri: str, shards: dict[str, BaseShard]) -> No
 
 def test_shard_dict_has_shard_false(uri: str) -> None:
     assert not ShardDict(uri=uri, shards={}).has_shard("missing")
+
+
+def test_shard_dict_is_initialized_false(uri: str, shards: dict[str, BaseShard]) -> None:
+    shard = ShardDict(uri=uri, shards=shards)
+    assert not shard.is_initialized()
+
+
+def test_shard_dict_is_initialized_true_partial(uri: str, shards: dict[str, BaseShard]) -> None:
+    shard = ShardDict(uri=uri, shards=shards)
+    shard.get_data()["001"].get_data()
+    assert shard.is_initialized()
+
+
+def test_shard_dict_is_initialized_true_all(uri: str, shards: dict[str, BaseShard]) -> None:
+    shard = ShardDict(uri=uri, shards=shards)
+    [shard.get_data() for shard in shard.get_data().values()]
+    assert shard.is_initialized()
 
 
 def test_shard_dict_from_uri(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
