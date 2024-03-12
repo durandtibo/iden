@@ -281,7 +281,7 @@ class BaseDataset(Generic[T], ABC):
                 sorted by ascending order of URI.
 
         Raises:
-            ``SplitNotFoundError``: if the split does not exist.
+            SplitNotFoundError: if the split does not exist.
 
         Example usage:
 
@@ -338,7 +338,7 @@ class BaseDataset(Generic[T], ABC):
             The number of shards in the dataset for a given split.
 
         Raises:
-            ``SplitNotFoundError``: if the split does not exist.
+            SplitNotFoundError: if the split does not exist.
 
         Returns:
             The dataset splits.
