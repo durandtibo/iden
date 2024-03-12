@@ -26,9 +26,16 @@ class YamlLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_yaml
-    >>> data = YamlLoader().load(Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_yaml, YamlLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = YamlLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -53,9 +60,16 @@ class YamlSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import YamlSaver
-    >>> YamlSaver().save({"key": "value"}, Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import YamlSaver, YamlLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     YamlSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = YamlLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -90,9 +104,16 @@ def load_yaml(path: Path) -> Any:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_yaml
-    >>> data = load_yaml(Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import load_yaml, save_yaml
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_yaml(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -118,9 +139,16 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_yaml
-    >>> save_yaml({"key": "value"}, Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import load_yaml, save_yaml
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_yaml(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
