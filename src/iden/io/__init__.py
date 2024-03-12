@@ -31,6 +31,8 @@ __all__ = [
     "save_yaml",
     "setup_loader",
     "setup_saver",
+    "NumpyZLoader",
+    "NumpyZSaver",
 ]
 
 from iden.io.auto import AutoFileLoader, register_auto_loaders
@@ -44,6 +46,7 @@ from iden.io.base import (
     setup_saver,
 )
 from iden.io.json import JsonLoader, JsonSaver, load_json, save_json
+from iden.io.numpy import NumpyZLoader, NumpyZSaver
 from iden.io.pickle import PickleLoader, PickleSaver, load_pickle, save_pickle
 from iden.io.text import TextLoader, TextSaver, load_text, save_text
 from iden.io.torch import TorchLoader, TorchSaver, load_torch, save_torch
