@@ -39,6 +39,20 @@ def test_json_shard_path(uri: str, path: Path) -> None:
     assert JsonShard(uri=uri, path=path).path == path
 
 
+def test_json_shard_clear_not_initialized(uri: str, path: Path) -> None:
+    shard = JsonShard(uri=uri, path=path)
+    shard.clear()
+    assert not shard.is_initialized()
+
+
+def test_json_shard_clear_is_initialized(uri: str, path: Path) -> None:
+    shard = JsonShard(uri=uri, path=path)
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
+    assert shard.is_initialized()
+    shard.clear()
+    assert not shard.is_initialized()
+
+
 def test_json_shard_equal_true(uri: str, path: Path) -> None:
     assert JsonShard(uri=uri, path=path).equal(JsonShard(uri=uri, path=path))
 
@@ -79,6 +93,17 @@ def test_json_shard_get_data_multiple_calls(uri: str, path: Path) -> None:
 
 def test_json_shard_get_uri(uri: str, path: Path) -> None:
     assert JsonShard(uri=uri, path=path).get_uri() == uri
+
+
+def test_json_shard_is_initialized_false(uri: str, path: Path) -> None:
+    shard = JsonShard(uri=uri, path=path)
+    assert not shard.is_initialized()
+
+
+def test_json_shard_is_initialized_true(uri: str, path: Path) -> None:
+    shard = JsonShard(uri=uri, path=path)
+    shard.get_data()
+    assert shard.is_initialized()
 
 
 def test_json_shard_from_uri(uri: str, path: Path) -> None:

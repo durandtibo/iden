@@ -56,6 +56,24 @@ def test_torch_safetensors_shard_path(uri: str, path: Path) -> None:
 
 @safetensors_available
 @torch_available
+def test_torch_safetensors_shard_clear_not_initialized(uri: str, path: Path) -> None:
+    shard = TorchSafetensorsShard(uri=uri, path=path)
+    shard.clear()
+    assert not shard.is_initialized()
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_clear_is_initialized(uri: str, path: Path) -> None:
+    shard = TorchSafetensorsShard(uri=uri, path=path)
+    assert objects_are_equal(shard.get_data(), {"key1": torch.ones(2, 3), "key2": torch.arange(5)})
+    assert shard.is_initialized()
+    shard.clear()
+    assert not shard.is_initialized()
+
+
+@safetensors_available
+@torch_available
 def test_torch_safetensors_shard_equal_true(uri: str, path: Path) -> None:
     assert TorchSafetensorsShard(uri=uri, path=path).equal(
         TorchSafetensorsShard(uri=uri, path=path)
@@ -125,6 +143,21 @@ def test_torch_safetensors_shard_get_data_multiple_calls(uri: str, path: Path) -
 @torch_available
 def test_torch_safetensors_shard_get_uri(uri: str, path: Path) -> None:
     assert TorchSafetensorsShard(uri=uri, path=path).get_uri() == uri
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_is_initialized_false(uri: str, path: Path) -> None:
+    shard = TorchSafetensorsShard(uri=uri, path=path)
+    assert not shard.is_initialized()
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_is_initialized_true(uri: str, path: Path) -> None:
+    shard = TorchSafetensorsShard(uri=uri, path=path)
+    shard.get_data()
+    assert shard.is_initialized()
 
 
 @safetensors_available

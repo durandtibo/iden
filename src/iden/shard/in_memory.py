@@ -34,6 +34,9 @@ class InMemoryShard(BaseShard[Any]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
+    def clear(self) -> None:
+        r"""Do nothing because it is an in-memory shard."""
+
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
             return False
@@ -44,3 +47,6 @@ class InMemoryShard(BaseShard[Any]):
 
     def get_uri(self) -> str | None:
         return None
+
+    def is_initialized(self) -> bool:
+        return True
