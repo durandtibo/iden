@@ -26,9 +26,16 @@ class TorchLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import TorchLoader
-    >>> data = TorchLoader().load(Path("/path/to/data.pt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_torch, TorchLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = TorchLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -52,9 +59,16 @@ class TorchSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import TorchSaver
-    >>> TorchSaver().save({"key": "value"}, Path("/path/to/data.pt"))  # xdoctest: +SKIP()
+    >>> from iden.io import TorchSaver, TorchLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     TorchSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = TorchLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -88,9 +102,16 @@ def load_torch(path: Path) -> Any:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_torch
-    >>> data = load_torch(Path("/path/to/data.pt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_torch, load_torch
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_torch(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -116,9 +137,16 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_torch
-    >>> save_torch({"key": "value"}, Path("/path/to/data.pt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_torch, load_torch
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_torch(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """

@@ -18,9 +18,16 @@ class TextLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import TextLoader
-    >>> data = TextLoader().load(Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_text, TextLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     save_text("hello", path)
+    ...     data = TextLoader().load(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """
@@ -46,9 +53,16 @@ class TextSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import TextSaver
-    >>> TextSaver().save("abc", Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import TextSaver, TextLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     TextSaver().save("hello", path)
+    ...     data = TextLoader().load(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """
@@ -80,9 +94,16 @@ def load_text(path: Path) -> str:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_text
-    >>> data = load_text(Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_text, load_text
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     save_text("hello", path)
+    ...     data = load_text(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """
@@ -112,9 +133,16 @@ def save_text(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_text
-    >>> save_text("abc", Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_text, load_text
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     save_text("hello", path)
+    ...     data = load_text(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """

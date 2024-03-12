@@ -19,9 +19,16 @@ class PickleLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_pickle
-    >>> data = PickleLoader().load(Path("/path/to/data.pkl"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_pickle, PickleLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pkl")
+    ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = PickleLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -47,9 +54,16 @@ class PickleSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import PickleSaver
-    >>> PickleSaver().save({"key": "value"}, Path("/path/to/data.pkl"))  # xdoctest: +SKIP()
+    >>> from iden.io import PickleSaver, PickleLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pkl")
+    ...     PickleSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = PickleLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -81,9 +95,16 @@ def load_pickle(path: Path) -> Any:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_pickle
-    >>> data = load_pickle(Path("/path/to/data.pkl"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_pickle, load_pickle
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pkl")
+    ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_pickle(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -113,9 +134,16 @@ def save_pickle(
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_pickle
-    >>> save_pickle({"key": "value"}, Path("/path/to/data.pkl"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_pickle, load_pickle
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.pkl")
+    ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_pickle(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """

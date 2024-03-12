@@ -29,7 +29,24 @@ logger = logging.getLogger(__name__)
 
 
 class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
-    r"""Define the base class to implement a data loader."""
+    r"""Define the base class to implement a data loader.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.io import save_json, JsonLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = JsonLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
+
+    ```
+    """
 
     @abstractmethod
     def load(self, path: Path) -> T:
@@ -40,11 +57,44 @@ class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
 
         Returns:
             The data
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json, JsonLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = JsonLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
+
+        ```
         """
 
 
 class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
-    r"""Define the base class to implement a data saver."""
+    r"""Define the base class to implement a data saver.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.io import JsonSaver, JsonLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = JsonLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
+
+    ```
+    """
 
     @abstractmethod
     def save(self, to_save: T, path: Path, *, exist_ok: bool = False) -> None:
@@ -57,11 +107,44 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
             exist_ok: If ``exist_ok`` is ``False`` (the default),
                 an exception is raised if the target path already
                 exists.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import JsonSaver, JsonLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = JsonLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
+
+        ```
         """
 
 
 class BaseFileSaver(BaseSaver[T]):
-    r"""Define the base class to implement a file saver."""
+    r"""Define the base class to implement a file saver.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.io import JsonSaver, JsonLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = JsonLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
+
+    ```
+    """
 
     def save(self, to_save: T, path: Path, *, exist_ok: bool = False) -> None:
         r"""Save the data into the given path.
@@ -79,6 +162,22 @@ class BaseFileSaver(BaseSaver[T]):
 
         Raises:
             FileExistsError: if the file already exists.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import JsonSaver, JsonLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = JsonLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
+
+        ```
         """
         if path.is_dir():
             msg = f"path ({path}) is a directory"
