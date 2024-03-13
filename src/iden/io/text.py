@@ -74,12 +74,8 @@ class TextSaver(BaseFileSaver[Any]):
         return f"{self.__class__.__qualname__}()"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
-        # Save to tmp, then commit by moving the file in case the job gets
-        # interrupted while writing the file
-        tmp_path = path.parents[0].joinpath(f"{path.name}.tmp")
-        with Path.open(tmp_path, mode="w") as file:
+        with Path.open(path, mode="w") as file:
             file.write(str(to_save))
-        tmp_path.rename(path)
 
 
 def load_text(path: Path) -> str:
