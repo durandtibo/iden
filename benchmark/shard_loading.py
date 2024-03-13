@@ -14,6 +14,7 @@ from iden.shard import (
     create_shard_tuple,
     create_torch_safetensors_shard,
 )
+from iden.shard.utils import ShardIterable
 from iden.utils.path import sanitize_path
 from iden.utils.time import timeblock
 
@@ -29,7 +30,7 @@ def create_shard(uri: str, path_data: Path) -> BaseShard:
             "key3": torch.empty(batch_size, 128, 2),
         },
         uri=uri,
-        path=path_data,
+        path=path_data.with_suffix(".safetensors"),
     )
 
 
@@ -37,7 +38,7 @@ def create_shard_split(uri: str, path_data: Path) -> ShardTuple:
     num_shards = 5
     shards = []
     for i in range(1, num_shards + 1):
-        sid = f"{i:04}"
+        sid = f"{i:06}"
         uri_shard = sanitize_path(uri).parent.joinpath(f"uri_shard_{sid}").as_uri()
         shards.append(create_shard(uri=uri_shard, path_data=path_data.joinpath(sid)))
     return create_shard_tuple(uri=uri, shards=shards)
@@ -80,8 +81,7 @@ def benchmark_shard_loading(dataset: BaseDataset) -> None:
     with timeblock():
         total = 0
         shards = dataset.get_shards("train")
-        for shard in shards:
-            data = shard.get_data()
+        for data in ShardIterable(shards):
             total += data["key1"].shape[0]
         logger.info(f"total: {total:,}")
 
