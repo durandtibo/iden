@@ -11,6 +11,13 @@ def test_in_memory_shard_str() -> None:
     assert str(InMemoryShard([1, 2, 3])) == "InMemoryShard()"
 
 
+def test_in_memory_shard_clear() -> None:
+    shard = InMemoryShard([1, 2, 3])
+    assert shard.is_initialized()
+    shard.clear()
+    assert shard.is_initialized()
+
+
 def test_in_memory_shard_equal_true() -> None:
     assert InMemoryShard([1, 2, 3]).equal(InMemoryShard([1, 2, 3]))
 
@@ -41,3 +48,7 @@ def test_in_memory_shard_get_data() -> None:
 
 def test_in_memory_shard_get_uri() -> None:
     assert InMemoryShard([1, 2, 3]).get_uri() is None
+
+
+def test_in_memory_shard_is_initialized() -> None:
+    assert InMemoryShard([1, 2, 3]).is_initialized()

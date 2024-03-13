@@ -9,6 +9,7 @@ from objectory import OBJECT_TARGET
 from iden.constants import KWARGS, LOADER
 from iden.io import load_yaml
 from iden.shard import YamlShard, create_yaml_shard
+from iden.testing import yaml_available
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -31,30 +32,54 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 ###############################
 
 
+@yaml_available
 def test_yaml_shard_str(uri: str, path: Path) -> None:
     assert str(YamlShard(uri=uri, path=path)).startswith("YamlShard(")
 
 
+@yaml_available
 def test_yaml_shard_path(uri: str, path: Path) -> None:
     assert YamlShard(uri=uri, path=path).path == path
 
 
+@yaml_available
+def test_yaml_shard_clear_not_initialized(uri: str, path: Path) -> None:
+    shard = YamlShard(uri=uri, path=path)
+    shard.clear()
+    assert not shard._is_initialized
+    assert shard._data is None
+
+
+@yaml_available
+def test_yaml_shard_clear_is_initialized(uri: str, path: Path) -> None:
+    shard = YamlShard(uri=uri, path=path)
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
+    assert shard.is_initialized()
+    shard.clear()
+    assert not shard.is_initialized()
+
+
+@yaml_available
 def test_yaml_shard_equal_true(uri: str, path: Path) -> None:
     assert YamlShard(uri=uri, path=path).equal(YamlShard(uri=uri, path=path))
 
 
+@yaml_available
 def test_yaml_shard_equal_false_different_uri(uri: str, path: Path) -> None:
     assert not YamlShard(uri=uri, path=path).equal(YamlShard(uri="", path=path))
 
 
+@yaml_available
 def test_yaml_shard_equal_false_different_path(uri: str, path: Path, tmp_path: Path) -> None:
     assert not YamlShard(uri=uri, path=path).equal(YamlShard(uri=uri, path=tmp_path))
 
 
+@yaml_available
 def test_yaml_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not YamlShard(uri=uri, path=path).equal(42)
 
 
+@yaml_available
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_yaml_shard_equal_nan(tmp_path: Path, equal_nan: bool) -> None:
     shard = create_yaml_shard(
@@ -63,12 +88,14 @@ def test_yaml_shard_equal_nan(tmp_path: Path, equal_nan: bool) -> None:
     assert shard.equal(YamlShard.from_uri(uri=shard.get_uri()), equal_nan=equal_nan)
 
 
+@yaml_available
 def test_yaml_shard_get_data(uri: str, path: Path) -> None:
     assert objects_are_equal(
         YamlShard(uri=uri, path=path).get_data(), {"key1": [1, 2, 3], "key2": "abc"}
     )
 
 
+@yaml_available
 def test_yaml_shard_get_data_multiple_calls(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
@@ -77,16 +104,32 @@ def test_yaml_shard_get_data_multiple_calls(uri: str, path: Path) -> None:
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3, 4], "key2": "abc"})
 
 
+@yaml_available
+def test_yaml_shard_is_initialized_false(uri: str, path: Path) -> None:
+    shard = YamlShard(uri=uri, path=path)
+    assert not shard.is_initialized()
+
+
+@yaml_available
+def test_yaml_shard_is_initialized_true(uri: str, path: Path) -> None:
+    shard = YamlShard(uri=uri, path=path)
+    shard.get_data()
+    assert shard.is_initialized()
+
+
+@yaml_available
 def test_yaml_shard_get_uri(uri: str, path: Path) -> None:
     assert YamlShard(uri=uri, path=path).get_uri() == uri
 
 
+@yaml_available
 def test_yaml_shard_from_uri(uri: str, path: Path) -> None:
     shard = YamlShard.from_uri(uri)
     assert shard.equal(YamlShard(uri=uri, path=path))
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
 
 
+@yaml_available
 def test_yaml_shard_generate_uri_config(path: Path) -> None:
     assert YamlShard.generate_uri_config(path) == {
         KWARGS: {"path": path.as_posix()},
@@ -99,6 +142,7 @@ def test_yaml_shard_generate_uri_config(path: Path) -> None:
 #######################################
 
 
+@yaml_available
 def test_create_yaml_shard(tmp_path: Path) -> None:
     uri_file = tmp_path.joinpath("my_uri")
     uri = uri_file.as_uri()
@@ -114,6 +158,7 @@ def test_create_yaml_shard(tmp_path: Path) -> None:
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
 
 
+@yaml_available
 def test_create_yaml_shard_with_data(tmp_path: Path) -> None:
     uri_file = tmp_path.joinpath("my_uri")
     uri = uri_file.as_uri()

@@ -81,14 +81,23 @@ class VanillaDataset(BaseDataset[T]):
     VanillaDataset(
       (uri): file:///.../uri
       (shards): ShardDict(
-          (train): ShardTuple(
-              (0): JsonShard(uri=file:///.../shard/uri1)
-              (1): JsonShard(uri=file:///.../shard/uri2)
-            )
-          (val): ShardTuple()
+          (uri): file:///.../uri_shards
+          (shards):
+            (train): ShardTuple(
+                (uri): file:///.../uri_train
+                (shards):
+                  (0): JsonShard(uri=file:///.../shard/uri1)
+                  (1): JsonShard(uri=file:///.../shard/uri2)
+              )
+            (val): ShardTuple(
+                (uri): file:///.../uri_val
+                (shards):
+              )
         )
       (assets): ShardDict(
-          (stats): JsonShard(uri=file:///.../uri_stats)
+          (uri): file:///.../uri_assets
+          (shards):
+            (stats): JsonShard(uri=file:///.../uri_stats)
         )
     )
 
@@ -221,14 +230,23 @@ class VanillaDataset(BaseDataset[T]):
         VanillaDataset(
           (uri): file:///.../uri
           (shards): ShardDict(
-              (train): ShardTuple(
-                  (0): JsonShard(uri=file:///.../shard/uri1)
-                  (1): JsonShard(uri=file:///.../shard/uri2)
-                )
-              (val): ShardTuple()
+              (uri): file:///.../uri_shards
+              (shards):
+                (train): ShardTuple(
+                    (uri): file:///.../uri_train
+                    (shards):
+                      (0): JsonShard(uri=file:///.../shard/uri1)
+                      (1): JsonShard(uri=file:///.../shard/uri2)
+                  )
+                (val): ShardTuple(
+                    (uri): file:///.../uri_val
+                    (shards):
+                  )
             )
           (assets): ShardDict(
-              (stats): JsonShard(uri=file:///.../uri_stats)
+              (uri): file:///.../uri_assets
+              (shards):
+                (stats): JsonShard(uri=file:///.../uri_stats)
             )
         )
 
@@ -382,14 +400,23 @@ def create_vanilla_dataset(
     VanillaDataset(
       (uri): file:///.../uri
       (shards): ShardDict(
-          (train): ShardTuple(
-              (0): JsonShard(uri=file:///.../shard/uri1)
-              (1): JsonShard(uri=file:///.../shard/uri2)
-            )
-          (val): ShardTuple()
+          (uri): file:///.../uri_shards
+          (shards):
+            (train): ShardTuple(
+                (uri): file:///.../uri_train
+                (shards):
+                  (0): JsonShard(uri=file:///.../shard/uri1)
+                  (1): JsonShard(uri=file:///.../shard/uri2)
+              )
+            (val): ShardTuple(
+                (uri): file:///.../uri_val
+                (shards):
+              )
         )
       (assets): ShardDict(
-          (stats): JsonShard(uri=file:///.../uri_stats)
+          (uri): file:///.../uri_assets
+          (shards):
+            (stats): JsonShard(uri=file:///.../uri_stats)
         )
     )
 

@@ -19,9 +19,16 @@ class JsonLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import JsonLoader
-    >>> data = JsonLoader().load(Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_json, JsonLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = JsonLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -43,9 +50,16 @@ class JsonSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import JsonSaver
-    >>> JsonSaver().save({"key": "value"}, Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import JsonSaver, JsonLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = JsonLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -57,12 +71,8 @@ class JsonSaver(BaseFileSaver[Any]):
         return f"{self.__class__.__qualname__}()"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
-        # Save to tmp, then commit by moving the file in case the job gets
-        # interrupted while writing the file
-        tmp_path = path.parents[0].joinpath(f"{path.name}.tmp")
-        with Path.open(tmp_path, "w") as file:
+        with Path.open(path, "w") as file:
             json.dump(to_save, file, sort_keys=False)
-        tmp_path.rename(path)
 
 
 def load_json(path: Path) -> Any:
@@ -77,9 +87,16 @@ def load_json(path: Path) -> Any:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_json
-    >>> data = load_json(Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_json, load_json
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_json(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -105,9 +122,16 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_json
-    >>> save_json({"key": "value"}, Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_json, load_json
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_json(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """

@@ -22,9 +22,17 @@ class AutoFileLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import AutoFileLoader
-    >>> data = AutoFileLoader().load(Path("/path/to/data.json"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_json, AutoFileLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.json")
+    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     loader = AutoFileLoader()
+    ...     data = loader.load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """

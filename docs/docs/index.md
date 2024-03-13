@@ -1,4 +1,4 @@
-# iden
+# Home
 
 <p align="center">
     <a href="https://github.com/durandtibo/iden/actions">
@@ -56,56 +56,14 @@
     <br/>
 </p>
 
-## Overview
-
-`iden` is a simple Python library to manage a dataset of shards when training a machine learning
-model.
-`iden` uses a lazy loading approach to load the shard's data, so it is easy to manage shards without
-loading their data.
-`iden` supports different format to store shards on disk.
-
-## Installation
-
-We highly recommend installing
-a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
-`iden` can be installed from pip using the following command:
-
-```shell
-pip install iden
-```
-
-To make the package as slim as possible, only the minimal packages required to use `iden` are
-installed.
-To include all the dependencies, you can use the following command:
-
-```shell
-pip install iden[all]
-```
-
-Please check the [get started page](https://durandtibo.github.io/iden/get_started) to see how to
-install only some specific dependencies or other alternatives to install the library.
-The following is the corresponding `iden` versions and tested dependencies.
-
-## Contributing
-
-Please check the instructions in [CONTRIBUTING.md](.github/CONTRIBUTING.md).
-
-## Suggestions and Communication
-
-Everyone is welcome to contribute to the community.
-If you have any questions or suggestions, you can
-submit [Github Issues](https://github.com/durandtibo/iden/issues).
-We will reply to you as soon as possible. Thank you very much.
-
 ## API stability
 
 :warning: While `iden` is in development stage, no API is guaranteed to be stable from one
-release to the next.
-In fact, it is very likely that the API will change multiple times before a stable 1.0.0 release.
-In practice, this means that upgrading `iden` to a new version will possibly break any code that
-was using the old version of `iden`.
+release to the next. In fact, it is very likely that the API will change multiple times before a
+stable 1.0.0 release. In practice, this means that upgrading `iden` to a new version will
+possibly break any code that was using the old version of `iden`.
 
 ## License
 
-`iden` is licensed under BSD 3-Clause "New" or "Revised" license available in [LICENSE](LICENSE)
-file.
+`iden` is licensed under BSD 3-Clause "New" or "Revised" license available
+in [LICENSE](https://github.com/durandtibo/iden/blob/main/LICENSE) file.

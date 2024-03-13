@@ -8,7 +8,14 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 from coola import objects_are_equal
-from coola.utils import repr_indent, repr_sequence, str_indent, str_sequence
+from coola.utils import (
+    repr_indent,
+    repr_mapping,
+    repr_sequence,
+    str_indent,
+    str_mapping,
+    str_sequence,
+)
 from objectory import OBJECT_TARGET
 
 from iden.constants import LOADER, SHARDS
@@ -44,12 +51,14 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     ]
-    ...     sl = ShardTuple(uri=Path(tmpdir).joinpath("main_uri").as_uri(), shards=shards)
+    ...     sl = ShardTuple(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
     ...     sl
     ...
     ShardTuple(
-      (0): JsonShard(uri=file:///.../shard/uri1)
-      (1): JsonShard(uri=file:///.../shard/uri2)
+      (uri): file:///.../uri
+      (shards):
+        (0): JsonShard(uri=file:///.../shard/uri1)
+        (1): JsonShard(uri=file:///.../shard/uri2)
     )
 
     ```
@@ -66,12 +75,18 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         return len(self._shards)
 
     def __repr__(self) -> str:
-        args = f"\n  {repr_indent(repr_sequence(self._shards))}\n" if self._shards else ""
-        return f"{self.__class__.__qualname__}({args})"
+        shards = f"\n{repr_sequence(self._shards)}" if self._shards else ""
+        args = repr_indent(repr_mapping({"uri": self._uri, "shards": shards}))
+        return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
     def __str__(self) -> str:
-        args = f"\n  {str_indent(str_sequence(self._shards))}\n" if self._shards else ""
-        return f"{self.__class__.__qualname__}({args})"
+        shards = f"\n{str_sequence(self._shards)}" if self._shards else ""
+        args = str_indent(str_mapping({"uri": self._uri, "shards": shards}))
+        return f"{self.__class__.__qualname__}(\n  {args}\n)"
+
+    def clear(self) -> None:
+        for shard in self._shards:
+            shard.clear()
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
@@ -123,6 +138,9 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     def get_uri(self) -> str:
         return self._uri
 
+    def is_initialized(self) -> bool:
+        return any(shard.is_initialized() for shard in self._shards)
+
     def is_sorted_by_uri(self) -> bool:
         r"""Indicate if the shards are sorted by ascending order of URIs
         or not.
@@ -159,14 +177,16 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
         ...     ]
-        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-        ...     create_shard_tuple(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+        ...     uri = Path(tmpdir).joinpath("uri").as_uri()
+        ...     create_shard_tuple(shards, uri=uri)
         ...     shard = ShardTuple.from_uri(uri)
         ...     shard
         ...
         ShardTuple(
-          (0): JsonShard(uri=file:///.../shard/uri1)
-          (1): JsonShard(uri=file:///.../shard/uri2)
+          (uri): file:///.../uri
+          (shards):
+            (0): JsonShard(uri=file:///.../shard/uri1)
+            (1): JsonShard(uri=file:///.../shard/uri2)
         )
 
         ```
@@ -249,12 +269,14 @@ def create_shard_tuple(shards: Iterable[BaseShard], uri: str) -> ShardTuple:
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     ]
-    ...     shard = create_shard_tuple(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+    ...     shard = create_shard_tuple(shards, uri=Path(tmpdir).joinpath("uri").as_uri())
     ...     shard
     ...
     ShardTuple(
-      (0): JsonShard(uri=file:///.../shard/uri1)
-      (1): JsonShard(uri=file:///.../shard/uri2)
+      (uri): file:///.../uri
+      (shards):
+        (0): JsonShard(uri=file:///.../shard/uri1)
+        (1): JsonShard(uri=file:///.../shard/uri2)
     )
 
     ```

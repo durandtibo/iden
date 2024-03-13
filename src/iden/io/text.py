@@ -18,9 +18,16 @@ class TextLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import TextLoader
-    >>> data = TextLoader().load(Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_text, TextLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     save_text("hello", path)
+    ...     data = TextLoader().load(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """
@@ -46,9 +53,16 @@ class TextSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import TextSaver
-    >>> TextSaver().save("abc", Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import TextSaver, TextLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     TextSaver().save("hello", path)
+    ...     data = TextLoader().load(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """
@@ -60,12 +74,8 @@ class TextSaver(BaseFileSaver[Any]):
         return f"{self.__class__.__qualname__}()"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
-        # Save to tmp, then commit by moving the file in case the job gets
-        # interrupted while writing the file
-        tmp_path = path.parents[0].joinpath(f"{path.name}.tmp")
-        with Path.open(tmp_path, mode="w") as file:
+        with Path.open(path, mode="w") as file:
             file.write(str(to_save))
-        tmp_path.rename(path)
 
 
 def load_text(path: Path) -> str:
@@ -80,9 +90,16 @@ def load_text(path: Path) -> str:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_text
-    >>> data = load_text(Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_text, load_text
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     save_text("hello", path)
+    ...     data = load_text(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """
@@ -112,13 +129,20 @@ def save_text(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_text
-    >>> save_text("abc", Path("/path/to/data.txt"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_text, load_text
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.txt")
+    ...     save_text("hello", path)
+    ...     data = load_text(path)
+    ...     data
+    ...
+    'hello'
 
     ```
     """
-    TextSaver().save(to_save, path, exist_ok)
+    TextSaver().save(to_save, path, exist_ok=exist_ok)
 
 
 def get_loader_mapping() -> dict[str, BaseLoader]:

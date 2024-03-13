@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+from coola import objects_are_equal
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
@@ -40,6 +41,24 @@ def test_file_shard_str(uri: str, path: Path) -> None:
 
 def test_file_shard_path(uri: str, path: Path) -> None:
     assert FileShard(uri=uri, path=path).path == path
+
+
+def test_file_shard_clear_not_initialized(uri: str, path: Path) -> None:
+    shard = FileShard(uri=uri, path=path)
+    shard.clear()
+    assert not shard.is_initialized()
+    assert shard._data is None
+
+
+def test_file_shard_clear_is_initialized(uri: str, path: Path) -> None:
+    shard = FileShard(uri=uri, path=path)
+    assert objects_are_equal(shard.get_data(), [1, 2, 3])
+    assert shard.is_initialized()
+    assert objects_are_equal(shard._data, [1, 2, 3])
+
+    shard.clear()
+    assert not shard.is_initialized()
+    assert shard._data is None
 
 
 def test_file_shard_equal_true(uri: str, path: Path) -> None:
@@ -82,6 +101,17 @@ def test_file_shard_get_data_multiple_calls(uri: str, path: Path) -> None:
 
 def test_file_shard_get_uri(uri: str, path: Path) -> None:
     assert FileShard(uri=uri, path=path).get_uri() == uri
+
+
+def test_file_shard_is_initialized_false(uri: str, path: Path) -> None:
+    shard = FileShard(uri=uri, path=path)
+    assert not shard.is_initialized()
+
+
+def test_file_shard_is_initialized_true(uri: str, path: Path) -> None:
+    shard = FileShard(uri=uri, path=path)
+    shard.get_data()
+    assert shard.is_initialized()
 
 
 def test_file_shard_from_uri(uri: str, path: Path) -> None:

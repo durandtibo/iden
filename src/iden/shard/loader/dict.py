@@ -21,7 +21,7 @@ class ShardDictLoader(BaseShardLoader[dict[str, BaseShard]]):
     >>> from iden.shard import create_json_shard, create_shard_dict
     >>> from iden.shard.loader import ShardDictLoader
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+    ...     uri = Path(tmpdir).joinpath("uri").as_uri()
     ...     shards = {
     ...         "train": create_json_shard(
     ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
@@ -30,14 +30,16 @@ class ShardDictLoader(BaseShardLoader[dict[str, BaseShard]]):
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),
     ...     }
-    ...     _ = create_shard_dict(shards, uri=Path(tmpdir).joinpath("my_uri").as_uri())
+    ...     _ = create_shard_dict(shards, uri=uri)
     ...     loader = ShardDictLoader()
     ...     shard = loader.load(uri)
     ...     shard
     ...
     ShardDict(
-      (train): JsonShard(uri=file:///.../shard/uri1)
-      (val): JsonShard(uri=file:///.../shard/uri2)
+      (uri): file:///.../uri
+      (shards):
+        (train): JsonShard(uri=file:///.../shard/uri1)
+        (val): JsonShard(uri=file:///.../shard/uri2)
     )
 
     ```

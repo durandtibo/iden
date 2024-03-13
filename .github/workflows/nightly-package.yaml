@@ -1,9 +1,128 @@
-name: Test - Dependencies
+name: Nightly Package Tests
 on:
-  workflow_call:
+  schedule:
+    - cron: '10 12 * * *' # run at 12:10 AM UTC
   workflow_dispatch:  # to trigger manually
 
 jobs:
+  cyclic-imports:
+    uses: ./.github/workflows/cyclic-imports.yaml
+
+  stable-all:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        python-version: [ '3.12', '3.11', '3.10', '3.9' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: |
+          pip install "iden[all]"
+
+      - name: Run some checks
+        run: |
+          python tests/package_checks.py
+
+
+  stable-min:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        python-version: [ '3.12', '3.11', '3.10', '3.9' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: |
+          pip install iden
+
+      - name: Run some checks
+        run: |
+          python tests/package_checks.py
+
+
+  latest-all:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        python-version: [ '3.12', '3.11', '3.10', '3.9' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: |
+          pip install --pre "iden[all]"
+
+      - name: Run some checks
+        run: |
+          python tests/package_checks.py
+
+
+  latest-min:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        python-version: [ '3.12', '3.11', '3.10', '3.9' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: |
+          pip install --pre iden
+
+      - name: Run some checks
+        run: |
+          python tests/package_checks.py
+
+  ########################
+  #     Dependencies     #
+  ########################
+
   coola:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
@@ -24,27 +143,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Install packages
+      - name: Install package
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          pip install iden coola==${{ matrix.coola-version }}
 
-      - name: Install coola
+      - name: Run some checks
         run: |
-          poetry run pip install coola==${{ matrix.coola-version }}
-
-      - name: Show installed packages
-        run: |
-          poetry run poetry show
-          poetry run poetry show --tree
-
-      - name: Run unit tests
-        run: |
-          poetry run make unit-test-cov
-
+          python tests/package_checks.py
 
   objectory:
     runs-on: ${{ matrix.os }}
@@ -66,26 +171,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Install packages
+      - name: Install package
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          pip install iden objectory==${{ matrix.objectory-version }}
 
-      - name: Install objectory
+      - name: Run some checks
         run: |
-          poetry run pip install objectory==${{ matrix.objectory-version }}
-
-      - name: Show installed packages
-        run: |
-          poetry run poetry show
-          poetry run poetry show --tree
-
-      - name: Run unit tests
-        run: |
-          poetry run make unit-test-cov
+          python tests/package_checks.py
 
   #################################
   #     Optional dependencies     #
@@ -126,26 +218,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Install packages
+      - name: Install package
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          pip install iden numpy==${{ matrix.numpy-version }}
 
-      - name: Install NumPy
+      - name: Run some checks
         run: |
-          poetry run pip install numpy==${{ matrix.numpy-version }}
-
-      - name: Show installed packages
-        run: |
-          poetry run poetry show
-          poetry run poetry show --tree
-
-      - name: Run unit tests
-        run: |
-          poetry run make unit-test-cov
+          python tests/package_checks.py
 
 
   safetensors:
@@ -168,26 +247,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Install packages
+      - name: Install package
         run: |
-          poetry run make config-poetry
-          poetry run make install-all
+          pip install iden safetensors==${{ matrix.safetensors-version }}
 
-      - name: Install safetensors
+      - name: Run some checks
         run: |
-          poetry run pip install safetensors==${{ matrix.safetensors-version }}
-
-      - name: Show installed packages
-        run: |
-          poetry run poetry show
-          poetry run poetry show --tree
-
-      - name: Run unit tests
-        run: |
-          poetry run make unit-test-cov
+          python tests/package_checks.py
 
 
   torch:
@@ -231,26 +297,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Install packages
+      - name: Install package
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          pip install iden torch==${{ matrix.torch-version }}
 
-      - name: Install PyTorch
+      - name: Run some checks
         run: |
-          poetry run pip install torch==${{ matrix.torch-version }}
-
-      - name: Show installed packages
-        run: |
-          poetry run poetry show
-          poetry run poetry show --tree
-
-      - name: Run unit tests
-        run: |
-          poetry run make unit-test-cov
+          python tests/package_checks.py
 
 
   yaml:
@@ -273,23 +326,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Install packages
+      - name: Install package
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          pip install iden pyyaml==${{ matrix.yaml-version }}
 
-      - name: Install yaml
+      - name: Run some checks
         run: |
-          poetry run pip install pyyaml==${{ matrix.yaml-version }}
-
-      - name: Show installed packages
-        run: |
-          poetry run poetry show
-          poetry run poetry show --tree
-
-      - name: Run unit tests
-        run: |
-          poetry run make unit-test-cov
+          python tests/package_checks.py

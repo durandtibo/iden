@@ -14,6 +14,11 @@ class BaseShard(Generic[T], ABC):
     r"""Define the base class to implement a shard."""
 
     @abstractmethod
+    def clear(self) -> None:
+        r"""Clear the current shard i.e. remove from memory the data if
+        possible."""
+
+    @abstractmethod
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         r"""Indicate if two shards are equal or not.
 
@@ -40,4 +45,12 @@ class BaseShard(Generic[T], ABC):
 
         Returns:
             The Uniform Resource Identifier (URI).
+        """
+
+    @abstractmethod
+    def is_initialized(self) -> bool:
+        r"""Indicate if the shard has data in-memory or not.
+
+        Returns:
+            ``True`` if the shard has data in-memory otherwise ``False``.
         """

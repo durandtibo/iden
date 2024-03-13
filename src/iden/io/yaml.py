@@ -6,10 +6,16 @@ __all__ = ["YamlLoader", "YamlSaver", "load_yaml", "save_yaml", "get_loader_mapp
 
 from pathlib import Path
 from typing import Any, TypeVar
-
-import yaml
+from unittest.mock import Mock
 
 from iden.io.base import BaseFileSaver, BaseLoader
+from iden.utils.imports import check_yaml, is_yaml_available
+
+if is_yaml_available():
+    import yaml
+else:  # pragma: no cover
+    yaml = Mock()
+
 
 T = TypeVar("T")
 
@@ -20,12 +26,22 @@ class YamlLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_yaml
-    >>> data = YamlLoader().load(Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import save_yaml, YamlLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = YamlLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
+
+    def __init__(self) -> None:
+        check_yaml()
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
@@ -44,12 +60,22 @@ class YamlSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import YamlSaver
-    >>> YamlSaver().save({"key": "value"}, Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import YamlSaver, YamlLoader
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     YamlSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = YamlLoader().load(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
+
+    def __init__(self) -> None:
+        check_yaml()
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
@@ -58,12 +84,8 @@ class YamlSaver(BaseFileSaver[Any]):
         return f"{self.__class__.__qualname__}()"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
-        # Save to tmp, then commit by moving the file in case the job gets
-        # interrupted while writing the file
-        tmp_path = path.parents[0].joinpath(f"{path.name}.tmp")
-        with Path.open(tmp_path, mode="w") as file:
+        with Path.open(path, mode="w") as file:
             yaml.dump(to_save, file, Dumper=yaml.Dumper)
-        tmp_path.rename(path)
 
 
 def load_yaml(path: Path) -> Any:
@@ -78,9 +100,16 @@ def load_yaml(path: Path) -> Any:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import load_yaml
-    >>> data = load_yaml(Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import load_yaml, save_yaml
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_yaml(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -106,9 +135,16 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+    >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_yaml
-    >>> save_yaml({"key": "value"}, Path("/path/to/data.yaml"))  # xdoctest: +SKIP()
+    >>> from iden.io import load_yaml, save_yaml
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     path = Path(tmpdir).joinpath("data.yaml")
+    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_yaml(path)
+    ...     data
+    ...
+    {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
@@ -130,5 +166,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     ```
     """
+    if not is_yaml_available():
+        return {}
     loader = YamlLoader()
     return {"yaml": loader, "yml": loader}

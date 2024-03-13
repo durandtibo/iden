@@ -66,6 +66,10 @@ class FileShard(BaseShard[T]):
         r"""The path to the file with data."""
         return self._path
 
+    def clear(self) -> None:
+        self._is_initialized = False
+        self._data = None
+
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if not isinstance(other, self.__class__):
             return False
@@ -81,6 +85,9 @@ class FileShard(BaseShard[T]):
 
     def get_uri(self) -> str:
         return self._uri
+
+    def is_initialized(self) -> bool:
+        return self._is_initialized
 
     @classmethod
     def from_uri(cls, uri: str) -> FileShard:
