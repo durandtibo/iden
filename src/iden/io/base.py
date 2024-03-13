@@ -20,6 +20,8 @@ from typing import TYPE_CHECKING, Generic, TypeVar
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
 
+from iden.io.utils import generate_unique_tmp_path
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -189,7 +191,12 @@ class BaseFileSaver(BaseSaver[T]):
             )
             raise FileExistsError(msg)
         path.parent.mkdir(exist_ok=True, parents=True)
-        self._save_file(to_save, path)
+
+        # Save to tmp, then commit by moving the file in case the job gets
+        # interrupted while writing the file
+        tmp_path = generate_unique_tmp_path(path)
+        self._save_file(to_save, tmp_path)
+        tmp_path.rename(path)
 
     @abstractmethod
     def _save_file(self, to_save: T, path: Path) -> None:

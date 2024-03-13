@@ -71,12 +71,8 @@ class JsonSaver(BaseFileSaver[Any]):
         return f"{self.__class__.__qualname__}()"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
-        # Save to tmp, then commit by moving the file in case the job gets
-        # interrupted while writing the file
-        tmp_path = path.parents[0].joinpath(f"{path.name}.tmp")
-        with Path.open(tmp_path, "w") as file:
+        with Path.open(path, "w") as file:
             json.dump(to_save, file, sort_keys=False)
-        tmp_path.rename(path)
 
 
 def load_json(path: Path) -> Any:
