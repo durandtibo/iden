@@ -97,6 +97,12 @@ def main() -> None:
     benchmark_shard_loading(dataset)
     benchmark_shard_loading(dataset)
 
+    # path = Path.cwd().joinpath("tmp/dataset/tmp")
+    # creator = JsonShardCreator(
+    #     data=[1, 2, 3], path_uri=path.joinpath("uri"), path_shard=path.joinpath("data")
+    # )
+    # creator.create("000001")
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
