@@ -4,20 +4,15 @@ from __future__ import annotations
 
 __all__ = ["JsonShardCreator"]
 
-from typing import TYPE_CHECKING, TypeVar
-
-from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
+from typing import TypeVar
 
 from iden.shard import JsonShard, create_json_shard
-from iden.shard.creator.base import BaseShardCreator
-
-if TYPE_CHECKING:
-    from pathlib import Path
+from iden.shard.creator.file import BaseFileShardCreator
 
 T = TypeVar("T")
 
 
-class JsonShardCreator(BaseShardCreator[T]):
+class JsonShardCreator(BaseFileShardCreator[T]):
     r"""Implement a JSON shard creator.
 
     Args:
@@ -26,23 +21,7 @@ class JsonShardCreator(BaseShardCreator[T]):
         path_shard: The path where to save the shard data.
     """
 
-    def __init__(self, data: T, path_uri: Path, path_shard: Path) -> None:
-        self._data = data
-        self._path_uri = path_uri
-        self._path_shard = path_shard
-
-    def __repr__(self) -> str:
-        args = repr_indent(
-            repr_mapping({"path_uri": self._path_uri, "path_shard": self._path_shard})
-        )
-        return f"{self.__class__.__qualname__}(\n  {args}\n)"
-
-    def __str__(self) -> str:
-        args = str_indent(str_mapping({"path_uri": self._path_uri, "path_shard": self._path_shard}))
-        return f"{self.__class__.__qualname__}(\n  {args}\n)"
-
-    def create(self, shard_id: str) -> JsonShard[T]:
-        data = self._data
+    def _create(self, data: T, shard_id: str) -> JsonShard[T]:
         return create_json_shard(
             data=data,
             uri=self._path_uri.joinpath(shard_id).as_uri(),
