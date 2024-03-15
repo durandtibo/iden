@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from coola.utils import repr_indent, repr_mapping
 
 from iden.shard import BaseShard, ShardTuple
-from iden.shard.creator.base import BaseShardCreator
+from iden.shard.creator.base import BaseShardCreator, setup_shard_creator
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -25,8 +25,8 @@ class ShardTupleCreator(BaseShardCreator[tuple[BaseShard, ...]]):
         path_uri: The path where to save the URI file.
     """
 
-    def __init__(self, shard: BaseShardCreator, num_shards: int, path_uri: Path) -> None:
-        self._shard = shard
+    def __init__(self, shard: BaseShardCreator | dict, num_shards: int, path_uri: Path) -> None:
+        self._shard = setup_shard_creator(shard)
         self._num_shards = num_shards
         self._path_uri = path_uri
 
@@ -34,9 +34,9 @@ class ShardTupleCreator(BaseShardCreator[tuple[BaseShard, ...]]):
         args = repr_indent(
             repr_mapping(
                 {
-                    "shard": self._shard,
-                    "num_shards": self._num_shards,
                     "path_uri": self._path_uri,
+                    "num_shards": self._num_shards,
+                    "shard": self._shard,
                 }
             )
         )
