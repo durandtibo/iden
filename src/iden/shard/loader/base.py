@@ -93,7 +93,7 @@ def is_shard_loader_config(config: dict) -> bool:
 
     ```pycon
     >>> from iden.shard.loader import is_shard_loader_config
-    >>> is_shard_loader_config({"_target_": "iden.shard.loader.PickleShardLoader"})
+    >>> is_shard_loader_config({"_target_": "iden.shard.loader.JsonShardLoader"})
     True
 
     ```
@@ -117,9 +117,9 @@ def setup_shard_loader(shard_loader: BaseShardLoader | dict) -> BaseShardLoader:
 
     ```pycon
     >>> from iden.shard.loader import setup_shard_loader
-    >>> shard_loader = setup_shard_loader({"_target_": "iden.shard.loader.PickleShardLoader"})
+    >>> shard_loader = setup_shard_loader({"_target_": "iden.shard.loader.JsonShardLoader"})
     >>> shard_loader
-    PickleShardLoader()
+    JsonShardLoader()
 
     ```
     """
