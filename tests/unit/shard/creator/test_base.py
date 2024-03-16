@@ -27,7 +27,9 @@ def test_is_shard_creator_config_true() -> None:
 
 
 def test_is_shard_creator_config_false() -> None:
-    assert not is_shard_creator_config({OBJECT_TARGET: "iden.shard.PickleShard"})
+    assert not is_shard_creator_config(
+        {OBJECT_TARGET: "iden.dataset.creator.VanillaDatasetCreator"}
+    )
 
 
 #########################################
