@@ -200,4 +200,50 @@ ShardDict(
 
 ```
 
+## Uniform Resource Identifier (URI)
+
 ## Instantiating a shard from its URI
+
+`iden` has a functionality to instantiate a shard from its Uniform Resource Identifier (URI).
+A shard can be represented by its URI, which can help to make the data management more scalable.
+It is easier to manage the URIs than all the data.
+The `load_from_uri` function can be used to instantiate a shard from its URI.
+
+```pycon
+>>> import tempfile
+>>> from pathlib import Path
+>>> from iden.shard import create_json_shard, load_from_uri
+>>> with tempfile.TemporaryDirectory() as tmpdir:
+...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+...     _ = create_json_shard([1, 2, 3], uri=uri)
+...     shard = load_from_uri(uri)
+...     shard
+...
+JsonShard(uri=file:///.../my_uri)
+
+```
+
+Under the hood, the `load_from_uri` function relies on a shard loader object to instantiate a shard
+object.
+A shard loader contains the logic to instantiate a shard object from its URI.
+For instance in the previous example, the `JsonShardLoader` class is used to instantiate
+the `JsonShard` object.
+`load_from_uri` is a universal function to load any shards, but it is also possible to use specific
+data loaders.
+For instance, the following example is equivalent to the previous example:
+
+```pycon
+>>> import tempfile
+>>> from pathlib import Path
+>>> from iden.shard import create_json_shard
+>>> from iden.shard.loader import JsonShardLoader
+>>> with tempfile.TemporaryDirectory() as tmpdir:
+...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+...     _ = create_json_shard([1, 2, 3], uri=uri)
+...     loader = JsonShardLoader()
+...     shard = loader.load(uri)
+...     shard
+...
+JsonShard(uri=file:///.../my_uri)
+
+```
