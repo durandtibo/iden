@@ -1,13 +1,13 @@
-r"""Contain YAML shard creator implementations."""
+r"""Contain YAML shard generator implementations."""
 
 from __future__ import annotations
 
-__all__ = ["YamlShardCreator"]
+__all__ = ["YamlShardGenerator"]
 
 from typing import TYPE_CHECKING, TypeVar
 
 from iden.shard import YamlShard, create_yaml_shard
-from iden.shard.creator.file import BaseFileShardCreator
+from iden.shard.generator.file import BaseFileShardGenerator
 from iden.utils.imports import check_yaml
 
 if TYPE_CHECKING:
@@ -16,8 +16,8 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
-class YamlShardCreator(BaseFileShardCreator[T]):
-    r"""Implement a YAML shard creator.
+class YamlShardGenerator(BaseFileShardGenerator[T]):
+    r"""Implement a YAML shard generator.
 
     Args:
         data: The data to save in the shard.

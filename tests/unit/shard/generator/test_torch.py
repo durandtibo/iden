@@ -8,40 +8,40 @@ from coola import objects_are_equal
 from coola.testing import torch_available
 
 from iden.shard import TorchShard
-from iden.shard.creator import TorchShardCreator
+from iden.shard.generator import TorchShardGenerator
 
 if TYPE_CHECKING:
     from pathlib import Path
 
-#######################################
-#     Tests for TorchShardCreator     #
-#######################################
+#########################################
+#     Tests for TorchShardGenerator     #
+#########################################
 
 
 @torch_available
-def test_torch_shard_creator_repr(tmp_path: Path) -> None:
+def test_torch_shard_generator_repr(tmp_path: Path) -> None:
     assert repr(
-        TorchShardCreator(
+        TorchShardGenerator(
             data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
         )
-    ).startswith("TorchShardCreator(")
+    ).startswith("TorchShardGenerator(")
 
 
 @torch_available
-def test_torch_shard_creator_str(tmp_path: Path) -> None:
+def test_torch_shard_generator_str(tmp_path: Path) -> None:
     assert str(
-        TorchShardCreator(
+        TorchShardGenerator(
             data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
         )
-    ).startswith("TorchShardCreator(")
+    ).startswith("TorchShardGenerator(")
 
 
 @torch_available
-def test_torch_shard_creator_create(tmp_path: Path) -> None:
-    creator = TorchShardCreator(
+def test_torch_shard_generator_generate(tmp_path: Path) -> None:
+    generator = TorchShardGenerator(
         data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
     )
-    shard = creator.create("000001")
+    shard = generator.generate("000001")
     assert shard.equal(
         TorchShard(
             uri=tmp_path.joinpath("uri/000001").as_uri(),
@@ -51,11 +51,11 @@ def test_torch_shard_creator_create(tmp_path: Path) -> None:
     assert objects_are_equal(shard.get_data(), [1, 2, 3])
 
 
-def test_torch_shard_creator_no_torch(tmp_path: Path) -> None:
+def test_torch_shard_generator_no_torch(tmp_path: Path) -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
         pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
     ):
-        TorchShardCreator(
+        TorchShardGenerator(
             data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
         )

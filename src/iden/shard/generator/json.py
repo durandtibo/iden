@@ -1,19 +1,19 @@
-r"""Contain JSON shard creator implementations."""
+r"""Contain JSON shard generator implementations."""
 
 from __future__ import annotations
 
-__all__ = ["JsonShardCreator"]
+__all__ = ["JsonShardGenerator"]
 
 from typing import TypeVar
 
 from iden.shard import JsonShard, create_json_shard
-from iden.shard.creator.file import BaseFileShardCreator
+from iden.shard.generator.file import BaseFileShardGenerator
 
 T = TypeVar("T")
 
 
-class JsonShardCreator(BaseFileShardCreator[T]):
-    r"""Implement a JSON shard creator.
+class JsonShardGenerator(BaseFileShardGenerator[T]):
+    r"""Implement a JSON shard generator.
 
     Args:
         data: The data to save in the shard.

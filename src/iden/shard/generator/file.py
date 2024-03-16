@@ -1,15 +1,15 @@
-r"""Contain file-based shard creator implementations."""
+r"""Contain file-based shard generator implementations."""
 
 from __future__ import annotations
 
-__all__ = ["BaseFileShardCreator"]
+__all__ = ["BaseFileShardGenerator"]
 
 from abc import abstractmethod
 from typing import TYPE_CHECKING, TypeVar
 
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 
-from iden.shard.creator.base import BaseShardCreator
+from iden.shard.generator.base import BaseShardGenerator
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -19,8 +19,8 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
-class BaseFileShardCreator(BaseShardCreator[T]):
-    r"""Implement a JSON shard creator.
+class BaseFileShardGenerator(BaseShardGenerator[T]):
+    r"""Implement a JSON shard generator.
 
     Args:
         data: The data to save in the shard.
@@ -43,7 +43,7 @@ class BaseFileShardCreator(BaseShardCreator[T]):
         args = str_indent(str_mapping({"path_uri": self._path_uri, "path_shard": self._path_shard}))
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
-    def create(self, shard_id: str) -> JsonShard[T]:
+    def generate(self, shard_id: str) -> JsonShard[T]:
         data = self._data
         return self._create(data=data, shard_id=shard_id)
 

@@ -1,8 +1,8 @@
-r"""Contain safetensors shard creator implementations."""
+r"""Contain safetensors shard generator implementations."""
 
 from __future__ import annotations
 
-__all__ = ["TorchSafetensorsShardCreator"]
+__all__ = ["TorchSafetensorsShardGenerator"]
 
 from typing import TYPE_CHECKING, TypeVar
 from unittest.mock import Mock
@@ -10,7 +10,7 @@ from unittest.mock import Mock
 from coola.utils.imports import check_torch, is_torch_available
 
 from iden.shard import TorchSafetensorsShard, create_torch_safetensors_shard
-from iden.shard.creator.file import BaseFileShardCreator
+from iden.shard.generator.file import BaseFileShardGenerator
 from iden.utils.imports import check_safetensors
 
 if is_torch_available():
@@ -24,8 +24,8 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
-class TorchSafetensorsShardCreator(BaseFileShardCreator[dict[str, torch.Tensor]]):
-    r"""Implement a safetensors shard creator.
+class TorchSafetensorsShardGenerator(BaseFileShardGenerator[dict[str, torch.Tensor]]):
+    r"""Implement a safetensors shard generator.
 
     Args:
         data: The data to save in the shard.

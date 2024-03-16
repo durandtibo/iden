@@ -3,20 +3,20 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from iden.shard import JsonShard, ShardTuple
-from iden.shard.creator import JsonShardCreator, ShardTupleCreator
+from iden.shard.generator import JsonShardGenerator, ShardTupleGenerator
 
 if TYPE_CHECKING:
     from pathlib import Path
 
 
-#######################################
-#     Tests for ShardTupleCreator     #
-#######################################
+#########################################
+#     Tests for ShardTupleGenerator     #
+#########################################
 
 
-def test_shard_tuple_creator_repr(tmp_path: Path) -> None:
-    creator = ShardTupleCreator(
-        shard=JsonShardCreator(
+def test_shard_tuple_generator_repr(tmp_path: Path) -> None:
+    generator = ShardTupleGenerator(
+        shard=JsonShardGenerator(
             path_shard=tmp_path.joinpath("shards/data"),
             path_uri=tmp_path.joinpath("shards/uri"),
             data=[1, 2, 3],
@@ -24,12 +24,12 @@ def test_shard_tuple_creator_repr(tmp_path: Path) -> None:
         num_shards=4,
         path_uri=tmp_path,
     )
-    assert repr(creator).startswith("ShardTupleCreator(")
+    assert repr(generator).startswith("ShardTupleGenerator(")
 
 
-def test_shard_tuple_creator_str(tmp_path: Path) -> None:
-    creator = ShardTupleCreator(
-        shard=JsonShardCreator(
+def test_shard_tuple_generator_str(tmp_path: Path) -> None:
+    generator = ShardTupleGenerator(
+        shard=JsonShardGenerator(
             path_shard=tmp_path.joinpath("shards/data"),
             path_uri=tmp_path.joinpath("shards/uri"),
             data=[1, 2, 3],
@@ -37,12 +37,12 @@ def test_shard_tuple_creator_str(tmp_path: Path) -> None:
         num_shards=4,
         path_uri=tmp_path,
     )
-    assert str(creator).startswith("ShardTupleCreator(")
+    assert str(generator).startswith("ShardTupleGenerator(")
 
 
-def test_shard_tuple_creator_create(tmp_path: Path) -> None:
-    creator = ShardTupleCreator(
-        shard=JsonShardCreator(
+def test_shard_tuple_generator_generate(tmp_path: Path) -> None:
+    generator = ShardTupleGenerator(
+        shard=JsonShardGenerator(
             path_shard=tmp_path.joinpath("shards/data"),
             path_uri=tmp_path.joinpath("shards/uri"),
             data=[1, 2, 3],
@@ -50,7 +50,7 @@ def test_shard_tuple_creator_create(tmp_path: Path) -> None:
         num_shards=4,
         path_uri=tmp_path,
     )
-    shard = creator.create("001111")
+    shard = generator.generate("001111")
     assert shard.equal(
         ShardTuple(
             uri=tmp_path.joinpath("001111").as_uri(),
