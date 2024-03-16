@@ -91,7 +91,7 @@ class ShardDict(BaseShard):
             self.get_uri(), other.get_uri(), equal_nan=equal_nan
         ) and objects_are_equal(self.get_data(), other.get_data(), equal_nan=equal_nan)
 
-    def get_data(self) -> dict[str, BaseShard]:
+    def get_data(self, cache: bool = False) -> dict[str, BaseShard]:  # noqa: ARG002
         return self._shards.copy()
 
     def get_uri(self) -> str:

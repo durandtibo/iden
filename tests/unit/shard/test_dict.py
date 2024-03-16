@@ -88,7 +88,7 @@ def test_shard_dict_clear_not_initialized(uri: str, shards: dict[str, BaseShard]
 
 def test_shard_dict_clear_is_initialized(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
-    assert objects_are_equal(shard.get_data()["001"].get_data(), [1, 2, 3])
+    assert objects_are_equal(shard.get_data()["001"].get_data(cache=True), [1, 2, 3])
     assert shard.is_initialized()
     shard.clear()
     assert not shard.is_initialized()
@@ -113,6 +113,19 @@ def test_shard_dict_equal_false_different_type(uri: str, shards: dict[str, BaseS
 def test_shard_dict_get_data(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
     assert objects_are_equal(
         ShardDict(uri=uri, shards=shards).get_data(),
+        {
+            "001": JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
+            "002": JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
+            "003": JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
+        },
+    )
+
+
+def test_shard_dict_get_data_cache_true(
+    uri: str, shards: dict[str, BaseShard], path_shard: Path
+) -> None:
+    assert objects_are_equal(
+        ShardDict(uri=uri, shards=shards).get_data(cache=True),
         {
             "001": JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
             "002": JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
@@ -164,13 +177,13 @@ def test_shard_dict_is_initialized_false(uri: str, shards: dict[str, BaseShard])
 
 def test_shard_dict_is_initialized_true_partial(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
-    shard.get_data()["001"].get_data()
+    shard.get_data()["001"].get_data(cache=True)
     assert shard.is_initialized()
 
 
 def test_shard_dict_is_initialized_true_all(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
-    [shard.get_data() for shard in shard.get_data().values()]
+    [shard.get_data(cache=True) for shard in shard.get_data().values()]
     assert shard.is_initialized()
 
 

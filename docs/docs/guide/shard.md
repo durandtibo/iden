@@ -47,7 +47,7 @@ It is possible to clear the cache by calling the `clear` method.
 >>> from iden.shard import create_json_shard
 >>> with tempfile.TemporaryDirectory() as tmpdir:
 ...     shard = create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
-...     data = shard.get_data()
+...     data = shard.get_data(cache=True)
 ...     data
 ...     data.append(4)  # in-place modification
 ...     data = shard.get_data()
@@ -75,7 +75,7 @@ not.
 >>> with tempfile.TemporaryDirectory() as tmpdir:
 ...     shard = create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
 ...     shard.is_initialized()
-...     data = shard.get_data()
+...     data = shard.get_data(cache=True)
 ...     shard.is_initialized()
 ...     shard.clear()
 ...     shard.is_initialized()
