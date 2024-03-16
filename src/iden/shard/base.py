@@ -49,7 +49,7 @@ class BaseShard(Generic[T], ABC):
         ...     file = Path(tmpdir).joinpath("data.json")
         ...     save_json([1, 2, 3], file)
         ...     shard = JsonShard(uri=uri, path=file)
-        ...     data = shard.get_data()
+        ...     data = shard.get_data(cache=True)
         ...     data
         ...     data.append(4)  # in-place modification
         ...     data = shard.get_data()
@@ -100,8 +100,12 @@ class BaseShard(Generic[T], ABC):
         """
 
     @abstractmethod
-    def get_data(self) -> T:
+    def get_data(self, cache: bool = False) -> T:
         r"""Get the data in the shard.
+
+        Args:
+            cache: If ``True``, the shard will cache the data when the
+                data are loaded the first time.
 
         Returns:
             The data in the shard.

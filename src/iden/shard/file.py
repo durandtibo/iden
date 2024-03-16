@@ -77,11 +77,15 @@ class FileShard(BaseShard[T]):
             self.get_uri(), other.get_uri(), equal_nan=equal_nan
         ) and objects_are_equal(self.path, other.path, equal_nan=equal_nan)
 
-    def get_data(self) -> T:
+    def get_data(self, cache: bool = False) -> T:
         if not self._is_initialized:
-            self._data = self._loader.load(self._path)
-            self._is_initialized = True
-        return self._data
+            data = self._loader.load(self._path)
+            if cache:
+                self._data = data
+                self._is_initialized = True
+        else:
+            data = self._data
+        return data
 
     def get_uri(self) -> str:
         return self._uri

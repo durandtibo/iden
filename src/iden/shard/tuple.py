@@ -132,7 +132,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         """
         return self[index]
 
-    def get_data(self) -> tuple[BaseShard, ...]:
+    def get_data(self, cache: bool = False) -> tuple[BaseShard, ...]:  # noqa: ARG002
         return self._shards
 
     def get_uri(self) -> str:

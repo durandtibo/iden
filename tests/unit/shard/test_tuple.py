@@ -63,7 +63,7 @@ def test_shard_tuple_clear_not_initialized(uri: str, shards: Sequence[BaseShard]
 
 def test_shard_tuple_clear_is_initialized(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
-    assert objects_are_equal(shard.get_data()[0].get_data(), [1, 2, 3])
+    assert objects_are_equal(shard.get_data()[0].get_data(cache=True), [1, 2, 3])
     assert shard.is_initialized()
     shard.clear()
     assert not shard.is_initialized()
@@ -106,14 +106,31 @@ def test_shard_tuple_getitem(uri: str, shards: Sequence[BaseShard], path_shard: 
 
 
 def test_shard_tuple_get_data(uri: str, shards: Sequence[BaseShard], path_shard: Path) -> None:
+    shard = ShardTuple(uri=uri, shards=shards)
     assert objects_are_equal(
-        ShardTuple(uri=uri, shards=shards).get_data(),
+        shard.get_data(),
         (
             JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
             JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
             JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
         ),
     )
+    assert not shard.is_initialized()
+
+
+def test_shard_tuple_get_data_cache_true(
+    uri: str, shards: Sequence[BaseShard], path_shard: Path
+) -> None:
+    shard = ShardTuple(uri=uri, shards=shards)
+    assert objects_are_equal(
+        shard.get_data(cache=True),
+        (
+            JsonShard.from_uri(uri=path_shard.joinpath("uri1").as_uri()),
+            JsonShard.from_uri(uri=path_shard.joinpath("uri2").as_uri()),
+            JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
+        ),
+    )
+    assert not shard.is_initialized()
 
 
 def test_shard_tuple_get_data_empty(
@@ -129,13 +146,13 @@ def test_shard_tuple_is_initialized_false(uri: str, shards: Sequence[BaseShard])
 
 def test_shard_tuple_is_initialized_true_partial(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
-    shard.get_data()[0].get_data()
+    shard.get_data()[0].get_data(cache=True)
     assert shard.is_initialized()
 
 
 def test_shard_tuple_is_initialized_true_all(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
-    [shard.get_data() for shard in shard.get_data()]
+    [shard.get_data(cache=True) for shard in shard.get_data()]
     assert shard.is_initialized()
 
 
