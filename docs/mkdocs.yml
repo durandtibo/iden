@@ -24,10 +24,10 @@ theme:
 nav:
   - Home: index.md
   - get_started.md
-#  - User Guide:
-#      - quickstart.md
-#      - types.md
-#      - customization.md
+  - User Guide:
+      - guide/shard.md
+  - How to:
+      - howto/shard.md
   - Reference:
       - iden.data: refs/data.md
       - iden.dataset: refs/dataset.md

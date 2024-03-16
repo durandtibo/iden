@@ -38,10 +38,10 @@ class ShardDict(BaseShard):
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shards = {
     ...         "train": create_json_shard(
-    ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+    ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shards/uri1").as_uri()
     ...         ),
     ...         "val": create_json_shard(
-    ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+    ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shards/uri2").as_uri()
     ...         ),
     ...     }
     ...     sd = ShardDict(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
@@ -50,8 +50,8 @@ class ShardDict(BaseShard):
     ShardDict(
       (uri): file:///.../uri
       (shards):
-        (train): JsonShard(uri=file:///.../shard/uri1)
-        (val): JsonShard(uri=file:///.../shard/uri2)
+        (train): JsonShard(uri=file:///.../shards/uri1)
+        (val): JsonShard(uri=file:///.../shards/uri2)
     )
 
     ```

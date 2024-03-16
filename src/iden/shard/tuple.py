@@ -46,9 +46,9 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     >>> from iden.shard import ShardTuple
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shards = [
-    ...         create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
+    ...         create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shards/uri1").as_uri()),
     ...         create_json_shard(
-    ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+    ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shards/uri2").as_uri()
     ...         ),
     ...     ]
     ...     sl = ShardTuple(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
@@ -57,8 +57,8 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     ShardTuple(
       (uri): file:///.../uri
       (shards):
-        (0): JsonShard(uri=file:///.../shard/uri1)
-        (1): JsonShard(uri=file:///.../shard/uri2)
+        (0): JsonShard(uri=file:///.../shards/uri1)
+        (1): JsonShard(uri=file:///.../shards/uri2)
     )
 
     ```
