@@ -175,7 +175,7 @@ class BaseShard(Generic[T], ABC):
         ...     save_json([1, 2, 3], file)
         ...     shard = JsonShard(uri=uri, path=file)
         ...     shard.is_initialized()
-        ...     data = shard.get_data()
+        ...     data = shard.get_data(cache=True)
         ...     shard.is_initialized()
         ...     shard.clear()
         ...     shard.is_initialized()
