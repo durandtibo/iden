@@ -1,107 +1,149 @@
+r"""Contain functions to benchmark data loading."""
+
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass
 from pathlib import Path
 
 import torch
+from coola.utils import str_mapping
 
-from iden.dataset import BaseDataset, create_vanilla_dataset, load_from_uri
-from iden.shard import (
-    BaseShard,
-    ShardDict,
-    ShardTuple,
-    create_shard_dict,
-    create_shard_tuple,
-    create_torch_safetensors_shard,
+from iden.data.generator import DataGenerator
+from iden.dataset import BaseDataset, load_from_uri
+from iden.dataset.generator import VanillaDatasetGenerator
+from iden.shard.generator import (
+    BaseShardGenerator,
+    ShardDictGenerator,
+    ShardTupleGenerator,
+    TorchSafetensorsShardGenerator,
 )
 from iden.shard.utils import ShardIterable
-from iden.utils.path import sanitize_path
-from iden.utils.time import timeblock
+from iden.utils.format import human_time
+from iden.utils.time import sync_perf_counter
 
 logger = logging.getLogger(__name__)
 
 
-def create_shard(uri: str, path_data: Path) -> BaseShard:
-    batch_size = 1000000
-    return create_torch_safetensors_shard(
-        data={
-            "key1": torch.empty(batch_size, 64),
-            "key2": torch.empty(batch_size),
-            "key3": torch.empty(batch_size, 128, 2),
-        },
-        uri=uri,
-        path=path_data.with_suffix(".safetensors"),
+@dataclass
+class DatasetConfig:
+    r"""Define the dataset configuration.
+
+    Args:
+        name: The dataset name.
+        path: The dataset path.
+        batch_size: The batch size of the data in a shard.
+        num_shards: The number of shards per dataset split.
+        shard_generator_type: The class to use to generate a shard.
+        splits: The dataset splits.
+    """
+
+    name: str
+    path: Path
+    batch_size: int
+    num_shards: int
+    shard_generator_type: type[BaseShardGenerator]
+    splits: tuple[str, ...] = ("train", "val", "test")
+
+
+def benchmark_data_loading(dataset: BaseDataset) -> float:
+    r"""Benchmark the time to load the data from the dataset.
+
+    Args:
+        dataset: The dataset to benchmark.
+
+    Returns:
+        The data loading time in second.
+    """
+    start_time = sync_perf_counter()
+    total = 0
+    for split in dataset.get_splits():
+        shards = dataset.get_shards(split)
+        for data in ShardIterable(shards):
+            total += data["key1"].shape[0]
+    end_time = sync_perf_counter()
+    logger.info(f"total: {total:,}")
+    logger.info(f"total time: {human_time(sync_perf_counter() - start_time)}")
+    return end_time - start_time
+
+
+def generate_dataset(config: DatasetConfig) -> None:
+    r"""Generate the dataset from its configuration.
+
+    Args:
+        config: The dataset configuration.
+    """
+    path_uri = config.path.joinpath("uri")
+    path_data = config.path.joinpath("data")
+    data = {
+        "key1": torch.empty(config.batch_size, 64),
+        "key2": torch.empty(config.batch_size),
+        "key3": torch.empty(config.batch_size, 128, 2),
+    }
+
+    generator = VanillaDatasetGenerator(
+        path_uri=path_uri,
+        shards=ShardDictGenerator(
+            path_uri=path_uri,
+            shards={
+                split: ShardTupleGenerator(
+                    shard=config.shard_generator_type(
+                        data=DataGenerator(data),
+                        path_uri=path_uri.joinpath(split).joinpath("shards"),
+                        path_shard=path_data.joinpath(split).joinpath("shards"),
+                    ),
+                    num_shards=config.num_shards,
+                    path_uri=path_uri.joinpath(split),
+                )
+                for split in config.splits
+            },
+        ),
+        assets=ShardDictGenerator(path_uri=path_uri.joinpath("assets"), shards={}),
     )
+    logger.info(f"dataset generator:\n{generator}")
+    generator.generate("dataset")
 
 
-def create_shard_split(uri: str, path_data: Path) -> ShardTuple:
-    num_shards = 5
-    shards = []
-    for i in range(1, num_shards + 1):
-        sid = f"{i:06}"
-        uri_shard = sanitize_path(uri).parent.joinpath(f"uri_shard_{sid}").as_uri()
-        shards.append(create_shard(uri=uri_shard, path_data=path_data.joinpath(sid)))
-    return create_shard_tuple(uri=uri, shards=shards)
+def get_dataset(config: DatasetConfig) -> BaseDataset:
+    r"""Return a dataset based on a path.
 
+    If the dataset does not exist, it is automatically generated.
 
-def create_shards(uri: str, path_data: Path) -> ShardDict:
-    splits = ["train"]
-    shards = {}
-    for split in splits:
-        uri_split = sanitize_path(uri).parent.joinpath(f"{split}/uri_split").as_uri()
-        shards[split] = create_shard_split(uri_split, path_data=path_data.joinpath(split))
-    return create_shard_dict(uri=uri, shards=shards)
-
-
-def create_assets(uri: str, path_data: Path) -> ShardDict:
-    return create_shard_dict(uri=uri, shards={})
-
-
-def create_dataset(uri: str, path_data: Path) -> BaseDataset:
-    shards = create_shards(
-        uri=sanitize_path(uri).parent.joinpath("shards/uri_shards").as_uri(),
-        path_data=path_data.joinpath("shards"),
-    )
-    assets = create_assets(
-        uri=sanitize_path(uri).parent.joinpath("assets/uri_assets").as_uri(),
-        path_data=path_data.joinpath("assets"),
-    )
-    return create_vanilla_dataset(shards=shards, assets=assets, uri=uri)
-
-
-def get_dataset(uri: str, path_data: Path) -> BaseDataset:
-    uri_file = sanitize_path(uri)
+    Args:
+        config: The dataset configuration.
+    """
+    uri_file = config.path.joinpath("uri/dataset")
     if not uri_file.is_file():
-        create_dataset(uri=uri, path_data=path_data)
+        generate_dataset(config=config)
+
+    uri = uri_file.as_uri()
     logger.info(f"loading dataset from {uri}")
     return load_from_uri(uri)
 
 
-def benchmark_shard_loading(dataset: BaseDataset) -> None:
-    with timeblock():
-        total = 0
-        shards = dataset.get_shards("train")
-        for data in ShardIterable(shards):
-            total += data["key1"].shape[0]
-        logger.info(f"total: {total:,}")
-
-
 def main() -> None:
-    path = Path.cwd().joinpath("tmp/dataset/safetensors1")
-    uri = path.joinpath("uri/dataset").as_uri()
-    path_data = path.joinpath("data")
-    dataset = get_dataset(uri=uri, path_data=path_data)
-    logger.info(f"dataset:\n{dataset}")
+    r"""Implement the main function."""
+    path = Path.cwd().joinpath("tmp/dataset")
 
-    benchmark_shard_loading(dataset)
-    benchmark_shard_loading(dataset)
-    benchmark_shard_loading(dataset)
+    configs = [
+        DatasetConfig(
+            name="safetensors1",
+            batch_size=1000000,
+            num_shards=5,
+            path=path.joinpath("safetensors1"),
+            shard_generator_type=TorchSafetensorsShardGenerator,
+        )
+    ]
+    data_loading_times = {}
+    for config in configs:
+        logger.info(f"config: {config}")
 
-    # path = Path.cwd().joinpath("tmp/dataset/tmp")
-    # creator = JsonShardCreator(
-    #     data=[1, 2, 3], path_uri=path.joinpath("uri"), path_shard=path.joinpath("data")
-    # )
-    # creator.create("000001")
+        dataset = get_dataset(config=config)
+        logger.info(f"dataset:\n{dataset}")
+
+        data_loading_times[config.name] = benchmark_data_loading(dataset)
+
+    logger.info(str_mapping({name: human_time(t) for name, t in data_loading_times.items()}))
 
 
 if __name__ == "__main__":
