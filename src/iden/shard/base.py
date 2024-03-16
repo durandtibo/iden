@@ -11,12 +11,59 @@ T = TypeVar("T")
 
 
 class BaseShard(Generic[T], ABC):
-    r"""Define the base class to implement a shard."""
+    r"""Define the base class to implement a shard.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.io import save_json
+    >>> from iden.shard import JsonShard
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     uri = Path(tmpdir).joinpath("uri/0001").as_uri()
+    ...     file = Path(tmpdir).joinpath("data.json")
+    ...     save_json([1, 2, 3], file)
+    ...     shard = JsonShard(uri=uri, path=file)
+    ...     shard.get_data()
+    ...
+    [1, 2, 3]
+
+    ```
+    """
 
     @abstractmethod
     def clear(self) -> None:
-        r"""Clear the current shard i.e. remove from memory the data if
-        possible."""
+        r"""Clear the current shard cache i.e. remove from memory the
+        data if possible.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json
+        >>> from iden.shard import JsonShard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("uri/0001").as_uri()
+        ...     file = Path(tmpdir).joinpath("data.json")
+        ...     save_json([1, 2, 3], file)
+        ...     shard = JsonShard(uri=uri, path=file)
+        ...     data = shard.get_data()
+        ...     data
+        ...     data.append(4)  # in-place modification
+        ...     data = shard.get_data()
+        ...     data
+        ...     shard.clear()
+        ...     data = shard.get_data()
+        ...     data
+        ...
+        [1, 2, 3]
+        [1, 2, 3, 4]
+        [1, 2, 3]
+
+        ```
+        """
 
     @abstractmethod
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
@@ -29,6 +76,27 @@ class BaseShard(Generic[T], ABC):
 
         Returns:
             ``True`` if the two shards are equal, otherwise ``False``.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import JsonShard,  create_json_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri1 = Path(tmpdir).joinpath("my_uri1").as_uri()
+        ...     uri2 = Path(tmpdir).joinpath("my_uri2").as_uri()
+        ...     shard1 = create_json_shard([1, 2, 3], uri=uri1)
+        ...     shard2 = create_json_shard([4, 5, 6], uri=uri2)
+        ...     shard3 = JsonShard.from_uri(uri=uri1)
+        ...     shard1.equal(shard2)
+        ...     shard1.equal(shard3)
+        ...
+        ...
+        False
+        True
+
+        ```
         """
 
     @abstractmethod
@@ -37,6 +105,24 @@ class BaseShard(Generic[T], ABC):
 
         Returns:
             The data in the shard.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json
+        >>> from iden.shard import JsonShard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("uri/0001").as_uri()
+        ...     file = Path(tmpdir).joinpath("data.json")
+        ...     save_json([1, 2, 3], file)
+        ...     shard = JsonShard(uri=uri, path=file)
+        ...     shard.get_data()
+        ...
+        [1, 2, 3]
+
+        ```
         """
 
     @abstractmethod
@@ -45,6 +131,24 @@ class BaseShard(Generic[T], ABC):
 
         Returns:
             The Uniform Resource Identifier (URI).
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json
+        >>> from iden.shard import JsonShard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("uri/0001").as_uri()
+        ...     file = Path(tmpdir).joinpath("data.json")
+        ...     save_json([1, 2, 3], file)
+        ...     shard = JsonShard(uri=uri, path=file)
+        ...     shard.get_uri()
+        ...
+        'file:///.../uri/0001'
+
+        ```
         """
 
     @abstractmethod
@@ -53,4 +157,28 @@ class BaseShard(Generic[T], ABC):
 
         Returns:
             ``True`` if the shard has data in-memory otherwise ``False``.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json
+        >>> from iden.shard import JsonShard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("uri/0001").as_uri()
+        ...     file = Path(tmpdir).joinpath("data.json")
+        ...     save_json([1, 2, 3], file)
+        ...     shard = JsonShard(uri=uri, path=file)
+        ...     shard.is_initialized()
+        ...     data = shard.get_data()
+        ...     shard.is_initialized()
+        ...     shard.clear()
+        ...     shard.is_initialized()
+        ...
+        False
+        True
+        False
+
+        ```
         """
