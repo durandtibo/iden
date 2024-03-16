@@ -2,7 +2,7 @@ r"""Contain a data structure to manage a dictionary of shards."""
 
 from __future__ import annotations
 
-__all__ = ["ShardDict"]
+__all__ = ["ShardDict", "create_shard_dict"]
 
 import logging
 from typing import Any

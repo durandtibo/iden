@@ -1,4 +1,4 @@
-r"""Contain tuple-based shard creator implementations."""
+r"""Contain dict-based shard creator implementations."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 
-from iden.shard import BaseShard, ShardDict
+from iden.shard import BaseShard, ShardDict, create_shard_dict
 from iden.shard.creator.base import BaseShardCreator, setup_shard_creator
 
 if TYPE_CHECKING:
@@ -51,4 +51,4 @@ class ShardDictCreator(BaseShardCreator[tuple[BaseShard, ...]]):
 
     def create(self, shard_id: str) -> ShardDict:
         shards = {key: shard.create(str(key)) for key, shard in self._shards.items()}
-        return ShardDict(uri=self._path_uri.joinpath(shard_id).as_uri(), shards=shards)
+        return create_shard_dict(uri=self._path_uri.joinpath(shard_id).as_uri(), shards=shards)

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from coola.utils import repr_indent, repr_mapping
 
-from iden.shard import BaseShard, ShardTuple
+from iden.shard import BaseShard, ShardTuple, create_shard_tuple
 from iden.shard.creator.base import BaseShardCreator, setup_shard_creator
 
 if TYPE_CHECKING:
@@ -44,4 +44,4 @@ class ShardTupleCreator(BaseShardCreator[tuple[BaseShard, ...]]):
 
     def create(self, shard_id: str) -> ShardTuple:
         shards = [self._shard.create(f"{i+1:09}") for i in range(self._num_shards)]
-        return ShardTuple(uri=self._path_uri.joinpath(shard_id).as_uri(), shards=shards)
+        return create_shard_tuple(uri=self._path_uri.joinpath(shard_id).as_uri(), shards=shards)
