@@ -94,6 +94,7 @@ def setup_shard_generator(shard_generator: BaseShardGenerator | dict) -> BaseSha
     JsonShardGenerator(
       (path_uri): PosixPath('/.../uri')
       (path_shard): PosixPath('/.../data')
+      (data): [1, 2, 3]
     )
 
     ```

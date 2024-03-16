@@ -6,6 +6,7 @@ from unittest.mock import patch
 import pytest
 from coola import objects_are_equal
 
+from iden.data.generator import DataGenerator
 from iden.shard import YamlShard
 from iden.shard.generator import YamlShardGenerator
 from iden.testing import yaml_available
@@ -22,7 +23,9 @@ if TYPE_CHECKING:
 def test_yaml_shard_generator_repr(tmp_path: Path) -> None:
     assert repr(
         YamlShardGenerator(
-            data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
+            data=DataGenerator([1, 2, 3]),
+            path_uri=tmp_path.joinpath("uri"),
+            path_shard=tmp_path.joinpath("shard"),
         )
     ).startswith("YamlShardGenerator(")
 
@@ -31,7 +34,9 @@ def test_yaml_shard_generator_repr(tmp_path: Path) -> None:
 def test_yaml_shard_generator_str(tmp_path: Path) -> None:
     assert str(
         YamlShardGenerator(
-            data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
+            data=DataGenerator([1, 2, 3]),
+            path_uri=tmp_path.joinpath("uri"),
+            path_shard=tmp_path.joinpath("shard"),
         )
     ).startswith("YamlShardGenerator(")
 
@@ -39,7 +44,9 @@ def test_yaml_shard_generator_str(tmp_path: Path) -> None:
 @yaml_available
 def test_yaml_shard_generator_generate(tmp_path: Path) -> None:
     generator = YamlShardGenerator(
-        data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
     )
     shard = generator.generate("000001")
     assert shard.equal(
@@ -57,5 +64,7 @@ def test_yaml_shard_generator_no_yaml(tmp_path: Path) -> None:
         pytest.raises(RuntimeError, match="`yaml` package is required but not installed."),
     ):
         YamlShardGenerator(
-            data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
+            data=DataGenerator([1, 2, 3]),
+            path_uri=tmp_path.joinpath("uri"),
+            path_shard=tmp_path.joinpath("shard"),
         )

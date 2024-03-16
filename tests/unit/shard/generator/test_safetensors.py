@@ -8,6 +8,7 @@ from coola import objects_are_equal
 from coola.testing import torch_available
 from coola.utils import is_torch_available
 
+from iden.data.generator import DataGenerator
 from iden.shard import TorchSafetensorsShard
 from iden.shard.generator import TorchSafetensorsShardGenerator
 from iden.testing import safetensors_available
@@ -30,7 +31,7 @@ if TYPE_CHECKING:
 def test_torch_safetensors_shard_generator_repr(tmp_path: Path) -> None:
     assert repr(
         TorchSafetensorsShardGenerator(
-            data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
+            data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
             path_uri=tmp_path.joinpath("uri"),
             path_shard=tmp_path.joinpath("shard"),
         )
@@ -42,7 +43,7 @@ def test_torch_safetensors_shard_generator_repr(tmp_path: Path) -> None:
 def test_torch_safetensors_shard_generator_str(tmp_path: Path) -> None:
     assert str(
         TorchSafetensorsShardGenerator(
-            data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
+            data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
             path_uri=tmp_path.joinpath("uri"),
             path_shard=tmp_path.joinpath("shard"),
         )
@@ -53,7 +54,7 @@ def test_torch_safetensors_shard_generator_str(tmp_path: Path) -> None:
 @torch_available
 def test_torch_safetensors_shard_generator_generate(tmp_path: Path) -> None:
     generator = TorchSafetensorsShardGenerator(
-        data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
+        data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
         path_uri=tmp_path.joinpath("uri"),
         path_shard=tmp_path.joinpath("shard"),
     )
@@ -73,7 +74,7 @@ def test_torch_safetensors_shard_generator_no_safetensors(tmp_path: Path) -> Non
         pytest.raises(RuntimeError, match="`safetensors` package is required but not installed."),
     ):
         TorchSafetensorsShardGenerator(
-            data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
+            data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
             path_uri=tmp_path.joinpath("uri"),
             path_shard=tmp_path.joinpath("shard"),
         )
@@ -86,7 +87,7 @@ def test_torch_safetensors_shard_generator_no_torch(tmp_path: Path) -> None:
         pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
     ):
         TorchSafetensorsShardGenerator(
-            data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
+            data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
             path_uri=tmp_path.joinpath("uri"),
             path_shard=tmp_path.joinpath("shard"),
         )

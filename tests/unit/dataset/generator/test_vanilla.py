@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from iden.data.generator import DataGenerator
 from iden.dataset import VanillaDataset
 from iden.dataset.generator import VanillaDatasetGenerator
 from iden.shard import ShardDict
@@ -30,7 +31,7 @@ def create_dataset_generator(path: Path) -> VanillaDatasetGenerator:
                     shard=JsonShardGenerator(
                         path_shard=path.joinpath("data/shards/train/shards"),
                         path_uri=path.joinpath("uri/shards/train/shards"),
-                        data=[1, 2, 3],
+                        data=DataGenerator([1, 2, 3]),
                     ),
                     num_shards=2,
                     path_uri=path.joinpath("uri/shards/train"),
@@ -39,7 +40,7 @@ def create_dataset_generator(path: Path) -> VanillaDatasetGenerator:
                     shard=JsonShardGenerator(
                         path_shard=path.joinpath("data/shards/val/shards"),
                         path_uri=path.joinpath("uri/shards/val/shards"),
-                        data=[4, 5, 6],
+                        data=DataGenerator([4, 5, 6]),
                     ),
                     num_shards=2,
                     path_uri=path.joinpath("uri/shards/val"),

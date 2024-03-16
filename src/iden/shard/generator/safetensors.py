@@ -21,6 +21,8 @@ else:  # pragma: no cover
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from iden.data.generator import BaseDataGenerator
+
 T = TypeVar("T")
 
 
@@ -33,12 +35,17 @@ class TorchSafetensorsShardGenerator(BaseFileShardGenerator[dict[str, torch.Tens
         path_shard: The path where to save the shard data.
     """
 
-    def __init__(self, data: dict[str, torch.Tensor], path_uri: Path, path_shard: Path) -> None:
+    def __init__(
+        self,
+        data: BaseDataGenerator[dict[str, torch.Tensor]] | dict,
+        path_uri: Path,
+        path_shard: Path,
+    ) -> None:
         check_safetensors()
         check_torch()
         super().__init__(data=data, path_uri=path_uri, path_shard=path_shard)
 
-    def _create(self, data: dict[str, torch.Tensor], shard_id: str) -> TorchSafetensorsShard:
+    def _generate(self, data: dict[str, torch.Tensor], shard_id: str) -> TorchSafetensorsShard:
         return create_torch_safetensors_shard(
             data=data,
             uri=self._path_uri.joinpath(shard_id).as_uri(),

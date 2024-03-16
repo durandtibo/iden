@@ -21,7 +21,7 @@ class JsonShardGenerator(BaseFileShardGenerator[T]):
         path_shard: The path where to save the shard data.
     """
 
-    def _create(self, data: T, shard_id: str) -> JsonShard[T]:
+    def _generate(self, data: T, shard_id: str) -> JsonShard[T]:
         return create_json_shard(
             data=data,
             uri=self._path_uri.joinpath(shard_id).as_uri(),

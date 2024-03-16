@@ -21,7 +21,7 @@ class PickleShardGenerator(BaseFileShardGenerator[T]):
         path_shard: The path where to save the shard data.
     """
 
-    def _create(self, data: T, shard_id: str) -> PickleShard[T]:
+    def _generate(self, data: T, shard_id: str) -> PickleShard[T]:
         return create_pickle_shard(
             data=data,
             uri=self._path_uri.joinpath(shard_id).as_uri(),

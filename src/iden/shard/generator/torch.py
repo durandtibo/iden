@@ -14,6 +14,8 @@ from iden.shard.generator.file import BaseFileShardGenerator
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from iden.data.generator import BaseDataGenerator
+
 T = TypeVar("T")
 
 
@@ -26,11 +28,11 @@ class TorchShardGenerator(BaseFileShardGenerator[T]):
         path_shard: The path where to save the shard data.
     """
 
-    def __init__(self, data: T, path_uri: Path, path_shard: Path) -> None:
+    def __init__(self, data: BaseDataGenerator[T] | dict, path_uri: Path, path_shard: Path) -> None:
         check_torch()
         super().__init__(data=data, path_uri=path_uri, path_shard=path_shard)
 
-    def _create(self, data: T, shard_id: str) -> TorchShard[T]:
+    def _generate(self, data: T, shard_id: str) -> TorchShard[T]:
         return create_torch_shard(
             data=data,
             uri=self._path_uri.joinpath(shard_id).as_uri(),

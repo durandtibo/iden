@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from objectory import OBJECT_TARGET
 
+from iden.data.generator import DataGenerator
 from iden.shard import JsonShard
 from iden.shard.generator import (
     JsonShardGenerator,
@@ -39,7 +40,9 @@ def test_is_shard_generator_config_false() -> None:
 
 def test_setup_shard_generator_object(tmp_path: Path) -> None:
     generator = JsonShardGenerator(
-        data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
     )
     assert setup_shard_generator(generator) is generator
 
