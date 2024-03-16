@@ -7,41 +7,41 @@ import pytest
 from coola import objects_are_equal
 
 from iden.shard import YamlShard
-from iden.shard.creator import YamlShardCreator
+from iden.shard.generator import YamlShardGenerator
 from iden.testing import yaml_available
 
 if TYPE_CHECKING:
     from pathlib import Path
 
-###############################
-#     Tests for YamlShard     #
-###############################
+########################################
+#     Tests for YamlShardGenerator     #
+########################################
 
 
 @yaml_available
-def test_yaml_shard_creator_repr(tmp_path: Path) -> None:
+def test_yaml_shard_generator_repr(tmp_path: Path) -> None:
     assert repr(
-        YamlShardCreator(
+        YamlShardGenerator(
             data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
         )
-    ).startswith("YamlShardCreator(")
+    ).startswith("YamlShardGenerator(")
 
 
 @yaml_available
-def test_yaml_shard_creator_str(tmp_path: Path) -> None:
+def test_yaml_shard_generator_str(tmp_path: Path) -> None:
     assert str(
-        YamlShardCreator(
+        YamlShardGenerator(
             data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
         )
-    ).startswith("YamlShardCreator(")
+    ).startswith("YamlShardGenerator(")
 
 
 @yaml_available
-def test_yaml_shard_creator_create(tmp_path: Path) -> None:
-    creator = YamlShardCreator(
+def test_yaml_shard_generator_generate(tmp_path: Path) -> None:
+    generator = YamlShardGenerator(
         data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
     )
-    shard = creator.create("000001")
+    shard = generator.generate("000001")
     assert shard.equal(
         YamlShard(
             uri=tmp_path.joinpath("uri/000001").as_uri(),
@@ -51,11 +51,11 @@ def test_yaml_shard_creator_create(tmp_path: Path) -> None:
     assert objects_are_equal(shard.get_data(), [1, 2, 3])
 
 
-def test_yaml_shard_creator_no_yaml(tmp_path: Path) -> None:
+def test_yaml_shard_generator_no_yaml(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
         pytest.raises(RuntimeError, match="`yaml` package is required but not installed."),
     ):
-        YamlShardCreator(
+        YamlShardGenerator(
             data=[1, 2, 3], path_uri=tmp_path.joinpath("uri"), path_shard=tmp_path.joinpath("shard")
         )

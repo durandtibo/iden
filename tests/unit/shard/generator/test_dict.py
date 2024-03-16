@@ -3,26 +3,26 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from iden.shard import JsonShard, ShardDict
-from iden.shard.creator import JsonShardCreator, ShardDictCreator
+from iden.shard.generator import JsonShardGenerator, ShardDictGenerator
 
 if TYPE_CHECKING:
     from pathlib import Path
 
 
-######################################
-#     Tests for ShardDictCreator     #
-######################################
+########################################
+#     Tests for ShardDictGenerator     #
+########################################
 
 
-def test_shard_dict_creator_repr(tmp_path: Path) -> None:
-    creator = ShardDictCreator(
+def test_shard_dict_generator_repr(tmp_path: Path) -> None:
+    generator = ShardDictGenerator(
         shards={
-            "train": JsonShardCreator(
+            "train": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
                 data=[1, 2, 3],
             ),
-            "val": JsonShardCreator(
+            "val": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
                 data=[4, 5, 6],
@@ -30,18 +30,18 @@ def test_shard_dict_creator_repr(tmp_path: Path) -> None:
         },
         path_uri=tmp_path,
     )
-    assert repr(creator).startswith("ShardDictCreator(")
+    assert repr(generator).startswith("ShardDictGenerator(")
 
 
-def test_shard_dict_creator_str(tmp_path: Path) -> None:
-    creator = ShardDictCreator(
+def test_shard_dict_generator_str(tmp_path: Path) -> None:
+    generator = ShardDictGenerator(
         shards={
-            "train": JsonShardCreator(
+            "train": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
                 data=[1, 2, 3],
             ),
-            "val": JsonShardCreator(
+            "val": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
                 data=[4, 5, 6],
@@ -49,18 +49,18 @@ def test_shard_dict_creator_str(tmp_path: Path) -> None:
         },
         path_uri=tmp_path,
     )
-    assert str(creator).startswith("ShardDictCreator(")
+    assert str(generator).startswith("ShardDictGenerator(")
 
 
-def test_shard_dict_creator_create(tmp_path: Path) -> None:
-    creator = ShardDictCreator(
+def test_shard_dict_generator_generate(tmp_path: Path) -> None:
+    generator = ShardDictGenerator(
         shards={
-            "train": JsonShardCreator(
+            "train": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
                 data=[1, 2, 3],
             ),
-            "val": JsonShardCreator(
+            "val": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
                 data=[4, 5, 6],
@@ -68,7 +68,7 @@ def test_shard_dict_creator_create(tmp_path: Path) -> None:
         },
         path_uri=tmp_path,
     )
-    shard = creator.create("001111")
+    shard = generator.generate("001111")
     assert shard.equal(
         ShardDict(
             uri=tmp_path.joinpath("001111").as_uri(),

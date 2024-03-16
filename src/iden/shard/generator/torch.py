@@ -1,15 +1,15 @@
-r"""Contain torch shard creator implementations."""
+r"""Contain torch shard generator implementations."""
 
 from __future__ import annotations
 
-__all__ = ["TorchShardCreator"]
+__all__ = ["TorchShardGenerator"]
 
 from typing import TYPE_CHECKING, TypeVar
 
 from coola.utils.imports import check_torch
 
 from iden.shard import TorchShard, create_torch_shard
-from iden.shard.creator.file import BaseFileShardCreator
+from iden.shard.generator.file import BaseFileShardGenerator
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -17,8 +17,8 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
-class TorchShardCreator(BaseFileShardCreator[T]):
-    r"""Implement a torch shard creator.
+class TorchShardGenerator(BaseFileShardGenerator[T]):
+    r"""Implement a torch shard generator.
 
     Args:
         data: The data to save in the shard.
