@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from iden.data.generator import DataGenerator
 from iden.shard import JsonShard, ShardDict
 from iden.shard.generator import JsonShardGenerator, ShardDictGenerator
 
@@ -20,12 +21,12 @@ def test_shard_dict_generator_repr(tmp_path: Path) -> None:
             "train": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
-                data=[1, 2, 3],
+                data=DataGenerator([1, 2, 3]),
             ),
             "val": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
-                data=[4, 5, 6],
+                data=DataGenerator([4, 5, 6]),
             ),
         },
         path_uri=tmp_path,
@@ -39,12 +40,12 @@ def test_shard_dict_generator_str(tmp_path: Path) -> None:
             "train": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
-                data=[1, 2, 3],
+                data=DataGenerator([1, 2, 3]),
             ),
             "val": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
-                data=[4, 5, 6],
+                data=DataGenerator([4, 5, 6]),
             ),
         },
         path_uri=tmp_path,
@@ -58,12 +59,12 @@ def test_shard_dict_generator_generate(tmp_path: Path) -> None:
             "train": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
-                data=[1, 2, 3],
+                data=DataGenerator([1, 2, 3]),
             ),
             "val": JsonShardGenerator(
                 path_shard=tmp_path.joinpath("shards/data"),
                 path_uri=tmp_path.joinpath("shards/uri"),
-                data=[4, 5, 6],
+                data=DataGenerator([4, 5, 6]),
             ),
         },
         path_uri=tmp_path,

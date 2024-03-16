@@ -13,6 +13,8 @@ from iden.utils.imports import check_yaml
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from iden.data.generator import BaseDataGenerator
+
 T = TypeVar("T")
 
 
@@ -25,11 +27,11 @@ class YamlShardGenerator(BaseFileShardGenerator[T]):
         path_shard: The path where to save the shard data.
     """
 
-    def __init__(self, data: T, path_uri: Path, path_shard: Path) -> None:
+    def __init__(self, data: BaseDataGenerator[T] | dict, path_uri: Path, path_shard: Path) -> None:
         check_yaml()
         super().__init__(data=data, path_uri=path_uri, path_shard=path_shard)
 
-    def _create(self, data: T, shard_id: str) -> YamlShard[T]:
+    def _generate(self, data: T, shard_id: str) -> YamlShard[T]:
         return create_yaml_shard(
             data=data,
             uri=self._path_uri.joinpath(shard_id).as_uri(),

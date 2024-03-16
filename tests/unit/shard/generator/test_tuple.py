@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from iden.data.generator import DataGenerator
 from iden.shard import JsonShard, ShardTuple
 from iden.shard.generator import JsonShardGenerator, ShardTupleGenerator
 
@@ -19,7 +20,7 @@ def test_shard_tuple_generator_repr(tmp_path: Path) -> None:
         shard=JsonShardGenerator(
             path_shard=tmp_path.joinpath("shards/data"),
             path_uri=tmp_path.joinpath("shards/uri"),
-            data=[1, 2, 3],
+            data=DataGenerator([1, 2, 3]),
         ),
         num_shards=4,
         path_uri=tmp_path,
@@ -32,7 +33,7 @@ def test_shard_tuple_generator_str(tmp_path: Path) -> None:
         shard=JsonShardGenerator(
             path_shard=tmp_path.joinpath("shards/data"),
             path_uri=tmp_path.joinpath("shards/uri"),
-            data=[1, 2, 3],
+            data=DataGenerator([1, 2, 3]),
         ),
         num_shards=4,
         path_uri=tmp_path,
@@ -45,7 +46,7 @@ def test_shard_tuple_generator_generate(tmp_path: Path) -> None:
         shard=JsonShardGenerator(
             path_shard=tmp_path.joinpath("shards/data"),
             path_uri=tmp_path.joinpath("shards/uri"),
-            data=[1, 2, 3],
+            data=DataGenerator([1, 2, 3]),
         ),
         num_shards=4,
         path_uri=tmp_path,
