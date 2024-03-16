@@ -14,9 +14,11 @@ from iden.dataset import BaseDataset, load_from_uri
 from iden.dataset.generator import VanillaDatasetGenerator
 from iden.shard.generator import (
     BaseShardGenerator,
+    PickleShardGenerator,
     ShardDictGenerator,
     ShardTupleGenerator,
     TorchSafetensorsShardGenerator,
+    TorchShardGenerator,
 )
 from iden.shard.utils import ShardIterable
 from iden.utils.format import human_time
@@ -125,14 +127,30 @@ def main() -> None:
     r"""Implement the main function."""
     path = Path.cwd().joinpath("tmp/dataset")
 
+    num_shards = 5
+    batch_size = 1000000
     configs = [
         DatasetConfig(
             name="safetensors1",
-            batch_size=1000000,
-            num_shards=5,
+            batch_size=batch_size,
+            num_shards=num_shards,
             path=path.joinpath("safetensors1"),
             shard_generator_type=TorchSafetensorsShardGenerator,
-        )
+        ),
+        DatasetConfig(
+            name="pickle1",
+            batch_size=batch_size,
+            num_shards=num_shards,
+            path=path.joinpath("pickle1"),
+            shard_generator_type=PickleShardGenerator,
+        ),
+        DatasetConfig(
+            name="torch1",
+            batch_size=batch_size,
+            num_shards=num_shards,
+            path=path.joinpath("torch1"),
+            shard_generator_type=TorchShardGenerator,
+        ),
     ]
     data_loading_times = {}
     for config in configs:
@@ -143,7 +161,16 @@ def main() -> None:
 
         data_loading_times[config.name] = benchmark_data_loading(dataset)
 
-    logger.info(str_mapping({name: human_time(t) for name, t in data_loading_times.items()}))
+    min_value = min(data_loading_times.values())
+    logger.info(
+        "\n"
+        + str_mapping(
+            {
+                name: human_time(t) + f"\tx{t/min_value:.2f}"
+                for name, t in data_loading_times.items()
+            }
+        )
+    )
 
 
 if __name__ == "__main__":
