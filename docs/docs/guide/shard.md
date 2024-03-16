@@ -200,8 +200,6 @@ ShardDict(
 
 ```
 
-## Uniform Resource Identifier (URI)
-
 ## Instantiating a shard from its URI
 
 `iden` has a functionality to instantiate a shard from its Uniform Resource Identifier (URI).
@@ -247,3 +245,28 @@ For instance, the following example is equivalent to the previous example:
 JsonShard(uri=file:///.../my_uri)
 
 ```
+
+## Uniform Resource Identifier (URI)
+
+The URI file contains enough information to instantiate the shard object, and it is encoded as a
+JSON file.
+All URI files should contain a dictionary, with at least one key which indicates which the shard
+loader to use to instantiate the shard.
+The following example shows the generate configuration for a `JsonShard` object:
+
+```pycon
+>>> import tempfile
+>>> from pathlib import Path
+>>> from iden.shard import JsonShard
+>>> with tempfile.TemporaryDirectory() as tmpdir:
+...     path = Path(tmpdir).joinpath("data.json")
+...     config = JsonShard.generate_uri_config(path)
+...     config
+...
+{'kwargs': {'path': '/.../data.json'},
+ 'loader': {'_target_': 'iden.shard.loader.JsonShardLoader'}}
+
+```
+
+The `'kwargs'` key is specific to `JsonShard` and indicates where to find the JSON file associated
+to the shard.
