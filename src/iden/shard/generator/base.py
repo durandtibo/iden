@@ -20,7 +20,34 @@ logger = logging.getLogger(__name__)
 
 
 class BaseShardGenerator(Generic[T], ABC, metaclass=AbstractFactory):
-    r"""Define the base class to create a shard."""
+    r"""Define the base class to create a shard.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.data.generator import DataGenerator
+    >>> from iden.shard.generator import JsonShardGenerator
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     generator = JsonShardGenerator(
+    ...         data=DataGenerator([1, 2, 3]),
+    ...         path_uri=Path(tmpdir).joinpath("uri"),
+    ...         path_shard=Path(tmpdir).joinpath("data"),
+    ...     )
+    ...     generator
+    ...     shard = generator.generate("shard1")
+    ...     shard
+    ...
+    JsonShardGenerator(
+      (path_uri): PosixPath('/.../uri')
+      (path_shard): PosixPath('/.../data')
+      (data): DataGenerator(copy=False)
+    )
+    JsonShard(uri=file:///.../uri/shard1)
+
+    ```
+    """
 
     @abstractmethod
     def generate(self, shard_id: str) -> BaseShard[T]:
@@ -31,6 +58,26 @@ class BaseShardGenerator(Generic[T], ABC, metaclass=AbstractFactory):
 
         Returns:
             The generated shard.
+
+        Example usage:
+
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.data.generator import DataGenerator
+        >>> from iden.shard.generator import JsonShardGenerator
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     generator = JsonShardGenerator(
+        ...         data=DataGenerator([1, 2, 3]),
+        ...         path_uri=Path(tmpdir).joinpath("uri"),
+        ...         path_shard=Path(tmpdir).joinpath("data"),
+        ...     )
+        ...     shard = generator.generate("shard1")
+        ...     shard
+        ...
+        JsonShard(uri=file:///.../uri/shard1)
+
+        ```
         """
 
 

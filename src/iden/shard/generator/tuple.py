@@ -23,6 +23,49 @@ class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard, ...]]):
         num_shards: The number of shards to generate in the
             ``ShardTuple``.
         path_uri: The path where to save the URI file.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> import torch
+    >>> from pathlib import Path
+    >>> from iden.data.generator import DataGenerator
+    >>> from iden.shard.generator import ShardTupleGenerator, JsonShardGenerator
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     generator = ShardTupleGenerator(
+    ...         shard=JsonShardGenerator(
+    ...             data=DataGenerator([1, 2, 3]),
+    ...             path_uri=Path(tmpdir).joinpath("uri"),
+    ...             path_shard=Path(tmpdir).joinpath("data"),
+    ...         ),
+    ...         path_uri=Path(tmpdir).joinpath("uri"),
+    ...         num_shards=5,
+    ...     )
+    ...     generator
+    ...     shard = generator.generate("shard1")
+    ...     shard
+    ...
+    ShardTupleGenerator(
+      (path_uri): PosixPath('/.../uri')
+      (num_shards): 5
+      (shard): JsonShardGenerator(
+          (path_uri): PosixPath('/.../uri')
+          (path_shard): PosixPath('/.../data')
+          (data): DataGenerator(copy=False)
+        )
+    )
+    ShardTuple(
+      (uri): file:///.../uri/shard1
+      (shards):
+        (0): JsonShard(uri=file:///.../uri/000000001)
+        (1): JsonShard(uri=file:///.../uri/000000002)
+        (2): JsonShard(uri=file:///.../uri/000000003)
+        (3): JsonShard(uri=file:///.../uri/000000004)
+        (4): JsonShard(uri=file:///.../uri/000000005)
+    )
+
+    ```
     """
 
     def __init__(self, shard: BaseShardGenerator | dict, num_shards: int, path_uri: Path) -> None:
