@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING
 
 from objectory import OBJECT_TARGET
 
-from iden.shard import PickleShard
+from iden.shard import JsonShard
 from iden.shard.loader import (
-    PickleShardLoader,
+    JsonShardLoader,
     is_shard_loader_config,
     setup_shard_loader,
 )
@@ -23,11 +23,11 @@ if TYPE_CHECKING:
 
 
 def test_is_shard_loader_config_true() -> None:
-    assert is_shard_loader_config({OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"})
+    assert is_shard_loader_config({OBJECT_TARGET: "iden.shard.loader.JsonShardLoader"})
 
 
 def test_is_shard_loader_config_false() -> None:
-    assert not is_shard_loader_config({OBJECT_TARGET: "iden.shard.PickleShard"})
+    assert not is_shard_loader_config({OBJECT_TARGET: "iden.shard.JsonShard"})
 
 
 ########################################
@@ -36,14 +36,14 @@ def test_is_shard_loader_config_false() -> None:
 
 
 def test_setup_shard_loader_object() -> None:
-    loader = PickleShardLoader()
+    loader = JsonShardLoader()
     assert setup_shard_loader(loader) is loader
 
 
 def test_setup_shard_loader_dict() -> None:
     assert isinstance(
-        setup_shard_loader({OBJECT_TARGET: "iden.shard.loader.PickleShardLoader"}),
-        PickleShardLoader,
+        setup_shard_loader({OBJECT_TARGET: "iden.shard.loader.JsonShardLoader"}),
+        JsonShardLoader,
     )
 
 
@@ -53,8 +53,8 @@ def test_setup_shard_loader_incorrect_type(
     with caplog.at_level(level=logging.WARNING):
         assert isinstance(
             setup_shard_loader(
-                {OBJECT_TARGET: "iden.shard.PickleShard", "uri": "", "path": tmp_path}
+                {OBJECT_TARGET: "iden.shard.JsonShard", "uri": "", "path": tmp_path}
             ),
-            PickleShard,
+            JsonShard,
         )
         assert caplog.messages
