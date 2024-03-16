@@ -17,7 +17,7 @@ def human_time(seconds: float) -> str:
         seconds: The number of seconds.
 
     Returns:
-        The number of seconds in a string format (hh:mm:ss).
+        The number of seconds in a string format (``hh:mm:ss``).
 
     Example usage:
 
