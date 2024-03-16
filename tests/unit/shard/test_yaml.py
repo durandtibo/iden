@@ -46,17 +46,17 @@ def test_yaml_shard_path(uri: str, path: Path) -> None:
 def test_yaml_shard_clear_not_initialized(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
     shard.clear()
-    assert not shard._is_initialized
+    assert not shard._is_cached
     assert shard._data is None
 
 
 @yaml_available
-def test_yaml_shard_clear_is_initialized(uri: str, path: Path) -> None:
+def test_yaml_shard_clear_is_cached(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
     assert objects_are_equal(shard.get_data(cache=True), {"key1": [1, 2, 3], "key2": "abc"})
-    assert shard.is_initialized()
+    assert shard.is_cached()
     shard.clear()
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 @yaml_available
@@ -98,35 +98,35 @@ def test_yaml_shard_get_data(uri: str, path: Path) -> None:
 @yaml_available
 def test_yaml_shard_get_data_cache_false_not_cached(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 @yaml_available
 def test_yaml_shard_get_data_cache_false_cached(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
     shard.get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @yaml_available
 def test_yaml_shard_get_data_cache_true_not_cached(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
     assert objects_are_equal(shard.get_data(cache=True), {"key1": [1, 2, 3], "key2": "abc"})
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @yaml_available
 def test_yaml_shard_get_data_cache_true_cached(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
     shard.get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
     assert objects_are_equal(shard.get_data(cache=True), {"key1": [1, 2, 3], "key2": "abc"})
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @yaml_available
@@ -139,16 +139,16 @@ def test_yaml_shard_get_data_multiple_calls(uri: str, path: Path) -> None:
 
 
 @yaml_available
-def test_yaml_shard_is_initialized_false(uri: str, path: Path) -> None:
+def test_yaml_shard_is_cached_false(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 @yaml_available
-def test_yaml_shard_is_initialized_true(uri: str, path: Path) -> None:
+def test_yaml_shard_is_cached_true(uri: str, path: Path) -> None:
     shard = YamlShard(uri=uri, path=path)
     shard.get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @yaml_available

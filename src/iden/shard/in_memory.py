@@ -48,5 +48,5 @@ class InMemoryShard(BaseShard[Any]):
     def get_uri(self) -> str | None:
         return None
 
-    def is_initialized(self) -> bool:
+    def is_cached(self) -> bool:
         return True

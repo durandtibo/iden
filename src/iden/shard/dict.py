@@ -202,8 +202,8 @@ class ShardDict(BaseShard):
         """
         return shard_id in self
 
-    def is_initialized(self) -> bool:
-        return any(shard.is_initialized() for shard in self._shards.values())
+    def is_cached(self) -> bool:
+        return any(shard.is_cached() for shard in self._shards.values())
 
     @classmethod
     def from_uri(cls, uri: str) -> ShardDict:

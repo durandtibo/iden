@@ -83,15 +83,15 @@ def test_shard_dict_str(uri: str, shards: dict[str, BaseShard]) -> None:
 def test_shard_dict_clear_not_initialized(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
     shard.clear()
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
-def test_shard_dict_clear_is_initialized(uri: str, shards: dict[str, BaseShard]) -> None:
+def test_shard_dict_clear_is_cached(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
     assert objects_are_equal(shard.get_data()["001"].get_data(cache=True), [1, 2, 3])
-    assert shard.is_initialized()
+    assert shard.is_cached()
     shard.clear()
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 def test_shard_dict_equal_true(uri: str, shards: dict[str, BaseShard]) -> None:
@@ -170,21 +170,21 @@ def test_shard_dict_has_shard_false(uri: str) -> None:
     assert not ShardDict(uri=uri, shards={}).has_shard("missing")
 
 
-def test_shard_dict_is_initialized_false(uri: str, shards: dict[str, BaseShard]) -> None:
+def test_shard_dict_is_cached_false(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
-def test_shard_dict_is_initialized_true_partial(uri: str, shards: dict[str, BaseShard]) -> None:
+def test_shard_dict_is_cached_true_partial(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
     shard.get_data()["001"].get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
-def test_shard_dict_is_initialized_true_all(uri: str, shards: dict[str, BaseShard]) -> None:
+def test_shard_dict_is_cached_true_all(uri: str, shards: dict[str, BaseShard]) -> None:
     shard = ShardDict(uri=uri, shards=shards)
     [shard.get_data(cache=True) for shard in shard.get_data().values()]
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 def test_shard_dict_from_uri(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:

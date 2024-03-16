@@ -59,19 +59,19 @@ def test_torch_safetensors_shard_path(uri: str, path: Path) -> None:
 def test_torch_safetensors_shard_clear_not_initialized(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
     shard.clear()
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 @safetensors_available
 @torch_available
-def test_torch_safetensors_shard_clear_is_initialized(uri: str, path: Path) -> None:
+def test_torch_safetensors_shard_clear_is_cached(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
     assert objects_are_equal(
         shard.get_data(cache=True), {"key1": torch.ones(2, 3), "key2": torch.arange(5)}
     )
-    assert shard.is_initialized()
+    assert shard.is_cached()
     shard.clear()
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 @safetensors_available
@@ -133,9 +133,9 @@ def test_torch_safetensors_shard_get_data(uri: str, path: Path) -> None:
 @torch_available
 def test_torch_safetensors_shard_get_data_cache_false_not_cached(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
     assert objects_are_equal(shard.get_data(), {"key1": torch.ones(2, 3), "key2": torch.arange(5)})
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 @safetensors_available
@@ -143,20 +143,20 @@ def test_torch_safetensors_shard_get_data_cache_false_not_cached(uri: str, path:
 def test_torch_safetensors_shard_get_data_cache_false_cached(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
     shard.get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
     assert objects_are_equal(shard.get_data(), {"key1": torch.ones(2, 3), "key2": torch.arange(5)})
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @safetensors_available
 @torch_available
 def test_torch_safetensors_shard_get_data_cache_true_not_cached(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
     assert objects_are_equal(
         shard.get_data(cache=True), {"key1": torch.ones(2, 3), "key2": torch.arange(5)}
     )
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @safetensors_available
@@ -164,11 +164,11 @@ def test_torch_safetensors_shard_get_data_cache_true_not_cached(uri: str, path: 
 def test_torch_safetensors_shard_get_data_cache_true_cached(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
     shard.get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
     assert objects_are_equal(
         shard.get_data(cache=True), {"key1": torch.ones(2, 3), "key2": torch.arange(5)}
     )
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @safetensors_available
@@ -193,17 +193,17 @@ def test_torch_safetensors_shard_get_uri(uri: str, path: Path) -> None:
 
 @safetensors_available
 @torch_available
-def test_torch_safetensors_shard_is_initialized_false(uri: str, path: Path) -> None:
+def test_torch_safetensors_shard_is_cached_false(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 @safetensors_available
 @torch_available
-def test_torch_safetensors_shard_is_initialized_true(uri: str, path: Path) -> None:
+def test_torch_safetensors_shard_is_cached_true(uri: str, path: Path) -> None:
     shard = TorchSafetensorsShard(uri=uri, path=path)
     shard.get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 @safetensors_available

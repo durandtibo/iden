@@ -156,11 +156,11 @@ class BaseShard(Generic[T], ABC):
         """
 
     @abstractmethod
-    def is_initialized(self) -> bool:
-        r"""Indicate if the shard has data in-memory or not.
+    def is_cached(self) -> bool:
+        r"""Indicate if the data in the shard are cached or not.
 
         Returns:
-            ``True`` if the shard has data in-memory otherwise ``False``.
+            ``True`` if the data are cached, otherwise ``False``.
 
         Example usage:
 
@@ -174,11 +174,11 @@ class BaseShard(Generic[T], ABC):
         ...     file = Path(tmpdir).joinpath("data.json")
         ...     save_json([1, 2, 3], file)
         ...     shard = JsonShard(uri=uri, path=file)
-        ...     shard.is_initialized()
+        ...     shard.is_cached()
         ...     data = shard.get_data(cache=True)
-        ...     shard.is_initialized()
+        ...     shard.is_cached()
         ...     shard.clear()
-        ...     shard.is_initialized()
+        ...     shard.is_cached()
         ...
         False
         True
