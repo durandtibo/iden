@@ -21,6 +21,46 @@ class ShardDictGenerator(BaseShardGenerator[tuple[BaseShard, ...]]):
     Args:
         shards: The shard generators or their configurations.
         path_uri: The path where to save the URI file.
+
+    Example usage:
+
+    ```pycon
+    >>> import tempfile
+    >>> import torch
+    >>> from pathlib import Path
+    >>> from iden.data.generator import DataGenerator
+    >>> from iden.shard.generator import ShardDictGenerator, JsonShardGenerator
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     generator = ShardDictGenerator(
+    ...         shards={
+    ...             "train": JsonShardGenerator(
+    ...                 data=DataGenerator([1, 2, 3]),
+    ...                 path_uri=Path(tmpdir).joinpath("uri"),
+    ...                 path_shard=Path(tmpdir).joinpath("data"),
+    ...             )
+    ...         },
+    ...         path_uri=Path(tmpdir).joinpath("uri"),
+    ...     )
+    ...     generator
+    ...     shard = generator.generate("shard1")
+    ...     shard
+    ...
+    ShardDictGenerator(
+      (path_uri): PosixPath('/.../uri')
+      (shards):
+        (train): JsonShardGenerator(
+            (path_uri): PosixPath('/.../uri')
+            (path_shard): PosixPath('/.../data')
+            (data): DataGenerator(copy=False)
+          )
+    )
+    ShardDict(
+      (uri): file:///.../uri/shard1
+      (shards):
+        (train): JsonShard(uri=file:///.../uri/train)
+    )
+
+    ```
     """
 
     def __init__(self, shards: dict[str, BaseShardGenerator | dict], path_uri: Path) -> None:
