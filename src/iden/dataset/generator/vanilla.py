@@ -26,6 +26,50 @@ class VanillaDatasetGenerator(BaseDatasetGenerator[tuple[BaseShard, ...]]):
         path_uri: The path where to save the URI file.
         shards: The shards generator or its configuration.
         assets: The assets generator or its configuration.
+
+    ```pycon
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> from iden.dataset.generator import VanillaDatasetGenerator
+    >>> from iden.shard.generator import ShardDictGenerator
+    >>> with tempfile.TemporaryDirectory() as tmpdir:
+    ...     generator = VanillaDatasetGenerator(
+    ...         path_uri=Path(tmpdir).joinpath("uri"),
+    ...         shards=ShardDictGenerator(
+    ...             path_uri=Path(tmpdir).joinpath("uri/shards"), shards={}
+    ...         ),
+    ...         assets=ShardDictGenerator(
+    ...             path_uri=Path(tmpdir).joinpath("uri/assets"), shards={}
+    ...         ),
+    ...     )
+    ...     generator
+    ...     dataset = generator.generate("dataset1")
+    ...     dataset
+    ...
+    VanillaDatasetGenerator(
+      (path_uri): PosixPath('/.../uri')
+      (shards): ShardDictGenerator(
+          (path_uri): PosixPath('/.../uri/shards')
+          (shards):
+        )
+      (assets): ShardDictGenerator(
+          (path_uri): PosixPath('/.../uri/assets')
+          (shards):
+        )
+    )
+    VanillaDataset(
+      (uri): file:///.../uri/dataset1
+      (shards): ShardDict(
+          (uri): file:///.../uri/shards/shards
+          (shards):
+        )
+      (assets): ShardDict(
+          (uri): file:///.../uri/assets/assets
+          (shards):
+        )
+    )
+
+    ```
     """
 
     def __init__(

@@ -55,7 +55,7 @@ class BaseFileShardGenerator(BaseShardGenerator[T]):
     ```
     """
 
-    def __init__(self, data: BaseDataGenerator[T] | dict, path_uri: Path, path_shard: Path) -> None:
+    def __init__(self, path_uri: Path, path_shard: Path, data: BaseDataGenerator[T] | dict) -> None:
         self._data = setup_data_generator(data)
         self._path_uri = path_uri
         self._path_shard = path_shard

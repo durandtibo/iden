@@ -64,13 +64,13 @@ class TorchSafetensorsShardGenerator(BaseFileShardGenerator[dict[str, torch.Tens
 
     def __init__(
         self,
-        data: BaseDataGenerator[dict[str, torch.Tensor]] | dict,
         path_uri: Path,
         path_shard: Path,
+        data: BaseDataGenerator[dict[str, torch.Tensor]] | dict,
     ) -> None:
         check_safetensors()
         check_torch()
-        super().__init__(data=data, path_uri=path_uri, path_shard=path_shard)
+        super().__init__(path_uri=path_uri, path_shard=path_shard, data=data)
 
     def _generate(self, data: dict[str, torch.Tensor], shard_id: str) -> TorchSafetensorsShard:
         return create_torch_safetensors_shard(
