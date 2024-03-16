@@ -138,8 +138,8 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     def get_uri(self) -> str:
         return self._uri
 
-    def is_initialized(self) -> bool:
-        return any(shard.is_initialized() for shard in self._shards)
+    def is_cached(self) -> bool:
+        return any(shard.is_cached() for shard in self._shards)
 
     def is_sorted_by_uri(self) -> bool:
         r"""Indicate if the shards are sorted by ascending order of URIs

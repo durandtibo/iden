@@ -13,9 +13,9 @@ def test_in_memory_shard_str() -> None:
 
 def test_in_memory_shard_clear() -> None:
     shard = InMemoryShard([1, 2, 3])
-    assert shard.is_initialized()
+    assert shard.is_cached()
     shard.clear()
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 def test_in_memory_shard_equal_true() -> None:
@@ -50,5 +50,5 @@ def test_in_memory_shard_get_uri() -> None:
     assert InMemoryShard([1, 2, 3]).get_uri() is None
 
 
-def test_in_memory_shard_is_initialized() -> None:
-    assert InMemoryShard([1, 2, 3]).is_initialized()
+def test_in_memory_shard_is_cached() -> None:
+    assert InMemoryShard([1, 2, 3]).is_cached()

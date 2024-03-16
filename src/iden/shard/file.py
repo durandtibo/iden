@@ -55,7 +55,7 @@ class FileShard(BaseShard[T]):
         self._path = sanitize_path(path)
         self._loader = setup_loader(loader or AutoFileLoader())
 
-        self._is_initialized = False
+        self._is_cached = False
         self._data = None
 
     def __repr__(self) -> str:
@@ -67,7 +67,7 @@ class FileShard(BaseShard[T]):
         return self._path
 
     def clear(self) -> None:
-        self._is_initialized = False
+        self._is_cached = False
         self._data = None
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
@@ -78,11 +78,11 @@ class FileShard(BaseShard[T]):
         ) and objects_are_equal(self.path, other.path, equal_nan=equal_nan)
 
     def get_data(self, cache: bool = False) -> T:
-        if not self._is_initialized:
+        if not self._is_cached:
             data = self._loader.load(self._path)
             if cache:
                 self._data = data
-                self._is_initialized = True
+                self._is_cached = True
         else:
             data = self._data
         return data
@@ -90,8 +90,8 @@ class FileShard(BaseShard[T]):
     def get_uri(self) -> str:
         return self._uri
 
-    def is_initialized(self) -> bool:
-        return self._is_initialized
+    def is_cached(self) -> bool:
+        return self._is_cached
 
     @classmethod
     def from_uri(cls, uri: str) -> FileShard:

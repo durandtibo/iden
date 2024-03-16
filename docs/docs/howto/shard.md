@@ -12,7 +12,7 @@ following 5 methods:
 - `equal`
 - `get_data`
 - `get_uri`
-- `is_initialized`
+- `is_cached`
 
 Ideally, the instantiation of a shard object should be lightweight and the data should be loaded
 in-memory only when the `get_data` is called.

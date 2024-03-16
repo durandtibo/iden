@@ -58,15 +58,15 @@ def test_shard_tuple_str(uri: str, shards: Sequence[BaseShard]) -> None:
 def test_shard_tuple_clear_not_initialized(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
     shard.clear()
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
-def test_shard_tuple_clear_is_initialized(uri: str, shards: Sequence[BaseShard]) -> None:
+def test_shard_tuple_clear_is_cached(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
     assert objects_are_equal(shard.get_data()[0].get_data(cache=True), [1, 2, 3])
-    assert shard.is_initialized()
+    assert shard.is_cached()
     shard.clear()
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 def test_shard_tuple_equal_true(uri: str, shards: Sequence[BaseShard]) -> None:
@@ -115,7 +115,7 @@ def test_shard_tuple_get_data(uri: str, shards: Sequence[BaseShard], path_shard:
             JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
         ),
     )
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 def test_shard_tuple_get_data_cache_true(
@@ -130,7 +130,7 @@ def test_shard_tuple_get_data_cache_true(
             JsonShard.from_uri(uri=path_shard.joinpath("uri3").as_uri()),
         ),
     )
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
 def test_shard_tuple_get_data_empty(
@@ -139,21 +139,21 @@ def test_shard_tuple_get_data_empty(
     assert objects_are_equal(ShardTuple(uri=uri, shards=[]).get_data(), ())
 
 
-def test_shard_tuple_is_initialized_false(uri: str, shards: Sequence[BaseShard]) -> None:
+def test_shard_tuple_is_cached_false(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
-    assert not shard.is_initialized()
+    assert not shard.is_cached()
 
 
-def test_shard_tuple_is_initialized_true_partial(uri: str, shards: Sequence[BaseShard]) -> None:
+def test_shard_tuple_is_cached_true_partial(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
     shard.get_data()[0].get_data(cache=True)
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
-def test_shard_tuple_is_initialized_true_all(uri: str, shards: Sequence[BaseShard]) -> None:
+def test_shard_tuple_is_cached_true_all(uri: str, shards: Sequence[BaseShard]) -> None:
     shard = ShardTuple(uri=uri, shards=shards)
     [shard.get_data(cache=True) for shard in shard.get_data()]
-    assert shard.is_initialized()
+    assert shard.is_cached()
 
 
 def test_shard_tuple_is_sorted_by_uri_true(uri: str, shards: Sequence[BaseShard]) -> None:

@@ -38,7 +38,22 @@ The `get_data` method is used to get the data from the shard:
 
 ```
 
-Most of the shard caches the data in-memory after the data are loaded the first time.
+If the data from a shard are often used, it is possible to cache them by specifying `cache=True`:
+
+```pycon
+>>> import tempfile
+>>> from pathlib import Path
+>>> from iden.shard import create_json_shard
+>>> with tempfile.TemporaryDirectory() as tmpdir:
+...     shard = create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
+...     data = shard.get_data(cache=True)
+...     data
+...
+[1, 2, 3]
+
+```
+
+Most of the shards can cache the data in-memory.
 It is possible to clear the cache by calling the `clear` method.
 
 ```pycon
@@ -65,7 +80,7 @@ It is possible to clear the cache by calling the `clear` method.
 
 It is important to clear the `cache` if the shard is not used because it can lead to OOM issues if
 the data of too may shards are cached in-memory at the same time.
-It is possible to call the `is_initialized` method to know if the data in the data are cached or
+It is possible to call the `is_cached` method to know if the data in the data are cached or
 not.
 
 ```pycon
@@ -74,11 +89,11 @@ not.
 >>> from iden.shard import create_json_shard
 >>> with tempfile.TemporaryDirectory() as tmpdir:
 ...     shard = create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
-...     shard.is_initialized()
+...     shard.is_cached()
 ...     data = shard.get_data(cache=True)
-...     shard.is_initialized()
+...     shard.is_cached()
 ...     shard.clear()
-...     shard.is_initialized()
+...     shard.is_cached()
 ...
 ...
 False

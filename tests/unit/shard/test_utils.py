@@ -44,9 +44,9 @@ def test_shard_iterable_str() -> None:
 
 
 def test_shard_iterable_iter(shards: Iterable[BaseShard]) -> None:
-    assert not any(shard.is_initialized() for shard in shards)
+    assert not any(shard.is_cached() for shard in shards)
     assert objects_are_equal(list(ShardIterable(shards)), [[1, 2, 3], [4, 5, 6, 7], [8]])
-    assert not any(shard.is_initialized() for shard in shards)
+    assert not any(shard.is_cached() for shard in shards)
 
 
 def test_shard_iterable_iter_empty() -> None:
