@@ -23,7 +23,7 @@ else:  # pragma: no cover
     torch = Mock()
 
 
-class NumpySafetensorsShardLoader(BaseShardLoader[dict[str, torch.Tensor]]):
+class NumpySafetensorsShardLoader(BaseShardLoader[dict[str, np.ndarray]]):
     r"""Implement a safetensors shard loader for ``numpy.ndarray``s.
 
     Raises:
