@@ -15,7 +15,7 @@ from iden.shard.generator.base import BaseShardGenerator
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from iden.shard import JsonShard
+    from iden.shard import BaseShard, JsonShard
 
 T = TypeVar("T")
 
@@ -76,7 +76,7 @@ class BaseFileShardGenerator(BaseShardGenerator[T]):
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
-    def generate(self, shard_id: str) -> JsonShard[T]:
+    def generate(self, shard_id: str) -> BaseShard[T]:
         data = self._data.generate()
         return self._generate(data=data, shard_id=shard_id)
 

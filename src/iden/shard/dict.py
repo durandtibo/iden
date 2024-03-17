@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["ShardDict", "create_shard_dict"]
 
 import logging
-from typing import Any
+from typing import Any, TypeVar
 
 from coola import objects_are_equal
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
@@ -18,10 +18,12 @@ from iden.shard.exceptions import ShardNotFoundError
 from iden.shard.utils import get_dict_uris
 from iden.utils.path import sanitize_path
 
+T = TypeVar("T")
+
 logger = logging.getLogger(__name__)
 
 
-class ShardDict(BaseShard):
+class ShardDict(BaseShard[T]):
     r"""Implement a data structure to manage a dictionary of shards.
 
     Args:
@@ -57,14 +59,14 @@ class ShardDict(BaseShard):
     ```
     """
 
-    def __init__(self, uri: str, shards: dict[str, BaseShard]) -> None:
+    def __init__(self, uri: str, shards: dict[str, BaseShard[T]]) -> None:
         self._uri = uri
         self._shards = shards.copy()
 
     def __contains__(self, item: str) -> bool:
         return item in self._shards
 
-    def __getitem__(self, item: str) -> BaseShard:
+    def __getitem__(self, item: str) -> BaseShard[T]:
         return self._shards[item]
 
     def __len__(self) -> int:
@@ -91,7 +93,7 @@ class ShardDict(BaseShard):
             self.get_uri(), other.get_uri(), equal_nan=equal_nan
         ) and objects_are_equal(self.get_data(), other.get_data(), equal_nan=equal_nan)
 
-    def get_data(self, cache: bool = False) -> dict[str, BaseShard]:  # noqa: ARG002
+    def get_data(self, cache: bool = False) -> dict[str, BaseShard[T]]:  # noqa: ARG002
         return self._shards.copy()
 
     def get_uri(self) -> str:
@@ -206,7 +208,7 @@ class ShardDict(BaseShard):
         return any(shard.is_cached() for shard in self._shards.values())
 
     @classmethod
-    def from_uri(cls, uri: str) -> ShardDict:
+    def from_uri(cls, uri: str) -> ShardDict[T]:
         r"""Instantiate a shard from its URI.
 
         Args:
@@ -252,7 +254,7 @@ class ShardDict(BaseShard):
         return cls(uri=uri, shards=shards)
 
     @classmethod
-    def generate_uri_config(cls, shards: dict[str, BaseShard]) -> dict:
+    def generate_uri_config(cls, shards: dict[str, BaseShard[T]]) -> dict:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 
@@ -292,7 +294,7 @@ class ShardDict(BaseShard):
         }
 
 
-def create_shard_dict(shards: dict[str, BaseShard], uri: str) -> ShardDict:
+def create_shard_dict(shards: dict[str, BaseShard[T]], uri: str) -> ShardDict[T]:
     r"""Create a ``ShardDict`` a list of shards.
 
     Note:

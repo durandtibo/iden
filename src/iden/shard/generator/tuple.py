@@ -4,18 +4,20 @@ from __future__ import annotations
 
 __all__ = ["ShardTupleGenerator"]
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 from coola.utils import repr_indent, repr_mapping
 
 from iden.shard import BaseShard, ShardTuple, create_shard_tuple
 from iden.shard.generator.base import BaseShardGenerator, setup_shard_generator
 
+T = TypeVar("T")
+
 if TYPE_CHECKING:
     from pathlib import Path
 
 
-class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard, ...]]):
+class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard[T], ...]]):
     r"""Implement a ``ShardTuple`` generator.
 
     Args:
@@ -68,7 +70,9 @@ class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard, ...]]):
     ```
     """
 
-    def __init__(self, shard: BaseShardGenerator | dict, num_shards: int, path_uri: Path) -> None:
+    def __init__(
+        self, shard: BaseShardGenerator[T] | dict, num_shards: int, path_uri: Path
+    ) -> None:
         self._shard = setup_shard_generator(shard)
         self._num_shards = num_shards
         self._path_uri = path_uri
@@ -85,6 +89,6 @@ class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard, ...]]):
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
-    def generate(self, shard_id: str) -> ShardTuple:
+    def generate(self, shard_id: str) -> ShardTuple[T]:
         shards = [self._shard.generate(f"{i + 1:09}") for i in range(self._num_shards)]
         return create_shard_tuple(uri=self._path_uri.joinpath(shard_id).as_uri(), shards=shards)

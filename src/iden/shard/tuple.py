@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["ShardTuple", "create_shard_tuple"]
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola import objects_are_equal
 from coola.utils import (
@@ -27,10 +27,12 @@ from iden.utils.path import sanitize_path
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+T = TypeVar("T")
+
 logger = logging.getLogger(__name__)
 
 
-class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
+class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
     r"""Implement a data structure to manage a tuple of shards.
 
     Args:
@@ -64,11 +66,11 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
     ```
     """
 
-    def __init__(self, uri: str, shards: Iterable[BaseShard]) -> None:
+    def __init__(self, uri: str, shards: Iterable[BaseShard[T]]) -> None:
         self._uri = uri
         self._shards = tuple(shards)
 
-    def __getitem__(self, index: int) -> BaseShard:
+    def __getitem__(self, index: int) -> BaseShard[T]:
         return self._shards[index]
 
     def __len__(self) -> int:
@@ -95,7 +97,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
             self.get_uri(), other.get_uri(), equal_nan=equal_nan
         ) and objects_are_equal(self.get_data(), other.get_data(), equal_nan=equal_nan)
 
-    def get(self, index: int) -> BaseShard:
+    def get(self, index: int) -> BaseShard[T]:
         r"""Get a shard.
 
         Args:
@@ -132,7 +134,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         """
         return self[index]
 
-    def get_data(self, cache: bool = False) -> tuple[BaseShard, ...]:  # noqa: ARG002
+    def get_data(self, cache: bool = False) -> tuple[BaseShard[T], ...]:  # noqa: ARG002
         return self._shards
 
     def get_uri(self) -> str:
@@ -153,7 +155,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         return uris == sorted(uris)
 
     @classmethod
-    def from_uri(cls, uri: str) -> ShardTuple:
+    def from_uri(cls, uri: str) -> ShardTuple[T]:
         r"""Instantiate a shard from its URI.
 
         Args:
@@ -199,7 +201,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         return cls(uri=uri, shards=shards)
 
     @classmethod
-    def generate_uri_config(cls, shards: Iterable[BaseShard]) -> dict:
+    def generate_uri_config(cls, shards: Iterable[BaseShard[T]]) -> dict:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 
@@ -239,7 +241,7 @@ class ShardTuple(BaseShard[tuple[BaseShard, ...]]):
         }
 
 
-def create_shard_tuple(shards: Iterable[BaseShard], uri: str) -> ShardTuple:
+def create_shard_tuple(shards: Iterable[BaseShard[T]], uri: str) -> ShardTuple[T]:
     r"""Create a ``ShardTuple`` a list of shards.
 
     Note:

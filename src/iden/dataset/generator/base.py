@@ -141,7 +141,9 @@ def is_dataset_generator_config(config: dict) -> bool:
     return is_object_config(config, BaseDatasetGenerator)
 
 
-def setup_dataset_generator(dataset_generator: BaseDatasetGenerator | dict) -> BaseDatasetGenerator:
+def setup_dataset_generator(
+    dataset_generator: BaseDatasetGenerator[T] | dict,
+) -> BaseDatasetGenerator[T]:
     r"""Set up a dataset generator.
 
     The dataset generator is instantiated from its configuration by using the
