@@ -7,6 +7,7 @@ __all__ = [
     "FileShard",
     "InMemoryShard",
     "JsonShard",
+    "NumpySafetensorsShard",
     "PickleShard",
     "ShardDict",
     "ShardTuple",
@@ -14,6 +15,7 @@ __all__ = [
     "TorchShard",
     "YamlShard",
     "create_json_shard",
+    "create_numpy_safetensors_shard",
     "create_pickle_shard",
     "create_shard_dict",
     "create_shard_tuple",
@@ -34,7 +36,12 @@ from iden.shard.in_memory import InMemoryShard
 from iden.shard.json import JsonShard, create_json_shard
 from iden.shard.loading import load_from_uri
 from iden.shard.pickle import PickleShard, create_pickle_shard
-from iden.shard.safetensors import TorchSafetensorsShard, create_torch_safetensors_shard
+from iden.shard.safetensors import (
+    NumpySafetensorsShard,
+    TorchSafetensorsShard,
+    create_numpy_safetensors_shard,
+    create_torch_safetensors_shard,
+)
 from iden.shard.torch import TorchShard, create_torch_shard
 from iden.shard.tuple import ShardTuple, create_shard_tuple
 from iden.shard.utils import get_dict_uris, get_list_uris, sort_by_uri
