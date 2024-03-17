@@ -265,7 +265,7 @@ def is_saver_config(config: dict) -> bool:
     return is_object_config(config, BaseSaver)
 
 
-def setup_loader(loader: BaseLoader | dict) -> BaseLoader:
+def setup_loader(loader: BaseLoader[T] | dict) -> BaseLoader[T]:
     r"""Set up a data loader.
 
     The data loader is instantiated from its configuration by using the
@@ -295,7 +295,7 @@ def setup_loader(loader: BaseLoader | dict) -> BaseLoader:
     return loader
 
 
-def setup_saver(saver: BaseSaver | dict) -> BaseSaver:
+def setup_saver(saver: BaseSaver[T] | dict) -> BaseSaver[T]:
     r"""Set up a data saver.
 
     The data saver is instantiated from its configuration by using the

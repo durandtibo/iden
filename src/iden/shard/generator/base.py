@@ -109,7 +109,7 @@ def is_shard_generator_config(config: dict) -> bool:
     return is_object_config(config, BaseShardGenerator)
 
 
-def setup_shard_generator(shard_generator: BaseShardGenerator | dict) -> BaseShardGenerator:
+def setup_shard_generator(shard_generator: BaseShardGenerator[T] | dict) -> BaseShardGenerator[T]:
     r"""Set up a shard generator.
 
     The shard generator is instantiated from its configuration by using the

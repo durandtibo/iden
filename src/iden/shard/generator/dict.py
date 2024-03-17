@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-class ShardDictGenerator(BaseShardGenerator[tuple[BaseShard, ...]]):
+class ShardDictGenerator(BaseShardGenerator[dict[str, BaseShard]]):
     r"""Implement a ``ShardDict`` generator.
 
     Args:
