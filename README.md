@@ -90,6 +90,14 @@ Please check the [get started page](https://durandtibo.github.io/iden/get_starte
 install only some specific dependencies or other alternatives to install the library.
 The following is the corresponding `iden` versions and tested dependencies.
 
+| `iden`  | `coola`      | `objectory`  | `numpy`<sup>*</sup> | `pyyaml`<sup>*</sup> | `safetensors`<sup>*</sup> | `torch`<sup>*</sup> | `python`      |
+|---------|--------------|--------------|---------------------|----------------------|---------------------------|---------------------|---------------|
+| `main`  | `>=0.3,<1.0` | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.12` |
+| `0.0.2` | `>=0.4,<1.0` | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
+| `0.0.1` | `>=0.4,<1.0` | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
+
+<sup>*</sup> indicates an optional dependency
+
 ## Contributing
 
 Please check the instructions in [CONTRIBUTING.md](.github/CONTRIBUTING.md).

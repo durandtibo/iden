@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iden"
-version = "0.0.2"
+version = "0.0.3a0"
 description = "simple library to manage a dataset of shards to train machine learning models"
 readme = "README.md"
 authors = ["Thibaut Durand <durand.tibo+gh@gmail.com>"]
@@ -31,7 +31,7 @@ packages = [
 
 [tool.poetry.dependencies]
 # Core dependencies
-coola = ">=0.4,<1.0"
+coola = ">=0.3,<1.0"
 objectory = ">=0.1,<1.0"
 python = ">=3.9,<3.13"
 
