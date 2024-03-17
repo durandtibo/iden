@@ -1876,4 +1876,4 @@ all = ["numpy", "pyyaml", "safetensors", "torch"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "15771f8bbf063afd1608213549a11bffca50eda8529cdebafab15b6dbec74704"
+content-hash = "9566ef7dab899af43b3bbb762d7d3e95998ebe32324df3420f6f4741142edd02"
