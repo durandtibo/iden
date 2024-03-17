@@ -5,19 +5,21 @@ from unittest.mock import Mock
 
 import pytest
 from coola import objects_are_equal
-from coola.testing import torch_available
-from coola.utils import is_torch_available
+from coola.testing import numpy_available, torch_available
+from coola.utils import is_numpy_available, is_torch_available
 
 from iden.io import JsonSaver
 from iden.shard import (
     FileShard,
     JsonShard,
+    NumpySafetensorsShard,
     PickleShard,
     ShardTuple,
     TorchSafetensorsShard,
     TorchShard,
     YamlShard,
     create_json_shard,
+    create_numpy_safetensors_shard,
     create_pickle_shard,
     create_shard_tuple,
     create_torch_safetensors_shard,
@@ -28,13 +30,18 @@ from iden.shard import (
 from iden.testing import safetensors_available, yaml_available
 from iden.utils.path import sanitize_path
 
-if TYPE_CHECKING:
-    from pathlib import Path
+if is_numpy_available():
+    import numpy as np
+else:  # pragma: no cover
+    np = Mock()
 
 if is_torch_available():
     import torch
 else:  # pragma: no cover
     torch = Mock()
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 ###################################
@@ -69,6 +76,19 @@ def test_load_from_uri_pickle(tmp_path: Path) -> None:
     shard = load_from_uri(uri)
     assert shard.equal(PickleShard(uri=uri, path=path))
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
+
+
+@safetensors_available
+@numpy_available
+def test_load_from_uri_numpy_safetensors(tmp_path: Path) -> None:
+    uri = tmp_path.joinpath("my_uri").as_uri()
+    path = tmp_path.joinpath("my_uri.safetensors")
+    create_numpy_safetensors_shard(
+        data={"key1": np.ones((2, 3)), "key2": np.arange(5)}, uri=uri, path=path
+    )
+    shard = load_from_uri(uri)
+    assert shard.equal(NumpySafetensorsShard(uri=uri, path=path))
+    assert objects_are_equal(shard.get_data(), {"key1": np.ones((2, 3)), "key2": np.arange(5)})
 
 
 @safetensors_available
