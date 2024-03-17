@@ -4,14 +4,18 @@
     <a href="https://github.com/durandtibo/iden/actions">
         <img alt="CI" src="https://github.com/durandtibo/iden/workflows/CI/badge.svg">
     </a>
-    <a href="https://durandtibo.github.io/iden/">
-        <img alt="Documentation" src="https://github.com/durandtibo/iden/workflows/Documentation%20(stable)/badge.svg">
-    </a>
     <a href="https://github.com/durandtibo/iden/actions">
         <img alt="Nightly Tests" src="https://github.com/durandtibo/iden/workflows/Nightly%20Tests/badge.svg">
     </a>
     <a href="https://github.com/durandtibo/iden/actions">
         <img alt="Nightly Package Tests" src="https://github.com/durandtibo/iden/workflows/Nightly%20Package%20Tests/badge.svg">
+    </a>
+    <br/>
+    <a href="https://durandtibo.github.io/iden/">
+        <img alt="Documentation" src="https://github.com/durandtibo/iden/workflows/Documentation%20(stable)/badge.svg">
+    </a>
+    <a href="https://durandtibo.github.io/iden/">
+        <img alt="Documentation" src="https://github.com/durandtibo/iden/workflows/Documentation%20(unstable)/badge.svg">
     </a>
     <br/>
     <a href="https://codecov.io/gh/durandtibo/iden">
@@ -55,6 +59,14 @@
     </a>
     <br/>
 </p>
+
+## Overview
+
+`iden` is a simple Python library to manage a dataset of shards when training a machine learning
+model.
+`iden` uses a lazy loading approach to load the shard's data, so it is easy to manage shards without
+loading their data.
+`iden` supports different format to store shards on disk.
 
 ## API stability
 
