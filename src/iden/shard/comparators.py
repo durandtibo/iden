@@ -9,7 +9,7 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 from coola.equality.comparators import BaseEqualityComparator
-from coola.equality.handlers import EqualHandler, SameObjectHandler, SameTypeHandler
+from coola.equality.handlers import EqualNanHandler, SameObjectHandler, SameTypeHandler
 from coola.equality.testers import EqualityTester
 
 from iden.shard.base import BaseShard
@@ -32,7 +32,7 @@ class ShardEqualityComparator(BaseEqualityComparator[BaseShard]):
 
     def __init__(self) -> None:
         self._handler = SameObjectHandler()
-        self._handler.chain(SameTypeHandler()).chain(EqualHandler())
+        self._handler.chain(SameTypeHandler()).chain(EqualNanHandler())
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
