@@ -118,9 +118,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
         >>> from iden.shard import ShardTuple
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = [
-        ...         create_json_shard(
-        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...         ),
+        ...         create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
         ...         create_json_shard(
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
@@ -172,9 +170,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
         >>> from iden.shard import ShardTuple, create_json_shard
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = [
-        ...         create_json_shard(
-        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...         ),
+        ...         create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
         ...         create_json_shard(
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
@@ -221,9 +217,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
         >>> from iden.shard import ShardTuple, create_json_shard
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     shards = [
-        ...         create_json_shard(
-        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...         ),
+        ...         create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
         ...         create_json_shard(
         ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
         ...         ),
@@ -264,9 +258,7 @@ def create_shard_tuple(shards: Iterable[BaseShard[T]], uri: str) -> ShardTuple[T
     >>> from iden.shard import ShardTuple, create_json_shard, create_shard_tuple
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shards = [
-    ...         create_json_shard(
-    ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-    ...         ),
+    ...         create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()),
     ...         create_json_shard(
     ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
     ...         ),

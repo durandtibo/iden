@@ -95,7 +95,9 @@ def setup_data_generator(data_generator: BaseDataGenerator | dict) -> BaseDataGe
 
     ```pycon
     >>> from iden.data.generator import is_data_generator_config
-    >>> generator = setup_data_generator({"_target_": "iden.data.generator.DataGenerator", "data": [1, 2, 3]})
+    >>> generator = setup_data_generator(
+    ...     {"_target_": "iden.data.generator.DataGenerator", "data": [1, 2, 3]}
+    ... )
     >>> generator
     DataGenerator(copy=False)
 

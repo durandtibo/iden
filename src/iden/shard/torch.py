@@ -124,7 +124,7 @@ def create_torch_shard(data: Any, uri: str, path: Path | None = None) -> TorchSh
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shard = create_torch_shard(
     ...         data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
-    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri()
+    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
     ...     )
     ...     shard.get_data()
     ...

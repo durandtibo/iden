@@ -169,13 +169,13 @@ def setup_dataset_generator(
     ...             "shards": {
     ...                 "_target_": "iden.shard.generator.ShardDictGenerator",
     ...                 "path_uri": Path(tmpdir).joinpath("uri/shards"),
-    ...                 "shards": {}
+    ...                 "shards": {},
     ...             },
     ...             "assets": {
     ...                 "_target_": "iden.shard.generator.ShardDictGenerator",
     ...                 "path_uri": Path(tmpdir).joinpath("uri/assets"),
-    ...                 "shards": {}
-    ...             }
+    ...                 "shards": {},
+    ...             },
     ...         }
     ...     )
     ...     generator

@@ -82,7 +82,7 @@ class BaseShard(Generic[T], ABC):
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
-        >>> from iden.shard import JsonShard,  create_json_shard
+        >>> from iden.shard import JsonShard, create_json_shard
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     uri1 = Path(tmpdir).joinpath("my_uri1").as_uri()
         ...     uri2 = Path(tmpdir).joinpath("my_uri2").as_uri()
@@ -91,7 +91,6 @@ class BaseShard(Generic[T], ABC):
         ...     shard3 = JsonShard.from_uri(uri=uri1)
         ...     shard1.equal(shard2)
         ...     shard1.equal(shard3)
-        ...
         ...
         False
         True

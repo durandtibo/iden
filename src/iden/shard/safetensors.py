@@ -208,7 +208,7 @@ def create_numpy_safetensors_shard(
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shard = create_numpy_safetensors_shard(
     ...         data={"key1": np.ones((2, 3)), "key2": np.arange(5)},
-    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri()
+    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
     ...     )
     ...     shard.get_data()
     ...
@@ -257,7 +257,7 @@ def create_torch_safetensors_shard(
     >>> with tempfile.TemporaryDirectory() as tmpdir:
     ...     shard = create_torch_safetensors_shard(
     ...         data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
-    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri()
+    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
     ...     )
     ...     shard.get_data()
     ...
