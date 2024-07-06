@@ -202,13 +202,15 @@ class BaseDataset(Generic[T], ABC):
         ...     assets = create_shard_dict(
         ...         shards={
         ...             "stats": create_json_shard(
-        ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
-        ...     dataset.get_asset('stats').get_data()
+        ...     dataset = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+        ...     )
+        ...     dataset.get_asset("stats").get_data()
         ...
         {'mean': 42}
 
@@ -257,14 +259,16 @@ class BaseDataset(Generic[T], ABC):
         ...     assets = create_shard_dict(
         ...         shards={
         ...             "stats": create_json_shard(
-        ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
-        ...     dataset.has_asset('stats')
-        ...     dataset.has_asset('missing')
+        ...     dataset = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+        ...     )
+        ...     dataset.has_asset("stats")
+        ...     dataset.has_asset("missing")
         ...
         True
         False
@@ -315,14 +319,16 @@ class BaseDataset(Generic[T], ABC):
         ...     assets = create_shard_dict(
         ...         shards={
         ...             "stats": create_json_shard(
-        ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
-        ...     dataset.get_shards('train')
-        ...     dataset.get_shards('val')
+        ...     dataset = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+        ...     )
+        ...     dataset.get_shards("train")
+        ...     dataset.get_shards("val")
         ...
         (JsonShard(uri=file:///.../uri1), JsonShard(uri=file:///.../uri2))
         ()
@@ -375,14 +381,16 @@ class BaseDataset(Generic[T], ABC):
         ...     assets = create_shard_dict(
         ...         shards={
         ...             "stats": create_json_shard(
-        ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
-        ...     dataset.get_num_shards('train')
-        ...     dataset.get_num_shards('val')
+        ...     dataset = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+        ...     )
+        ...     dataset.get_num_shards("train")
+        ...     dataset.get_num_shards("val")
         ...
         2
         0
@@ -429,12 +437,14 @@ class BaseDataset(Generic[T], ABC):
         ...     assets = create_shard_dict(
         ...         shards={
         ...             "stats": create_json_shard(
-        ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
+        ...     dataset = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+        ...     )
         ...     sorted(dataset.get_splits())
         ...
         ['train', 'val']
@@ -481,14 +491,16 @@ class BaseDataset(Generic[T], ABC):
         ...     assets = create_shard_dict(
         ...         shards={
         ...             "stats": create_json_shard(
-        ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
-        ...     dataset.has_split('train')
-        ...     dataset.has_split('missing')
+        ...     dataset = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+        ...     )
+        ...     dataset.has_split("train")
+        ...     dataset.has_split("missing")
         ...
         True
         False
@@ -535,12 +547,14 @@ class BaseDataset(Generic[T], ABC):
         ...     assets = create_shard_dict(
         ...         shards={
         ...             "stats": create_json_shard(
-        ...                 {'mean': 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
         ...             )
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset = VanillaDataset(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets)
+        ...     dataset = VanillaDataset(
+        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+        ...     )
         ...     dataset.get_uri()
         ...
         file:///.../uri

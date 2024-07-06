@@ -71,7 +71,6 @@ It is possible to clear the cache by calling the `clear` method.
 ...     data = shard.get_data()
 ...     data
 ...
-...
 [1, 2, 3]
 [1, 2, 3, 4]
 [1, 2, 3]
@@ -95,7 +94,6 @@ not.
 ...     shard.clear()
 ...     shard.is_cached()
 ...
-...
 False
 True
 False
@@ -107,7 +105,7 @@ Finally, there is the `equal` method to check if two shards are equal or not:
 ```pycon
 >>> import tempfile
 >>> from pathlib import Path
->>> from iden.shard import JsonShard,  create_json_shard
+>>> from iden.shard import JsonShard, create_json_shard
 >>> with tempfile.TemporaryDirectory() as tmpdir:
 ...     uri1 = Path(tmpdir).joinpath("my_uri1").as_uri()
 ...     uri2 = Path(tmpdir).joinpath("my_uri2").as_uri()
@@ -116,7 +114,6 @@ Finally, there is the `equal` method to check if two shards are equal or not:
 ...     shard3 = JsonShard.from_uri(uri=uri1)
 ...     shard1.equal(shard2)
 ...     shard1.equal(shard3)
-...
 ...
 False
 True

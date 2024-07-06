@@ -160,7 +160,9 @@ def setup_dataset_loader(dataset_loader: BaseDatasetLoader | dict) -> BaseDatase
 
     ```pycon
     >>> from iden.dataset.loader import setup_dataset_loader
-    >>> dataset_loader = setup_dataset_loader({"_target_": "iden.dataset.loader.VanillaDatasetLoader"})
+    >>> dataset_loader = setup_dataset_loader(
+    ...     {"_target_": "iden.dataset.loader.VanillaDatasetLoader"}
+    ... )
     >>> dataset_loader
     VanillaDatasetLoader()
 
