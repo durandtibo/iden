@@ -83,7 +83,9 @@ def test_numpy_safetensors_shard_loader_load(uri_np: str, path_np: Path) -> None
 def test_numpy_safetensors_shard_loader_no_safetensors() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="`safetensors` package is required but not installed."),
+        pytest.raises(
+            RuntimeError, match="`|'safetensors`|' package is required but not installed."
+        ),
     ):
         NumpySafetensorsShardLoader()
 
@@ -92,7 +94,7 @@ def test_numpy_safetensors_shard_loader_no_numpy() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_numpy_available", lambda: False),
-        pytest.raises(RuntimeError, match="`numpy` package is required but not installed."),
+        pytest.raises(RuntimeError, match="`|'numpy`|' package is required but not installed."),
     ):
         NumpySafetensorsShardLoader()
 
@@ -119,7 +121,9 @@ def test_torch_safetensors_shard_loader_load(uri_torch: str, path_torch: Path) -
 def test_torch_safetensors_shard_loader_no_safetensors() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="`safetensors` package is required but not installed."),
+        pytest.raises(
+            RuntimeError, match="`|'safetensors`|' package is required but not installed."
+        ),
     ):
         TorchSafetensorsShardLoader()
 
@@ -128,6 +132,6 @@ def test_torch_safetensors_shard_loader_no_torch() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="`torch` package is required but not installed."),
+        pytest.raises(RuntimeError, match="`|'torch`|' package is required but not installed."),
     ):
         TorchSafetensorsShardLoader()
