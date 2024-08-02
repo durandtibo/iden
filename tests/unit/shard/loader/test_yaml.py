@@ -46,6 +46,6 @@ def test_yaml_shard_loader_load(uri: str, path: Path) -> None:
 def test_torch_shard_loader_no_torch() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="`yaml` package is required but not installed."),
+        pytest.raises(RuntimeError, match="`|'yaml`|' package is required but not installed."),
     ):
         YamlShardLoader()

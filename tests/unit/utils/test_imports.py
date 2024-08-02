@@ -31,7 +31,9 @@ def test_check_safetensors_with_package() -> None:
 def test_check_safetensors_without_package() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="`safetensors` package is required but not installed."),
+        pytest.raises(
+            RuntimeError, match="`|'safetensors`|' package is required but not installed."
+        ),
     ):
         check_safetensors()
 
@@ -85,7 +87,7 @@ def test_check_yaml_with_package() -> None:
 def test_check_yaml_without_package() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="`yaml` package is required but not installed."),
+        pytest.raises(RuntimeError, match="`|'yaml`|' package is required but not installed."),
     ):
         check_yaml()
 

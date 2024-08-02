@@ -61,7 +61,7 @@ def test_yaml_shard_generator_generate(tmp_path: Path) -> None:
 def test_yaml_shard_generator_no_yaml(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="`yaml` package is required but not installed."),
+        pytest.raises(RuntimeError, match="`|'yaml`|' package is required but not installed."),
     ):
         YamlShardGenerator(
             data=DataGenerator([1, 2, 3]),
