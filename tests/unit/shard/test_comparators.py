@@ -11,7 +11,7 @@ from iden.shard.comparators import ShardEqualityComparator
 from tests.unit.helpers import ExamplePair
 
 
-@pytest.fixture()
+@pytest.fixture
 def config() -> EqualityConfig:
     return EqualityConfig(tester=EqualityTester())
 
