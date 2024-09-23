@@ -32,9 +32,12 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install coola
-        run: |
-          poetry run pip install coola==${{ matrix.coola-version }}
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.2.1
+        with:
+          package-name: 'coola'
+          package-version: ${{ matrix.coola-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Show installed packages
         run: |
@@ -74,9 +77,12 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install objectory
-        run: |
-          poetry run pip install objectory==${{ matrix.objectory-version }}
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.2.1
+        with:
+          package-name: 'objectory'
+          package-version: ${{ matrix.objectory-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Show installed packages
         run: |
@@ -101,19 +107,6 @@ jobs:
         os: [ ubuntu-latest ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
         numpy-version: [ 2.1.0, 2.0.2, 1.26.4, 1.25.2, 1.24.3, 1.23.5, 1.22.4 ]
-        exclude:
-          # python 3.9
-          - numpy-version: 2.1.0
-          - python-version: '3.9'
-          # python 3.12
-          - numpy-version: 1.22.4
-            python-version: '3.12'
-          - numpy-version: 1.23.5
-            python-version: '3.12'
-          - numpy-version: 1.24.3
-            python-version: '3.12'
-          - numpy-version: 1.25.2
-            python-version: '3.12'
 
     steps:
       - name: Checkout
@@ -132,9 +125,12 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install NumPy
-        run: |
-          poetry run pip install numpy==${{ matrix.numpy-version }}
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.2.1
+        with:
+          package-name: 'numpy'
+          package-version: ${{ matrix.numpy-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Show installed packages
         run: |
@@ -174,9 +170,12 @@ jobs:
           poetry run make config-poetry
           poetry run make install-all
 
-      - name: Install safetensors
-        run: |
-          poetry run pip install safetensors==${{ matrix.safetensors-version }}
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.2.1
+        with:
+          package-name: 'safetensors'
+          package-version: ${{ matrix.safetensors-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Show installed packages
         run: |
@@ -198,23 +197,6 @@ jobs:
         os: [ ubuntu-latest ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
         torch-version: [ 2.4.1, 2.3.1, 2.2.2, 2.1.2, 2.0.1, 1.13.1, 1.12.1, 1.11.0 ]
-        exclude:
-          # python 3.11
-          - torch-version: 1.11.0
-            python-version: 3.11
-          - torch-version: 1.12.1
-            python-version: 3.11
-          # python 3.12
-          - torch-version: 1.11.0
-            python-version: 3.12
-          - torch-version: 1.12.1
-            python-version: 3.12
-          - torch-version: 1.13.1
-            python-version: 3.12
-          - torch-version: 2.0.1
-            python-version: 3.12
-          - torch-version: 2.1.2
-            python-version: 3.12
 
     steps:
       - name: Checkout
@@ -233,9 +215,12 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install PyTorch
-        run: |
-          poetry run pip install torch==${{ matrix.torch-version }}
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.2.1
+        with:
+          package-name: 'torch'
+          package-version: ${{ matrix.torch-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Show installed packages
         run: |
@@ -275,9 +260,12 @@ jobs:
           poetry run make config-poetry
           poetry run make install
 
-      - name: Install yaml
-        run: |
-          poetry run pip install pyyaml==${{ matrix.yaml-version }}
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.2.1
+        with:
+          package-name: 'pyyaml'
+          package-version: ${{ matrix.yaml-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Show installed packages
         run: |
