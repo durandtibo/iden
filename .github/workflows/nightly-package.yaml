@@ -148,7 +148,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.1
+        uses: durandtibo/pip-install-package-action@v0.2.3
         with:
           package-name: 'coola'
           package-version: ${{ matrix.coola-version }}
@@ -183,7 +183,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.1
+        uses: durandtibo/pip-install-package-action@v0.2.3
         with:
           package-name: 'objectory'
           package-version: ${{ matrix.objectory-version }}
@@ -222,7 +222,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.1
+        uses: durandtibo/pip-install-package-action@v0.2.3
         with:
           package-name: 'numpy'
           package-version: ${{ matrix.numpy-version }}
@@ -258,7 +258,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.1
+        uses: durandtibo/pip-install-package-action@v0.2.3
         with:
           package-name: 'safetensors'
           package-version: ${{ matrix.safetensors-version }}
@@ -294,7 +294,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.1
+        uses: durandtibo/pip-install-package-action@v0.2.3
         with:
           package-name: 'torch'
           package-version: ${{ matrix.torch-version }}
@@ -330,7 +330,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.1
+        uses: durandtibo/pip-install-package-action@v0.2.3
         with:
           package-name: 'pyyaml'
           package-version: ${{ matrix.yaml-version }}
