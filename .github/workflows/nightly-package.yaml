@@ -15,7 +15,7 @@ jobs:
       max-parallel: 8
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-14, macos-13, macos-12 ]
+        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-15, macos-14, macos-13 ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
 
     steps:
@@ -43,7 +43,7 @@ jobs:
       max-parallel: 8
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-14, macos-13, macos-12 ]
+        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-15, macos-14, macos-13 ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
 
     steps:
@@ -71,7 +71,7 @@ jobs:
       max-parallel: 8
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-14, macos-13, macos-12 ]
+        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-15, macos-14, macos-13 ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
 
     steps:
@@ -99,7 +99,7 @@ jobs:
       max-parallel: 8
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-14, macos-13, macos-12 ]
+        os: [ ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-15, macos-14, macos-13 ]
         python-version: [ '3.12', '3.11', '3.10', '3.9' ]
 
     steps:
@@ -148,7 +148,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.3
+        uses: durandtibo/pip-install-package-action@v0.3.0
         with:
           package-name: 'coola'
           package-version: ${{ matrix.coola-version }}
@@ -183,7 +183,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.3
+        uses: durandtibo/pip-install-package-action@v0.3.0
         with:
           package-name: 'objectory'
           package-version: ${{ matrix.objectory-version }}
@@ -222,7 +222,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.3
+        uses: durandtibo/pip-install-package-action@v0.3.0
         with:
           package-name: 'numpy'
           package-version: ${{ matrix.numpy-version }}
@@ -258,7 +258,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.3
+        uses: durandtibo/pip-install-package-action@v0.3.0
         with:
           package-name: 'safetensors'
           package-version: ${{ matrix.safetensors-version }}
@@ -294,7 +294,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.3
+        uses: durandtibo/pip-install-package-action@v0.3.0
         with:
           package-name: 'torch'
           package-version: ${{ matrix.torch-version }}
@@ -330,7 +330,7 @@ jobs:
           pip install iden
 
       - name: Install valid package version
-        uses: durandtibo/pip-install-package-action@v0.2.3
+        uses: durandtibo/pip-install-package-action@v0.3.0
         with:
           package-name: 'pyyaml'
           package-version: ${{ matrix.yaml-version }}
