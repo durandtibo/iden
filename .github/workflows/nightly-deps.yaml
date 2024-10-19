@@ -27,23 +27,27 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Set environment variable
+        run: |
+          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+
       - name: Install packages
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          make config-poetry
+          make install
 
       - name: Install coola
         run: |
-          poetry run pip install --upgrade --pre coola
+          pip install --upgrade --pre coola
 
       - name: Show installed packages
         run: |
-          poetry run poetry show
-          poetry run poetry show --tree
+          poetry show
+          poetry show --tree
 
       - name: Run unit tests
         run: |
-          poetry run make unit-test-cov
+          make unit-test-cov
 
 
   objectory:
@@ -68,23 +72,27 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Set environment variable
+        run: |
+          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+
       - name: Install packages
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          make config-poetry
+          make install
 
       - name: Install objectory
         run: |
-          poetry run pip install --upgrade --pre objectory
+          pip install --upgrade --pre objectory
 
       - name: Show installed packages
         run: |
-          poetry run poetry show
-          poetry run poetry show --tree
+          poetry show
+          poetry show --tree
 
       - name: Run unit tests
         run: |
-          poetry run make unit-test-cov
+          make unit-test-cov
 
 
   #################################
@@ -113,23 +121,27 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Set environment variable
+        run: |
+          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+
       - name: Install packages
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          make config-poetry
+          make install
 
       - name: Install numpy
         run: |
-          poetry run pip install numpy --upgrade --pre -i https://pypi.anaconda.org/scipy-wheels-nightly/simple
+          pip install numpy --upgrade --pre -i https://pypi.anaconda.org/scipy-wheels-nightly/simple
 
       - name: Show installed packages
         run: |
-          poetry run poetry show
-          poetry run poetry show --tree
+          poetry show
+          poetry show --tree
 
       - name: Run unit tests
         run: |
-          poetry run make unit-test-cov
+          make unit-test-cov
 
 
   safetensors:
@@ -154,23 +166,27 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Set environment variable
+        run: |
+          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+
       - name: Install packages
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          make config-poetry
+          make install
 
       - name: Install safetensors
         run: |
-          poetry run pip install safetensors --upgrade --pre
+          pip install safetensors --upgrade --pre
 
       - name: Show installed packages
         run: |
-          poetry run poetry show
-          poetry run poetry show --tree
+          poetry show
+          poetry show --tree
 
       - name: Run unit tests
         run: |
-          poetry run make unit-test-cov
+          make unit-test-cov
 
 
   torch:
@@ -195,23 +211,27 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Set environment variable
+        run: |
+          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+
       - name: Install packages
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          make config-poetry
+          make install
 
       - name: Install torch
         run: |
-          poetry run pip install torch --upgrade --pre --index-url https://download.pytorch.org/whl/nightly/cu121
+          pip install torch --upgrade --pre --index-url https://download.pytorch.org/whl/nightly/cu121
 
       - name: Show installed packages
         run: |
-          poetry run poetry show
-          poetry run poetry show --tree
+          poetry show
+          poetry show --tree
 
       - name: Run unit tests
         run: |
-          poetry run make unit-test-cov
+          make unit-test-cov
 
 
   yaml:
@@ -236,20 +256,24 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Set environment variable
+        run: |
+          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+
       - name: Install packages
         run: |
-          poetry run make config-poetry
-          poetry run make install
+          make config-poetry
+          make install
 
       - name: Install yaml
         run: |
-          poetry run pip install pyyaml --upgrade --pre
+          pip install pyyaml --upgrade --pre
 
       - name: Show installed packages
         run: |
-          poetry run poetry show
-          poetry run poetry show --tree
+          poetry show
+          poetry show --tree
 
       - name: Run unit tests
         run: |
-          poetry run make unit-test-cov
+          make unit-test-cov
