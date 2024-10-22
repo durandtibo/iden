@@ -314,7 +314,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         python-version: [ '3.13', '3.12', '3.11', '3.10', '3.9' ]
-        yaml-version: [ 6.0.2, 6.0 ]
+        yaml-version: [ 6.0.2, '6.0' ]
 
     steps:
       - name: Checkout
