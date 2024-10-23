@@ -2213,5 +2213,5 @@ all = ["numpy", "pyyaml", "safetensors", "torch", "torch"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.9,<3.13"
-content-hash = "45ba68afbaade22be9398ed52a7d62ff5748a5cdda71b1e648a4c9acd1430e66"
+python-versions = ">=3.9,<3.14"
+content-hash = "b5e2507bb1806304287053d607804b3e226ad6215140b36ba9d28c4c9e14a6df"
