@@ -14,13 +14,13 @@ from typing import TYPE_CHECKING
 from unittest.mock import Mock
 
 from coola.utils import is_numpy_available, is_torch_available
+from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.io import JsonSaver
 from iden.io.safetensors import NumpyLoader, NumpySaver, TorchLoader, TorchSaver
 from iden.shard.file import FileShard
-from iden.utils.path import sanitize_path
 
 if is_numpy_available():
     import numpy as np

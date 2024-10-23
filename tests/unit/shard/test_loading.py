@@ -7,6 +7,7 @@ import pytest
 from coola import objects_are_equal
 from coola.testing import numpy_available, torch_available
 from coola.utils import is_numpy_available, is_torch_available
+from coola.utils.path import sanitize_path
 
 from iden.io import JsonSaver
 from iden.shard import (
@@ -28,7 +29,6 @@ from iden.shard import (
     load_from_uri,
 )
 from iden.testing import safetensors_available, yaml_available
-from iden.utils.path import sanitize_path
 
 if is_numpy_available():
     import numpy as np

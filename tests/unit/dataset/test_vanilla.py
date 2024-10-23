@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 from coola import objects_are_equal
+from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.constants import ASSETS, LOADER, SHARDS
@@ -19,7 +20,6 @@ from iden.shard import (
     create_shard_dict,
     create_shard_tuple,
 )
-from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from pathlib import Path

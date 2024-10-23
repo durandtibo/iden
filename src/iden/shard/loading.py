@@ -7,10 +7,11 @@ __all__ = ["load_from_uri"]
 
 from typing import TYPE_CHECKING
 
+from coola.utils.path import sanitize_path
+
 from iden.constants import LOADER
 from iden.io import load_json
 from iden.shard.loader import setup_shard_loader
-from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from iden.shard import BaseShard

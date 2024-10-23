@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola import objects_are_equal
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
+from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.constants import ASSETS, LOADER, SHARDS
@@ -16,7 +17,6 @@ from iden.dataset.base import BaseDataset
 from iden.dataset.exceptions import AssetNotFoundError, SplitNotFoundError
 from iden.io import JsonSaver, load_json
 from iden.shard import ShardDict
-from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from iden.shard import BaseShard, ShardTuple

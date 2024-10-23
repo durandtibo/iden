@@ -7,12 +7,12 @@ __all__ = ["PickleShard", "create_pickle_shard"]
 import logging
 from typing import TYPE_CHECKING, Any
 
+from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.io import JsonSaver, PickleLoader, PickleSaver
 from iden.shard.file import FileShard
-from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from pathlib import Path

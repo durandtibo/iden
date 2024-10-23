@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pytest
+from coola.utils.path import sanitize_path
 
 from iden.dataset import VanillaDataset
 from iden.dataset.loader import VanillaDatasetLoader
@@ -13,7 +14,6 @@ from iden.shard import (
     create_shard_dict,
     create_shard_tuple,
 )
-from iden.utils.path import sanitize_path
 
 
 @pytest.fixture(scope="module")
