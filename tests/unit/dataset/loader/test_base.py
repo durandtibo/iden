@@ -4,6 +4,7 @@ import logging
 from typing import TYPE_CHECKING
 
 import pytest
+from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.dataset import VanillaDataset
@@ -22,7 +23,6 @@ from iden.shard import (
     create_shard_dict,
     create_shard_tuple,
 )
-from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from pathlib import Path

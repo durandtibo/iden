@@ -4,12 +4,12 @@ from typing import TYPE_CHECKING
 
 import pytest
 from coola import objects_are_equal
+from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.io import save_json
 from iden.shard import FileShard, create_json_shard
-from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from pathlib import Path

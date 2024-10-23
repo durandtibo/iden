@@ -8,10 +8,10 @@ from typing import TYPE_CHECKING
 from unittest.mock import Mock
 
 from coola.utils import check_numpy, check_torch, is_numpy_available, is_torch_available
+from coola.utils.path import sanitize_path
 
 from iden.io.base import BaseLoader
 from iden.utils.imports import check_safetensors, is_safetensors_available
-from iden.utils.path import sanitize_path
 
 if TYPE_CHECKING:
     from pathlib import Path
