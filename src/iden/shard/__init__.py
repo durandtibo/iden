@@ -26,10 +26,13 @@ __all__ = [
     "get_list_uris",
     "load_from_uri",
     "sort_by_uri",
+    "CloudpickleShard",
+    "create_cloudpickle_shard",
 ]
 
 from iden.shard import comparators  # noqa: F401
 from iden.shard.base import BaseShard
+from iden.shard.cloudpickle import CloudpickleShard, create_cloudpickle_shard
 from iden.shard.dict import ShardDict, create_shard_dict
 from iden.shard.file import FileShard
 from iden.shard.in_memory import InMemoryShard
