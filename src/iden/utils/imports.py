@@ -3,14 +3,14 @@ r"""Implement some utility functions to manage optional dependencies."""
 from __future__ import annotations
 
 __all__ = [
+    "check_cloudpickle",
     "check_safetensors",
     "check_yaml",
+    "cloudpickle_available",
+    "is_cloudpickle_available",
     "is_safetensors_available",
     "is_yaml_available",
     "safetensors_available",
-    "cloudpickle_available",
-    "check_cloudpickle",
-    "is_cloudpickle_available",
     "yaml_available",
 ]
 
