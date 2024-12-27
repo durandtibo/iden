@@ -32,6 +32,7 @@ class PickleShard(FileShard[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import PickleShard
@@ -66,6 +67,7 @@ class PickleShard(FileShard[Any]):
         Example usage:
 
         ```pycon
+
         >>> import tempfile
         >>> from pathlib import Path
         >>> from iden.shard import PickleShard
@@ -104,6 +106,7 @@ def create_pickle_shard(data: Any, uri: str, path: Path | None = None) -> Pickle
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import create_pickle_shard
