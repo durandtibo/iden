@@ -38,6 +38,7 @@ python = ">=3.9,<3.14"
 
 # Optional dependencies
 cloudpickle = { version = ">=3.0,<4.0", optional = true }
+joblib = { version = ">=1.2,<2.0", optional = true }
 numpy = { version = ">=1.22,<3.0", optional = true }
 pyyaml = { version = ">=6.0,<7.0", optional = true }
 safetensors = { version = ">=0.4,<1.0", optional = true }
@@ -49,7 +50,7 @@ torch = [
 ]
 
 [tool.poetry.extras]
-all = ["cloudpickle", "numpy", "pyyaml", "safetensors", "torch"]
+all = ["cloudpickle", "joblib", "numpy", "pyyaml", "safetensors", "torch"]
 
 [tool.poetry.group.docs]
 optional = true

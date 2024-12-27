@@ -542,6 +542,17 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
+name = "joblib"
+version = "1.4.2"
+description = "Lightweight pipelining with Python functions"
+optional = true
+python-versions = ">=3.8"
+files = [
+    {file = "joblib-1.4.2-py3-none-any.whl", hash = "sha256:06d478d5674cbc267e7496a410ee875abd68e4340feff4490bcb7afb88060ae6"},
+    {file = "joblib-1.4.2.tar.gz", hash = "sha256:2382c5816b2636fbd20a09e0f4e9dad4736765fdfb7dca582943b9c1366b3f0e"},
+]
+
+[[package]]
 name = "markdown"
 version = "3.7"
 description = "Python implementation of John Gruber's Markdown."
@@ -2237,9 +2248,9 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 type = ["pytest-mypy"]
 
 [extras]
-all = ["cloudpickle", "numpy", "pyyaml", "safetensors", "torch", "torch"]
+all = ["cloudpickle", "joblib", "numpy", "pyyaml", "safetensors", "torch", "torch"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.14"
-content-hash = "e6b3703a56f51aa8f568bfea549de10c9c443f3c0e4e1cc93c0dd09ba1f44e78"
+content-hash = "ad84030156c92f57a51addb2cbfb6b1d96191a4bd0fdf320fa68f27c0cc245d8"
