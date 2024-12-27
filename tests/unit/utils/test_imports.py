@@ -5,8 +5,11 @@ from unittest.mock import patch
 import pytest
 
 from iden.utils.imports import (
+    check_cloudpickle,
     check_safetensors,
     check_yaml,
+    cloudpickle_available,
+    is_cloudpickle_available,
     is_safetensors_available,
     is_yaml_available,
     safetensors_available,
@@ -16,6 +19,62 @@ from iden.utils.imports import (
 
 def my_function(n: int = 0) -> int:
     return 42 + n
+
+
+#######################
+#     cloudpickle     #
+#######################
+
+
+def test_check_cloudpickle_with_package() -> None:
+    with patch("iden.utils.imports.is_cloudpickle_available", lambda: True):
+        check_cloudpickle()
+
+
+def test_check_cloudpickle_without_package() -> None:
+    with (
+        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        pytest.raises(
+            RuntimeError, match="`|'cloudpickle`|' package is required but not installed."
+        ),
+    ):
+        check_cloudpickle()
+
+
+def test_is_cloudpickle_available() -> None:
+    assert isinstance(is_cloudpickle_available(), bool)
+
+
+def test_cloudpickle_available_with_package() -> None:
+    with patch("iden.utils.imports.is_cloudpickle_available", lambda: True):
+        fn = cloudpickle_available(my_function)
+        assert fn(2) == 44
+
+
+def test_cloudpickle_available_without_package() -> None:
+    with patch("iden.utils.imports.is_cloudpickle_available", lambda: False):
+        fn = cloudpickle_available(my_function)
+        assert fn(2) is None
+
+
+def test_cloudpickle_available_decorator_with_package() -> None:
+    with patch("iden.utils.imports.is_cloudpickle_available", lambda: True):
+
+        @cloudpickle_available
+        def fn(n: int = 0) -> int:
+            return 42 + n
+
+        assert fn(2) == 44
+
+
+def test_cloudpickle_available_decorator_without_package() -> None:
+    with patch("iden.utils.imports.is_cloudpickle_available", lambda: False):
+
+        @cloudpickle_available
+        def fn(n: int = 0) -> int:
+            return 42 + n
+
+        assert fn(2) is None
 
 
 #######################
