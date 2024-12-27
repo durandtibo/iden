@@ -27,7 +27,7 @@ class YamlShard(FileShard[Any]):
 
     Args:
         uri: The shard's URI.
-        path: Specifies the path to the YAML file.
+        path: The path to the YAML file.
 
     Example usage:
 

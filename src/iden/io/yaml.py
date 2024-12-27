@@ -92,7 +92,7 @@ def load_yaml(path: Path) -> Any:
     r"""Load the data from a given YAML file.
 
     Args:
-        path: Specifies the path to the YAML file.
+        path: The path to the YAML file.
 
     Returns:
         The data from the YAML file.
@@ -120,8 +120,8 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     r"""Save the given data in a YAML file.
 
     Args:
-        to_save: Specifies the data to write in a YAML file.
-        path: Specifies the path where to write the YAML file.
+        to_save: The data to write in a YAML file.
+        path: The path where to write the YAML file.
         exist_ok: If ``exist_ok`` is ``False`` (the default),
             ``FileExistsError`` is raised if the target file
             already exists. If ``exist_ok`` is ``True``,

@@ -105,7 +105,7 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
         Args:
             to_save: The data to save. The data should be compatible
                 with the saving engine.
-            path: Specifies the path where to save the data.
+            path: The path where to save the data.
             exist_ok: If ``exist_ok`` is ``False`` (the default),
                 an exception is raised if the target path already
                 exists.
@@ -154,7 +154,7 @@ class BaseFileSaver(BaseSaver[T]):
         Args:
             to_save: The data to save. The data should be compatible
                 with the saving engine.
-            path: Specifies the path where to save the data.
+            path: The path where to save the data.
             exist_ok: If ``exist_ok`` is ``False`` (the default),
                 ``FileExistsError`` is raised if the target file
                 already exists. If ``exist_ok`` is ``True``,
@@ -205,7 +205,7 @@ class BaseFileSaver(BaseSaver[T]):
         Args:
             to_save: The data to save. The data should be compatible
                 with the saving engine.
-            path: Specifies the path where to save the data.
+            path: The path where to save the data.
         """
 
 
@@ -219,7 +219,7 @@ def is_loader_config(config: dict) -> bool:
     the class.
 
     Args:
-        config: Specifies the configuration to check.
+        config: The configuration to check.
 
     Returns:
         ``True`` if the input configuration is a configuration for a
@@ -247,7 +247,7 @@ def is_saver_config(config: dict) -> bool:
     the class.
 
     Args:
-        config: Specifies the configuration to check.
+        config: The configuration to check.
 
     Returns:
         ``True`` if the input configuration is a configuration for a
@@ -272,7 +272,7 @@ def setup_loader(loader: BaseLoader[T] | dict) -> BaseLoader[T]:
     ``BaseLoader`` factory function.
 
     Args:
-        loader: Specifies the data loader or its configuration.
+        loader: The data loader or its configuration.
 
     Returns:
         The instantiated data loader.
@@ -302,7 +302,7 @@ def setup_saver(saver: BaseSaver[T] | dict) -> BaseSaver[T]:
     ``BaseSaver`` factory function.
 
     Args:
-        saver: Specifies the data saver or its configuration.
+        saver: The data saver or its configuration.
 
     Returns:
         The instantiated data saver.

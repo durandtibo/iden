@@ -61,7 +61,7 @@ def is_data_generator_config(config: dict) -> bool:
     the class.
 
     Args:
-        config: Specifies the configuration to check.
+        config: The configuration to check.
 
     Returns:
         ``True`` if the input configuration is a configuration for a
@@ -86,7 +86,7 @@ def setup_data_generator(data_generator: BaseDataGenerator | dict) -> BaseDataGe
     ``BaseDataGenerator`` factory function.
 
     Args:
-        data_generator: Specifies the data generator or its configuration.
+        data_generator: The data generator or its configuration.
 
     Returns:
         The instantiated data generator.

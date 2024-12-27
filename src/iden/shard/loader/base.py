@@ -83,7 +83,7 @@ def is_shard_loader_config(config: dict) -> bool:
     the class.
 
     Args:
-        config: Specifies the configuration to check.
+        config: The configuration to check.
 
     Returns:
         ``True`` if the input configuration is a configuration for a
@@ -108,7 +108,7 @@ def setup_shard_loader(shard_loader: BaseShardLoader | dict) -> BaseShardLoader:
     ``BaseShardLoader`` factory function.
 
     Args:
-        shard_loader: Specifies the shard loader or its configuration.
+        shard_loader: The shard loader or its configuration.
 
     Returns:
         The instantiated shard loader.
