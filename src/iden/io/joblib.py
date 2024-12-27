@@ -5,9 +5,9 @@ from __future__ import annotations
 __all__ = [
     "JoblibLoader",
     "JoblibSaver",
+    "get_loader_mapping",
     "load_joblib",
     "save_joblib",
-    "get_loader_mapping",
 ]
 
 from pathlib import Path
@@ -35,7 +35,7 @@ class JoblibLoader(BaseLoader[Any]):
     >>> from pathlib import Path
     >>> from iden.io import save_joblib, JoblibLoader
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.joblib")
     ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = JoblibLoader().load(path)
     ...     data
@@ -56,7 +56,7 @@ class JoblibLoader(BaseLoader[Any]):
 
     def load(self, path: Path) -> Any:
         with Path.open(path, mode="rb") as file:
-            return joblib.load(file)  # noqa: S301
+            return joblib.load(file)
 
 
 class JoblibSaver(BaseFileSaver[Any]):
@@ -71,7 +71,7 @@ class JoblibSaver(BaseFileSaver[Any]):
     >>> from pathlib import Path
     >>> from iden.io import JoblibSaver, JoblibLoader
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.joblib")
     ...     JoblibSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = JoblibLoader().load(path)
     ...     data
@@ -112,7 +112,7 @@ def load_joblib(path: Path) -> Any:
     >>> from pathlib import Path
     >>> from iden.io import save_joblib, load_joblib
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.joblib")
     ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = load_joblib(path)
     ...     data
@@ -148,7 +148,7 @@ def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     >>> from pathlib import Path
     >>> from iden.io import save_joblib, load_joblib
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.joblib")
     ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = load_joblib(path)
     ...     data

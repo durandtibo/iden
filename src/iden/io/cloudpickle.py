@@ -35,7 +35,7 @@ class CloudpickleLoader(BaseLoader[Any]):
     >>> from pathlib import Path
     >>> from iden.io import save_cloudpickle, CloudpickleLoader
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.pkl")
     ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = CloudpickleLoader().load(path)
     ...     data
@@ -71,7 +71,7 @@ class CloudpickleSaver(BaseFileSaver[Any]):
     >>> from pathlib import Path
     >>> from iden.io import CloudpickleSaver, CloudpickleLoader
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.pkl")
     ...     CloudpickleSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = CloudpickleLoader().load(path)
     ...     data
@@ -112,7 +112,7 @@ def load_cloudpickle(path: Path) -> Any:
     >>> from pathlib import Path
     >>> from iden.io import save_cloudpickle, load_cloudpickle
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.pkl")
     ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = load_cloudpickle(path)
     ...     data
@@ -148,7 +148,7 @@ def save_cloudpickle(to_save: Any, path: Path, *, exist_ok: bool = False) -> Non
     >>> from pathlib import Path
     >>> from iden.io import save_cloudpickle, load_cloudpickle
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
+    ...     path = Path(tmpdir).joinpath("data.pkl")
     ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
     ...     data = load_cloudpickle(path)
     ...     data
