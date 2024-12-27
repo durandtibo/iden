@@ -99,6 +99,10 @@ The following is the corresponding `iden` versions and tested dependencies.
 | `0.0.2` | `>=0.4,<1.0`   | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
 | `0.0.1` | `>=0.4,<1.0`   | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
 
+| `iden` | `cloudpickle`<sup>*</sup> | `joblib`<sup>*</sup> |
+|--------|---------------------------|----------------------|
+| `main` | `>=3.0,<4.0`              |                      |
+
 <sup>*</sup> indicates an optional dependency
 
 ## Contributing
