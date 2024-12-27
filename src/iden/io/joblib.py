@@ -1,13 +1,13 @@
-r"""Contain cloudpickle-based data loaders and savers."""
+r"""Contain joblib-based data loaders and savers."""
 
 from __future__ import annotations
 
 __all__ = [
-    "CloudpickleLoader",
-    "CloudpickleSaver",
+    "JoblibLoader",
+    "JoblibSaver",
     "get_loader_mapping",
-    "load_cloudpickle",
-    "save_cloudpickle",
+    "load_joblib",
+    "save_joblib",
 ]
 
 from pathlib import Path
@@ -15,17 +15,17 @@ from typing import Any
 from unittest.mock import Mock
 
 from iden.io.base import BaseFileSaver, BaseLoader
-from iden.utils.imports import check_cloudpickle, is_cloudpickle_available
+from iden.utils.imports import check_joblib, is_joblib_available
 
-if is_cloudpickle_available():
-    import cloudpickle
+if is_joblib_available():
+    import joblib
 else:  # pragma: no cover
-    cloudpickle = Mock()
+    joblib = Mock()
 
 
-class CloudpickleLoader(BaseLoader[Any]):
+class JoblibLoader(BaseLoader[Any]):
     r"""Implement a data loader to load data in a pickle file with
-    cloudpickle.
+    joblib.
 
     Example usage:
 
@@ -33,11 +33,11 @@ class CloudpickleLoader(BaseLoader[Any]):
 
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_cloudpickle, CloudpickleLoader
+    >>> from iden.io import save_joblib, JoblibLoader
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = CloudpickleLoader().load(path)
+    ...     path = Path(tmpdir).joinpath("data.joblib")
+    ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = JoblibLoader().load(path)
     ...     data
     ...
     {'key1': [1, 2, 3], 'key2': 'abc'}
@@ -46,7 +46,7 @@ class CloudpickleLoader(BaseLoader[Any]):
     """
 
     def __init__(self) -> None:
-        check_cloudpickle()
+        check_joblib()
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
@@ -56,12 +56,12 @@ class CloudpickleLoader(BaseLoader[Any]):
 
     def load(self, path: Path) -> Any:
         with Path.open(path, mode="rb") as file:
-            return cloudpickle.load(file)
+            return joblib.load(file)
 
 
-class CloudpickleSaver(BaseFileSaver[Any]):
+class JoblibSaver(BaseFileSaver[Any]):
     r"""Implement a file saver to save data with a pickle file with
-    cloudpickle.
+    joblib.
 
     Example usage:
 
@@ -69,11 +69,11 @@ class CloudpickleSaver(BaseFileSaver[Any]):
 
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import CloudpickleSaver, CloudpickleLoader
+    >>> from iden.io import JoblibSaver, JoblibLoader
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     CloudpickleSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = CloudpickleLoader().load(path)
+    ...     path = Path(tmpdir).joinpath("data.joblib")
+    ...     JoblibSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = JoblibLoader().load(path)
     ...     data
     ...
     {'key1': [1, 2, 3], 'key2': 'abc'}
@@ -82,7 +82,7 @@ class CloudpickleSaver(BaseFileSaver[Any]):
     """
 
     def __init__(self) -> None:
-        check_cloudpickle()
+        check_joblib()
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
@@ -92,11 +92,11 @@ class CloudpickleSaver(BaseFileSaver[Any]):
 
     def _save_file(self, to_save: Any, path: Path) -> None:
         with Path.open(path, mode="wb") as file:
-            cloudpickle.dump(to_save, file)
+            joblib.dump(to_save, file)
 
 
-def load_cloudpickle(path: Path) -> Any:
-    r"""Load the data from a given pickle file with cloudpickle.
+def load_joblib(path: Path) -> Any:
+    r"""Load the data from a given pickle file with joblib.
 
     Args:
         path: The path to the pickle file.
@@ -110,22 +110,22 @@ def load_cloudpickle(path: Path) -> Any:
 
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_cloudpickle, load_cloudpickle
+    >>> from iden.io import save_joblib, load_joblib
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_cloudpickle(path)
+    ...     path = Path(tmpdir).joinpath("data.joblib")
+    ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_joblib(path)
     ...     data
     ...
     {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
-    return CloudpickleLoader().load(path)
+    return JoblibLoader().load(path)
 
 
-def save_cloudpickle(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
-    r"""Save the given data in a pickle file with cloudpickle.
+def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
+    r"""Save the given data in a pickle file with joblib.
 
     Args:
         to_save: The data to write in a pickle file.
@@ -146,18 +146,18 @@ def save_cloudpickle(to_save: Any, path: Path, *, exist_ok: bool = False) -> Non
 
     >>> import tempfile
     >>> from pathlib import Path
-    >>> from iden.io import save_cloudpickle, load_cloudpickle
+    >>> from iden.io import save_joblib, load_joblib
     >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_cloudpickle(path)
+    ...     path = Path(tmpdir).joinpath("data.joblib")
+    ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
+    ...     data = load_joblib(path)
     ...     data
     ...
     {'key1': [1, 2, 3], 'key2': 'abc'}
 
     ```
     """
-    CloudpickleSaver().save(to_save, path, exist_ok=exist_ok)
+    JoblibSaver().save(to_save, path, exist_ok=exist_ok)
 
 
 def get_loader_mapping() -> dict[str, BaseLoader]:
@@ -170,7 +170,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     ```pycon
 
-    >>> from iden.io.cloudpickle import get_loader_mapping
+    >>> from iden.io.joblib import get_loader_mapping
     >>> get_loader_mapping()
     {}
 
