@@ -2,7 +2,7 @@ r"""Contain the base class to implement a dataset object."""
 
 from __future__ import annotations
 
-__all__ = ["VanillaDataset", "create_vanilla_dataset", "check_shards"]
+__all__ = ["VanillaDataset", "check_shards", "create_vanilla_dataset"]
 
 import logging
 from typing import TYPE_CHECKING, Any, TypeVar

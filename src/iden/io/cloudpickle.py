@@ -5,9 +5,9 @@ from __future__ import annotations
 __all__ = [
     "CloudpickleLoader",
     "CloudpickleSaver",
+    "get_loader_mapping",
     "load_cloudpickle",
     "save_cloudpickle",
-    "get_loader_mapping",
 ]
 
 from pathlib import Path
@@ -56,7 +56,7 @@ class CloudpickleLoader(BaseLoader[Any]):
 
     def load(self, path: Path) -> Any:
         with Path.open(path, mode="rb") as file:
-            return cloudpickle.load(file)  # noqa: S301
+            return cloudpickle.load(file)
 
 
 class CloudpickleSaver(BaseFileSaver[Any]):

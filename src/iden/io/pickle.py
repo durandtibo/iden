@@ -2,7 +2,7 @@ r"""Contain pickle-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["PickleLoader", "PickleSaver", "load_pickle", "save_pickle", "get_loader_mapping"]
+__all__ = ["PickleLoader", "PickleSaver", "get_loader_mapping", "load_pickle", "save_pickle"]
 
 import pickle
 from pathlib import Path

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 __all__ = [
     "BaseShardLoader",
+    "CloudpickleShardLoader",
     "FileShardLoader",
     "JsonShardLoader",
     "NumpySafetensorsShardLoader",
@@ -15,7 +16,6 @@ __all__ = [
     "YamlShardLoader",
     "is_shard_loader_config",
     "setup_shard_loader",
-    "CloudpickleShardLoader",
 ]
 
 from iden.shard.loader.base import (

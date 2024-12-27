@@ -2,7 +2,7 @@ r"""Contain YAML-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["YamlLoader", "YamlSaver", "load_yaml", "save_yaml", "get_loader_mapping"]
+__all__ = ["YamlLoader", "YamlSaver", "get_loader_mapping", "load_yaml", "save_yaml"]
 
 from pathlib import Path
 from typing import Any, TypeVar
