@@ -26,6 +26,7 @@ class YamlLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_yaml, YamlLoader
@@ -60,6 +61,7 @@ class YamlSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import YamlSaver, YamlLoader
@@ -100,6 +102,7 @@ def load_yaml(path: Path) -> Any:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import load_yaml, save_yaml
@@ -135,6 +138,7 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import load_yaml, save_yaml
@@ -160,6 +164,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io.yaml import get_loader_mapping
     >>> get_loader_mapping()
     {'yaml': YamlLoader(), 'yml': YamlLoader()}

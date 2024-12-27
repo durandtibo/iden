@@ -32,6 +32,7 @@ def load_from_uri(uri: str) -> BaseShard:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import create_json_shard, load_from_uri

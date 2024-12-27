@@ -28,6 +28,7 @@ class BaseDatasetLoader(Generic[T], ABC, metaclass=AbstractFactory):
     Example usage:
 
     ```pycon
+
     >>> from iden.dataset.loader import VanillaDatasetLoader
     >>> loader = VanillaDatasetLoader()
     >>> loader
@@ -135,6 +136,7 @@ def is_dataset_loader_config(config: dict) -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.dataset.loader import is_dataset_loader_config
     >>> is_dataset_loader_config({"_target_": "iden.dataset.loader.VanillaDatasetLoader"})
     True
@@ -159,6 +161,7 @@ def setup_dataset_loader(dataset_loader: BaseDatasetLoader | dict) -> BaseDatase
     Example usage:
 
     ```pycon
+
     >>> from iden.dataset.loader import setup_dataset_loader
     >>> dataset_loader = setup_dataset_loader(
     ...     {"_target_": "iden.dataset.loader.VanillaDatasetLoader"}

@@ -33,6 +33,7 @@ class ShardDict(BaseShard[T]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.dataset import VanillaDataset
@@ -312,6 +313,7 @@ def create_shard_dict(shards: dict[str, BaseShard[T]], uri: str) -> ShardDict[T]
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import ShardDict, create_json_shard, create_shard_dict

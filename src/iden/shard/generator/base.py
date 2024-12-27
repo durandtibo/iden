@@ -25,6 +25,7 @@ class BaseShardGenerator(Generic[T], ABC, metaclass=AbstractFactory):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.data.generator import DataGenerator
@@ -100,6 +101,7 @@ def is_shard_generator_config(config: dict) -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.shard.generator import is_shard_generator_config
     >>> is_shard_generator_config({"_target_": "iden.shard.generator.JsonShardGenerator"})
     True
@@ -124,6 +126,7 @@ def setup_shard_generator(shard_generator: BaseShardGenerator[T] | dict) -> Base
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard.generator import setup_shard_generator

@@ -32,6 +32,7 @@ class JsonShard(FileShard[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import JsonShard
@@ -104,6 +105,7 @@ def create_json_shard(data: Any, uri: str, path: Path | None = None) -> JsonShar
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import create_json_shard

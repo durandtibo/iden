@@ -18,6 +18,7 @@ class TextLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_text, TextLoader
@@ -53,6 +54,7 @@ class TextSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import TextSaver, TextLoader
@@ -90,6 +92,7 @@ def load_text(path: Path) -> str:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_text, load_text
@@ -129,6 +132,7 @@ def save_text(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_text, load_text
@@ -154,6 +158,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io.text import get_loader_mapping
     >>> get_loader_mapping()
     {'txt': TextLoader()}

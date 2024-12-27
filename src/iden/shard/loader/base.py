@@ -28,6 +28,7 @@ class BaseShardLoader(Generic[T], ABC, metaclass=AbstractFactory):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import create_json_shard
@@ -92,6 +93,7 @@ def is_shard_loader_config(config: dict) -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.shard.loader import is_shard_loader_config
     >>> is_shard_loader_config({"_target_": "iden.shard.loader.JsonShardLoader"})
     True
@@ -116,6 +118,7 @@ def setup_shard_loader(shard_loader: BaseShardLoader | dict) -> BaseShardLoader:
     Example usage:
 
     ```pycon
+
     >>> from iden.shard.loader import setup_shard_loader
     >>> shard_loader = setup_shard_loader({"_target_": "iden.shard.loader.JsonShardLoader"})
     >>> shard_loader

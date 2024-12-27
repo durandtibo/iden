@@ -53,6 +53,7 @@ class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> import numpy as np
     >>> from pathlib import Path
@@ -122,6 +123,7 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> import torch
     >>> from pathlib import Path
@@ -201,6 +203,7 @@ def create_numpy_safetensors_shard(
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> import torch
     >>> from pathlib import Path
@@ -250,6 +253,7 @@ def create_torch_safetensors_shard(
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> import torch
     >>> from pathlib import Path

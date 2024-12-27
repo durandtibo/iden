@@ -32,6 +32,7 @@ class YamlShard(FileShard[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import YamlShard
@@ -66,6 +67,7 @@ class YamlShard(FileShard[Any]):
         Example usage:
 
         ```pycon
+
         >>> import tempfile
         >>> from pathlib import Path
         >>> from iden.shard import YamlShard
@@ -104,6 +106,7 @@ def create_yaml_shard(data: Any, uri: str, path: Path | None = None) -> YamlShar
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import create_yaml_shard
