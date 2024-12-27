@@ -11,6 +11,7 @@ from coola.utils.path import sanitize_path
 
 from iden.io import JsonSaver
 from iden.shard import (
+    CloudpickleShard,
     FileShard,
     JsonShard,
     NumpySafetensorsShard,
@@ -19,6 +20,7 @@ from iden.shard import (
     TorchSafetensorsShard,
     TorchShard,
     YamlShard,
+    create_cloudpickle_shard,
     create_json_shard,
     create_numpy_safetensors_shard,
     create_pickle_shard,
@@ -28,7 +30,7 @@ from iden.shard import (
     create_yaml_shard,
     load_from_uri,
 )
-from iden.testing import safetensors_available, yaml_available
+from iden.testing import cloudpickle_available, safetensors_available, yaml_available
 
 if is_numpy_available():
     import numpy as np
@@ -75,6 +77,16 @@ def test_load_from_uri_pickle(tmp_path: Path) -> None:
     create_pickle_shard(data={"key1": [1, 2, 3], "key2": "abc"}, uri=uri, path=path)
     shard = load_from_uri(uri)
     assert shard.equal(PickleShard(uri=uri, path=path))
+    assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
+
+
+@cloudpickle_available
+def test_load_from_uri_cloudpickle(tmp_path: Path) -> None:
+    uri = tmp_path.joinpath("my_uri").as_uri()
+    path = tmp_path.joinpath("my_uri.pkl")
+    create_cloudpickle_shard(data={"key1": [1, 2, 3], "key2": "abc"}, uri=uri, path=path)
+    shard = load_from_uri(uri)
+    assert shard.equal(CloudpickleShard(uri=uri, path=path))
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
 
 
