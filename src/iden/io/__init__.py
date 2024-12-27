@@ -31,6 +31,10 @@ __all__ = [
     "save_yaml",
     "setup_loader",
     "setup_saver",
+    "CloudpickleLoader",
+    "CloudpickleSaver",
+    "load_cloudpickle",
+    "save_cloudpickle",
 ]
 
 from iden.io.auto import AutoFileLoader, register_auto_loaders
@@ -42,6 +46,12 @@ from iden.io.base import (
     is_saver_config,
     setup_loader,
     setup_saver,
+)
+from iden.io.cloudpickle import (
+    CloudpickleLoader,
+    CloudpickleSaver,
+    load_cloudpickle,
+    save_cloudpickle,
 )
 from iden.io.json import JsonLoader, JsonSaver, load_json, save_json
 from iden.io.pickle import PickleLoader, PickleSaver, load_pickle, save_pickle

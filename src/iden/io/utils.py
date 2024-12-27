@@ -66,7 +66,8 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     from iden import io  # Local import to avoid cyclic dependencies
 
     return (
-        io.json.get_loader_mapping()
+        io.cloudpickle.get_loader_mapping()
+        | io.json.get_loader_mapping()
         | io.pickle.get_loader_mapping()
         | io.text.get_loader_mapping()
         | io.torch.get_loader_mapping()
