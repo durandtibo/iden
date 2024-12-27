@@ -6,12 +6,15 @@ import pytest
 
 from iden.utils.imports import (
     check_cloudpickle,
+    check_joblib,
     check_safetensors,
     check_yaml,
     cloudpickle_available,
     is_cloudpickle_available,
+    is_joblib_available,
     is_safetensors_available,
     is_yaml_available,
+    joblib_available,
     safetensors_available,
     yaml_available,
 )
@@ -34,9 +37,7 @@ def test_check_cloudpickle_with_package() -> None:
 def test_check_cloudpickle_without_package() -> None:
     with (
         patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
-        pytest.raises(
-            RuntimeError, match="`|'cloudpickle`|' package is required but not installed."
-        ),
+        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
     ):
         check_cloudpickle()
 
@@ -77,6 +78,60 @@ def test_cloudpickle_available_decorator_without_package() -> None:
         assert fn(2) is None
 
 
+##################
+#     joblib     #
+##################
+
+
+def test_check_joblib_with_package() -> None:
+    with patch("iden.utils.imports.is_joblib_available", lambda: True):
+        check_joblib()
+
+
+def test_check_joblib_without_package() -> None:
+    with (
+        patch("iden.utils.imports.is_joblib_available", lambda: False),
+        pytest.raises(RuntimeError, match="'joblib' package is required but not installed."),
+    ):
+        check_joblib()
+
+
+def test_is_joblib_available() -> None:
+    assert isinstance(is_joblib_available(), bool)
+
+
+def test_joblib_available_with_package() -> None:
+    with patch("iden.utils.imports.is_joblib_available", lambda: True):
+        fn = joblib_available(my_function)
+        assert fn(2) == 44
+
+
+def test_joblib_available_without_package() -> None:
+    with patch("iden.utils.imports.is_joblib_available", lambda: False):
+        fn = joblib_available(my_function)
+        assert fn(2) is None
+
+
+def test_joblib_available_decorator_with_package() -> None:
+    with patch("iden.utils.imports.is_joblib_available", lambda: True):
+
+        @joblib_available
+        def fn(n: int = 0) -> int:
+            return 42 + n
+
+        assert fn(2) == 44
+
+
+def test_joblib_available_decorator_without_package() -> None:
+    with patch("iden.utils.imports.is_joblib_available", lambda: False):
+
+        @joblib_available
+        def fn(n: int = 0) -> int:
+            return 42 + n
+
+        assert fn(2) is None
+
+
 #######################
 #     safetensors     #
 #######################
@@ -90,9 +145,7 @@ def test_check_safetensors_with_package() -> None:
 def test_check_safetensors_without_package() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(
-            RuntimeError, match="`|'safetensors`|' package is required but not installed."
-        ),
+        pytest.raises(RuntimeError, match="'safetensors' package is required but not installed."),
     ):
         check_safetensors()
 
@@ -146,7 +199,7 @@ def test_check_yaml_with_package() -> None:
 def test_check_yaml_without_package() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'yaml`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'yaml' package is required but not installed."),
     ):
         check_yaml()
 
