@@ -23,6 +23,7 @@ def human_time(seconds: float) -> str:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.format import human_time
     >>> human_time(1.2)
     '0:00:01.200000'

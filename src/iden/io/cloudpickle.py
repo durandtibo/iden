@@ -30,6 +30,7 @@ class CloudpickleLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_cloudpickle, CloudpickleLoader
@@ -65,6 +66,7 @@ class CloudpickleSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import CloudpickleSaver, CloudpickleLoader
@@ -105,6 +107,7 @@ def load_cloudpickle(path: Path) -> Any:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_cloudpickle, load_cloudpickle
@@ -140,6 +143,7 @@ def save_cloudpickle(to_save: Any, path: Path, *, exist_ok: bool = False) -> Non
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_cloudpickle, load_cloudpickle
@@ -165,6 +169,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io.cloudpickle import get_loader_mapping
     >>> get_loader_mapping()
     {}

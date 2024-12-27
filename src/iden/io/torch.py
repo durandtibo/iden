@@ -26,6 +26,7 @@ class TorchLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_torch, TorchLoader
@@ -59,6 +60,7 @@ class TorchSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import TorchSaver, TorchLoader
@@ -98,6 +100,7 @@ def load_torch(path: Path) -> Any:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_torch, load_torch
@@ -133,6 +136,7 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_torch, load_torch
@@ -158,6 +162,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io.torch import get_loader_mapping
     >>> get_loader_mapping()
     {'pt': TorchLoader()}

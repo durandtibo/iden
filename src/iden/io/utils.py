@@ -27,6 +27,7 @@ def generate_unique_tmp_path(path: Path) -> Path:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io.utils import generate_unique_tmp_path
@@ -57,6 +58,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io.utils import get_loader_mapping
     >>> get_loader_mapping()
     {'json': JsonLoader(), 'pkl': PickleLoader(), 'pickle': PickleLoader(), ...}

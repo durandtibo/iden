@@ -36,6 +36,7 @@ class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_json, JsonLoader
@@ -84,6 +85,7 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import JsonSaver, JsonLoader
@@ -134,6 +136,7 @@ class BaseFileSaver(BaseSaver[T]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import JsonSaver, JsonLoader
@@ -228,6 +231,7 @@ def is_loader_config(config: dict) -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.io import is_loader_config
     >>> is_loader_config({"_target_": "iden.io.JsonLoader"})
     True
@@ -256,6 +260,7 @@ def is_saver_config(config: dict) -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.io import is_saver_config
     >>> is_saver_config({"_target_": "iden.io.JsonSaver"})
     True
@@ -280,6 +285,7 @@ def setup_loader(loader: BaseLoader[T] | dict) -> BaseLoader[T]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io import setup_loader
     >>> loader = setup_loader({"_target_": "iden.io.JsonLoader"})
     >>> loader
@@ -310,6 +316,7 @@ def setup_saver(saver: BaseSaver[T] | dict) -> BaseSaver[T]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io import setup_saver
     >>> saver = setup_saver({"_target_": "iden.io.JsonSaver"})
     >>> saver

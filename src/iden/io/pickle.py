@@ -19,6 +19,7 @@ class PickleLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_pickle, PickleLoader
@@ -54,6 +55,7 @@ class PickleSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import PickleSaver, PickleLoader
@@ -91,6 +93,7 @@ def load_pickle(path: Path) -> Any:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_pickle, load_pickle
@@ -130,6 +133,7 @@ def save_pickle(
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_pickle, load_pickle
@@ -155,6 +159,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io.pickle import get_loader_mapping
     >>> get_loader_mapping()
     {'pkl': PickleLoader(), 'pickle': PickleLoader()}

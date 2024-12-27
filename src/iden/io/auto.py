@@ -22,6 +22,7 @@ class AutoFileLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_json, AutoFileLoader

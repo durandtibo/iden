@@ -42,6 +42,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import create_json_shard
@@ -253,6 +254,7 @@ def create_shard_tuple(shards: Iterable[BaseShard[T]], uri: str) -> ShardTuple[T
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import ShardTuple, create_json_shard, create_shard_tuple

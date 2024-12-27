@@ -19,6 +19,7 @@ class JsonLoader(BaseLoader[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_json, JsonLoader
@@ -50,6 +51,7 @@ class JsonSaver(BaseFileSaver[Any]):
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import JsonSaver, JsonLoader
@@ -87,6 +89,7 @@ def load_json(path: Path) -> Any:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_json, load_json
@@ -122,6 +125,7 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.io import save_json, load_json
@@ -147,6 +151,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
     Example usage:
 
     ```pycon
+
     >>> from iden.io.json import get_loader_mapping
     >>> get_loader_mapping()
     {'json': JsonLoader()}

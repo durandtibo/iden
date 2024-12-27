@@ -32,6 +32,7 @@ def load_from_uri(uri: str) -> BaseDataset:
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.dataset import create_vanilla_dataset, load_from_uri

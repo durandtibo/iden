@@ -37,6 +37,7 @@ def is_cloudpickle_available() -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import is_cloudpickle_available
     >>> is_cloudpickle_available()
 
@@ -54,6 +55,7 @@ def check_cloudpickle() -> None:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import check_cloudpickle
     >>> check_cloudpickle()
 
@@ -82,6 +84,7 @@ def cloudpickle_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import cloudpickle_available
     >>> @cloudpickle_available
     ... def my_function(n: int = 0) -> int:
@@ -108,6 +111,7 @@ def is_safetensors_available() -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import is_safetensors_available
     >>> is_safetensors_available()
 
@@ -125,6 +129,7 @@ def check_safetensors() -> None:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import check_safetensors
     >>> check_safetensors()
 
@@ -153,6 +158,7 @@ def safetensors_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import safetensors_available
     >>> @safetensors_available
     ... def my_function(n: int = 0) -> int:
@@ -179,6 +185,7 @@ def is_yaml_available() -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import is_yaml_available
     >>> is_yaml_available()
 
@@ -196,6 +203,7 @@ def check_yaml() -> None:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import check_yaml
     >>> check_yaml()
 
@@ -224,6 +232,7 @@ def yaml_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     Example usage:
 
     ```pycon
+
     >>> from iden.utils.imports import yaml_available
     >>> @yaml_available
     ... def my_function(n: int = 0) -> int:

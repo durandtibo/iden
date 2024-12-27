@@ -23,6 +23,7 @@ class BaseDatasetGenerator(Generic[T], ABC, metaclass=AbstractFactory):
     r"""Define the base class to create a dataset.
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.dataset.generator import VanillaDatasetGenerator
@@ -130,6 +131,7 @@ def is_dataset_generator_config(config: dict) -> bool:
     Example usage:
 
     ```pycon
+
     >>> from iden.dataset.generator import is_dataset_generator_config
     >>> is_dataset_generator_config(
     ...     {"_target_": "iden.dataset.generator.VanillaDatasetGenerator"}
@@ -158,6 +160,7 @@ def setup_dataset_generator(
     Example usage:
 
     ```pycon
+
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.dataset.generator import setup_dataset_generator
