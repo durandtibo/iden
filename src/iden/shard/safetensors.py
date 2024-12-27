@@ -45,7 +45,7 @@ class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
 
     Args:
         uri: The shard's URI.
-        path: Specifies the path to the safetensors file.
+        path: The path to the safetensors file.
 
     Raises:
         RuntimeError: if ``safetensors`` or ``numpy`` is not installed.
@@ -114,7 +114,7 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
 
     Args:
         uri: The shard's URI.
-        path: Specifies the path to the safetensors file.
+        path: The path to the safetensors file.
 
     Raises:
         RuntimeError: if ``safetensors`` or ``torch`` is not installed.

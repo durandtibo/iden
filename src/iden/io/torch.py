@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 class TorchLoader(BaseLoader[Any]):
-    r"""Implement a data loader to load data in a JSON file.
+    r"""Implement a data loader to load data in a PyTorch file.
 
     Example usage:
 
@@ -54,7 +54,7 @@ class TorchLoader(BaseLoader[Any]):
 
 
 class TorchSaver(BaseFileSaver[Any]):
-    r"""Implement a file saver to save data with a JSON file.
+    r"""Implement a file saver to save data with a PyTorch file.
 
     Example usage:
 
@@ -87,13 +87,13 @@ class TorchSaver(BaseFileSaver[Any]):
 
 
 def load_torch(path: Path) -> Any:
-    r"""Load the data from a given JSON file.
+    r"""Load the data from a given PyTorch file.
 
     Args:
-        path: Specifies the path to the JSON file.
+        path: The path to the PyTorch file.
 
     Returns:
-        The data from the JSON file.
+        The data from the PyTorch file.
 
     Example usage:
 
@@ -115,11 +115,11 @@ def load_torch(path: Path) -> Any:
 
 
 def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
-    r"""Save the given data in a JSON file.
+    r"""Save the given data in a PyTorch file.
 
     Args:
-        to_save: Specifies the data to write in a JSON file.
-        path: Specifies the path where to write the JSON file.
+        to_save: The data to write in a PyTorch file.
+        path: The path where to write the PyTorch file.
         exist_ok: If ``exist_ok`` is ``False`` (the default),
             ``FileExistsError`` is raised if the target file
             already exists. If ``exist_ok`` is ``True``,

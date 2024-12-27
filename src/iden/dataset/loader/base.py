@@ -126,7 +126,7 @@ def is_dataset_loader_config(config: dict) -> bool:
     the class.
 
     Args:
-        config: Specifies the configuration to check.
+        config: The configuration to check.
 
     Returns:
         ``True`` if the input configuration is a configuration for a
@@ -151,7 +151,7 @@ def setup_dataset_loader(dataset_loader: BaseDatasetLoader | dict) -> BaseDatase
     ``BaseDatasetLoader`` factory function.
 
     Args:
-        dataset_loader: Specifies the dataset loader or its configuration.
+        dataset_loader: The dataset loader or its configuration.
 
     Returns:
         The instantiated dataset loader.
