@@ -2253,4 +2253,4 @@ all = ["cloudpickle", "joblib", "numpy", "pyyaml", "safetensors", "torch", "torc
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.14"
-content-hash = "ad84030156c92f57a51addb2cbfb6b1d96191a4bd0fdf320fa68f27c0cc245d8"
+content-hash = "c2e3a9f32afb6c6257c315869666f1136baab58790767c4c1f9ffeb6f2347c57"
