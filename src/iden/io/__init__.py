@@ -7,6 +7,8 @@ __all__ = [
     "BaseFileSaver",
     "BaseLoader",
     "BaseSaver",
+    "CloudpickleLoader",
+    "CloudpickleSaver",
     "JsonLoader",
     "JsonSaver",
     "PickleLoader",
@@ -19,11 +21,13 @@ __all__ = [
     "YamlSaver",
     "is_loader_config",
     "is_saver_config",
+    "load_cloudpickle",
     "load_json",
     "load_pickle",
     "load_text",
     "load_torch",
     "load_yaml",
+    "save_cloudpickle",
     "save_json",
     "save_pickle",
     "save_text",
@@ -31,10 +35,6 @@ __all__ = [
     "save_yaml",
     "setup_loader",
     "setup_saver",
-    "CloudpickleLoader",
-    "CloudpickleSaver",
-    "load_cloudpickle",
-    "save_cloudpickle",
 ]
 
 from iden.io.auto import AutoFileLoader, register_auto_loaders

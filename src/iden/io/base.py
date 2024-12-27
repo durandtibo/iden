@@ -4,9 +4,9 @@ object."""
 from __future__ import annotations
 
 __all__ = [
+    "BaseFileSaver",
     "BaseLoader",
     "BaseSaver",
-    "BaseFileSaver",
     "is_loader_config",
     "is_saver_config",
     "setup_loader",
