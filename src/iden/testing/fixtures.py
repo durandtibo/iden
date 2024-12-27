@@ -2,7 +2,7 @@ r"""Define some PyTest fixtures."""
 
 from __future__ import annotations
 
-__all__ = ["safetensors_available", "yaml_available", "cloudpickle_available"]
+__all__ = ["cloudpickle_available", "safetensors_available", "yaml_available"]
 
 import pytest
 

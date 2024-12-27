@@ -2,7 +2,7 @@ r"""Contain text-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["TextLoader", "TextSaver", "load_text", "save_text", "get_loader_mapping"]
+__all__ = ["TextLoader", "TextSaver", "get_loader_mapping", "load_text", "save_text"]
 
 from pathlib import Path
 from typing import Any, TypeVar

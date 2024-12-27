@@ -4,6 +4,7 @@ from __future__ import annotations
 
 __all__ = [
     "BaseShard",
+    "CloudpickleShard",
     "FileShard",
     "InMemoryShard",
     "JsonShard",
@@ -14,6 +15,7 @@ __all__ = [
     "TorchSafetensorsShard",
     "TorchShard",
     "YamlShard",
+    "create_cloudpickle_shard",
     "create_json_shard",
     "create_numpy_safetensors_shard",
     "create_pickle_shard",
@@ -26,8 +28,6 @@ __all__ = [
     "get_list_uris",
     "load_from_uri",
     "sort_by_uri",
-    "CloudpickleShard",
-    "create_cloudpickle_shard",
 ]
 
 from iden.shard import comparators  # noqa: F401

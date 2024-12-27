@@ -2,7 +2,7 @@ r"""Contain torch-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["TorchLoader", "TorchSaver", "load_torch", "save_torch", "get_loader_mapping"]
+__all__ = ["TorchLoader", "TorchSaver", "get_loader_mapping", "load_torch", "save_torch"]
 
 from typing import TYPE_CHECKING, Any
 from unittest.mock import Mock
