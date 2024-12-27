@@ -15,6 +15,7 @@ __all__ = [
     "YamlShardLoader",
     "is_shard_loader_config",
     "setup_shard_loader",
+    "CloudpickleShardLoader",
 ]
 
 from iden.shard.loader.base import (
@@ -22,6 +23,7 @@ from iden.shard.loader.base import (
     is_shard_loader_config,
     setup_shard_loader,
 )
+from iden.shard.loader.cloudpickle import CloudpickleShardLoader
 from iden.shard.loader.dict import ShardDictLoader
 from iden.shard.loader.file import FileShardLoader
 from iden.shard.loader.json import JsonShardLoader
