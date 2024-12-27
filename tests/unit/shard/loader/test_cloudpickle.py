@@ -7,6 +7,7 @@ from coola import objects_are_equal
 
 from iden.shard import CloudpickleShard, create_cloudpickle_shard
 from iden.shard.loader import CloudpickleShardLoader
+from iden.testing import cloudpickle_available
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -29,10 +30,12 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 ############################################
 
 
+@cloudpickle_available
 def test_cloudpickle_shard_loader_str() -> None:
     assert str(CloudpickleShardLoader()).startswith("CloudpickleShardLoader(")
 
 
+@cloudpickle_available
 def test_cloudpickle_shard_loader_load(uri: str, path: Path) -> None:
     shard = CloudpickleShardLoader().load(uri)
     assert shard.equal(CloudpickleShard(uri=uri, path=path))
