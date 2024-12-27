@@ -79,7 +79,7 @@ def load_json(path: Path) -> Any:
     r"""Load the data from a given JSON file.
 
     Args:
-        path: Specifies the path to the JSON file.
+        path: The path to the JSON file.
 
     Returns:
         The data from the JSON file.
@@ -107,8 +107,8 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     r"""Save the given data in a JSON file.
 
     Args:
-        to_save: Specifies the data to write in a JSON file.
-        path: Specifies the path where to write the JSON file.
+        to_save: The data to write in a JSON file.
+        path: The path where to write the JSON file.
         exist_ok: If ``exist_ok`` is ``False`` (the default),
             ``FileExistsError`` is raised if the target file
             already exists. If ``exist_ok`` is ``True``,

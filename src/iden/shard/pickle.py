@@ -27,7 +27,7 @@ class PickleShard(FileShard[Any]):
 
     Args:
         uri: The shard's URI.
-        path: Specifies the path to the pickle file.
+        path: The path to the pickle file.
 
     Example usage:
 

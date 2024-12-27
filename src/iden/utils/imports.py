@@ -73,7 +73,7 @@ def cloudpickle_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     ``cloudpickle`` package is installed.
 
     Args:
-        fn: Specifies the function to execute.
+        fn: The function to execute.
 
     Returns:
         A wrapper around ``fn`` if ``cloudpickle`` package is installed,
@@ -144,7 +144,7 @@ def safetensors_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     ``safetensors`` package is installed.
 
     Args:
-        fn: Specifies the function to execute.
+        fn: The function to execute.
 
     Returns:
         A wrapper around ``fn`` if ``safetensors`` package is installed,
@@ -215,7 +215,7 @@ def yaml_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     package is installed.
 
     Args:
-        fn: Specifies the function to execute.
+        fn: The function to execute.
 
     Returns:
         A wrapper around ``fn`` if ``yaml`` package is installed,

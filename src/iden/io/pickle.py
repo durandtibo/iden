@@ -83,7 +83,7 @@ def load_pickle(path: Path) -> Any:
     r"""Load the data from a given pickle file.
 
     Args:
-        path: Specifies the path to the pickle file.
+        path: The path to the pickle file.
 
     Returns:
         The data from the pickle file.
@@ -113,15 +113,15 @@ def save_pickle(
     r"""Save the given data in a pickle file.
 
     Args:
-        to_save: Specifies the data to write in a pickle file.
-        path: Specifies the path where to write the pickle file.
+        to_save: The data to write in a pickle file.
+        path: The path where to write the pickle file.
         exist_ok: If ``exist_ok`` is ``False`` (the default),
             ``FileExistsError`` is raised if the target file
             already exists. If ``exist_ok`` is ``True``,
             ``FileExistsError`` will not be raised unless the
             given path already exists in the file system and is
             not a file.
-        protocol: Specifies the pickle protocol. By default,
+        protocol: The pickle protocol. By default,
             it uses the highest protocol available.
 
     Raises:

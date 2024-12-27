@@ -34,7 +34,7 @@ class TorchShard(FileShard[Any]):
 
     Args:
         uri: The shard's URI.
-        path: Specifies the path to the PyTorch file.
+        path: The path to the PyTorch file.
 
     Raises:
         RuntimeError: if ``torch`` is not installed.

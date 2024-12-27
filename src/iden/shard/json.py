@@ -27,7 +27,7 @@ class JsonShard(FileShard[Any]):
 
     Args:
         uri: The shard's URI.
-        path: Specifies the path to the JSON file.
+        path: The path to the JSON file.
 
     Example usage:
 

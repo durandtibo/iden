@@ -91,7 +91,7 @@ def is_shard_generator_config(config: dict) -> bool:
     the class.
 
     Args:
-        config: Specifies the configuration to check.
+        config: The configuration to check.
 
     Returns:
         ``True`` if the input configuration is a configuration for a
@@ -116,7 +116,7 @@ def setup_shard_generator(shard_generator: BaseShardGenerator[T] | dict) -> Base
     ``BaseShardGenerator`` factory function.
 
     Args:
-        shard_generator: Specifies the shard generator or its configuration.
+        shard_generator: The shard generator or its configuration.
 
     Returns:
         The instantiated shard generator.
