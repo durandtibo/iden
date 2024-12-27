@@ -4,12 +4,15 @@ from __future__ import annotations
 
 __all__ = [
     "check_cloudpickle",
+    "check_joblib",
     "check_safetensors",
     "check_yaml",
     "cloudpickle_available",
     "is_cloudpickle_available",
+    "is_joblib_available",
     "is_safetensors_available",
     "is_yaml_available",
+    "joblib_available",
     "safetensors_available",
     "yaml_available",
 ]
@@ -63,8 +66,8 @@ def check_cloudpickle() -> None:
     """
     if not is_cloudpickle_available():
         msg = (
-            "`cloudpickle` package is required but not installed. "
-            "You can install `cloudpickle` package with the command:\n\n"
+            "'cloudpickle' package is required but not installed. "
+            "You can install 'cloudpickle' package with the command:\n\n"
             "pip install cloudpickle\n"
         )
         raise RuntimeError(msg)
@@ -95,6 +98,80 @@ def cloudpickle_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     ```
     """
     return decorator_package_available(fn, is_cloudpickle_available)
+
+
+##################
+#     joblib     #
+##################
+
+
+def is_joblib_available() -> bool:
+    r"""Indicate if the ``joblib`` package is installed or not.
+
+    Returns:
+        ``True`` if ``joblib`` is available otherwise ``False``.
+
+    Example usage:
+
+    ```pycon
+
+    >>> from iden.utils.imports import is_joblib_available
+    >>> is_joblib_available()
+
+    ```
+    """
+    return find_spec("joblib") is not None
+
+
+def check_joblib() -> None:
+    r"""Check if the ``joblib`` package is installed.
+
+    Raises:
+        RuntimeError: if the ``joblib`` package is not installed.
+
+    Example usage:
+
+    ```pycon
+
+    >>> from iden.utils.imports import check_joblib
+    >>> check_joblib()
+
+    ```
+    """
+    if not is_joblib_available():
+        msg = (
+            "'joblib' package is required but not installed. "
+            "You can install 'joblib' package with the command:\n\n"
+            "pip install joblib\n"
+        )
+        raise RuntimeError(msg)
+
+
+def joblib_available(fn: Callable[..., Any]) -> Callable[..., Any]:
+    r"""Implement a decorator to execute a function only if ``joblib``
+    package is installed.
+
+    Args:
+        fn: The function to execute.
+
+    Returns:
+        A wrapper around ``fn`` if ``joblib`` package is installed,
+            otherwise ``None``.
+
+    Example usage:
+
+    ```pycon
+
+    >>> from iden.utils.imports import joblib_available
+    >>> @joblib_available
+    ... def my_function(n: int = 0) -> int:
+    ...     return 42 + n
+    ...
+    >>> my_function()
+
+    ```
+    """
+    return decorator_package_available(fn, is_joblib_available)
 
 
 #######################
@@ -137,8 +214,8 @@ def check_safetensors() -> None:
     """
     if not is_safetensors_available():
         msg = (
-            "`safetensors` package is required but not installed. "
-            "You can install `safetensors` package with the command:\n\n"
+            "'safetensors' package is required but not installed. "
+            "You can install 'safetensors' package with the command:\n\n"
             "pip install safetensors\n"
         )
         raise RuntimeError(msg)
@@ -211,8 +288,8 @@ def check_yaml() -> None:
     """
     if not is_yaml_available():
         msg = (
-            "`yaml` package is required but not installed. "
-            "You can install `yaml` package with the command:\n\n"
+            "'yaml' package is required but not installed. "
+            "You can install 'yaml' package with the command:\n\n"
             "pip install pyyaml\n"
         )
         raise RuntimeError(msg)
