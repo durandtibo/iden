@@ -25,8 +25,12 @@ def path_pickle(tmp_path_factory: pytest.TempPathFactory) -> Path:
 ##################################
 
 
+def test_pickle_loader_repr() -> None:
+    assert repr(PickleLoader()) == "PickleLoader()"
+
+
 def test_pickle_loader_str() -> None:
-    assert str(PickleLoader()).startswith("PickleLoader(")
+    assert str(PickleLoader()) == "PickleLoader()"
 
 
 def test_pickle_loader_eq_true() -> None:
@@ -46,8 +50,20 @@ def test_pickle_loader_load(path_pickle: Path) -> None:
 #################################
 
 
+def test_pickle_saver_repr() -> None:
+    assert repr(PickleSaver()) == "PickleSaver()"
+
+
+def test_pickle_saver_repr_with_kwargs() -> None:
+    assert repr(PickleSaver(protocol=5)) == "PickleSaver(protocol=5)"
+
+
 def test_pickle_saver_str() -> None:
-    assert str(PickleSaver()).startswith("PickleSaver(")
+    assert str(PickleSaver()) == "PickleSaver()"
+
+
+def test_pickle_saver_str_with_kwargs() -> None:
+    assert str(PickleSaver(protocol=5)) == "PickleSaver(protocol=5)"
 
 
 def test_pickle_saver_save(tmp_path: Path) -> None:

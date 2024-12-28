@@ -8,6 +8,9 @@ import pickle
 from pathlib import Path
 from typing import Any, TypeVar
 
+from coola import objects_are_equal
+from coola.utils.format import repr_mapping_line
+
 from iden.io.base import BaseFileSaver, BaseLoader
 
 T = TypeVar("T")
@@ -49,8 +52,7 @@ class PickleSaver(BaseFileSaver[Any]):
     r"""Implement a file saver to save data with a pickle file.
 
     Args:
-        protocol: The pickle protocol. By default, it uses the
-            highest protocol available.
+        **kwargs: Additional arguments passed to ``cloudpickle.dump``.
 
     Example usage:
 
@@ -70,15 +72,20 @@ class PickleSaver(BaseFileSaver[Any]):
     ```
     """
 
-    def __init__(self, protocol: int = pickle.HIGHEST_PROTOCOL) -> None:
-        self._protocol = protocol
+    def __init__(self, **kwargs: Any) -> None:
+        self._kwargs = kwargs
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        return objects_are_equal(self._kwargs, other._kwargs)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__qualname__}(protocol={self._protocol})"
+        return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
         with Path.open(path, mode="wb") as file:
-            pickle.dump(to_save, file, protocol=self._protocol)
+            pickle.dump(to_save, file, **self._kwargs)
 
 
 def load_pickle(path: Path) -> Any:
@@ -110,9 +117,7 @@ def load_pickle(path: Path) -> Any:
     return PickleLoader().load(path)
 
 
-def save_pickle(
-    to_save: Any, path: Path, *, exist_ok: bool = False, protocol: int = pickle.HIGHEST_PROTOCOL
-) -> None:
+def save_pickle(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: Any) -> None:
     r"""Save the given data in a pickle file.
 
     Args:
@@ -124,8 +129,7 @@ def save_pickle(
             ``FileExistsError`` will not be raised unless the
             given path already exists in the file system and is
             not a file.
-        protocol: The pickle protocol. By default,
-            it uses the highest protocol available.
+        **kwargs: Additional arguments passed to ``cloudpickle.dump``.
 
     Raises:
         FileExistsError: if the file already exists.
@@ -147,7 +151,7 @@ def save_pickle(
 
     ```
     """
-    PickleSaver(protocol=protocol).save(to_save, path, exist_ok=exist_ok)
+    PickleSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
 
 def get_loader_mapping() -> dict[str, BaseLoader]:
