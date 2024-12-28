@@ -63,6 +63,10 @@ class CloudpickleSaver(BaseFileSaver[Any]):
     r"""Implement a file saver to save data with a pickle file with
     cloudpickle.
 
+    Args:
+        protocol: The pickle protocol. By default, it uses the
+            highest protocol available.
+
     Example usage:
 
     ```pycon

@@ -17,7 +17,9 @@ from iden.testing import cloudpickle_available
 from iden.utils.imports import is_cloudpickle_available
 
 if is_cloudpickle_available():
-    import cloudpickle
+    from cloudpickle import DEFAULT_PROTOCOL
+else:
+    DEFAULT_PROTOCOL = 1
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -75,12 +77,18 @@ def test_cloudpickle_loader_no_cloudpickle() -> None:
 
 @cloudpickle_available
 def test_cloudpickle_saver_repr() -> None:
-    assert repr(CloudpickleSaver()) == "CloudpickleSaver(protocol=5)"
+    assert (
+        repr(CloudpickleSaver(protocol=DEFAULT_PROTOCOL))
+        == f"CloudpickleSaver(protocol={DEFAULT_PROTOCOL})"
+    )
 
 
 @cloudpickle_available
 def test_cloudpickle_saver_str() -> None:
-    assert str(CloudpickleSaver()) == "CloudpickleSaver(protocol=5)"
+    assert (
+        str(CloudpickleSaver(protocol=DEFAULT_PROTOCOL))
+        == f"CloudpickleSaver(protocol={DEFAULT_PROTOCOL})"
+    )
 
 
 @cloudpickle_available
@@ -135,7 +143,7 @@ def test_cloudpickle_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 
 
 @cloudpickle_available
-@pytest.mark.parametrize("protocol", list(range(1, cloudpickle.DEFAULT_PROTOCOL + 1)))
+@pytest.mark.parametrize("protocol", list(range(1, DEFAULT_PROTOCOL + 1)))
 def test_cloudpickle_saver_save_protocol(tmp_path: Path, protocol: int) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     saver = CloudpickleSaver(protocol=protocol)
@@ -182,7 +190,7 @@ def test_save_cloudpickle(tmp_path: Path) -> None:
 
 
 @cloudpickle_available
-@pytest.mark.parametrize("protocol", list(range(1, cloudpickle.DEFAULT_PROTOCOL + 1)))
+@pytest.mark.parametrize("protocol", list(range(1, DEFAULT_PROTOCOL + 1)))
 def test_save_cloudpickle_protocol(tmp_path: Path, protocol: int) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path, protocol=protocol)
