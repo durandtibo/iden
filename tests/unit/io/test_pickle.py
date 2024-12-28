@@ -66,6 +66,18 @@ def test_pickle_saver_str_with_kwargs() -> None:
     assert str(PickleSaver(protocol=5)) == "PickleSaver(protocol=5)"
 
 
+def test_pickle_saver_eq_true() -> None:
+    assert PickleSaver() == PickleSaver()
+
+
+def test_pickle_saver_eq_false_different_kwargs() -> None:
+    assert PickleSaver(protocol=5) != PickleSaver(protocol=4)
+
+
+def test_pickle_saver_eq_false_different_type() -> None:
+    assert PickleSaver() != PickleLoader()
+
+
 def test_pickle_saver_save(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     saver = PickleSaver()
