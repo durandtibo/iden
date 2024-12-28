@@ -101,7 +101,7 @@ The following is the corresponding `iden` versions and tested dependencies.
 
 | `iden` | `cloudpickle`<sup>*</sup> | `joblib`<sup>*</sup> |
 |--------|---------------------------|----------------------|
-| `main` | `>=3.0,<4.0`              |                      |
+| `main` | `>=3.0,<4.0`              | `>=1.2,<2.0`         |
 
 <sup>*</sup> indicates an optional dependency
 

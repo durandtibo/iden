@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from unittest.mock import patch
 
 import pytest
 
@@ -13,6 +14,12 @@ from iden.io import (
 )
 from iden.io.cloudpickle import get_loader_mapping
 from iden.testing import cloudpickle_available
+from iden.utils.imports import is_cloudpickle_available
+
+if is_cloudpickle_available():
+    from cloudpickle import DEFAULT_PROTOCOL
+else:
+    DEFAULT_PROTOCOL = 1
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -32,12 +39,12 @@ def path_pickle(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 @cloudpickle_available
 def test_cloudpickle_loader_repr() -> None:
-    assert repr(CloudpickleLoader()).startswith("CloudpickleLoader(")
+    assert repr(CloudpickleLoader()) == "CloudpickleLoader()"
 
 
 @cloudpickle_available
 def test_cloudpickle_loader_str() -> None:
-    assert str(CloudpickleLoader()).startswith("CloudpickleLoader(")
+    assert str(CloudpickleLoader()) == "CloudpickleLoader()"
 
 
 @cloudpickle_available
@@ -55,6 +62,14 @@ def test_cloudpickle_loader_load(path_pickle: Path) -> None:
     assert CloudpickleLoader().load(path_pickle) == {"key1": [1, 2, 3], "key2": "abc"}
 
 
+def test_cloudpickle_loader_no_cloudpickle() -> None:
+    with (
+        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+    ):
+        CloudpickleLoader()
+
+
 ######################################
 #     Tests for CloudpickleSaver     #
 ######################################
@@ -62,12 +77,18 @@ def test_cloudpickle_loader_load(path_pickle: Path) -> None:
 
 @cloudpickle_available
 def test_cloudpickle_saver_repr() -> None:
-    assert repr(CloudpickleSaver()) == "CloudpickleSaver()"
+    assert (
+        repr(CloudpickleSaver(protocol=DEFAULT_PROTOCOL))
+        == f"CloudpickleSaver(protocol={DEFAULT_PROTOCOL})"
+    )
 
 
 @cloudpickle_available
 def test_cloudpickle_saver_str() -> None:
-    assert str(CloudpickleSaver()) == "CloudpickleSaver()"
+    assert (
+        str(CloudpickleSaver(protocol=DEFAULT_PROTOCOL))
+        == f"CloudpickleSaver(protocol={DEFAULT_PROTOCOL})"
+    )
 
 
 @cloudpickle_available
@@ -76,7 +97,12 @@ def test_cloudpickle_saver_eq_true() -> None:
 
 
 @cloudpickle_available
-def test_cloudpickle_saver_eq_false() -> None:
+def test_cloudpickle_saver_eq_false_different_protocol() -> None:
+    assert CloudpickleSaver(protocol=5) != CloudpickleSaver(protocol=4)
+
+
+@cloudpickle_available
+def test_cloudpickle_saver_eq_false_different_type() -> None:
     assert CloudpickleSaver() != CloudpickleLoader()
 
 
@@ -116,6 +142,23 @@ def test_cloudpickle_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
+@cloudpickle_available
+@pytest.mark.parametrize("protocol", list(range(1, DEFAULT_PROTOCOL + 1)))
+def test_cloudpickle_saver_save_protocol(tmp_path: Path, protocol: int) -> None:
+    path = tmp_path.joinpath("tmp/data.pkl")
+    saver = CloudpickleSaver(protocol=protocol)
+    saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    assert path.is_file()
+
+
+def test_cloudpickle_saver_no_cloudpickle() -> None:
+    with (
+        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+    ):
+        CloudpickleSaver()
+
+
 ######################################
 #     Tests for load_cloudpickle     #
 ######################################
@@ -124,6 +167,14 @@ def test_cloudpickle_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 @cloudpickle_available
 def test_load_cloudpickle(path_pickle: Path) -> None:
     assert load_cloudpickle(path_pickle) == {"key1": [1, 2, 3], "key2": "abc"}
+
+
+def test_load_cloudpickle_no_cloudpickle(tmp_path: Path) -> None:
+    with (
+        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+    ):
+        load_cloudpickle(tmp_path.joinpath("data.pkl"))
 
 
 ######################################
@@ -135,6 +186,14 @@ def test_load_cloudpickle(path_pickle: Path) -> None:
 def test_save_cloudpickle(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+    assert path.is_file()
+
+
+@cloudpickle_available
+@pytest.mark.parametrize("protocol", list(range(1, DEFAULT_PROTOCOL + 1)))
+def test_save_cloudpickle_protocol(tmp_path: Path, protocol: int) -> None:
+    path = tmp_path.joinpath("tmp/data.pkl")
+    save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path, protocol=protocol)
     assert path.is_file()
 
 
@@ -161,6 +220,14 @@ def test_save_cloudpickle_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match="path .* is a directory"):
         save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+
+
+def test_save_cloudpickle_no_cloudpickle(tmp_path: Path) -> None:
+    with (
+        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+    ):
+        save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, tmp_path.joinpath("data.pkl"))
 
 
 ########################################
