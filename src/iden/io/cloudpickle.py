@@ -85,7 +85,7 @@ class CloudpickleSaver(BaseFileSaver[Any]):
     ```
     """
 
-    def __init__(self, protocol: int = cloudpickle.DEFAULT_PROTOCOL) -> None:
+    def __init__(self, protocol: int | None = None) -> None:
         check_cloudpickle()
         self._protocol = protocol
 
@@ -140,7 +140,7 @@ def save_cloudpickle(
     path: Path,
     *,
     exist_ok: bool = False,
-    protocol: int = cloudpickle.DEFAULT_PROTOCOL,
+    protocol: int | None = None,
 ) -> None:
     r"""Save the given data in a pickle file with cloudpickle.
 
