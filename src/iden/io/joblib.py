@@ -14,6 +14,9 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import Mock
 
+from coola import objects_are_equal
+from coola.utils.format import repr_mapping_line
+
 from iden.io.base import BaseFileSaver, BaseLoader
 from iden.utils.imports import check_joblib, is_joblib_available
 
@@ -63,6 +66,9 @@ class JoblibSaver(BaseFileSaver[Any]):
     r"""Implement a file saver to save data with a pickle file with
     joblib.
 
+    Args:
+        **kwargs: Additional arguments passed to ``joblib.dump``.
+
     Example usage:
 
     ```pycon
@@ -81,18 +87,21 @@ class JoblibSaver(BaseFileSaver[Any]):
     ```
     """
 
-    def __init__(self) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         check_joblib()
+        self._kwargs = kwargs
 
     def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
+        if not isinstance(other, self.__class__):
+            return False
+        return objects_are_equal(self._kwargs, other._kwargs)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__qualname__}()"
+        return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
         with Path.open(path, mode="wb") as file:
-            joblib.dump(to_save, file)
+            joblib.dump(to_save, file, **self._kwargs)
 
 
 def load_joblib(path: Path) -> Any:
@@ -124,7 +133,7 @@ def load_joblib(path: Path) -> Any:
     return JoblibLoader().load(path)
 
 
-def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
+def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: Any) -> None:
     r"""Save the given data in a pickle file with joblib.
 
     Args:
@@ -136,6 +145,7 @@ def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
             ``FileExistsError`` will not be raised unless the
             given path already exists in the file system and is
             not a file.
+        **kwargs: Additional arguments passed to ``joblib.dump``.
 
     Raises:
         FileExistsError: if the file already exists.
@@ -157,7 +167,7 @@ def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
 
     ```
     """
-    JoblibSaver().save(to_save, path, exist_ok=exist_ok)
+    JoblibSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
 
 def get_loader_mapping() -> dict[str, BaseLoader]:
@@ -176,4 +186,6 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     ```
     """
-    return {}
+    if not is_joblib_available():
+        return {}
+    return {"joblib": JoblibLoader()}

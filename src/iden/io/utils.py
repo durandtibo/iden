@@ -69,6 +69,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     return (
         io.cloudpickle.get_loader_mapping()
+        | io.joblib.get_loader_mapping()
         | io.json.get_loader_mapping()
         | io.pickle.get_loader_mapping()
         | io.text.get_loader_mapping()

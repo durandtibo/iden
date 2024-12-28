@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from unittest.mock import patch
 
 import pytest
 
@@ -26,12 +27,12 @@ def path_joblib(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 @joblib_available
 def test_joblib_loader_repr() -> None:
-    assert repr(JoblibLoader()).startswith("JoblibLoader(")
+    assert repr(JoblibLoader()) == "JoblibLoader()"
 
 
 @joblib_available
 def test_joblib_loader_str() -> None:
-    assert str(JoblibLoader()).startswith("JoblibLoader(")
+    assert str(JoblibLoader()) == "JoblibLoader()"
 
 
 @joblib_available
@@ -60,8 +61,18 @@ def test_joblib_saver_repr() -> None:
 
 
 @joblib_available
+def test_joblib_saver_repr_with_kwargs() -> None:
+    assert repr(JoblibSaver(compress=3)) == "JoblibSaver(compress=3)"
+
+
+@joblib_available
 def test_joblib_saver_str() -> None:
     assert str(JoblibSaver()) == "JoblibSaver()"
+
+
+@joblib_available
+def test_joblib_saver_str_with_kwargs() -> None:
+    assert str(JoblibSaver(compress=3)) == "JoblibSaver(compress=3)"
 
 
 @joblib_available
@@ -70,7 +81,12 @@ def test_joblib_saver_eq_true() -> None:
 
 
 @joblib_available
-def test_joblib_saver_eq_false() -> None:
+def test_joblib_saver_eq_false_different_kwargs() -> None:
+    assert JoblibSaver(compress=3) != JoblibSaver(compress=2)
+
+
+@joblib_available
+def test_joblib_saver_eq_false_different_type() -> None:
     assert JoblibSaver() != JoblibLoader()
 
 
@@ -78,6 +94,14 @@ def test_joblib_saver_eq_false() -> None:
 def test_joblib_saver_save(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.joblib")
     saver = JoblibSaver()
+    saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
+    assert path.is_file()
+
+
+@joblib_available
+def test_joblib_saver_save_compress_3(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.joblib")
+    saver = JoblibSaver(compress=3)
     saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
     assert path.is_file()
 
@@ -133,6 +157,13 @@ def test_save_joblib(tmp_path: Path) -> None:
 
 
 @joblib_available
+def test_save_joblib_compress_3(tmp_path: Path) -> None:
+    path = tmp_path.joinpath("tmp/data.joblib")
+    save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path, compress=3)
+    assert path.is_file()
+
+
+@joblib_available
 def test_save_joblib_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.joblib")
     save_text("hello", path)
@@ -164,4 +195,9 @@ def test_save_joblib_file_exist_ok_dir(tmp_path: Path) -> None:
 
 @joblib_available
 def test_get_loader_mapping() -> None:
-    assert get_loader_mapping() == {}
+    assert get_loader_mapping() == {"joblib": JoblibLoader()}
+
+
+def test_get_loader_mapping_no_joblib() -> None:
+    with patch("iden.io.joblib.is_joblib_available", lambda: False):
+        assert get_loader_mapping() == {}
