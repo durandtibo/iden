@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from iden.utils.format import human_time
+from iden.utils.format import human_time, str_kwargs
 
 ################################
 #     Tests for human_time     #
@@ -23,3 +23,20 @@ from iden.utils.format import human_time
 )
 def test_human_time(seconds: float, human: str) -> None:
     assert human_time(seconds) == human
+
+
+################################
+#     Tests for str_kwargs     #
+################################
+
+
+def test_str_kwargs_0() -> None:
+    assert str_kwargs({}) == ""
+
+
+def test_str_kwargs_1() -> None:
+    assert str_kwargs({"key1": 1}) == ", key1=1"
+
+
+def test_str_kwargs_2() -> None:
+    assert str_kwargs({"key1": 1, "key2": 2}) == ", key1=1, key2=2"
