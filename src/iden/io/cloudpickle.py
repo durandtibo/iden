@@ -81,18 +81,25 @@ class CloudpickleSaver(BaseFileSaver[Any]):
     ```
     """
 
-    def __init__(self) -> None:
+    def __init__(self, protocol: int = cloudpickle.DEFAULT_PROTOCOL) -> None:
         check_cloudpickle()
+        self._protocol = protocol
 
     def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
+        if not isinstance(other, self.__class__):
+            return False
+        return self.protocol == other.protocol
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__qualname__}()"
+        return f"{self.__class__.__qualname__}(protocol={self._protocol})"
+
+    @property
+    def protocol(self) -> int:
+        return self._protocol
 
     def _save_file(self, to_save: Any, path: Path) -> None:
         with Path.open(path, mode="wb") as file:
-            cloudpickle.dump(to_save, file)
+            cloudpickle.dump(to_save, file, protocol=self._protocol)
 
 
 def load_cloudpickle(path: Path) -> Any:
@@ -124,7 +131,13 @@ def load_cloudpickle(path: Path) -> Any:
     return CloudpickleLoader().load(path)
 
 
-def save_cloudpickle(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
+def save_cloudpickle(
+    to_save: Any,
+    path: Path,
+    *,
+    exist_ok: bool = False,
+    protocol: int = cloudpickle.DEFAULT_PROTOCOL,
+) -> None:
     r"""Save the given data in a pickle file with cloudpickle.
 
     Args:
@@ -136,6 +149,8 @@ def save_cloudpickle(to_save: Any, path: Path, *, exist_ok: bool = False) -> Non
             ``FileExistsError`` will not be raised unless the
             given path already exists in the file system and is
             not a file.
+        protocol: The pickle protocol. By default,
+            it uses the highest protocol available.
 
     Raises:
         FileExistsError: if the file already exists.
@@ -157,7 +172,7 @@ def save_cloudpickle(to_save: Any, path: Path, *, exist_ok: bool = False) -> Non
 
     ```
     """
-    CloudpickleSaver().save(to_save, path, exist_ok=exist_ok)
+    CloudpickleSaver(protocol=protocol).save(to_save, path, exist_ok=exist_ok)
 
 
 def get_loader_mapping() -> dict[str, BaseLoader]:
