@@ -23,6 +23,11 @@ if TYPE_CHECKING:
 class TorchLoader(BaseLoader[Any]):
     r"""Implement a data loader to load data in a PyTorch file.
 
+    Args:
+        weights_only: Indicates whether unpickler should be restricted
+            to loading only tensors, primitive types, dictionaries
+            and any types added via ``torch.serialization.add_safe_globals``.
+
     Example usage:
 
     ```pycon
@@ -41,17 +46,24 @@ class TorchLoader(BaseLoader[Any]):
     ```
     """
 
-    def __init__(self) -> None:
+    def __init__(self, weights_only: bool = True) -> None:
         check_torch()
+        self._weights_only = weights_only
 
     def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
+        if not isinstance(other, self.__class__):
+            return False
+        return self.weights_only == other.weights_only
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__qualname__}()"
+        return f"{self.__class__.__qualname__}(weights_only={self._weights_only})"
+
+    @property
+    def weights_only(self) -> bool:
+        return self._weights_only
 
     def load(self, path: Path) -> Any:
-        return torch.load(path)
+        return torch.load(path, weights_only=self._weights_only)
 
 
 class TorchSaver(BaseFileSaver[Any]):
@@ -88,11 +100,14 @@ class TorchSaver(BaseFileSaver[Any]):
         torch.save(to_save, path)
 
 
-def load_torch(path: Path) -> Any:
+def load_torch(path: Path, weights_only: bool = True) -> Any:
     r"""Load the data from a given PyTorch file.
 
     Args:
         path: The path to the PyTorch file.
+        weights_only: Indicates whether unpickler should be restricted
+            to loading only tensors, primitive types, dictionaries
+            and any types added via ``torch.serialization.add_safe_globals``.
 
     Returns:
         The data from the PyTorch file.
@@ -114,7 +129,7 @@ def load_torch(path: Path) -> Any:
 
     ```
     """
-    return TorchLoader().load(path)
+    return TorchLoader(weights_only=weights_only).load(path)
 
 
 def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:

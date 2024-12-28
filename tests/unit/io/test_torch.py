@@ -33,8 +33,13 @@ def path_torch(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 
 @torch_available
+def test_torch_loader_repr() -> None:
+    assert repr(TorchLoader()) == "TorchLoader(weights_only=True)"
+
+
+@torch_available
 def test_torch_loader_str() -> None:
-    assert str(TorchLoader()).startswith("TorchLoader(")
+    assert str(TorchLoader()) == "TorchLoader(weights_only=True)"
 
 
 @torch_available
@@ -43,7 +48,12 @@ def test_torch_loader_eq_true() -> None:
 
 
 @torch_available
-def test_torch_loader_eq_false() -> None:
+def test_torch_loader_eq_false_different_weights_only() -> None:
+    assert TorchLoader(weights_only=True) != TorchLoader(weights_only=False)
+
+
+@torch_available
+def test_torch_loader_eq_false_different_type() -> None:
     assert TorchLoader() != TorchSaver()
 
 
@@ -51,6 +61,18 @@ def test_torch_loader_eq_false() -> None:
 def test_torch_loader_load(path_torch: Path) -> None:
     assert objects_are_equal(
         TorchLoader().load(path_torch),
+        {
+            "key1": [1, 2, 3],
+            "key2": "abc",
+            "key3": torch.arange(5),
+        },
+    )
+
+
+@torch_available
+def test_torch_loader_load_weights_only_false(path_torch: Path) -> None:
+    assert objects_are_equal(
+        TorchLoader(weights_only=False).load(path_torch),
         {
             "key1": [1, 2, 3],
             "key2": "abc",
@@ -142,6 +164,14 @@ def test_torch_saver_no_torch() -> None:
 def test_load_torch(path_torch: Path) -> None:
     assert objects_are_equal(
         load_torch(path_torch), {"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}
+    )
+
+
+@torch_available
+def test_load_torch_weights_only_false(path_torch: Path) -> None:
+    assert objects_are_equal(
+        load_torch(path_torch, weights_only=False),
+        {"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)},
     )
 
 
