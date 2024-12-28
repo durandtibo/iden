@@ -5,9 +5,16 @@ from unittest.mock import Mock, patch
 
 from coola.testing import torch_available
 
-from iden.io import JsonLoader, PickleLoader, TextLoader, TorchLoader, YamlLoader
+from iden.io import (
+    JoblibLoader,
+    JsonLoader,
+    PickleLoader,
+    TextLoader,
+    TorchLoader,
+    YamlLoader,
+)
 from iden.io.utils import generate_unique_tmp_path, get_loader_mapping
-from iden.testing import yaml_available
+from iden.testing import joblib_available, yaml_available
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -58,6 +65,12 @@ def test_get_loader_mapping() -> None:
     assert isinstance(mapping["pickle"], PickleLoader)
     assert isinstance(mapping["pkl"], PickleLoader)
     assert isinstance(mapping["txt"], TextLoader)
+
+
+@joblib_available
+def test_get_loader_mapping_joblib() -> None:
+    mapping = get_loader_mapping()
+    assert isinstance(mapping["joblib"], JoblibLoader)
 
 
 @torch_available
