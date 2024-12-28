@@ -7,7 +7,9 @@ __all__ = ["TorchLoader", "TorchSaver", "get_loader_mapping", "load_torch", "sav
 from typing import TYPE_CHECKING, Any
 from unittest.mock import Mock
 
+from coola import objects_are_equal
 from coola.utils import check_torch, is_torch_available
+from coola.utils.format import repr_mapping_line
 
 from iden.io.base import BaseFileSaver, BaseLoader
 
@@ -24,9 +26,7 @@ class TorchLoader(BaseLoader[Any]):
     r"""Implement a data loader to load data in a PyTorch file.
 
     Args:
-        weights_only: Indicates whether unpickler should be restricted
-            to loading only tensors, primitive types, dictionaries
-            and any types added via ``torch.serialization.add_safe_globals``.
+        **kwargs: Additional arguments passed to ``torch.load``.
 
     Example usage:
 
@@ -46,28 +46,27 @@ class TorchLoader(BaseLoader[Any]):
     ```
     """
 
-    def __init__(self, weights_only: bool = True) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         check_torch()
-        self._weights_only = weights_only
+        self._kwargs = kwargs
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
             return False
-        return self.weights_only == other.weights_only
+        return objects_are_equal(self._kwargs, other._kwargs)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__qualname__}(weights_only={self._weights_only})"
-
-    @property
-    def weights_only(self) -> bool:
-        return self._weights_only
+        return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
 
     def load(self, path: Path) -> Any:
-        return torch.load(path, weights_only=self._weights_only)
+        return torch.load(path, **self._kwargs)
 
 
 class TorchSaver(BaseFileSaver[Any]):
     r"""Implement a file saver to save data with a PyTorch file.
+
+    Args:
+        **kwargs: Additional arguments passed to ``torch.save``.
 
     Example usage:
 
@@ -87,27 +86,28 @@ class TorchSaver(BaseFileSaver[Any]):
     ```
     """
 
-    def __init__(self) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         check_torch()
+        self._kwargs = kwargs
 
     def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
+        if not isinstance(other, self.__class__):
+            return False
+        return objects_are_equal(self._kwargs, other._kwargs)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__qualname__}()"
+        return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
 
     def _save_file(self, to_save: Any, path: Path) -> None:
-        torch.save(to_save, path)
+        torch.save(to_save, path, **self._kwargs)
 
 
-def load_torch(path: Path, weights_only: bool = True) -> Any:
+def load_torch(path: Path, **kwargs: Any) -> Any:
     r"""Load the data from a given PyTorch file.
 
     Args:
         path: The path to the PyTorch file.
-        weights_only: Indicates whether unpickler should be restricted
-            to loading only tensors, primitive types, dictionaries
-            and any types added via ``torch.serialization.add_safe_globals``.
+        **kwargs: Additional arguments passed to ``torch.load``.
 
     Returns:
         The data from the PyTorch file.
@@ -129,10 +129,10 @@ def load_torch(path: Path, weights_only: bool = True) -> Any:
 
     ```
     """
-    return TorchLoader(weights_only=weights_only).load(path)
+    return TorchLoader(**kwargs).load(path)
 
 
-def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
+def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: Any) -> None:
     r"""Save the given data in a PyTorch file.
 
     Args:
@@ -144,6 +144,7 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
             ``FileExistsError`` will not be raised unless the
             given path already exists in the file system and is
             not a file.
+        **kwargs: Additional arguments passed to ``torch.save``.
 
     Raises:
         FileExistsError: if the file already exists.
@@ -165,7 +166,7 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
 
     ```
     """
-    TorchSaver().save(to_save, path, exist_ok=exist_ok)
+    TorchSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
 
 def get_loader_mapping() -> dict[str, BaseLoader]:

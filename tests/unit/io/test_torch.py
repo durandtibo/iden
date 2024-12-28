@@ -34,12 +34,22 @@ def path_torch(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 @torch_available
 def test_torch_loader_repr() -> None:
-    assert repr(TorchLoader()) == "TorchLoader(weights_only=True)"
+    assert repr(TorchLoader()) == "TorchLoader()"
+
+
+@torch_available
+def test_torch_loader_repr_with_kwargs() -> None:
+    assert repr(TorchLoader(weights_only=True)) == "TorchLoader(weights_only=True)"
 
 
 @torch_available
 def test_torch_loader_str() -> None:
-    assert str(TorchLoader()) == "TorchLoader(weights_only=True)"
+    assert str(TorchLoader()) == "TorchLoader()"
+
+
+@torch_available
+def test_torch_loader_str_with_kwargs() -> None:
+    assert str(TorchLoader(weights_only=True)) == "TorchLoader(weights_only=True)"
 
 
 @torch_available
@@ -84,7 +94,7 @@ def test_torch_loader_load_weights_only_false(path_torch: Path) -> None:
 def test_torch_loader_no_torch() -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'torch`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
     ):
         TorchLoader()
 
@@ -95,8 +105,23 @@ def test_torch_loader_no_torch() -> None:
 
 
 @torch_available
+def test_torch_saver_repr() -> None:
+    assert repr(TorchSaver()) == "TorchSaver()"
+
+
+@torch_available
+def test_torch_saver_repr_with_kwargs() -> None:
+    assert repr(TorchSaver(pickle_protocol=5)) == "TorchSaver(pickle_protocol=5)"
+
+
+@torch_available
 def test_torch_saver_str() -> None:
-    assert str(TorchSaver()).startswith("TorchSaver(")
+    assert str(TorchSaver()) == "TorchSaver()"
+
+
+@torch_available
+def test_torch_saver_str_with_kwargs() -> None:
+    assert str(TorchSaver(pickle_protocol=5)) == "TorchSaver(pickle_protocol=5)"
 
 
 @torch_available
@@ -105,7 +130,12 @@ def test_torch_saver_eq_true() -> None:
 
 
 @torch_available
-def test_torch_saver_eq_false() -> None:
+def test_torch_saver_eq_false_different_kwargs() -> None:
+    assert TorchSaver(pickle_protocol=5) != TorchSaver(pickle_protocol=4)
+
+
+@torch_available
+def test_torch_saver_eq_false_different_type() -> None:
     assert TorchSaver() != TorchLoader()
 
 
@@ -150,7 +180,7 @@ def test_torch_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 def test_torch_saver_no_torch() -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'torch`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
     ):
         TorchSaver()
 
@@ -178,7 +208,7 @@ def test_load_torch_weights_only_false(path_torch: Path) -> None:
 def test_load_torch_no_torch(tmp_path: Path) -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'torch`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
     ):
         load_torch(tmp_path)
 
@@ -225,7 +255,7 @@ def test_save_torch_file_exist_ok_dir(tmp_path: Path) -> None:
 def test_save_torch_no_torch(tmp_path: Path) -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'torch`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
     ):
         save_torch(
             {"key1": [1, 2, 3], "key2": "abc"},
