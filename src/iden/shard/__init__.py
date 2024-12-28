@@ -7,6 +7,7 @@ __all__ = [
     "CloudpickleShard",
     "FileShard",
     "InMemoryShard",
+    "JoblibShard",
     "JsonShard",
     "NumpySafetensorsShard",
     "PickleShard",
@@ -16,6 +17,7 @@ __all__ = [
     "TorchShard",
     "YamlShard",
     "create_cloudpickle_shard",
+    "create_joblib_shard",
     "create_json_shard",
     "create_numpy_safetensors_shard",
     "create_pickle_shard",
@@ -36,6 +38,7 @@ from iden.shard.cloudpickle import CloudpickleShard, create_cloudpickle_shard
 from iden.shard.dict import ShardDict, create_shard_dict
 from iden.shard.file import FileShard
 from iden.shard.in_memory import InMemoryShard
+from iden.shard.joblib import JoblibShard, create_joblib_shard
 from iden.shard.json import JsonShard, create_json_shard
 from iden.shard.loading import load_from_uri
 from iden.shard.pickle import PickleShard, create_pickle_shard
