@@ -48,7 +48,7 @@ def test_yaml_loader_load(path_yaml: Path) -> None:
 def test_yaml_loader_no_yaml() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'yaml`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'yaml' package is required but not installed."),
     ):
         YamlLoader()
 
@@ -112,7 +112,7 @@ def test_yaml_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 def test_yaml_saver_no_yaml() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'yaml`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'yaml' package is required but not installed."),
     ):
         YamlSaver()
 

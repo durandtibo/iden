@@ -61,7 +61,7 @@ def test_torch_shard_generator_generate(tmp_path: Path) -> None:
 def test_torch_shard_generator_no_torch(tmp_path: Path) -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="`|'torch`|' package is required but not installed."),
+        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
     ):
         TorchShardGenerator(
             data=DataGenerator([1, 2, 3]),

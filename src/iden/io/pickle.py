@@ -52,7 +52,7 @@ class PickleSaver(BaseFileSaver[Any]):
     r"""Implement a file saver to save data with a pickle file.
 
     Args:
-        **kwargs: Additional arguments passed to ``cloudpickle.dump``.
+        **kwargs: Additional arguments passed to ``pickle.dump``.
 
     Example usage:
 
@@ -129,7 +129,7 @@ def save_pickle(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: A
             ``FileExistsError`` will not be raised unless the
             given path already exists in the file system and is
             not a file.
-        **kwargs: Additional arguments passed to ``cloudpickle.dump``.
+        **kwargs: Additional arguments passed to ``pickle.dump``.
 
     Raises:
         FileExistsError: if the file already exists.
