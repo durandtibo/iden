@@ -77,18 +77,12 @@ def test_cloudpickle_loader_no_cloudpickle() -> None:
 
 @cloudpickle_available
 def test_cloudpickle_saver_repr() -> None:
-    assert (
-        repr(CloudpickleSaver(protocol=DEFAULT_PROTOCOL))
-        == f"CloudpickleSaver(protocol={DEFAULT_PROTOCOL})"
-    )
+    assert repr(CloudpickleSaver()) == "CloudpickleSaver(protocol=None)"
 
 
 @cloudpickle_available
 def test_cloudpickle_saver_str() -> None:
-    assert (
-        str(CloudpickleSaver(protocol=DEFAULT_PROTOCOL))
-        == f"CloudpickleSaver(protocol={DEFAULT_PROTOCOL})"
-    )
+    assert str(CloudpickleSaver()) == "CloudpickleSaver(protocol=None)"
 
 
 @cloudpickle_available
