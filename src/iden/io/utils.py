@@ -61,7 +61,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     >>> from iden.io.utils import get_loader_mapping
     >>> get_loader_mapping()
-    {'json': JsonLoader(), 'pkl': PickleLoader(), 'pickle': PickleLoader(), ...}
+    {...'json': JsonLoader(), 'pkl': PickleLoader(), 'pickle': PickleLoader(), ...}
 
     ```
     """

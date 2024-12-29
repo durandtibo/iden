@@ -182,7 +182,7 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     >>> from iden.io.joblib import get_loader_mapping
     >>> get_loader_mapping()
-    {}
+    {'joblib': JoblibLoader()}
 
     ```
     """
