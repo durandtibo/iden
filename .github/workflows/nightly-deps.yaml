@@ -33,7 +33,6 @@ jobs:
 
       - name: Install packages
         run: |
-          make config-poetry
           make install
 
       - name: Install coola
@@ -78,7 +77,6 @@ jobs:
 
       - name: Install packages
         run: |
-          make config-poetry
           make install
 
       - name: Install objectory
@@ -127,7 +125,6 @@ jobs:
 
       - name: Install packages
         run: |
-          make config-poetry
           make install
 
       - name: Install numpy
@@ -172,7 +169,6 @@ jobs:
 
       - name: Install packages
         run: |
-          make config-poetry
           make install
 
       - name: Install safetensors
@@ -217,7 +213,6 @@ jobs:
 
       - name: Install packages
         run: |
-          make config-poetry
           make install
 
       - name: Install torch
@@ -262,7 +257,6 @@ jobs:
 
       - name: Install packages
         run: |
-          make config-poetry
           make install
 
       - name: Install yaml
