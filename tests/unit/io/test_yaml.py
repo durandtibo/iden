@@ -41,6 +41,22 @@ def test_yaml_loader_eq_false() -> None:
 
 
 @yaml_available
+def test_yaml_loader_equal_true() -> None:
+    assert YamlLoader().equal(YamlLoader())
+
+
+@yaml_available
+def test_yaml_loader_equal_false() -> None:
+    assert not YamlLoader().equal(YamlSaver())
+
+
+@yaml_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_yaml_loader_equal_nan(equal_nan: bool) -> None:
+    assert YamlLoader().equal(YamlLoader(), equal_nan=equal_nan)
+
+
+@yaml_available
 def test_yaml_loader_load(path_yaml: Path) -> None:
     assert YamlLoader().load(path_yaml) == {"key1": [1, 2, 3], "key2": "abc"}
 
@@ -71,6 +87,22 @@ def test_yaml_saver_eq_true() -> None:
 @yaml_available
 def test_yaml_saver_eq_false() -> None:
     assert YamlSaver() != YamlLoader()
+
+
+@yaml_available
+def test_yaml_saver_equal_true() -> None:
+    assert YamlSaver().equal(YamlSaver())
+
+
+@yaml_available
+def test_yaml_saver_equal_false() -> None:
+    assert not YamlSaver().equal(YamlLoader())
+
+
+@yaml_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_yaml_saver_equal_nan(equal_nan: bool) -> None:
+    assert YamlSaver().equal(YamlSaver(), equal_nan=equal_nan)
 
 
 @yaml_available
