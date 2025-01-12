@@ -38,6 +38,25 @@ def test_numpy_saver_str() -> None:
 
 @safetensors_available
 @numpy_available
+def test_numpy_saver_equal_true() -> None:
+    assert NumpySaver().equal(NumpySaver())
+
+
+@safetensors_available
+@numpy_available
+def test_numpy_saver_equal_false() -> None:
+    assert not NumpySaver().equal(TorchSaver())
+
+
+@safetensors_available
+@numpy_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_numpy_saver_equal_nan(equal_nan: bool) -> None:
+    assert NumpySaver().equal(NumpySaver(), equal_nan=equal_nan)
+
+
+@safetensors_available
+@numpy_available
 def test_numpy_saver_save(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.safetensors")
     saver = NumpySaver()
@@ -101,6 +120,25 @@ def test_numpy_saver_no_numpy() -> None:
 @torch_available
 def test_torch_saver_str() -> None:
     assert str(TorchSaver()).startswith("TorchSafetensorsSaver(")
+
+
+@safetensors_available
+@torch_available
+def test_torch_saver_equal_true() -> None:
+    assert TorchSaver().equal(TorchSaver())
+
+
+@safetensors_available
+@torch_available
+def test_torch_saver_equal_false() -> None:
+    assert not TorchSaver().equal(NumpySaver())
+
+
+@safetensors_available
+@torch_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_torch_saver_equal_nan(equal_nan: bool) -> None:
+    assert TorchSaver().equal(TorchSaver(), equal_nan=equal_nan)
 
 
 @safetensors_available
