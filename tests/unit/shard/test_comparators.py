@@ -68,7 +68,7 @@ SHARD_EQUAL_TOLERANCE = [
         id="atol=1",
     ),
     pytest.param(
-        ExamplePair(actual=InMemoryShard([1, 2, 3]), expected=InMemoryShard([1, 2, 4]), atol=1.0),
+        ExamplePair(actual=InMemoryShard([1, 2, 3]), expected=InMemoryShard([1, 2, 4]), rtol=1.0),
         id="rtol=1",
     ),
 ]
