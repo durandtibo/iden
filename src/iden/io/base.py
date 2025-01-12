@@ -54,6 +54,7 @@ class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
     def __eq__(self, other: object) -> bool:
         return self.equal(other)
 
+    @abstractmethod
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         r"""Indicate if two objects are equal or not.
 
@@ -130,6 +131,7 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
     def __eq__(self, other: object) -> bool:
         return self.equal(other)
 
+    @abstractmethod
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         r"""Indicate if two objects are equal or not.
 
