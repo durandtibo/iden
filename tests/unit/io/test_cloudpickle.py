@@ -58,6 +58,22 @@ def test_cloudpickle_loader_eq_false() -> None:
 
 
 @cloudpickle_available
+def test_cloudpickle_loader_equal_true() -> None:
+    assert CloudpickleLoader().equal(CloudpickleLoader())
+
+
+@cloudpickle_available
+def test_cloudpickle_loader_equal_false_different_type() -> None:
+    assert not CloudpickleLoader().equal(CloudpickleSaver())
+
+
+@cloudpickle_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_cloudpickle_loader_equal_nan(equal_nan: bool) -> None:
+    assert CloudpickleLoader().equal(CloudpickleLoader(), equal_nan=equal_nan)
+
+
+@cloudpickle_available
 def test_cloudpickle_loader_load(path_pickle: Path) -> None:
     assert CloudpickleLoader().load(path_pickle) == {"key1": [1, 2, 3], "key2": "abc"}
 
@@ -108,6 +124,27 @@ def test_cloudpickle_saver_eq_false_different_protocol() -> None:
 @cloudpickle_available
 def test_cloudpickle_saver_eq_false_different_type() -> None:
     assert CloudpickleSaver() != CloudpickleLoader()
+
+
+@cloudpickle_available
+def test_cloudpickle_saver_equal_true() -> None:
+    assert CloudpickleSaver().equal(CloudpickleSaver())
+
+
+@cloudpickle_available
+def test_cloudpickle_saver_equal_false_different_kwargs() -> None:
+    assert not CloudpickleSaver(protocol=5).equal(CloudpickleSaver(protocol=4))
+
+
+@cloudpickle_available
+def test_cloudpickle_saver_equal_false_different_type() -> None:
+    assert not CloudpickleSaver().equal(CloudpickleLoader())
+
+
+@cloudpickle_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_cloudpickle_saver_equal_nan(equal_nan: bool) -> None:
+    assert CloudpickleSaver().equal(CloudpickleSaver(), equal_nan=equal_nan)
 
 
 @cloudpickle_available
