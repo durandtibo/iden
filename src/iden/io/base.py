@@ -69,14 +69,10 @@ class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
 
         ```pycon
 
-        >>> from pathlib import Path
-        >>> from iden.io import JsonLoader
-        >>> loader1 = JsonLoader(Path("/data/data.json"))
-        >>> loader2 = JsonLoader(Path("/data/data.json"))
-        >>> loader3 = JsonLoader(Path("/data/data_2.json"))
-        >>> loader1.equal(loader2)
+        >>> from iden.io import JsonLoader, YamlLoader
+        >>> JsonLoader().equal(JsonLoader())
         True
-        >>> loader1.equal(loader3)
+        >>> JsonLoader().equal(YamlLoader())
         False
 
         ```
@@ -149,14 +145,10 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
 
         ```pycon
 
-        >>> from pathlib import Path
-        >>> from iden.io import JsonSaver
-        >>> saver1 = JsonSaver(Path("/data/data.json"))
-        >>> saver2 = JsonSaver(Path("/data/data.json"))
-        >>> saver3 = JsonSaver(Path("/data/data_2.json"))
-        >>> saver1.equal(saver2)
+        >>> from iden.io import JsonSaver, YamlSaver
+        >>> JsonSaver().equal(JsonSaver())
         True
-        >>> saver1.equal(saver3)
+        >>> JsonSaver().equal(YamlSaver())
         False
 
         ```

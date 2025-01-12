@@ -59,13 +59,34 @@ def test_torch_loader_eq_true() -> None:
 
 
 @torch_available
-def test_torch_loader_eq_false_different_weights_only() -> None:
+def test_torch_loader_eq_false_different_kwargs() -> None:
     assert TorchLoader(weights_only=True) != TorchLoader(weights_only=False)
 
 
 @torch_available
 def test_torch_loader_eq_false_different_type() -> None:
     assert TorchLoader() != TorchSaver()
+
+
+@torch_available
+def test_torch_loader_equal_true() -> None:
+    assert TorchLoader().equal(TorchLoader())
+
+
+@torch_available
+def test_torch_loader_equal_false_different_kwargs() -> None:
+    assert not TorchLoader(weights_only=True).equal(TorchLoader(weights_only=False))
+
+
+@torch_available
+def test_torch_loader_equal_false_different_type() -> None:
+    assert not TorchLoader().equal(TorchSaver())
+
+
+@torch_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_torch_loader_equal_nan(equal_nan: bool) -> None:
+    assert TorchLoader().equal(TorchLoader(), equal_nan=equal_nan)
 
 
 @torch_available
@@ -139,6 +160,27 @@ def test_torch_saver_eq_false_different_kwargs() -> None:
 @torch_available
 def test_torch_saver_eq_false_different_type() -> None:
     assert TorchSaver() != TorchLoader()
+
+
+@torch_available
+def test_torch_saver_equal_true() -> None:
+    assert TorchSaver().equal(TorchSaver())
+
+
+@torch_available
+def test_torch_saver_equal_false_different_kwargs() -> None:
+    assert not TorchSaver(pickle_protocol=5).equal(TorchSaver(pickle_protocol=4))
+
+
+@torch_available
+def test_torch_saver_equal_false_different_type() -> None:
+    assert not TorchSaver().equal(TorchLoader())
+
+
+@torch_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_torch_saver_equal_nan(equal_nan: bool) -> None:
+    assert TorchSaver().equal(TorchSaver(), equal_nan=equal_nan)
 
 
 @torch_available

@@ -50,13 +50,13 @@ class TorchLoader(BaseLoader[Any]):
         check_torch()
         self._kwargs = kwargs
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, self.__class__):
-            return False
-        return objects_are_equal(self._kwargs, other._kwargs)
-
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 
     def load(self, path: Path) -> Any:
         return torch.load(path, **self._kwargs)
@@ -90,13 +90,13 @@ class TorchSaver(BaseFileSaver[Any]):
         check_torch()
         self._kwargs = kwargs
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, self.__class__):
-            return False
-        return objects_are_equal(self._kwargs, other._kwargs)
-
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 
     def _save_file(self, to_save: Any, path: Path) -> None:
         torch.save(to_save, path, **self._kwargs)
