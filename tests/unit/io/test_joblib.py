@@ -46,6 +46,22 @@ def test_joblib_loader_eq_false() -> None:
 
 
 @joblib_available
+def test_joblib_loader_equal_true() -> None:
+    assert JoblibLoader().equal(JoblibLoader())
+
+
+@joblib_available
+def test_joblib_loader_equal_false_different_type() -> None:
+    assert not JoblibLoader().equal(JoblibSaver())
+
+
+@joblib_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_joblib_loader_equal_nan(equal_nan: bool) -> None:
+    assert JoblibLoader().equal(JoblibLoader(), equal_nan=equal_nan)
+
+
+@joblib_available
 def test_joblib_loader_load(path_joblib: Path) -> None:
     assert JoblibLoader().load(path_joblib) == {"key1": [1, 2, 3], "key2": "abc"}
 
@@ -88,6 +104,27 @@ def test_joblib_saver_eq_false_different_kwargs() -> None:
 @joblib_available
 def test_joblib_saver_eq_false_different_type() -> None:
     assert JoblibSaver() != JoblibLoader()
+
+
+@joblib_available
+def test_joblib_saver_equal_true() -> None:
+    assert JoblibSaver().equal(JoblibSaver())
+
+
+@joblib_available
+def test_joblib_saver_equal_false_different_kwargs() -> None:
+    assert not JoblibSaver(compress=3).equal(JoblibSaver(compress=2))
+
+
+@joblib_available
+def test_joblib_saver_equal_false_different_type() -> None:
+    assert not JoblibSaver().equal(JoblibLoader())
+
+
+@joblib_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_joblib_saver_equal_nan(equal_nan: bool) -> None:
+    assert JoblibSaver().equal(JoblibSaver(), equal_nan=equal_nan)
 
 
 @joblib_available
