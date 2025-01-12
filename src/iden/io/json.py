@@ -35,11 +35,11 @@ class JsonLoader(BaseLoader[Any]):
     ```
     """
 
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
-
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return isinstance(other, self.__class__)
 
     def load(self, path: Path) -> Any:
         with Path.open(path, mode="rb") as file:
@@ -67,11 +67,11 @@ class JsonSaver(BaseFileSaver[Any]):
     ```
     """
 
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
-
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return isinstance(other, self.__class__)
 
     def _save_file(self, to_save: Any, path: Path) -> None:
         with Path.open(path, "w") as file:

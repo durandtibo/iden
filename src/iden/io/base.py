@@ -15,7 +15,7 @@ __all__ = [
 
 import logging
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
@@ -50,6 +50,37 @@ class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
 
     ```
     """
+
+    def __eq__(self, other: object) -> bool:
+        return self.equal(other)
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two objects are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two objects are equal, otherwise ``False``.
+
+        Example usage:
+
+        ```pycon
+
+        >>> from pathlib import Path
+        >>> from iden.io import JsonLoader
+        >>> loader1 = JsonLoader(Path("/data/data.json"))
+        >>> loader2 = JsonLoader(Path("/data/data.json"))
+        >>> loader3 = JsonLoader(Path("/data/data_2.json"))
+        >>> loader1.equal(loader2)
+        True
+        >>> loader1.equal(loader3)
+        False
+
+        ```
+        """
 
     @abstractmethod
     def load(self, path: Path) -> T:
@@ -99,6 +130,37 @@ class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
 
     ```
     """
+
+    def __eq__(self, other: object) -> bool:
+        return self.equal(other)
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two objects are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two objects are equal, otherwise ``False``.
+
+        Example usage:
+
+        ```pycon
+
+        >>> from pathlib import Path
+        >>> from iden.io import JsonSaver
+        >>> saver1 = JsonSaver(Path("/data/data.json"))
+        >>> saver2 = JsonSaver(Path("/data/data.json"))
+        >>> saver3 = JsonSaver(Path("/data/data_2.json"))
+        >>> saver1.equal(saver2)
+        True
+        >>> saver1.equal(saver3)
+        False
+
+        ```
+        """
 
     @abstractmethod
     def save(self, to_save: T, path: Path, *, exist_ok: bool = False) -> None:
