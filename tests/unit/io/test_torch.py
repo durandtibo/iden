@@ -10,6 +10,7 @@ from coola.utils import is_torch_available
 
 from iden.io import TorchLoader, TorchSaver, load_torch, save_torch
 from iden.io.torch import get_loader_mapping
+from tests.conftest import torch_greater_equal_1_13
 
 if is_torch_available():
     import torch
@@ -80,6 +81,7 @@ def test_torch_loader_load(path_torch: Path) -> None:
 
 
 @torch_available
+@torch_greater_equal_1_13
 def test_torch_loader_load_weights_only_false(path_torch: Path) -> None:
     assert objects_are_equal(
         TorchLoader(weights_only=False).load(path_torch),
@@ -198,6 +200,7 @@ def test_load_torch(path_torch: Path) -> None:
 
 
 @torch_available
+@torch_greater_equal_1_13
 def test_load_torch_weights_only_false(path_torch: Path) -> None:
     assert objects_are_equal(
         load_torch(path_torch, weights_only=False),
