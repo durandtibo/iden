@@ -30,6 +30,19 @@ def test_auto_file_loader_str() -> None:
     assert str(AutoFileLoader()).startswith("AutoFileLoader(")
 
 
+def test_auto_file_loader_equal_true() -> None:
+    assert AutoFileLoader().equal(AutoFileLoader())
+
+
+def test_auto_file_loader_equal_false() -> None:
+    assert not AutoFileLoader().equal(JsonLoader())
+
+
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_auto_file_loader_equal_nan(equal_nan: bool) -> None:
+    assert AutoFileLoader().equal(AutoFileLoader(), equal_nan=equal_nan)
+
+
 @patch.dict(AutoFileLoader.registry, {}, clear=True)
 def test_auto_file_loader_add_loader() -> None:
     loader = AutoFileLoader()
