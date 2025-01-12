@@ -35,6 +35,19 @@ def test_text_loader_eq_false() -> None:
     assert TextLoader() != TextSaver()
 
 
+def test_text_loader_equal_true() -> None:
+    assert TextLoader().equal(TextLoader())
+
+
+def test_text_loader_equal_false() -> None:
+    assert not TextLoader().equal(TextSaver())
+
+
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_text_loader_equal_nan(equal_nan: bool) -> None:
+    assert TextLoader().equal(TextLoader(), equal_nan=equal_nan)
+
+
 def test_text_loader_load(path_text: Path) -> None:
     assert TextLoader().load(path_text) == "hello"
 
@@ -54,6 +67,19 @@ def test_text_saver_eq_true() -> None:
 
 def test_text_saver_eq_false() -> None:
     assert TextSaver() != TextLoader()
+
+
+def test_text_saver_equal_true() -> None:
+    assert TextSaver().equal(TextSaver())
+
+
+def test_text_saver_equal_false() -> None:
+    assert not TextSaver().equal(TextLoader())
+
+
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_text_saver_equal_nan(equal_nan: bool) -> None:
+    assert TextSaver().equal(TextSaver(), equal_nan=equal_nan)
 
 
 def test_text_saver_save(tmp_path: Path) -> None:
