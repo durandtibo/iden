@@ -1,3 +1,4 @@
+# noqa: A005
 r"""Contain pickle shard generator implementations."""
 
 from __future__ import annotations
