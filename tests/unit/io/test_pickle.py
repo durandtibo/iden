@@ -41,6 +41,19 @@ def test_pickle_loader_eq_false() -> None:
     assert PickleLoader() != PickleSaver()
 
 
+def test_pickle_loader_equal_true() -> None:
+    assert PickleLoader().equal(PickleLoader())
+
+
+def test_pickle_loader_equal_false() -> None:
+    assert not PickleLoader().equal(PickleSaver())
+
+
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_pickle_loader_equal_nan(equal_nan: bool) -> None:
+    assert PickleLoader().equal(PickleLoader(), equal_nan=equal_nan)
+
+
 def test_pickle_loader_load(path_pickle: Path) -> None:
     assert PickleLoader().load(path_pickle) == {"key1": [1, 2, 3], "key2": "abc"}
 
@@ -76,6 +89,23 @@ def test_pickle_saver_eq_false_different_kwargs() -> None:
 
 def test_pickle_saver_eq_false_different_type() -> None:
     assert PickleSaver() != PickleLoader()
+
+
+def test_pickle_saver_equal_true() -> None:
+    assert PickleSaver().equal(PickleSaver())
+
+
+def test_pickle_saver_equal_false_different_kwargs() -> None:
+    assert not PickleSaver(protocol=5).equal(PickleSaver(protocol=4))
+
+
+def test_pickle_saver_equal_false_different_type() -> None:
+    assert not PickleSaver().equal(PickleLoader())
+
+
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_pickle_saver_equal_nan(equal_nan: bool) -> None:
+    assert PickleSaver().equal(PickleSaver(), equal_nan=equal_nan)
 
 
 def test_pickle_saver_save(tmp_path: Path) -> None:

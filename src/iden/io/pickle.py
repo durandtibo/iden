@@ -38,11 +38,11 @@ class PickleLoader(BaseLoader[Any]):
     ```
     """
 
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
-
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return isinstance(other, self.__class__)
 
     def load(self, path: Path) -> Any:
         with Path.open(path, mode="rb") as file:
@@ -76,13 +76,13 @@ class PickleSaver(BaseFileSaver[Any]):
     def __init__(self, **kwargs: Any) -> None:
         self._kwargs = kwargs
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, self.__class__):
-            return False
-        return objects_are_equal(self._kwargs, other._kwargs)
-
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 
     def _save_file(self, to_save: Any, path: Path) -> None:
         with Path.open(path, mode="wb") as file:
