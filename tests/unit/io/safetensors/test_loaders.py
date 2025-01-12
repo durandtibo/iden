@@ -59,7 +59,7 @@ def test_numpy_loader_equal_true() -> None:
 @safetensors_available
 @numpy_available
 def test_numpy_loader_equal_false() -> None:
-    assert not NumpyLoader().equal(TorchLoader())
+    assert not NumpyLoader().equal(42.0)
 
 
 @safetensors_available
@@ -113,7 +113,7 @@ def test_torch_loader_equal_true() -> None:
 @safetensors_available
 @torch_available
 def test_torch_loader_equal_false() -> None:
-    assert not TorchLoader().equal(NumpyLoader())
+    assert not TorchLoader().equal(42.0)
 
 
 @safetensors_available

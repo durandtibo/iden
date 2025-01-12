@@ -45,7 +45,7 @@ def test_numpy_saver_equal_true() -> None:
 @safetensors_available
 @numpy_available
 def test_numpy_saver_equal_false() -> None:
-    assert not NumpySaver().equal(TorchSaver())
+    assert not NumpySaver().equal(42.0)
 
 
 @safetensors_available
@@ -131,7 +131,7 @@ def test_torch_saver_equal_true() -> None:
 @safetensors_available
 @torch_available
 def test_torch_saver_equal_false() -> None:
-    assert not TorchSaver().equal(NumpySaver())
+    assert not TorchSaver().equal(42.0)
 
 
 @safetensors_available
