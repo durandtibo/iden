@@ -52,6 +52,25 @@ def test_numpy_loader_str() -> None:
 
 @safetensors_available
 @numpy_available
+def test_numpy_loader_equal_true() -> None:
+    assert NumpyLoader().equal(NumpyLoader())
+
+
+@safetensors_available
+@numpy_available
+def test_numpy_loader_equal_false() -> None:
+    assert not NumpyLoader().equal(TorchLoader())
+
+
+@safetensors_available
+@numpy_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_numpy_loader_equal_nan(equal_nan: bool) -> None:
+    assert NumpyLoader().equal(NumpyLoader(), equal_nan=equal_nan)
+
+
+@safetensors_available
+@numpy_available
 def test_numpy_loader_load(path_numpy: Path) -> None:
     data = NumpyLoader().load(path_numpy)
     assert objects_are_equal(data, {"key1": np.ones((2, 3)), "key2": np.arange(5)})
@@ -83,6 +102,25 @@ def test_numpy_loader_no_numpy() -> None:
 @torch_available
 def test_torch_loader_str() -> None:
     assert str(TorchLoader()).startswith("TorchSafetensorsLoader(")
+
+
+@safetensors_available
+@torch_available
+def test_torch_loader_equal_true() -> None:
+    assert TorchLoader().equal(TorchLoader())
+
+
+@safetensors_available
+@torch_available
+def test_torch_loader_equal_false() -> None:
+    assert not TorchLoader().equal(NumpyLoader())
+
+
+@safetensors_available
+@torch_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_torch_loader_equal_nan(equal_nan: bool) -> None:
+    assert TorchLoader().equal(TorchLoader(), equal_nan=equal_nan)
 
 
 @safetensors_available
