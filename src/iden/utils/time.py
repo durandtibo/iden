@@ -1,4 +1,3 @@
-# noqa: A005
 r"""Contain utility functions to measure time."""
 
 from __future__ import annotations

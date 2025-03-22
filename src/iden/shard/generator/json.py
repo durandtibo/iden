@@ -1,4 +1,3 @@
-# noqa: A005
 r"""Contain JSON shard generator implementations."""
 
 from __future__ import annotations

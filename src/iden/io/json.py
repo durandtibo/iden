@@ -1,4 +1,3 @@
-# noqa: A005
 r"""Contain JSON-based data loaders and savers."""
 
 from __future__ import annotations
