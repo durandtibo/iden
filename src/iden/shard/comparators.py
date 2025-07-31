@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class ShardEqualityComparator(BaseEqualityComparator[BaseShard]):
+class ShardEqualityComparator(BaseEqualityComparator[BaseShard]):  # noqa: PLW1641
     r"""Implement an equality comparator for ``BaseShard`` objects."""
 
     def __init__(self) -> None:

@@ -30,7 +30,7 @@ T = TypeVar("T")
 logger = logging.getLogger(__name__)
 
 
-class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
+class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):  # noqa: PLW1641
     r"""Define the base class to implement a data loader.
 
     Example usage:
@@ -107,7 +107,7 @@ class BaseLoader(Generic[T], ABC, metaclass=AbstractFactory):
         """
 
 
-class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):
+class BaseSaver(Generic[T], ABC, metaclass=AbstractFactory):  # noqa: PLW1641
     r"""Define the base class to implement a data saver.
 
     Example usage:

@@ -191,7 +191,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
         ```
         """
         # local import to avoid cyclic dependencies
-        from iden.shard.loading import load_from_uri
+        from iden.shard.loading import load_from_uri  # noqa: PLC0415
 
         config = load_json(sanitize_path(uri))
         shards = [load_from_uri(shard) for shard in config[SHARDS]]

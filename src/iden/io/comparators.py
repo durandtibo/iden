@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class IOEqualityComparator(BaseEqualityComparator[BaseLoader]):
+class IOEqualityComparator(BaseEqualityComparator[BaseLoader]):  # noqa: PLW1641
     r"""Implement an equality comparator for ``BaseLoader`` objects."""
 
     def __init__(self) -> None:

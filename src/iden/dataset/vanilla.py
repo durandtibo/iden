@@ -253,7 +253,7 @@ class VanillaDataset(BaseDataset[T]):
         ```
         """
         # local import to avoid cyclic dependencies
-        from iden.shard import load_from_uri
+        from iden.shard import load_from_uri  # noqa: PLC0415
 
         config = load_json(sanitize_path(uri))
         shards = load_from_uri(config[SHARDS])

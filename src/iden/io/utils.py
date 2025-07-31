@@ -65,7 +65,8 @@ def get_loader_mapping() -> dict[str, BaseLoader]:
 
     ```
     """
-    from iden import io  # Local import to avoid cyclic dependencies
+    # Local import to avoid cyclic dependencies
+    from iden import io  # noqa: PLC0415
 
     return (
         io.cloudpickle.get_loader_mapping()
