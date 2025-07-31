@@ -56,9 +56,12 @@ repos:
     hooks:
       - id: blacken-docs
         additional_dependencies:
-          - black>=24.10
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.12.5
+          - black>=25.1
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.7
     hooks:
-      - id: ruff
+      - id: ruff-check
+        types_or: [ python, pyi, jupyter ]
         args: [ --fix, --unsafe-fixes ]
+      - id: ruff-format
+        types_or: [ python, pyi, jupyter ]
