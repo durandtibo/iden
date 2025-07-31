@@ -15,7 +15,6 @@ from iden.io import (
 )
 
 if TYPE_CHECKING:
-
     import pytest
 
 ######################################

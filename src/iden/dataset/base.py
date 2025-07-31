@@ -9,7 +9,6 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 if TYPE_CHECKING:
-
     from iden.shard import BaseShard
 
 logger = logging.getLogger(__name__)
