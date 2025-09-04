@@ -63,7 +63,7 @@ class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
     ...     file = Path(tmpdir).joinpath("data.safetensors")
     ...     NumpySaver().save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, file)
     ...     shard = NumpySafetensorsShard(uri="file:///data/1234456789", path=file)
-    ...     shard.get_data()
+    ...     dict(sorted(shard.get_data().items()))
     ...
     {'key1': array([[1., 1., 1.], [1., 1., 1.]]), 'key2': array([0, 1, 2, 3, 4])}
 
@@ -133,7 +133,7 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
     ...     file = Path(tmpdir).joinpath("data.safetensors")
     ...     TorchSaver().save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, file)
     ...     shard = TorchSafetensorsShard(uri="file:///data/1234456789", path=file)
-    ...     shard.get_data()
+    ...     dict(sorted(shard.get_data().items()))
     ...
     {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
 
@@ -213,7 +213,7 @@ def create_numpy_safetensors_shard(
     ...         data={"key1": np.ones((2, 3)), "key2": np.arange(5)},
     ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
     ...     )
-    ...     shard.get_data()
+    ...     dict(sorted(shard.get_data().items()))
     ...
     {'key1': array([[1., 1., 1.], [1., 1., 1.]]), 'key2': array([0, 1, 2, 3, 4])}
 
@@ -263,7 +263,7 @@ def create_torch_safetensors_shard(
     ...         data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
     ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
     ...     )
-    ...     shard.get_data()
+    ...     dict(sorted(shard.get_data().items()))
     ...
     {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
 
