@@ -19,7 +19,7 @@ T = TypeVar("T")
 logger = logging.getLogger(__name__)
 
 
-class BaseShardGenerator(Generic[T], ABC, metaclass=AbstractFactory):
+class BaseShardGenerator(ABC, Generic[T], metaclass=AbstractFactory):
     r"""Define the base class to create a shard.
 
     Example usage:

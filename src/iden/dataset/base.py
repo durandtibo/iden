@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 T = TypeVar("T")
 
 
-class BaseDataset(Generic[T], ABC):
+class BaseDataset(ABC, Generic[T]):
     r"""Define the base class to implement a dataset.
 
     Note this dataset class is very different from the PyTorch dataset

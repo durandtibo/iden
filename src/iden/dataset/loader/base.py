@@ -19,7 +19,7 @@ T = TypeVar("T")
 logger = logging.getLogger(__name__)
 
 
-class BaseDatasetLoader(Generic[T], ABC, metaclass=AbstractFactory):
+class BaseDatasetLoader(ABC, Generic[T], metaclass=AbstractFactory):
     r"""Define the base class to implement a dataset loader.
 
     A dataset loader object allows to load a ``BaseDataset`` object from

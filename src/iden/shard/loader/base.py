@@ -19,7 +19,7 @@ T = TypeVar("T")
 logger = logging.getLogger(__name__)
 
 
-class BaseShardLoader(Generic[T], ABC, metaclass=AbstractFactory):
+class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
     r"""Define the base class to implement a shard loader.
 
     A shard loader object allows to load a ``BaseShard`` object from

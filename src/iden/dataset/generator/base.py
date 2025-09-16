@@ -19,7 +19,7 @@ T = TypeVar("T")
 logger = logging.getLogger(__name__)
 
 
-class BaseDatasetGenerator(Generic[T], ABC, metaclass=AbstractFactory):
+class BaseDatasetGenerator(ABC, Generic[T], metaclass=AbstractFactory):
     r"""Define the base class to create a dataset.
 
     ```pycon
