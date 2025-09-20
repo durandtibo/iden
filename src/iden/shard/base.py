@@ -10,7 +10,7 @@ from typing import Any, Generic, TypeVar
 T = TypeVar("T")
 
 
-class BaseShard(Generic[T], ABC):
+class BaseShard(ABC, Generic[T]):
     r"""Define the base class to implement a shard.
 
     Example usage:

@@ -16,7 +16,7 @@ T = TypeVar("T")
 logger = logging.getLogger(__name__)
 
 
-class BaseDataGenerator(Generic[T], ABC, metaclass=AbstractFactory):
+class BaseDataGenerator(ABC, Generic[T], metaclass=AbstractFactory):
     r"""Define the base class to generate data.
 
     Example usage:
