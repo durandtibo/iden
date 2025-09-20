@@ -159,5 +159,5 @@ def test_load_from_uri_yaml(tmp_path: Path) -> None:
 
 
 def test_load_from_uri_missing() -> None:
-    with pytest.raises(FileNotFoundError, match="uri file does not exist:"):
+    with pytest.raises(FileNotFoundError, match=r"uri file does not exist:"):
         load_from_uri("file:///data/my_uri")

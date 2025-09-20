@@ -70,7 +70,7 @@ def test_numpy_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
     saver = NumpySaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path)
 
 
@@ -90,14 +90,14 @@ def test_numpy_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.safetensors")
     path.mkdir(parents=True, exist_ok=True)
     saver = NumpySaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, path)
 
 
 def test_numpy_saver_no_safetensors() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="'safetensors' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."),
     ):
         NumpySaver()
 
@@ -106,7 +106,7 @@ def test_numpy_saver_no_numpy() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_numpy_available", lambda: False),
-        pytest.raises(RuntimeError, match="'numpy' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'numpy' package is required but not installed."),
     ):
         NumpySaver()
 
@@ -156,7 +156,7 @@ def test_torch_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.safetensors")
     save_text("hello", path)
     saver = TorchSaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path)
 
 
@@ -176,14 +176,14 @@ def test_torch_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.safetensors")
     path.mkdir(parents=True, exist_ok=True)
     saver = TorchSaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, path)
 
 
 def test_torch_saver_no_safetensors() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="'safetensors' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."),
     ):
         TorchSaver()
 
@@ -192,6 +192,6 @@ def test_torch_saver_no_torch() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         TorchSaver()

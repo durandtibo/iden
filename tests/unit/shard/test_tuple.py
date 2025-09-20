@@ -94,7 +94,7 @@ def test_shard_tuple_get(uri: str, shards: Sequence[BaseShard], path_shard: Path
 
 def test_shard_tuple_get_missing(uri: str, shards: Sequence[BaseShard]) -> None:
     sl = ShardTuple(uri=uri, shards=shards)
-    with pytest.raises(IndexError, match="tuple index out of range"):
+    with pytest.raises(IndexError, match=r"tuple index out of range"):
         sl.get(5)
 
 

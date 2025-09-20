@@ -37,7 +37,7 @@ def test_check_cloudpickle_with_package() -> None:
 def test_check_cloudpickle_without_package() -> None:
     with (
         patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
-        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         check_cloudpickle()
 
@@ -91,7 +91,7 @@ def test_check_joblib_with_package() -> None:
 def test_check_joblib_without_package() -> None:
     with (
         patch("iden.utils.imports.is_joblib_available", lambda: False),
-        pytest.raises(RuntimeError, match="'joblib' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'joblib' package is required but not installed."),
     ):
         check_joblib()
 
@@ -145,7 +145,7 @@ def test_check_safetensors_with_package() -> None:
 def test_check_safetensors_without_package() -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="'safetensors' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."),
     ):
         check_safetensors()
 
@@ -199,7 +199,7 @@ def test_check_yaml_with_package() -> None:
 def test_check_yaml_without_package() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="'yaml' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'yaml' package is required but not installed."),
     ):
         check_yaml()
 

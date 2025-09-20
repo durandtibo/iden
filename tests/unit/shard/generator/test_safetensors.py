@@ -80,7 +80,7 @@ def test_numpy_safetensors_shard_generator_generate(tmp_path: Path) -> None:
 def test_numpy_safetensors_shard_generator_no_safetensors(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="'safetensors' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."),
     ):
         NumpySafetensorsShardGenerator(
             data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.arange(5)}),
@@ -93,7 +93,7 @@ def test_numpy_safetensors_shard_generator_no_numpy(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_numpy_available", lambda: False),
-        pytest.raises(RuntimeError, match="'numpy' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'numpy' package is required but not installed."),
     ):
         NumpySafetensorsShardGenerator(
             data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.arange(5)}),
@@ -152,7 +152,7 @@ def test_torch_safetensors_shard_generator_generate(tmp_path: Path) -> None:
 def test_torch_safetensors_shard_generator_no_safetensors(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: False),
-        pytest.raises(RuntimeError, match="'safetensors' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."),
     ):
         TorchSafetensorsShardGenerator(
             data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
@@ -165,7 +165,7 @@ def test_torch_safetensors_shard_generator_no_torch(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         TorchSafetensorsShardGenerator(
             data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),

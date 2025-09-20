@@ -161,7 +161,7 @@ def test_vanilla_dataset_get_asset(dataset: VanillaDataset) -> None:
 
 
 def test_vanilla_dataset_get_asset_missing(dataset: VanillaDataset) -> None:
-    with pytest.raises(AssetNotFoundError, match="asset 'missing' does not exist"):
+    with pytest.raises(AssetNotFoundError, match=r"asset 'missing' does not exist"):
         dataset.get_asset("missing")
 
 
@@ -184,7 +184,7 @@ def test_vanilla_dataset_get_shards_empty(dataset: VanillaDataset) -> None:
 
 
 def test_vanilla_dataset_get_shards_missing(dataset: VanillaDataset) -> None:
-    with pytest.raises(SplitNotFoundError, match="split 'missing' does not exist"):
+    with pytest.raises(SplitNotFoundError, match=r"split 'missing' does not exist"):
         dataset.get_shards("missing")
 
 
@@ -195,7 +195,7 @@ def test_vanilla_dataset_get_num_shards(dataset: VanillaDataset) -> None:
 
 
 def test_vanilla_dataset_get_num_shards_missing(dataset: VanillaDataset) -> None:
-    with pytest.raises(SplitNotFoundError, match="split 'missing' does not exist"):
+    with pytest.raises(SplitNotFoundError, match=r"split 'missing' does not exist"):
         dataset.get_num_shards("missing")
 
 
@@ -306,7 +306,7 @@ def test_check_shards_incorrect_order(tmp_path: Path) -> None:
     )
 
     with pytest.raises(
-        RuntimeError, match="split 'train' is not sorted by ascending order of URIs"
+        RuntimeError, match=r"split 'train' is not sorted by ascending order of URIs"
     ):
         check_shards(shards)
 
@@ -318,5 +318,5 @@ def test_check_shards_incorrect_type(tmp_path: Path) -> None:
         path=tmp_path.joinpath("train/data1.json"),
     )
 
-    with pytest.raises(TypeError, match="Incorrect shard type:"):
+    with pytest.raises(TypeError, match=r"Incorrect shard type:"):
         check_shards(shards)
