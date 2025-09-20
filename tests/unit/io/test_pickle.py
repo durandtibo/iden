@@ -119,7 +119,7 @@ def test_pickle_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     save_text("hello", path)
     saver = PickleSaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -136,7 +136,7 @@ def test_pickle_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     path.mkdir(parents=True, exist_ok=True)
     saver = PickleSaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -173,7 +173,7 @@ def test_save_pickle(tmp_path: Path) -> None:
 def test_save_pickle_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     save_text("hello", path)
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -188,7 +188,7 @@ def test_save_pickle_file_exist_ok(tmp_path: Path) -> None:
 def test_save_pickle_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     path.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 

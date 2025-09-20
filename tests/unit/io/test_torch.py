@@ -117,7 +117,7 @@ def test_torch_loader_load_weights_only_false(path_torch: Path) -> None:
 def test_torch_loader_no_torch() -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         TorchLoader()
 
@@ -196,7 +196,7 @@ def test_torch_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pt")
     save_torch({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
     saver = TorchSaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
 
 
@@ -217,14 +217,14 @@ def test_torch_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pt")
     path.mkdir(parents=True, exist_ok=True)
     saver = TorchSaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
 
 
 def test_torch_saver_no_torch() -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         TorchSaver()
 
@@ -253,7 +253,7 @@ def test_load_torch_weights_only_false(path_torch: Path) -> None:
 def test_load_torch_no_torch(tmp_path: Path) -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         load_torch(tmp_path)
 
@@ -274,7 +274,7 @@ def test_save_torch(tmp_path: Path) -> None:
 def test_save_torch_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pt")
     save_torch({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         save_torch({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
 
 
@@ -293,14 +293,14 @@ def test_save_torch_file_exist_ok(tmp_path: Path) -> None:
 def test_save_torch_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pt")
     path.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_torch({"key1": [1, 2, 3], "key2": "abc", "key3": torch.arange(5)}, path)
 
 
 def test_save_torch_no_torch(tmp_path: Path) -> None:
     with (
         patch("coola.utils.imports.is_torch_available", lambda: False),
-        pytest.raises(RuntimeError, match="'torch' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         save_torch(
             {"key1": [1, 2, 3], "key2": "abc"},

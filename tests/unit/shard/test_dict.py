@@ -68,7 +68,7 @@ def test_shard_dict_getitem(uri: str, shards: dict[str, BaseShard], path_shard: 
 
 def test_shard_dict_getitem_missing(uri: str) -> None:
     sd = ShardDict(uri=uri, shards={})
-    with pytest.raises(KeyError, match="'missing'"):
+    with pytest.raises(KeyError, match=r"'missing'"):
         _ = sd["missing"]
 
 
@@ -147,7 +147,7 @@ def test_shard_dict_get_shard(uri: str, shards: dict[str, BaseShard], path_shard
 
 def test_shard_dict_get_shard_missing(uri: str) -> None:
     sd = ShardDict(uri=uri, shards={})
-    with pytest.raises(ShardNotFoundError, match="shard `missing` does not exist"):
+    with pytest.raises(ShardNotFoundError, match=r"shard `missing` does not exist"):
         sd.get_shard("missing")
 
 

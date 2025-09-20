@@ -64,7 +64,7 @@ def test_yaml_loader_load(path_yaml: Path) -> None:
 def test_yaml_loader_no_yaml() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="'yaml' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'yaml' package is required but not installed."),
     ):
         YamlLoader()
 
@@ -118,7 +118,7 @@ def test_yaml_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.yaml")
     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
     saver = YamlSaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -137,14 +137,14 @@ def test_yaml_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.yaml")
     path.mkdir(parents=True, exist_ok=True)
     saver = YamlSaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
 def test_yaml_saver_no_yaml() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
-        pytest.raises(RuntimeError, match="'yaml' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'yaml' package is required but not installed."),
     ):
         YamlSaver()
 
@@ -175,7 +175,7 @@ def test_save_yaml(tmp_path: Path) -> None:
 def test_save_yaml_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.yaml")
     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -192,7 +192,7 @@ def test_save_yaml_file_exist_ok(tmp_path: Path) -> None:
 def test_save_yaml_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.yaml")
     path.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 

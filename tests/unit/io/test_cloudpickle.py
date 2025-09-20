@@ -81,7 +81,7 @@ def test_cloudpickle_loader_load(path_pickle: Path) -> None:
 def test_cloudpickle_loader_no_cloudpickle() -> None:
     with (
         patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
-        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         CloudpickleLoader()
 
@@ -160,7 +160,7 @@ def test_cloudpickle_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     save_text("hello", path)
     saver = CloudpickleSaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -179,7 +179,7 @@ def test_cloudpickle_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     path.mkdir(parents=True, exist_ok=True)
     saver = CloudpickleSaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -195,7 +195,7 @@ def test_cloudpickle_saver_save_protocol(tmp_path: Path, protocol: int) -> None:
 def test_cloudpickle_saver_no_cloudpickle() -> None:
     with (
         patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
-        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         CloudpickleSaver()
 
@@ -213,7 +213,7 @@ def test_load_cloudpickle(path_pickle: Path) -> None:
 def test_load_cloudpickle_no_cloudpickle(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
-        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         load_cloudpickle(tmp_path.joinpath("data.pkl"))
 
@@ -242,7 +242,7 @@ def test_save_cloudpickle_protocol(tmp_path: Path, protocol: int) -> None:
 def test_save_cloudpickle_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     save_text("hello", path)
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -259,14 +259,14 @@ def test_save_cloudpickle_file_exist_ok(tmp_path: Path) -> None:
 def test_save_cloudpickle_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.pkl")
     path.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
 def test_save_cloudpickle_no_cloudpickle(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
-        pytest.raises(RuntimeError, match="'cloudpickle' package is required but not installed."),
+        pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, tmp_path.joinpath("data.pkl"))
 

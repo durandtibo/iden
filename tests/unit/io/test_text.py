@@ -101,7 +101,7 @@ def test_text_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
     save_text("hello", path)
     saver = TextSaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save("hello", path)
 
 
@@ -118,7 +118,7 @@ def test_text_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
     path.mkdir(parents=True, exist_ok=True)
     saver = TextSaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save("hello", path)
 
 
@@ -152,7 +152,7 @@ def test_save_text_list(tmp_path: Path) -> None:
 def test_save_text_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
     save_text("hello", path)
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         save_text("hello", path)
 
 
@@ -167,7 +167,7 @@ def test_save_text_file_exist_ok(tmp_path: Path) -> None:
 def test_save_text_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
     path.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_text("hello", path)
 
 

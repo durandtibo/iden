@@ -68,7 +68,7 @@ def test_auto_file_loader_add_loader_duplicate_exist_ok_false() -> None:
     text_loader = TextLoader()
     loader.add_loader("text", JsonLoader())
     with pytest.raises(
-        RuntimeError, match="A loader .* is already registered for the file extension"
+        RuntimeError, match=r"A loader .* is already registered for the file extension"
     ):
         loader.add_loader("text", text_loader)
 
@@ -86,7 +86,7 @@ def test_auto_file_loader_find_loader_txt() -> None:
 
 
 def test_auto_file_loader_find_loader_incorrect_type() -> None:
-    with pytest.raises(TypeError, match="Incorrect extension:"):
+    with pytest.raises(TypeError, match=r"Incorrect extension:"):
         AutoFileLoader().find_loader("newtxt")
 
 

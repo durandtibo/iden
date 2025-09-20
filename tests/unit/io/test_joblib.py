@@ -148,7 +148,7 @@ def test_joblib_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.joblib")
     save_text("hello", path)
     saver = JoblibSaver()
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -167,7 +167,7 @@ def test_joblib_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.joblib")
     path.mkdir(parents=True, exist_ok=True)
     saver = JoblibSaver()
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         saver.save({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -204,7 +204,7 @@ def test_save_joblib_compress_3(tmp_path: Path) -> None:
 def test_save_joblib_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.joblib")
     save_text("hello", path)
-    with pytest.raises(FileExistsError, match="path .* already exists."):
+    with pytest.raises(FileExistsError, match=r"path .* already exists."):
         save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
@@ -221,7 +221,7 @@ def test_save_joblib_file_exist_ok(tmp_path: Path) -> None:
 def test_save_joblib_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.joblib")
     path.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(IsADirectoryError, match="path .* is a directory"):
+    with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
 
 
