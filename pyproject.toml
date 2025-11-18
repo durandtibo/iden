@@ -2,7 +2,6 @@
 requires = ["hatchling >= 1.27", "hatchling-autoextras-hook>=0.0.1"]
 build-backend = "hatchling.build"
 
-
 [project]
 name = "iden"
 version = "0.2.1a0"
@@ -30,6 +29,8 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+
+dynamic = ["maintainers"]
 
 requires-python = ">=3.10"
 
