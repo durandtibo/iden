@@ -14,26 +14,32 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.13'
+      - name: Setup python environment
+        uses: ./.github/actions/setup-env
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Set environment variable
+      - name: check iden
         run: |
-          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+          python -c "import iden"
 
-      - name: Install packages
+      - name: check iden.data
         run: |
-          make install-all
+          python -c "from iden import data"
 
-      - name: Show installed packages
+      - name: check iden.dataset
         run: |
-          poetry show
-          poetry show --tree
+          python -c "from iden import dataset"
+
+      - name: check iden.io
+        run: |
+          python -c "from iden import io"
+
+      - name: check iden.shard
+        run: |
+          python -c "from iden import shard"
+
+      - name: check iden.testing
+        run: |
+          python -c "from iden import testing"
 
       - name: check iden.utils
         run: |
