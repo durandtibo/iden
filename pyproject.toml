@@ -2,9 +2,14 @@
 requires = ["hatchling >= 1.27", "hatchling-autoextras-hook>=0.0.1"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.sdist]
+only-include = ["src"]
+
+[tool.hatch.metadata.hooks.autoextras]
+
 [project]
 name = "iden"
-version = "0.2.1a0"
+version = "0.2.1a1"
 description = "simple library to manage a dataset of shards to train machine learning models"
 readme = "README.md"
 authors = [
@@ -79,8 +84,6 @@ docs = [
 homepage = "https://github.com/durandtibo/iden"
 repository = "https://github.com/durandtibo/iden"
 documentation = "https://durandtibo.github.io/iden/"
-
-[tool.hatch.metadata.hooks.autoextras]
 
 [tool.uv.pip]
 torch-backend = "auto"
