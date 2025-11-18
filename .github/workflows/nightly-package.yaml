@@ -14,82 +14,82 @@ jobs:
   stable:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install batcharray'
+      install-cmd: 'uv pip install iden'
 
   stable-all:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install "batcharray[all]"'
+      install-cmd: 'uv pip install "iden[all]"'
 
   stable-cloudpickle:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install "batcharray[cloudpickle]"'
+      install-cmd: 'uv pip install "iden[cloudpickle]"'
 
   stable-joblib:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install "batcharray[joblib]"'
+      install-cmd: 'uv pip install "iden[joblib]"'
 
   stable-numpy:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install "batcharray[numpy]"'
+      install-cmd: 'uv pip install "iden[numpy]"'
 
   stable-pyyaml:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install "batcharray[pyyaml]"'
+      install-cmd: 'uv pip install "iden[pyyaml]"'
 
   stable-safetensors:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install "batcharray[safetensors]"'
+      install-cmd: 'uv pip install "iden[safetensors]"'
 
   stable-torch:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install "batcharray[torch]"'
+      install-cmd: 'uv pip install "iden[torch]"'
 
   latest:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre batcharray'
+      install-cmd: 'uv pip install --pre iden'
 
   latest-all:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre "batcharray[all]"'
+      install-cmd: 'uv pip install --pre "iden[all]"'
 
   latest-cloudpickle:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre "batcharray[cloudpickle]"'
+      install-cmd: 'uv pip install --pre "iden[cloudpickle]"'
 
   latest-joblib:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre "batcharray[joblib]"'
+      install-cmd: 'uv pip install --pre "iden[joblib]"'
 
   latest-numpy:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre "batcharray[numpy]"'
+      install-cmd: 'uv pip install --pre "iden[numpy]"'
 
   latest-pyyaml:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre "batcharray[pyyaml]"'
+      install-cmd: 'uv pip install --pre "iden[pyyaml]"'
 
   latest-safetensors:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre "batcharray[safetensors]"'
+      install-cmd: 'uv pip install --pre "iden[safetensors]"'
 
   latest-torch:
     uses: ./.github/workflows/test-package.yaml
     with:
-      install-cmd: 'uv pip install --pre "batcharray[torch]"'
+      install-cmd: 'uv pip install --pre "iden[torch]"'
 
 
   ########################
