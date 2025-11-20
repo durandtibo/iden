@@ -425,7 +425,7 @@ wheels = [
 
 [[package]]
 name = "iden"
-version = "0.2.1a0"
+version = "0.2.1a1"
 source = { editable = "." }
 dependencies = [
     { name = "coola" },
