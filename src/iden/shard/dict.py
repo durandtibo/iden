@@ -296,7 +296,7 @@ class ShardDict(BaseShard[T]):
 
 
 def create_shard_dict(shards: dict[str, BaseShard[T]], uri: str) -> ShardDict[T]:
-    r"""Create a ``ShardDict`` a list of shards.
+    r"""Create a ``ShardDict`` from a dictionary of shards.
 
     Note:
         It is a utility function to create a ``ShardDict`` from its
