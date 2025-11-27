@@ -1,5 +1,4 @@
-r"""Contain code to load a shard from its Uniform Resource Identifier
-(URI)."""
+r"""Contain utility functions and classes for working with shards."""
 
 from __future__ import annotations
 
@@ -19,7 +18,7 @@ T = TypeVar("T")
 
 
 class ShardIterable(Iterable):
-    r"""Implement a shard iterable that load anc clear the data
+    r"""Implement a shard iterable that loads and clears the data
     automatically.
 
     Args:
@@ -61,13 +60,13 @@ class ShardIterable(Iterable):
 
 
 def get_dict_uris(shards: dict[str, BaseShard]) -> dict[str, str]:
-    r"""Get the dictionary of shard's URI.
+    r"""Get the dictionary of shard URIs.
 
     Args:
         shards: The dictionary of shards.
 
     Returns:
-        The dictionary of shard's URI.
+        The dictionary of shard URIs.
 
     Example usage:
 
@@ -95,13 +94,13 @@ def get_dict_uris(shards: dict[str, BaseShard]) -> dict[str, str]:
 
 
 def get_list_uris(shards: Iterable[BaseShard]) -> list[str]:
-    r"""Get the list of shard's URI.
+    r"""Get the list of shard URIs.
 
     Args:
         shards: The shards.
 
     Returns:
-        The tuple of shard's URI.
+        The list of shard URIs.
 
     Example usage:
 
