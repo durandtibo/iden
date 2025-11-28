@@ -108,7 +108,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
             The shard.
 
         Raises:
-            IndexError: if the index is outside  the tuple range.
+            IndexError: if the index is outside the tuple range.
 
         Example usage:
 
@@ -237,7 +237,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
 
 
 def create_shard_tuple(shards: Iterable[BaseShard[T]], uri: str) -> ShardTuple[T]:
-    r"""Create a ``ShardTuple`` a list of shards.
+    r"""Create a ``ShardTuple`` from a sequence of shards.
 
     Note:
         It is a utility function to create a ``ShardTuple`` from its

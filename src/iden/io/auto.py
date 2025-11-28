@@ -1,4 +1,4 @@
-r"""Contain a data loader that automatically find the right loader to
+r"""Contain a data loader that automatically finds the right loader to
 load the data based on the file extension."""
 
 from __future__ import annotations
