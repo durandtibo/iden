@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Any, Generic, TypeVar
 if TYPE_CHECKING:
     from iden.shard import BaseShard
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 T = TypeVar("T")
 

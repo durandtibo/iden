@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["YamlShardLoader"]
 
-from typing import Any, TypeVar
+from typing import TypeVar
 
 from iden.shard.loader.base import BaseShardLoader
 from iden.shard.yaml import YamlShard
@@ -13,7 +13,7 @@ from iden.utils.imports import check_yaml
 T = TypeVar("T")
 
 
-class YamlShardLoader(BaseShardLoader[Any]):
+class YamlShardLoader(BaseShardLoader[T]):
     r"""Implement a YAML shard loader.
 
     Example usage:
@@ -42,5 +42,5 @@ class YamlShardLoader(BaseShardLoader[Any]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def load(self, uri: str) -> YamlShard:
+    def load(self, uri: str) -> YamlShard[T]:
         return YamlShard.from_uri(uri)

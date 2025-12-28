@@ -4,20 +4,19 @@ from __future__ import annotations
 
 __all__ = ["ShardIterable", "get_dict_uris", "get_list_uris", "sort_by_uri"]
 
-from collections.abc import Iterable
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from iden.shard import BaseShard
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Iterable, Iterator
 
     from iden.shard.base import BaseShard
 
 T = TypeVar("T")
 
 
-class ShardIterable(Iterable):
+class ShardIterable(Generic[T]):
     r"""Implement a shard iterable that loads and clears the data
     automatically.
 
@@ -59,7 +58,7 @@ class ShardIterable(Iterable):
         return f"{self.__class__.__qualname__}()"
 
 
-def get_dict_uris(shards: dict[str, BaseShard]) -> dict[str, str]:
+def get_dict_uris(shards: dict[str, BaseShard[Any]]) -> dict[str, str]:
     r"""Get the dictionary of shard URIs.
 
     Args:
@@ -93,7 +92,7 @@ def get_dict_uris(shards: dict[str, BaseShard]) -> dict[str, str]:
     return {key: shard.get_uri() for key, shard in shards.items()}
 
 
-def get_list_uris(shards: Iterable[BaseShard]) -> list[str]:
+def get_list_uris(shards: Iterable[BaseShard[Any]]) -> list[str]:
     r"""Get the list of shard URIs.
 
     Args:
@@ -125,7 +124,9 @@ def get_list_uris(shards: Iterable[BaseShard]) -> list[str]:
     return [shard.get_uri() for shard in shards]
 
 
-def sort_by_uri(shards: Iterable[BaseShard], /, *, reverse: bool = False) -> list[BaseShard]:
+def sort_by_uri(
+    shards: Iterable[BaseShard[Any]], /, *, reverse: bool = False
+) -> list[BaseShard[Any]]:
     r"""Sort a sequence of shards by their URIs.
 
     Args:

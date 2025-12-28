@@ -5,7 +5,7 @@ from __future__ import annotations
 
 __all__ = ["load_from_uri"]
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from coola.utils.path import sanitize_path
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from iden.shard import BaseShard
 
 
-def load_from_uri(uri: str) -> BaseShard:
+def load_from_uri(uri: str) -> BaseShard[Any]:
     r"""Load a shard from its Uniform Resource Identifier (URI).
 
     Args:

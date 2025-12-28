@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from unittest.mock import Mock
 
 from coola.utils import is_numpy_available, is_torch_available
@@ -22,12 +22,12 @@ from iden.io import JsonSaver
 from iden.io.safetensors import NumpyLoader, NumpySaver, TorchLoader, TorchSaver
 from iden.shard.file import FileShard
 
-if is_numpy_available():
+if TYPE_CHECKING or is_numpy_available():
     import numpy as np
 else:  # pragma: no cover
     np = Mock()
 
-if is_torch_available():
+if TYPE_CHECKING or is_torch_available():
     import torch
 else:  # pragma: no cover
     torch = Mock()
@@ -35,7 +35,7 @@ else:  # pragma: no cover
 if TYPE_CHECKING:
     from pathlib import Path
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
@@ -74,7 +74,7 @@ class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
         super().__init__(uri, path, loader=NumpyLoader())
 
     @classmethod
-    def generate_uri_config(cls, path: Path) -> dict:
+    def generate_uri_config(cls, path: Path) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 
@@ -144,7 +144,7 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
         super().__init__(uri, path, loader=TorchLoader())
 
     @classmethod
-    def generate_uri_config(cls, path: Path) -> dict:
+    def generate_uri_config(cls, path: Path) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 

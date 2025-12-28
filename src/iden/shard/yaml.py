@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["YamlShard", "create_yaml_shard"]
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
@@ -17,10 +17,12 @@ from iden.shard.file import FileShard
 if TYPE_CHECKING:
     from pathlib import Path
 
-logger = logging.getLogger(__name__)
+T = TypeVar("T")
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-class YamlShard(FileShard[Any]):
+class YamlShard(FileShard[T]):
     r"""Implement a YAML shard.
 
     The data are stored in a YAML file.
@@ -52,7 +54,7 @@ class YamlShard(FileShard[Any]):
         super().__init__(uri, path, loader=YamlLoader())
 
     @classmethod
-    def generate_uri_config(cls, path: Path) -> dict:
+    def generate_uri_config(cls, path: Path) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 
@@ -86,7 +88,7 @@ class YamlShard(FileShard[Any]):
         }
 
 
-def create_yaml_shard(data: Any, uri: str, path: Path | None = None) -> YamlShard:
+def create_yaml_shard(data: T, uri: str, path: Path | None = None) -> YamlShard[T]:
     r"""Create a ``YamlShard`` from data.
 
     Note:

@@ -6,7 +6,7 @@ __all__ = ["BaseShardLoader", "is_shard_loader_config", "setup_shard_loader"]
 
 import logging
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 T = TypeVar("T")
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
@@ -74,7 +74,7 @@ class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
         """
 
 
-def is_shard_loader_config(config: dict) -> bool:
+def is_shard_loader_config(config: dict[Any, Any]) -> bool:
     r"""Indicate if the input configuration is a configuration for a
     ``BaseShardLoader``.
 
@@ -103,7 +103,7 @@ def is_shard_loader_config(config: dict) -> bool:
     return is_object_config(config, BaseShardLoader)
 
 
-def setup_shard_loader(shard_loader: BaseShardLoader | dict) -> BaseShardLoader:
+def setup_shard_loader(shard_loader: BaseShardLoader[T] | dict[Any, Any]) -> BaseShardLoader[T]:
     r"""Set up a shard loader.
 
     The shard loader is instantiated from its configuration by using the
