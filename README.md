@@ -1,24 +1,24 @@
 # iden
 
 <p align="center">
-    <a href="https://github.com/durandtibo/iden/actions">
-        <img alt="CI" src="https://github.com/durandtibo/iden/workflows/CI/badge.svg">
+    <a href="https://github.com/durandtibo/iden/actions/workflows/ci.yaml">
+        <img alt="CI" src="https://github.com/durandtibo/iden/actions/workflows/ci.yaml/badge.svg">
     </a>
-    <a href="https://github.com/durandtibo/iden/actions">
-        <img alt="Nightly Tests" src="https://github.com/durandtibo/iden/workflows/Nightly%20Tests/badge.svg">
+    <a href="https://github.com/durandtibo/iden/actions/workflows/nightly-tests.yaml">
+        <img alt="Nightly Tests" src="https://github.com/durandtibo/iden/actions/workflows/nightly-tests.yaml/badge.svg">
     </a>
-    <a href="https://github.com/durandtibo/iden/actions">
-        <img alt="Nightly Package Tests" src="https://github.com/durandtibo/iden/workflows/Nightly%20Package%20Tests/badge.svg">
+    <a href="https://github.com/durandtibo/iden/actions/workflows/nightly-package.yaml">
+        <img alt="Nightly Package Tests" src="https://github.com/durandtibo/iden/actions/workflows/nightly-package.yaml/badge.svg">
     </a>
     <a href="https://codecov.io/gh/durandtibo/iden">
         <img alt="Codecov" src="https://codecov.io/gh/durandtibo/iden/branch/main/graph/badge.svg">
     </a>
     <br/>
     <a href="https://durandtibo.github.io/iden/">
-        <img alt="Documentation" src="https://github.com/durandtibo/iden/workflows/Documentation%20(stable)/badge.svg">
+        <img alt="Documentation" src="https://github.com/durandtibo/iden/actions/workflows/docs.yaml/badge.svg">
     </a>
-    <a href="https://durandtibo.github.io/iden/">
-        <img alt="Documentation" src="https://github.com/durandtibo/iden/workflows/Documentation%20(unstable)/badge.svg">
+    <a href="https://durandtibo.github.io/iden/dev/">
+        <img alt="Documentation" src="https://github.com/durandtibo/iden/actions/workflows/docs-dev.yaml/badge.svg">
     </a>
     <br/>
     <a href="https://github.com/psf/black">
@@ -83,15 +83,15 @@ Please check the [get started page](https://durandtibo.github.io/iden/get_starte
 install only some specific dependencies or other alternatives to install the library.
 The following is the corresponding `iden` versions and tested dependencies.
 
-| `iden`  | `coola`        | `objectory`  | `numpy`<sup>*</sup> | `pyyaml`<sup>*</sup> | `safetensors`<sup>*</sup> | `torch`<sup>*</sup> | `python`      |
-|---------|----------------|--------------|---------------------|----------------------|---------------------------|---------------------|---------------|
-| `main`  | `>=0.8.4,<1.0` | `>=0.2,<1.0` | `>=1.24,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.14` |
-| `0.2.0` | `>=0.8.4,<1.0` | `>=0.2,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.14` |
-| `0.1.0` | `>=0.8.4,<1.0` | `>=0.2,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.14` |
-| `0.0.4` | `>=0.3,<1.0`   | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.13` |
-| `0.0.3` | `>=0.3,<1.0`   | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.12` |
-| `0.0.2` | `>=0.4,<1.0`   | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
-| `0.0.1` | `>=0.4,<1.0`   | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
+| `iden`  | `coola`         | `objectory`  | `numpy`<sup>*</sup> | `pyyaml`<sup>*</sup> | `safetensors`<sup>*</sup> | `torch`<sup>*</sup> | `python`      |
+|---------|-----------------|--------------|---------------------|----------------------|---------------------------|---------------------|---------------|
+| `main`  | `>=0.11.0,<1.0` | `>=0.3,<1.0` | `>=1.24,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.10`      |
+| `0.2.0` | `>=0.8.4,<1.0`  | `>=0.2,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.14` |
+| `0.1.0` | `>=0.8.4,<1.0`  | `>=0.2,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.14` |
+| `0.0.4` | `>=0.3,<1.0`    | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.13` |
+| `0.0.3` | `>=0.3,<1.0`    | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.12` |
+| `0.0.2` | `>=0.4,<1.0`    | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
+| `0.0.1` | `>=0.4,<1.0`    | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<2.1`        | `>=3.9,<3.12` |
 
 | `iden` | `cloudpickle`<sup>*</sup> | `joblib`<sup>*</sup> |
 |--------|---------------------------|----------------------|
