@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["NumpySafetensorsShardGenerator", "TorchSafetensorsShardGenerator"]
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 from unittest.mock import Mock
 
 from coola.utils.imports import (
@@ -23,12 +23,12 @@ from iden.shard import (
 from iden.shard.generator.file import BaseFileShardGenerator
 from iden.utils.imports import check_safetensors
 
-if is_numpy_available():
+if TYPE_CHECKING or is_numpy_available():
     import numpy as np
 else:  # pragma: no cover
     np = Mock()
 
-if is_torch_available():
+if TYPE_CHECKING or is_torch_available():
     import torch
 else:  # pragma: no cover
     torch = Mock()
@@ -82,7 +82,7 @@ class NumpySafetensorsShardGenerator(BaseFileShardGenerator[dict[str, np.ndarray
         self,
         path_uri: Path,
         path_shard: Path,
-        data: BaseDataGenerator[dict[str, np.ndarray]] | dict,
+        data: BaseDataGenerator[dict[str, np.ndarray]] | dict[Any, Any],
     ) -> None:
         check_safetensors()
         check_numpy()
@@ -137,7 +137,7 @@ class TorchSafetensorsShardGenerator(BaseFileShardGenerator[dict[str, torch.Tens
         self,
         path_uri: Path,
         path_shard: Path,
-        data: BaseDataGenerator[dict[str, torch.Tensor]] | dict,
+        data: BaseDataGenerator[dict[str, torch.Tensor]] | dict[Any, Any],
     ) -> None:
         check_safetensors()
         check_torch()

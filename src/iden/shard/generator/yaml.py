@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["YamlShardGenerator"]
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from iden.shard import YamlShard, create_yaml_shard
 from iden.shard.generator.file import BaseFileShardGenerator
@@ -54,7 +54,9 @@ class YamlShardGenerator(BaseFileShardGenerator[T]):
     ```
     """
 
-    def __init__(self, data: BaseDataGenerator[T] | dict, path_uri: Path, path_shard: Path) -> None:
+    def __init__(
+        self, data: BaseDataGenerator[T] | dict[Any, Any], path_uri: Path, path_shard: Path
+    ) -> None:
         check_yaml()
         super().__init__(data=data, path_uri=path_uri, path_shard=path_shard)
 

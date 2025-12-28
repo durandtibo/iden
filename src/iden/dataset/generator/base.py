@@ -6,7 +6,7 @@ __all__ = ["BaseDatasetGenerator", "is_dataset_generator_config", "setup_dataset
 
 import logging
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
@@ -112,7 +112,7 @@ class BaseDatasetGenerator(ABC, Generic[T], metaclass=AbstractFactory):
         """
 
 
-def is_dataset_generator_config(config: dict) -> bool:
+def is_dataset_generator_config(config: dict[Any, Any]) -> bool:
     r"""Indicate if the input configuration is a configuration for a
     ``BaseDatasetGenerator``.
 
@@ -144,7 +144,7 @@ def is_dataset_generator_config(config: dict) -> bool:
 
 
 def setup_dataset_generator(
-    dataset_generator: BaseDatasetGenerator[T] | dict,
+    dataset_generator: BaseDatasetGenerator[T] | dict[Any, Any],
 ) -> BaseDatasetGenerator[T]:
     r"""Set up a dataset generator.
 

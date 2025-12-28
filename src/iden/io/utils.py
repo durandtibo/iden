@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["generate_unique_tmp_path", "get_loader_mapping"]
 
 import uuid
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -49,7 +49,7 @@ def generate_unique_tmp_path(path: Path) -> Path:
     return path.with_name(f"{stem}-{h}{extension}")
 
 
-def get_loader_mapping() -> dict[str, BaseLoader]:
+def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     r"""Get a default mapping between the file extensions and loaders.
 
     Returns:

@@ -11,7 +11,7 @@ __all__ = [
 ]
 
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeVar
 from unittest.mock import Mock
 
 from coola import objects_are_equal
@@ -25,8 +25,10 @@ if is_joblib_available():
 else:  # pragma: no cover
     joblib = Mock()
 
+T = TypeVar("T")
 
-class JoblibLoader(BaseLoader[Any]):
+
+class JoblibLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a pickle file with
     joblib.
 
@@ -57,12 +59,12 @@ class JoblibLoader(BaseLoader[Any]):
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
         return isinstance(other, self.__class__)
 
-    def load(self, path: Path) -> Any:
+    def load(self, path: Path) -> T:
         with Path.open(path, mode="rb") as file:
             return joblib.load(file)
 
 
-class JoblibSaver(BaseFileSaver[Any]):
+class JoblibSaver(BaseFileSaver[T]):
     r"""Implement a file saver to save data with a pickle file with
     joblib.
 
@@ -99,7 +101,7 @@ class JoblibSaver(BaseFileSaver[Any]):
             return False
         return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 
-    def _save_file(self, to_save: Any, path: Path) -> None:
+    def _save_file(self, to_save: T, path: Path) -> None:
         with Path.open(path, mode="wb") as file:
             joblib.dump(to_save, file, **self._kwargs)
 
@@ -170,7 +172,7 @@ def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: A
     JoblibSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
 
-def get_loader_mapping() -> dict[str, BaseLoader]:
+def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     r"""Get a default mapping between the file extensions and loaders.
 
     Returns:

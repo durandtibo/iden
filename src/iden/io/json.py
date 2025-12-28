@@ -13,7 +13,7 @@ from iden.io.base import BaseFileSaver, BaseLoader
 T = TypeVar("T")
 
 
-class JsonLoader(BaseLoader[Any]):
+class JsonLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a JSON file.
 
     Example usage:
@@ -40,12 +40,12 @@ class JsonLoader(BaseLoader[Any]):
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
         return isinstance(other, self.__class__)
 
-    def load(self, path: Path) -> Any:
+    def load(self, path: Path) -> T:
         with Path.open(path, mode="rb") as file:
             return json.load(file)
 
 
-class JsonSaver(BaseFileSaver[Any]):
+class JsonSaver(BaseFileSaver[T]):
     r"""Implement a file saver to save data with a JSON file.
 
     Example usage:
@@ -72,7 +72,7 @@ class JsonSaver(BaseFileSaver[Any]):
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
         return isinstance(other, self.__class__)
 
-    def _save_file(self, to_save: Any, path: Path) -> None:
+    def _save_file(self, to_save: T, path: Path) -> None:
         with Path.open(path, "w") as file:
             json.dump(to_save, file, sort_keys=False)
 
@@ -142,7 +142,7 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     JsonSaver().save(to_save, path, exist_ok=exist_ok)
 
 
-def get_loader_mapping() -> dict[str, BaseLoader]:
+def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     r"""Get a default mapping between the file extensions and loaders.
 
     Returns:

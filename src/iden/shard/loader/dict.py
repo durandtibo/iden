@@ -4,13 +4,16 @@ from __future__ import annotations
 
 __all__ = ["ShardDictLoader"]
 
+from typing import TypeVar
 
 from iden.shard.base import BaseShard
 from iden.shard.dict import ShardDict
 from iden.shard.loader.base import BaseShardLoader
 
+T = TypeVar("T")
 
-class ShardDictLoader(BaseShardLoader[dict[str, BaseShard]]):
+
+class ShardDictLoader(BaseShardLoader[dict[str, BaseShard[T]]]):
     r"""Implement a ``ShardDict`` loader.
 
     Example usage:
@@ -49,5 +52,5 @@ class ShardDictLoader(BaseShardLoader[dict[str, BaseShard]]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def load(self, uri: str) -> ShardDict:
+    def load(self, uri: str) -> ShardDict[T]:
         return ShardDict.from_uri(uri)

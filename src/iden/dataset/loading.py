@@ -5,7 +5,7 @@ from __future__ import annotations
 
 __all__ = ["load_from_uri"]
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 from coola.utils.path import sanitize_path
 
@@ -16,8 +16,10 @@ from iden.io import load_json
 if TYPE_CHECKING:
     from iden.dataset import BaseDataset
 
+T = TypeVar("T")
 
-def load_from_uri(uri: str) -> BaseDataset:
+
+def load_from_uri(uri: str) -> BaseDataset[T]:
     r"""Load a dataset from its Uniform Resource Identifier (URI).
 
     Args:

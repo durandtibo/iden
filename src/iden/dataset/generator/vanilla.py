@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["VanillaDatasetGenerator"]
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 
@@ -18,8 +18,10 @@ if TYPE_CHECKING:
 
     from iden.shard.generator import ShardDictGenerator
 
+T = TypeVar("T")
 
-class VanillaDatasetGenerator(BaseDatasetGenerator[tuple[BaseShard, ...]]):
+
+class VanillaDatasetGenerator(BaseDatasetGenerator[tuple[BaseShard[T], ...]]):
     r"""Implement a ``VanillaDataset`` generator.
 
     Args:
@@ -76,8 +78,8 @@ class VanillaDatasetGenerator(BaseDatasetGenerator[tuple[BaseShard, ...]]):
     def __init__(
         self,
         path_uri: Path,
-        shards: ShardDictGenerator | dict,
-        assets: ShardDictGenerator | dict,
+        shards: ShardDictGenerator[T] | dict[Any, Any],
+        assets: ShardDictGenerator[Any] | dict[Any, Any],
     ) -> None:
         self._path_uri = path_uri
         self._shards = setup_shard_generator(shards)
@@ -107,7 +109,7 @@ class VanillaDatasetGenerator(BaseDatasetGenerator[tuple[BaseShard, ...]]):
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
-    def generate(self, dataset_id: str) -> VanillaDataset:
+    def generate(self, dataset_id: str) -> VanillaDataset[T]:
         shards = self._shards.generate(shard_id="shards")
         assets = self._assets.generate(shard_id="assets")
         return create_vanilla_dataset(

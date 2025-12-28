@@ -4,15 +4,17 @@ from __future__ import annotations
 
 __all__ = ["TorchShardLoader"]
 
-from typing import Any
+from typing import TypeVar
 
 from coola.utils import check_torch
 
 from iden.shard.loader.base import BaseShardLoader
 from iden.shard.torch import TorchShard
 
+T = TypeVar("T")
 
-class TorchShardLoader(BaseShardLoader[Any]):
+
+class TorchShardLoader(BaseShardLoader[T]):
     r"""Implement a PyTorch shard loader.
 
     Raises:
@@ -44,5 +46,5 @@ class TorchShardLoader(BaseShardLoader[Any]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def load(self, uri: str) -> TorchShard:
+    def load(self, uri: str) -> TorchShard[T]:
         return TorchShard.from_uri(uri)

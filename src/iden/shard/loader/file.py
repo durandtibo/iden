@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["FileShardLoader"]
 
-from typing import Any, TypeVar
+from typing import TypeVar
 
 from iden.shard.file import FileShard
 from iden.shard.loader.base import BaseShardLoader
@@ -12,7 +12,7 @@ from iden.shard.loader.base import BaseShardLoader
 T = TypeVar("T")
 
 
-class FileShardLoader(BaseShardLoader[Any]):
+class FileShardLoader(BaseShardLoader[T]):
     r"""Implement a file-based shard loader.
 
     Example usage:
@@ -38,5 +38,5 @@ class FileShardLoader(BaseShardLoader[Any]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def load(self, uri: str) -> FileShard:
+    def load(self, uri: str) -> FileShard[T]:
         return FileShard.from_uri(uri)

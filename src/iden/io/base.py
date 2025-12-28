@@ -268,7 +268,7 @@ class BaseFileSaver(BaseSaver[T]):
         """
 
 
-def is_loader_config(config: dict) -> bool:
+def is_loader_config(config: dict[Any, Any]) -> bool:
     r"""Indicate if the input configuration is a configuration for a
     ``BaseLoader``.
 
@@ -297,7 +297,7 @@ def is_loader_config(config: dict) -> bool:
     return is_object_config(config, BaseLoader)
 
 
-def is_saver_config(config: dict) -> bool:
+def is_saver_config(config: dict[Any, Any]) -> bool:
     r"""Indicate if the input configuration is a configuration for a
     ``BaseSaver``.
 
@@ -326,7 +326,7 @@ def is_saver_config(config: dict) -> bool:
     return is_object_config(config, BaseSaver)
 
 
-def setup_loader(loader: BaseLoader[T] | dict) -> BaseLoader[T]:
+def setup_loader(loader: BaseLoader[T] | dict[Any, Any]) -> BaseLoader[T]:
     r"""Set up a data loader.
 
     The data loader is instantiated from its configuration by using the
@@ -357,7 +357,7 @@ def setup_loader(loader: BaseLoader[T] | dict) -> BaseLoader[T]:
     return loader
 
 
-def setup_saver(saver: BaseSaver[T] | dict) -> BaseSaver[T]:
+def setup_saver(saver: BaseSaver[T] | dict[Any, Any]) -> BaseSaver[T]:
     r"""Set up a data saver.
 
     The data saver is instantiated from its configuration by using the

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["ShardTupleGenerator"]
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils import repr_indent, repr_mapping
 
@@ -72,7 +72,7 @@ class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard[T], ...]]):
     """
 
     def __init__(
-        self, shard: BaseShardGenerator[T] | dict, num_shards: int, path_uri: Path
+        self, shard: BaseShardGenerator[T] | dict[Any, Any], num_shards: int, path_uri: Path
     ) -> None:
         self._shard = setup_shard_generator(shard)
         self._num_shards = num_shards
