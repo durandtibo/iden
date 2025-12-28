@@ -12,7 +12,7 @@ from feu.version import (
     fetch_versions,
 )
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def fetch_package_versions() -> dict[str, list[str]]:
