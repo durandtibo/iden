@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["human_time", "str_kwargs"]
 
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -41,7 +41,7 @@ def human_time(seconds: float) -> str:
     return str(datetime.timedelta(seconds=seconds))
 
 
-def str_kwargs(mapping: Mapping) -> str:
+def str_kwargs(mapping: Mapping[Any, Any]) -> str:
     r"""Return a string of the input mapping.
 
     This function is designed to be used in ``__repr__`` and

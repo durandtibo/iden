@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["PickleShard", "create_pickle_shard"]
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
@@ -17,10 +17,13 @@ from iden.shard.file import FileShard
 if TYPE_CHECKING:
     from pathlib import Path
 
-logger = logging.getLogger(__name__)
+
+T = TypeVar("T")
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-class PickleShard(FileShard[Any]):
+class PickleShard(FileShard[T]):
     r"""Implement a pickle shard.
 
     The data are stored in a pickle file.
@@ -52,7 +55,7 @@ class PickleShard(FileShard[Any]):
         super().__init__(uri, path, loader=PickleLoader())
 
     @classmethod
-    def generate_uri_config(cls, path: Path) -> dict:
+    def generate_uri_config(cls, path: Path) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 
@@ -86,7 +89,7 @@ class PickleShard(FileShard[Any]):
         }
 
 
-def create_pickle_shard(data: Any, uri: str, path: Path | None = None) -> PickleShard:
+def create_pickle_shard(data: T, uri: str, path: Path | None = None) -> PickleShard[T]:
     r"""Create a ``PickleShard`` from data.
 
     Note:

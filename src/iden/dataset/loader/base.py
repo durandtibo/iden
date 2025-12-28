@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 T = TypeVar("T")
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class BaseDatasetLoader(ABC, Generic[T], metaclass=AbstractFactory):

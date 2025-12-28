@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from collections.abc import Generator
 
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def sync_perf_counter() -> float:
@@ -54,7 +54,7 @@ def sync_perf_counter() -> float:
 
 
 @contextmanager
-def timeblock(message: str = "Total time: {time}") -> Generator[None]:
+def timeblock(message: str = "Total time: {time}") -> Generator[None, None, None]:
     r"""Implement a context manager to measure the execution time of a
     block of code.
 

@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     else:
         from typing_extensions import Self
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class ShardEqualityComparator(BaseEqualityComparator[BaseShard]):  # noqa: PLW1641

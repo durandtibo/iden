@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 
 T = TypeVar("T")
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
@@ -198,7 +198,7 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
         return cls(uri=uri, shards=shards)
 
     @classmethod
-    def generate_uri_config(cls, shards: Iterable[BaseShard[T]]) -> dict:
+    def generate_uri_config(cls, shards: Iterable[BaseShard[T]]) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["TorchShard", "create_torch_shard"]
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 from unittest.mock import Mock
 
 from coola.utils import is_torch_available
@@ -24,10 +24,12 @@ else:  # pragma: no cover
 if TYPE_CHECKING:
     from pathlib import Path
 
-logger = logging.getLogger(__name__)
+T = TypeVar("T")
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-class TorchShard(FileShard[Any]):
+class TorchShard(FileShard[T]):
     r"""Implement a PyTorch shard for ``torch.Tensor``s.
 
     The data are stored in a PyTorch file.
@@ -62,7 +64,7 @@ class TorchShard(FileShard[Any]):
         super().__init__(uri, path, loader=TorchLoader())
 
     @classmethod
-    def generate_uri_config(cls, path: Path) -> dict:
+    def generate_uri_config(cls, path: Path) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 
@@ -95,7 +97,7 @@ class TorchShard(FileShard[Any]):
         }
 
 
-def create_torch_shard(data: Any, uri: str, path: Path | None = None) -> TorchShard:
+def create_torch_shard(data: T, uri: str, path: Path | None = None) -> TorchShard[T]:
     r"""Create a ``TorchShard`` from data.
 
     Note:

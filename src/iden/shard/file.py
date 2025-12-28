@@ -17,6 +17,7 @@ from iden.shard.base import BaseShard
 if TYPE_CHECKING:
     from pathlib import Path
 
+S = TypeVar("S", bound="BaseShard")
 T = TypeVar("T")
 
 
@@ -50,7 +51,7 @@ class FileShard(BaseShard[T]):
     """
 
     def __init__(
-        self, uri: str, path: Path | str, loader: BaseLoader[T] | dict | None = None
+        self, uri: str, path: Path | str, loader: BaseLoader[T] | dict[Any, Any] | None = None
     ) -> None:
         self._uri = uri
         self._path = sanitize_path(path)
@@ -95,7 +96,7 @@ class FileShard(BaseShard[T]):
         return self._is_cached
 
     @classmethod
-    def from_uri(cls, uri: str) -> FileShard:
+    def from_uri(cls, uri: str) -> S:
         r"""Instantiate a shard from its URI.
 
         Args:
@@ -124,7 +125,7 @@ class FileShard(BaseShard[T]):
         return cls(uri=uri, **config[KWARGS])
 
     @classmethod
-    def generate_uri_config(cls, path: Path) -> dict:
+    def generate_uri_config(cls, path: Path) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 

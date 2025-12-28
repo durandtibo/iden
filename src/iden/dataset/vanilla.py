@@ -21,7 +21,7 @@ from iden.shard import ShardDict
 if TYPE_CHECKING:
     from iden.shard import BaseShard, ShardTuple
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 T = TypeVar("T")
 

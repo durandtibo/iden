@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["JoblibShard", "create_joblib_shard"]
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
@@ -17,10 +17,12 @@ from iden.shard.file import FileShard
 if TYPE_CHECKING:
     from pathlib import Path
 
-logger = logging.getLogger(__name__)
+T = TypeVar("T")
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-class JoblibShard(FileShard[Any]):
+class JoblibShard(FileShard[T]):
     r"""Implement a joblib shard.
 
     The data are stored in a joblib file.
@@ -56,7 +58,7 @@ class JoblibShard(FileShard[Any]):
         super().__init__(uri, path, loader=JoblibLoader())
 
     @classmethod
-    def generate_uri_config(cls, path: Path) -> dict:
+    def generate_uri_config(cls, path: Path) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the shard
         from its URI.
 
@@ -89,7 +91,7 @@ class JoblibShard(FileShard[Any]):
         }
 
 
-def create_joblib_shard(data: Any, uri: str, path: Path | None = None) -> JoblibShard:
+def create_joblib_shard(data: T, uri: str, path: Path | None = None) -> JoblibShard[T]:
     r"""Create a ``JoblibShard`` from data.
 
     Note:

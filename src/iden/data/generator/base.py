@@ -6,14 +6,14 @@ __all__ = ["BaseDataGenerator", "is_data_generator_config", "setup_data_generato
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
 
 T = TypeVar("T")
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class BaseDataGenerator(ABC, Generic[T], metaclass=AbstractFactory):
@@ -52,7 +52,7 @@ class BaseDataGenerator(ABC, Generic[T], metaclass=AbstractFactory):
         """
 
 
-def is_data_generator_config(config: dict) -> bool:
+def is_data_generator_config(config: dict[Any, Any]) -> bool:
     r"""Indicate if the input configuration is a configuration for a
     ``BaseDataGenerator``.
 
@@ -81,7 +81,9 @@ def is_data_generator_config(config: dict) -> bool:
     return is_object_config(config, BaseDataGenerator)
 
 
-def setup_data_generator(data_generator: BaseDataGenerator | dict) -> BaseDataGenerator:
+def setup_data_generator(
+    data_generator: BaseDataGenerator[T] | dict[Any, Any],
+) -> BaseDataGenerator[T]:
     r"""Set up a data generator.
 
     The data generator is instantiated from its configuration by using the
