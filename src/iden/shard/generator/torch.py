@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["TorchShardGenerator"]
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils.imports import check_torch
 
@@ -55,7 +55,9 @@ class TorchShardGenerator(BaseFileShardGenerator[T]):
     ```
     """
 
-    def __init__(self, data: BaseDataGenerator[T] | dict, path_uri: Path, path_shard: Path) -> None:
+    def __init__(
+        self, data: BaseDataGenerator[T] | dict[Any, Any], path_uri: Path, path_shard: Path
+    ) -> None:
         check_torch()
         super().__init__(data=data, path_uri=path_uri, path_shard=path_shard)
 

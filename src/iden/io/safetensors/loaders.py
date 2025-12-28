@@ -17,14 +17,14 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-if is_safetensors_available() and is_numpy_available():
+if TYPE_CHECKING or (is_safetensors_available() and is_numpy_available()):
     import numpy as np
     from safetensors import numpy as sn
 else:  # pragma: no cover
     np = Mock()
     sn = Mock()
 
-if is_safetensors_available() and is_torch_available():
+if TYPE_CHECKING or (is_safetensors_available() and is_torch_available()):
     import torch
     from safetensors import torch as st
 else:  # pragma: no cover
@@ -60,7 +60,7 @@ class TorchSafetensorsLoader(BaseLoader[dict[str, torch.Tensor]]):
     Link: https://huggingface.co/docs/safetensors/en/index
     """
 
-    def __init__(self, device: str | dict = "cpu") -> None:
+    def __init__(self, device: str | dict[Any, Any] = "cpu") -> None:
         check_safetensors()
         check_torch()
         self._device = device

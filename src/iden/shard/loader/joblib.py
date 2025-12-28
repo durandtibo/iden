@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["JoblibShardLoader"]
 
-from typing import Any, TypeVar
+from typing import TypeVar
 
 from iden.shard.joblib import JoblibShard
 from iden.shard.loader.base import BaseShardLoader
@@ -12,7 +12,7 @@ from iden.shard.loader.base import BaseShardLoader
 T = TypeVar("T")
 
 
-class JoblibShardLoader(BaseShardLoader[Any]):
+class JoblibShardLoader(BaseShardLoader[T]):
     r"""Implement a joblib shard loader.
 
     Example usage:
@@ -38,5 +38,5 @@ class JoblibShardLoader(BaseShardLoader[Any]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def load(self, uri: str) -> JoblibShard:
+    def load(self, uri: str) -> JoblibShard[T]:
         return JoblibShard.from_uri(uri)

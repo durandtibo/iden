@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["ShardDictGenerator"]
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 
@@ -14,8 +14,10 @@ from iden.shard.generator.base import BaseShardGenerator, setup_shard_generator
 if TYPE_CHECKING:
     from pathlib import Path
 
+T = TypeVar("T")
 
-class ShardDictGenerator(BaseShardGenerator[dict[str, BaseShard]]):
+
+class ShardDictGenerator(BaseShardGenerator[dict[str, BaseShard[T]]]):
     r"""Implement a ``ShardDict`` generator.
 
     Args:
@@ -64,7 +66,9 @@ class ShardDictGenerator(BaseShardGenerator[dict[str, BaseShard]]):
     ```
     """
 
-    def __init__(self, shards: dict[str, BaseShardGenerator | dict], path_uri: Path) -> None:
+    def __init__(
+        self, shards: dict[str, BaseShardGenerator[T] | dict[Any, Any]], path_uri: Path
+    ) -> None:
         self._shards = {key: setup_shard_generator(shard) for key, shard in shards.items()}
         self._path_uri = path_uri
 
@@ -90,6 +94,6 @@ class ShardDictGenerator(BaseShardGenerator[dict[str, BaseShard]]):
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
-    def generate(self, shard_id: str) -> ShardDict:
+    def generate(self, shard_id: str) -> ShardDict[T]:
         shards = {key: shard.generate(str(key)) for key, shard in self._shards.items()}
         return create_shard_dict(uri=self._path_uri.joinpath(shard_id).as_uri(), shards=shards)

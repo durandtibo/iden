@@ -20,7 +20,7 @@ else:  # pragma: no cover
 T = TypeVar("T")
 
 
-class YamlLoader(BaseLoader[Any]):
+class YamlLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a YAML file.
 
     Example usage:
@@ -50,12 +50,12 @@ class YamlLoader(BaseLoader[Any]):
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
         return isinstance(other, self.__class__)
 
-    def load(self, path: Path) -> Any:
+    def load(self, path: Path) -> T:
         with Path.open(path, mode="rb") as file:
             return yaml.safe_load(file)
 
 
-class YamlSaver(BaseFileSaver[Any]):
+class YamlSaver(BaseFileSaver[T]):
     r"""Implement a file saver to save data with a YAML file.
 
     Example usage:
@@ -85,7 +85,7 @@ class YamlSaver(BaseFileSaver[Any]):
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
         return isinstance(other, self.__class__)
 
-    def _save_file(self, to_save: Any, path: Path) -> None:
+    def _save_file(self, to_save: T, path: Path) -> None:
         with Path.open(path, mode="w") as file:
             yaml.dump(to_save, file, Dumper=yaml.Dumper)
 
@@ -155,7 +155,7 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     YamlSaver().save(to_save, path, exist_ok=exist_ok)
 
 
-def get_loader_mapping() -> dict[str, BaseLoader]:
+def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     r"""Get a default mapping between the file extensions and loaders.
 
     Returns:

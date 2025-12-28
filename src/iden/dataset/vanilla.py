@@ -105,7 +105,7 @@ class VanillaDataset(BaseDataset[T]):
     """
 
     def __init__(
-        self, uri: str, shards: ShardDict[ShardTuple[BaseShard[T]]], assets: ShardDict
+        self, uri: str, shards: ShardDict[ShardTuple[BaseShard[T]]], assets: ShardDict[Any]
     ) -> None:
         self._uri = str(uri)
         check_shards(shards)
@@ -145,7 +145,7 @@ class VanillaDataset(BaseDataset[T]):
             and objects_are_equal(self._assets, other._assets, equal_nan=equal_nan)
         )
 
-    def get_asset(self, asset_id: str) -> BaseShard:
+    def get_asset(self, asset_id: str) -> BaseShard[Any]:
         if asset_id not in self._assets:
             msg = f"asset '{asset_id}' does not exist"
             raise AssetNotFoundError(msg)
@@ -176,7 +176,7 @@ class VanillaDataset(BaseDataset[T]):
         return self._uri
 
     @classmethod
-    def from_uri(cls, uri: str) -> VanillaDataset:
+    def from_uri(cls, uri: str) -> VanillaDataset[T]:
         r"""Instantiate a shard from its URI.
 
         Args:
@@ -264,8 +264,8 @@ class VanillaDataset(BaseDataset[T]):
     def generate_uri_config(
         cls,
         shards: ShardDict[ShardTuple[BaseShard[T]]],
-        assets: ShardDict,
-    ) -> dict:
+        assets: ShardDict[Any],
+    ) -> dict[str, Any]:
         r"""Generate the minimal config that is used to load the dataset
         from its URI.
 
@@ -335,9 +335,9 @@ class VanillaDataset(BaseDataset[T]):
 
 def create_vanilla_dataset(
     shards: ShardDict[ShardTuple[BaseShard[T]]],
-    assets: ShardDict,
+    assets: ShardDict[Any],
     uri: str,
-) -> VanillaDataset:
+) -> VanillaDataset[T]:
     r"""Create a ``VanillaDataset`` from its shards.
 
     Note:
@@ -429,7 +429,7 @@ def create_vanilla_dataset(
     return VanillaDataset(uri=uri, shards=shards, assets=assets)
 
 
-def check_shards(shards: BaseShard) -> None:
+def check_shards(shards: BaseShard[Any]) -> None:
     r"""Check if the shards have a valid configuration.
 
     The shards must be sorted by ascending order of URIs.

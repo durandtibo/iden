@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["TorchLoader", "TorchSaver", "get_loader_mapping", "load_torch", "save_torch"]
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 from unittest.mock import Mock
 
 from coola import objects_are_equal
@@ -21,8 +21,10 @@ else:  # pragma: no cover
 if TYPE_CHECKING:
     from pathlib import Path
 
+T = TypeVar("T")
 
-class TorchLoader(BaseLoader[Any]):
+
+class TorchLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a PyTorch file.
 
     Args:
@@ -58,11 +60,11 @@ class TorchLoader(BaseLoader[Any]):
             return False
         return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 
-    def load(self, path: Path) -> Any:
+    def load(self, path: Path) -> T:
         return torch.load(path, **self._kwargs)
 
 
-class TorchSaver(BaseFileSaver[Any]):
+class TorchSaver(BaseFileSaver[T]):
     r"""Implement a file saver to save data with a PyTorch file.
 
     Args:
@@ -98,7 +100,7 @@ class TorchSaver(BaseFileSaver[Any]):
             return False
         return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 
-    def _save_file(self, to_save: Any, path: Path) -> None:
+    def _save_file(self, to_save: T, path: Path) -> None:
         torch.save(to_save, path, **self._kwargs)
 
 
@@ -169,7 +171,7 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: An
     TorchSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
 
-def get_loader_mapping() -> dict[str, BaseLoader]:
+def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     r"""Get a default mapping between the file extensions and loaders.
 
     Returns:

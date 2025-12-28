@@ -176,7 +176,7 @@ def save_cloudpickle(
     CloudpickleSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
 
-def get_loader_mapping() -> dict[str, BaseLoader]:
+def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     r"""Get a default mapping between the file extensions and loaders.
 
     Returns:

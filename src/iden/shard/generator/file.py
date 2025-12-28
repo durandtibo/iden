@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["BaseFileShardGenerator"]
 
 from abc import abstractmethod
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 
@@ -15,7 +15,7 @@ from iden.shard.generator.base import BaseShardGenerator
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from iden.shard import BaseShard, JsonShard
+    from iden.shard import BaseShard
 
 T = TypeVar("T")
 
@@ -56,7 +56,9 @@ class BaseFileShardGenerator(BaseShardGenerator[T]):
     ```
     """
 
-    def __init__(self, path_uri: Path, path_shard: Path, data: BaseDataGenerator[T] | dict) -> None:
+    def __init__(
+        self, path_uri: Path, path_shard: Path, data: BaseDataGenerator[T] | dict[Any, Any]
+    ) -> None:
         self._data = setup_data_generator(data)
         self._path_uri = path_uri
         self._path_shard = path_shard
@@ -82,7 +84,7 @@ class BaseFileShardGenerator(BaseShardGenerator[T]):
         return self._generate(data=data, shard_id=shard_id)
 
     @abstractmethod
-    def _generate(self, data: T, shard_id: str) -> JsonShard[T]:
+    def _generate(self, data: T, shard_id: str) -> BaseShard[T]:
         r"""Generate a shard based on the data and shard ID.
 
         Args:

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 __all__ = ["AutoFileLoader"]
 
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, TypeVar
 
 from coola.utils import str_indent, str_mapping
 
@@ -15,8 +15,10 @@ from iden.io.utils import get_loader_mapping
 if TYPE_CHECKING:
     from pathlib import Path
 
+T = TypeVar("T")
 
-class AutoFileLoader(BaseLoader[Any]):
+
+class AutoFileLoader(BaseLoader[T]):
     r"""Implement a data loader to load data based on the file extension.
 
     Example usage:
@@ -38,7 +40,7 @@ class AutoFileLoader(BaseLoader[Any]):
     ```
     """
 
-    registry: ClassVar[dict[str, BaseLoader]] = {}
+    registry: ClassVar[dict[str, BaseLoader[T]]] = {}
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}(\n  {str_indent(str_mapping(self.registry))}\n)"
@@ -46,13 +48,13 @@ class AutoFileLoader(BaseLoader[Any]):
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
         return isinstance(other, self.__class__)
 
-    def load(self, path: Path) -> Any:
+    def load(self, path: Path) -> T:
         extension = "".join(path.suffixes)[1:]
         loader = self.find_loader(extension)
         return loader.load(path)
 
     @classmethod
-    def add_loader(cls, extension: str, loader: BaseLoader, exist_ok: bool = False) -> None:
+    def add_loader(cls, extension: str, loader: BaseLoader[T], exist_ok: bool = False) -> None:
         r"""Add a loader for a given file extension.
 
         Args:
@@ -109,7 +111,7 @@ class AutoFileLoader(BaseLoader[Any]):
         return extension in cls.registry
 
     @classmethod
-    def find_loader(cls, extension: str) -> BaseLoader:
+    def find_loader(cls, extension: str) -> BaseLoader[T]:
         r"""Find the loader associated to the file extension.
 
         Args:

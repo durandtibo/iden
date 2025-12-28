@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["JsonShardLoader"]
 
-from typing import Any, TypeVar
+from typing import TypeVar
 
 from iden.shard.json import JsonShard
 from iden.shard.loader.base import BaseShardLoader
@@ -12,7 +12,7 @@ from iden.shard.loader.base import BaseShardLoader
 T = TypeVar("T")
 
 
-class JsonShardLoader(BaseShardLoader[Any]):
+class JsonShardLoader(BaseShardLoader[T]):
     r"""Implement a JSON shard loader.
 
     Example usage:
@@ -38,5 +38,5 @@ class JsonShardLoader(BaseShardLoader[Any]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
-    def load(self, uri: str) -> JsonShard:
+    def load(self, uri: str) -> JsonShard[T]:
         return JsonShard.from_uri(uri)

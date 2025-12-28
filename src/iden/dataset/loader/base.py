@@ -6,7 +6,7 @@ __all__ = ["BaseDatasetLoader", "is_dataset_loader_config", "setup_dataset_loade
 
 import logging
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
@@ -117,7 +117,7 @@ class BaseDatasetLoader(ABC, Generic[T], metaclass=AbstractFactory):
         """
 
 
-def is_dataset_loader_config(config: dict) -> bool:
+def is_dataset_loader_config(config: dict[Any, Any]) -> bool:
     r"""Indicate if the input configuration is a configuration for a
     ``BaseDatasetLoader``.
 
@@ -146,7 +146,9 @@ def is_dataset_loader_config(config: dict) -> bool:
     return is_object_config(config, BaseDatasetLoader)
 
 
-def setup_dataset_loader(dataset_loader: BaseDatasetLoader | dict) -> BaseDatasetLoader:
+def setup_dataset_loader(
+    dataset_loader: BaseDatasetLoader[T] | dict[Any, Any],
+) -> BaseDatasetLoader[T]:
     r"""Set up a dataset loader.
 
     The dataset loader is instantiated from its configuration by using the
