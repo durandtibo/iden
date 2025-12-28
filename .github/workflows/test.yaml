@@ -1,3 +1,7 @@
+# Comprehensive test suite workflow.
+# Runs unit and integration tests across multiple Python versions and operating systems.
+# Tests both with all dependencies and with minimal dependencies.
+
 name: Tests
 on:
   workflow_call:
@@ -7,9 +11,10 @@ permissions:
   contents: read
 
 jobs:
+  # Test with all dependencies across multiple Python versions and operating systems
   all:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 2
     strategy:
       max-parallel: 8
       fail-fast: false
@@ -26,6 +31,7 @@ jobs:
           macos-14,
           macos-15-intel,
         ]
+        # Test all supported Python versions including free-threaded builds (t suffix)
         python-version: [ '3.14', '3.14t', '3.13', '3.13t', '3.12', '3.11', '3.10' ]
 
     steps:
@@ -41,9 +47,14 @@ jobs:
         run: |
           inv unit-test --cov
 
+      - name: Run integration tests
+        run: |
+          inv integration-test --cov
+
+  # Test with minimal dependencies to ensure optional dependencies are truly optional
   min:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 2
     strategy:
       max-parallel: 8
       fail-fast: false
@@ -66,6 +77,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      # Install only required dependencies, not optional ones
       - name: Setup python environment
         uses: durandtibo/setup-venv-uv-action@v0.0.3
         with:
@@ -75,3 +87,7 @@ jobs:
       - name: Run unit tests
         run: |
           inv unit-test --cov
+
+      - name: Run integration tests
+        run: |
+          inv integration-test --cov
