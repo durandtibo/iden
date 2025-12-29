@@ -77,7 +77,7 @@ class BaseLoader(ABC, Generic[T], metaclass=AbstractFactory):  # noqa: PLW1641
 
     @abstractmethod
     def load(self, path: Path) -> T:
-        r"""Save the data into the given path.
+        r"""Load the data from the given path.
 
         Args:
             path: The path with the data to load.
