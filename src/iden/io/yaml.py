@@ -6,7 +6,6 @@ __all__ = ["YamlLoader", "YamlSaver", "get_loader_mapping", "load_yaml", "save_y
 
 from pathlib import Path
 from typing import Any, TypeVar
-from unittest.mock import Mock
 
 from iden.io.base import BaseFileSaver, BaseLoader
 from iden.utils.imports import check_yaml, is_yaml_available
@@ -14,7 +13,7 @@ from iden.utils.imports import check_yaml, is_yaml_available
 if is_yaml_available():
     import yaml
 else:  # pragma: no cover
-    yaml = Mock()
+    from iden.utils.fallback.yaml import yaml
 
 
 T = TypeVar("T")
