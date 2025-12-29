@@ -6,7 +6,7 @@ from __future__ import annotations
 __all__ = ["IOEqualityComparator"]
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from coola.equality.comparators import BaseEqualityComparator
 from coola.equality.handlers import EqualNanHandler, SameObjectHandler, SameTypeHandler
@@ -15,16 +15,11 @@ from coola.equality.testers import EqualityTester
 from iden.io.base import BaseLoader, BaseSaver
 
 if TYPE_CHECKING:
-    import sys
-
     from coola.equality import EqualityConfig
 
-    if sys.version_info >= (3, 11):
-        from typing import Self
-    else:
-        from typing_extensions import Self
-
 logger: logging.Logger = logging.getLogger(__name__)
+
+S = TypeVar("S", bound="IOEqualityComparator")
 
 
 class IOEqualityComparator(BaseEqualityComparator[BaseLoader[Any]]):  # noqa: PLW1641
@@ -37,7 +32,7 @@ class IOEqualityComparator(BaseEqualityComparator[BaseLoader[Any]]):  # noqa: PL
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__)
 
-    def clone(self) -> Self:
+    def clone(self) -> S:
         return self.__class__()
 
     def equal(self, actual: BaseLoader[Any], expected: Any, config: EqualityConfig) -> bool:
