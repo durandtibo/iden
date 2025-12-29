@@ -16,7 +16,9 @@ from iden.utils.format import human_time
 if is_torch_available():
     import torch
 else:  # pragma: no cover
-    from coola.utils.fallback.torch import torch
+    from coola.utils.fallback.torch import fake_function, torch
+
+    torch.cuda.is_available = fake_function
 
 
 if TYPE_CHECKING:
