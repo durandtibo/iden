@@ -49,7 +49,7 @@ class NumpySafetensorsSaver(BaseFileSaver[dict[str, np.ndarray]]):
         return f"{self.__class__.__qualname__}()"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def _save_file(self, to_save: dict[str, np.ndarray], path: Path) -> None:
         sn.save_file(to_save, path)
@@ -72,7 +72,7 @@ class TorchSafetensorsSaver(BaseFileSaver[dict[str, torch.Tensor]]):
         return f"{self.__class__.__qualname__}()"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def _save_file(self, to_save: dict[str, torch.Tensor], path: Path) -> None:
         st.save_file(to_save, path)

@@ -50,6 +50,14 @@ def test_numpy_saver_equal_false() -> None:
 
 @safetensors_available
 @numpy_available
+def test_numpy_saver_equal_false_child() -> None:
+    class Child(NumpySaver): ...
+
+    assert not NumpySaver().equal(Child())
+
+
+@safetensors_available
+@numpy_available
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_numpy_saver_equal_nan(equal_nan: bool) -> None:
     assert NumpySaver().equal(NumpySaver(), equal_nan=equal_nan)
@@ -132,6 +140,14 @@ def test_torch_saver_equal_true() -> None:
 @torch_available
 def test_torch_saver_equal_false() -> None:
     assert not TorchSaver().equal(42.0)
+
+
+@safetensors_available
+@torch_available
+def test_torch_saver_equal_false_child() -> None:
+    class Child(TorchSaver): ...
+
+    assert not TorchSaver().equal(Child())
 
 
 @safetensors_available

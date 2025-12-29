@@ -44,7 +44,7 @@ class AutoFileLoader(BaseLoader[T]):
         return f"{self.__class__.__qualname__}(\n  {str_indent(str_mapping(self.registry))}\n)"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def load(self, path: Path) -> T:
         extension = "".join(path.suffixes)[1:]

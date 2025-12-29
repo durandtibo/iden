@@ -43,6 +43,12 @@ def test_text_loader_equal_false() -> None:
     assert not TextLoader().equal(TextSaver())
 
 
+def test_text_loader_equal_false_child() -> None:
+    class Child(TextLoader): ...
+
+    assert not TextLoader().equal(Child())
+
+
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_text_loader_equal_nan(equal_nan: bool) -> None:
     assert TextLoader().equal(TextLoader(), equal_nan=equal_nan)
@@ -75,6 +81,12 @@ def test_text_saver_equal_true() -> None:
 
 def test_text_saver_equal_false() -> None:
     assert not TextSaver().equal(TextLoader())
+
+
+def test_text_saver_equal_false_child() -> None:
+    class Child(TextSaver): ...
+
+    assert not TextSaver().equal(Child())
 
 
 @pytest.mark.parametrize("equal_nan", [True, False])

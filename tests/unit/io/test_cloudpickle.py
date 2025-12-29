@@ -68,6 +68,13 @@ def test_cloudpickle_loader_equal_false_different_type() -> None:
 
 
 @cloudpickle_available
+def test_cloudpickle_loader_equal_false_different_type_child() -> None:
+    class Child(CloudpickleLoader): ...
+
+    assert not CloudpickleLoader().equal(Child())
+
+
+@cloudpickle_available
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_cloudpickle_loader_equal_nan(equal_nan: bool) -> None:
     assert CloudpickleLoader().equal(CloudpickleLoader(), equal_nan=equal_nan)
@@ -137,8 +144,15 @@ def test_cloudpickle_saver_equal_false_different_kwargs() -> None:
 
 
 @cloudpickle_available
-def test_cloudpickle_saver_equal_false_different_type() -> None:
+def test_cloudpickle_saver_equal_false_different_type_child() -> None:
     assert not CloudpickleSaver().equal(CloudpickleLoader())
+
+
+@cloudpickle_available
+def test_cloudpickle_saver_equal_false_different_type() -> None:
+    class Child(CloudpickleSaver): ...
+
+    assert not CloudpickleSaver().equal(Child())
 
 
 @cloudpickle_available

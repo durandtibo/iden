@@ -56,6 +56,13 @@ def test_joblib_loader_equal_false_different_type() -> None:
 
 
 @joblib_available
+def test_joblib_loader_equal_false_different_type_child() -> None:
+    class Child(JoblibLoader): ...
+
+    assert not JoblibLoader().equal(Child())
+
+
+@joblib_available
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_joblib_loader_equal_nan(equal_nan: bool) -> None:
     assert JoblibLoader().equal(JoblibLoader(), equal_nan=equal_nan)
@@ -119,6 +126,13 @@ def test_joblib_saver_equal_false_different_kwargs() -> None:
 @joblib_available
 def test_joblib_saver_equal_false_different_type() -> None:
     assert not JoblibSaver().equal(JoblibLoader())
+
+
+@joblib_available
+def test_joblib_saver_equal_false_different_type_child() -> None:
+    class Child(JoblibSaver): ...
+
+    assert not JoblibSaver().equal(Child())
 
 
 @joblib_available
