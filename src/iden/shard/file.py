@@ -11,7 +11,12 @@ from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
-from iden.io import AutoFileLoader, BaseLoader, load_json, setup_loader
+from iden.io import (
+    BaseLoader,
+    get_default_loader_registry,
+    load_json,
+    setup_loader,
+)
 from iden.shard.base import BaseShard
 
 if TYPE_CHECKING:
@@ -53,7 +58,7 @@ class FileShard(BaseShard[T]):
     ) -> None:
         self._uri = uri
         self._path = sanitize_path(path)
-        self._loader = setup_loader(loader or AutoFileLoader())
+        self._loader = setup_loader(loader or get_default_loader_registry())
 
         self._is_cached = False
         self._data = None

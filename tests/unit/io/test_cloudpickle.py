@@ -12,7 +12,6 @@ from iden.io import (
     save_cloudpickle,
     save_text,
 )
-from iden.io.cloudpickle import get_loader_mapping
 from iden.testing import cloudpickle_available
 from iden.utils.imports import is_cloudpickle_available
 
@@ -258,13 +257,3 @@ def test_save_cloudpickle_no_cloudpickle(tmp_path: Path) -> None:
         pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, tmp_path.joinpath("data.pkl"))
-
-
-########################################
-#     Tests for get_loader_mapping     #
-########################################
-
-
-@cloudpickle_available
-def test_get_loader_mapping() -> None:
-    assert get_loader_mapping() == {}

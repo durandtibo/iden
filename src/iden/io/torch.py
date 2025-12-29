@@ -2,7 +2,7 @@ r"""Contain torch-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["TorchLoader", "TorchSaver", "get_loader_mapping", "load_torch", "save_torch"]
+__all__ = ["TorchLoader", "TorchSaver", "load_torch", "save_torch"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
@@ -160,22 +160,3 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: An
         ```
     """
     TorchSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
-
-
-def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
-    r"""Get a default mapping between the file extensions and loaders.
-
-    Returns:
-        The mapping between the file extensions and loaders.
-
-    Example:
-        ```pycon
-        >>> from iden.io.torch import get_loader_mapping
-        >>> get_loader_mapping()
-        {'pt': TorchLoader()}
-
-        ```
-    """
-    if not is_torch_available():
-        return {}
-    return {"pt": TorchLoader()}

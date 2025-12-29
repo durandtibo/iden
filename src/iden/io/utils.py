@@ -2,15 +2,13 @@ r"""Contain I/O utility functions."""
 
 from __future__ import annotations
 
-__all__ = ["generate_unique_tmp_path", "get_loader_mapping"]
+__all__ = ["generate_unique_tmp_path"]
 
 import uuid
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pathlib import Path
-
-    from iden.io import BaseLoader
 
 
 def generate_unique_tmp_path(path: Path) -> Path:
@@ -45,31 +43,3 @@ def generate_unique_tmp_path(path: Path) -> Path:
     else:
         stem = path.name
     return path.with_name(f"{stem}-{h}{extension}")
-
-
-def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
-    r"""Get a default mapping between the file extensions and loaders.
-
-    Returns:
-        The mapping between the file extensions and loaders.
-
-    Example:
-        ```pycon
-        >>> from iden.io.utils import get_loader_mapping
-        >>> get_loader_mapping()
-        {...'json': JsonLoader(), 'pkl': PickleLoader(), 'pickle': PickleLoader(), ...}
-
-        ```
-    """
-    # Local import to avoid cyclic dependencies
-    from iden import io  # noqa: PLC0415
-
-    return (
-        io.cloudpickle.get_loader_mapping()
-        | io.joblib.get_loader_mapping()
-        | io.json.get_loader_mapping()
-        | io.pickle.get_loader_mapping()
-        | io.text.get_loader_mapping()
-        | io.torch.get_loader_mapping()
-        | io.yaml.get_loader_mapping()
-    )

@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 import pytest
 
 from iden.io import JsonLoader, JsonSaver, load_json, save_json
-from iden.io.json import get_loader_mapping
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -150,12 +149,3 @@ def test_save_json_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
-
-
-########################################
-#     Tests for get_loader_mapping     #
-########################################
-
-
-def test_get_loader_mapping() -> None:
-    assert get_loader_mapping() == {"json": JsonLoader()}

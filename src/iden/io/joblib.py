@@ -5,7 +5,6 @@ from __future__ import annotations
 __all__ = [
     "JoblibLoader",
     "JoblibSaver",
-    "get_loader_mapping",
     "load_joblib",
     "save_joblib",
 ]
@@ -161,22 +160,3 @@ def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: A
         ```
     """
     JoblibSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
-
-
-def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
-    r"""Get a default mapping between the file extensions and loaders.
-
-    Returns:
-        The mapping between the file extensions and loaders.
-
-    Example:
-        ```pycon
-        >>> from iden.io.joblib import get_loader_mapping
-        >>> get_loader_mapping()
-        {'joblib': JoblibLoader()}
-
-        ```
-    """
-    if not is_joblib_available():
-        return {}
-    return {"joblib": JoblibLoader()}

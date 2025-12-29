@@ -9,7 +9,6 @@ from coola.testing import torch_available
 from coola.utils import is_torch_available
 
 from iden.io import TorchLoader, TorchSaver, load_torch, save_torch
-from iden.io.torch import get_loader_mapping
 from tests.conftest import torch_greater_equal_1_13
 
 if is_torch_available():
@@ -290,18 +289,3 @@ def test_save_torch_no_torch(tmp_path: Path) -> None:
             {"key1": [1, 2, 3], "key2": "abc"},
             tmp_path,
         )
-
-
-########################################
-#     Tests for get_loader_mapping     #
-########################################
-
-
-@torch_available
-def test_get_loader_mapping() -> None:
-    assert get_loader_mapping() == {"pt": TorchLoader()}
-
-
-def test_get_loader_mapping_no_torch() -> None:
-    with patch("iden.io.torch.is_torch_available", lambda: False):
-        assert get_loader_mapping() == {}
