@@ -51,6 +51,13 @@ def test_yaml_loader_equal_false() -> None:
 
 
 @yaml_available
+def test_yaml_loader_equal_false_child() -> None:
+    class Child(YamlLoader): ...
+
+    assert not YamlLoader().equal(Child())
+
+
+@yaml_available
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_yaml_loader_equal_nan(equal_nan: bool) -> None:
     assert YamlLoader().equal(YamlLoader(), equal_nan=equal_nan)
@@ -97,6 +104,13 @@ def test_yaml_saver_equal_true() -> None:
 @yaml_available
 def test_yaml_saver_equal_false() -> None:
     assert not YamlSaver().equal(YamlLoader())
+
+
+@yaml_available
+def test_yaml_saver_equal_false_child() -> None:
+    class Child(YamlSaver): ...
+
+    assert not YamlSaver().equal(Child())
 
 
 @yaml_available

@@ -35,7 +35,7 @@ class TextLoader(BaseLoader[str]):
         return f"{self.__class__.__qualname__}()"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def load(self, path: Path) -> str:
         with Path.open(path) as file:
@@ -69,7 +69,7 @@ class TextSaver(BaseFileSaver[str]):
         return f"{self.__class__.__qualname__}()"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def _save_file(self, to_save: str, path: Path) -> None:
         with Path.open(path, mode="w") as file:

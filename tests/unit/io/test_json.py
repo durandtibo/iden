@@ -43,6 +43,12 @@ def test_json_loader_equal_false() -> None:
     assert not JsonLoader().equal(JsonSaver())
 
 
+def test_json_loader_equal_false_child() -> None:
+    class Child(JsonLoader): ...
+
+    assert not JsonLoader().equal(Child())
+
+
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_json_loader_equal_nan(equal_nan: bool) -> None:
     assert JsonLoader().equal(JsonLoader(), equal_nan=equal_nan)
@@ -75,6 +81,12 @@ def test_json_saver_equal_true() -> None:
 
 def test_json_saver_equal_false() -> None:
     assert not JsonSaver().equal(JsonLoader())
+
+
+def test_json_saver_equal_false_child() -> None:
+    class Child(JsonSaver): ...
+
+    assert not JsonSaver().equal(Child())
 
 
 @pytest.mark.parametrize("equal_nan", [True, False])

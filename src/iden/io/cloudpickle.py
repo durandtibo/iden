@@ -52,7 +52,7 @@ class CloudpickleLoader(BaseLoader[Any]):
         return f"{self.__class__.__qualname__}()"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def load(self, path: Path) -> Any:
         with Path.open(path, mode="rb") as file:
@@ -90,7 +90,7 @@ class CloudpickleSaver(BaseFileSaver[Any]):
         return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+        if type(other) is not type(self):
             return False
         return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 

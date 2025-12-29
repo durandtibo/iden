@@ -30,7 +30,7 @@ class IOEqualityComparator(BaseEqualityComparator[BaseLoader[Any]]):  # noqa: PL
         self._handler.chain(SameTypeHandler()).chain(EqualNanHandler())
 
     def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def clone(self) -> S:
         return self.__class__()

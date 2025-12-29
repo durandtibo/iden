@@ -53,7 +53,7 @@ class TorchLoader(BaseLoader[T]):
         return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+        if type(other) is not type(self):
             return False
         return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 
@@ -91,7 +91,7 @@ class TorchSaver(BaseFileSaver[T]):
         return f"{self.__class__.__qualname__}({repr_mapping_line(self._kwargs)})"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+        if type(other) is not type(self):
             return False
         return objects_are_equal(self._kwargs, other._kwargs, equal_nan=equal_nan)
 

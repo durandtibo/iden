@@ -84,6 +84,13 @@ def test_torch_loader_equal_false_different_type() -> None:
 
 
 @torch_available
+def test_torch_loader_equal_false_different_type_child() -> None:
+    class Child(TorchLoader): ...
+
+    assert not TorchLoader().equal(Child())
+
+
+@torch_available
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_torch_loader_equal_nan(equal_nan: bool) -> None:
     assert TorchLoader().equal(TorchLoader(), equal_nan=equal_nan)
@@ -175,6 +182,13 @@ def test_torch_saver_equal_false_different_kwargs() -> None:
 @torch_available
 def test_torch_saver_equal_false_different_type() -> None:
     assert not TorchSaver().equal(TorchLoader())
+
+
+@torch_available
+def test_torch_saver_equal_false_different_type_child() -> None:
+    class Child(TorchSaver): ...
+
+    assert not TorchSaver().equal(Child())
 
 
 @torch_available

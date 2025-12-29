@@ -48,7 +48,7 @@ class NumpySafetensorsLoader(BaseLoader[dict[str, np.ndarray]]):
         return f"{self.__class__.__qualname__}()"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def load(self, path: Path) -> dict[str, np.ndarray]:
         return sn.load_file(sanitize_path(path))
@@ -70,7 +70,7 @@ class TorchSafetensorsLoader(BaseLoader[dict[str, torch.Tensor]]):
         return f"{self.__class__.__qualname__}(device={self._device})"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return isinstance(other, self.__class__)
+        return type(other) is type(self)
 
     def load(self, path: Path) -> dict[str, torch.Tensor]:
         return st.load_file(sanitize_path(path), device=self._device)

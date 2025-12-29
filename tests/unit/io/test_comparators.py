@@ -73,6 +73,12 @@ def test_io_equality_comparator__eq__false() -> None:
     assert IOEqualityComparator() != 123
 
 
+def test_io_equality_comparator__eq__false_child() -> None:
+    class ChildComparator(IOEqualityComparator): ...
+
+    assert IOEqualityComparator() != ChildComparator()
+
+
 def test_io_equality_comparator_clone() -> None:
     op = IOEqualityComparator()
     op_cloned = op.clone()

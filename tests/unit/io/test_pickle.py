@@ -49,6 +49,12 @@ def test_pickle_loader_equal_false() -> None:
     assert not PickleLoader().equal(PickleSaver())
 
 
+def test_pickle_loader_equal_false_child() -> None:
+    class Child(PickleLoader): ...
+
+    assert not PickleLoader().equal(Child())
+
+
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_pickle_loader_equal_nan(equal_nan: bool) -> None:
     assert PickleLoader().equal(PickleLoader(), equal_nan=equal_nan)
@@ -101,6 +107,12 @@ def test_pickle_saver_equal_false_different_kwargs() -> None:
 
 def test_pickle_saver_equal_false_different_type() -> None:
     assert not PickleSaver().equal(PickleLoader())
+
+
+def test_pickle_saver_equal_false_different_type_child() -> None:
+    class Child(PickleSaver): ...
+
+    assert not PickleSaver().equal(Child())
 
 
 @pytest.mark.parametrize("equal_nan", [True, False])
