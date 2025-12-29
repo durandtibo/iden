@@ -12,7 +12,6 @@ __all__ = [
 
 from pathlib import Path
 from typing import Any, TypeVar
-from unittest.mock import Mock
 
 from coola import objects_are_equal
 from coola.utils.format import repr_mapping_line
@@ -23,7 +22,7 @@ from iden.utils.imports import check_joblib, is_joblib_available
 if is_joblib_available():
     import joblib
 else:  # pragma: no cover
-    joblib = Mock()
+    from iden.utils.fallback.joblib import joblib
 
 T = TypeVar("T")
 
