@@ -1,8 +1,8 @@
-r"""Define the data loader registry for automatically load data based on
-the extension.
+r"""Define the data loader registry for automatically loading data based
+on file extension.
 
 This module provides a registry system that manages and dispatches
-loaders based on extensions.
+loaders based on file extensions.
 """
 
 from __future__ import annotations
@@ -21,27 +21,40 @@ if TYPE_CHECKING:
 
 
 class LoaderRegistry(BaseLoader[Any]):
-    """Registry that manages and dispatches loaders based on data type.
+    """Registry that manages and dispatches loaders based on file
+    extension.
+
+    This registry maps file extensions (e.g., "json", "txt") to loader instances
+    that handle loading files with those extensions. It provides automatic
+    dispatching to the appropriate loader based on a file's extension.
 
     Args:
         registry: Optional initial mapping of extensions to loaders. If provided,
             the registry is copied to prevent external mutations.
 
     Attributes:
-        _registry: Internal mapping of registered types to loaders
+        _registry: Internal mapping of registered extensions to loaders
 
     Example:
-        Basic usage with a sequence loader:
+        Basic usage with JSON and text loaders:
 
         ```pycon
-        >>> from iden.io import LoaderRegistry, JsonLoader
-        >>> registry = LoaderRegistry({"json": JsonLoader()})
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json, LoaderRegistry, JsonLoader, TextLoader
+        >>> registry = LoaderRegistry({"json": JsonLoader(), "txt": TextLoader()})
         >>> registry
         LoaderRegistry(
-          (<class 'list'>): SequenceTransformer()
+          (json): JsonLoader()
+          (txt): TextLoader()
         )
-        >>> registry.transform([1, 2, 3], str)
-        ['1', '2', '3']
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = registry.load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
         ```
     """
@@ -69,20 +82,19 @@ class LoaderRegistry(BaseLoader[Any]):
         loader: BaseLoader[Any],
         exist_ok: bool = False,
     ) -> None:
-        """Register a loader for a given data type.
+        """Register a loader for a given file extension.
 
-        This method associates a loader instance with a specific Python type.
-        When data of this type is transformed, the registered loader will be used.
-        The cache is automatically cleared after registration to ensure consistency.
+        This method associates a loader instance with a specific file extension.
+        When loading files with this extension, the registered loader will be used.
 
         Args:
-            extension: The extension to register
-            loader: The loader instance that handles this type
-            exist_ok: If False (default), raises an error if the type is already
+            extension: The file extension to register (e.g., "json", "txt")
+            loader: The loader instance that handles files with this extension
+            exist_ok: If False (default), raises an error if the extension is already
                 registered. If True, overwrites the existing registration silently.
 
         Raises:
-            RuntimeError: If the type is already registered and exist_ok is False
+            RuntimeError: If the extension is already registered and exist_ok is False
 
         Example:
             ```pycon
@@ -112,15 +124,15 @@ class LoaderRegistry(BaseLoader[Any]):
         """Register multiple loaders at once.
 
         This is a convenience method for bulk registration that internally calls
-        register() for each type-loader pair.
+        register() for each extension-loader pair.
 
         Args:
-            mapping: Dictionary mapping Python types to loader instances
-            exist_ok: If False (default), raises an error if any type is already
+            mapping: Dictionary mapping file extensions to loader instances
+            exist_ok: If False (default), raises an error if any extension is already
                 registered. If True, overwrites existing registrations silently.
 
         Raises:
-            RuntimeError: If any type is already registered and exist_ok is False
+            RuntimeError: If any extension is already registered and exist_ok is False
 
         Example:
             ```pycon
@@ -139,15 +151,13 @@ class LoaderRegistry(BaseLoader[Any]):
             self.register(ext, loader, exist_ok=exist_ok)
 
     def has_loader(self, extension: str) -> bool:
-        """Check if a loader is explicitly registered for the given
-        extension.
+        """Check if a loader is registered for the given extension.
 
         Args:
-            extension: The extension to check
+            extension: The file extension to check (e.g., "json", "txt")
 
         Returns:
-            True if a loader is explicitly registered for this extension,
-            False otherwise
+            True if a loader is registered for this extension, False otherwise
 
         Example:
             ```pycon
@@ -156,7 +166,7 @@ class LoaderRegistry(BaseLoader[Any]):
             >>> registry.register("json", JsonLoader())
             >>> registry.has_loader("json")
             True
-            >>> registry.has_loader("text")
+            >>> registry.has_loader("txt")
             False
 
             ```
@@ -164,13 +174,16 @@ class LoaderRegistry(BaseLoader[Any]):
         return extension in self._registry
 
     def find_loader(self, extension: str) -> BaseLoader[Any]:
-        """Find the appropriate loader for a given extension.
+        """Find the appropriate loader for a given file extension.
 
         Args:
-            extension: The extension to find a loader for.
+            extension: The file extension to find a loader for (e.g., "json", "txt")
 
         Returns:
-            The loader for the given file extension.
+            The loader registered for the given file extension
+
+        Raises:
+            ValueError: If no loader is registered for the extension
 
         Example:
             ```pycon
