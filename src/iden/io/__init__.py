@@ -3,7 +3,6 @@ r"""Contain data loaders and savers."""
 from __future__ import annotations
 
 __all__ = [
-    "AutoFileLoader",
     "BaseFileSaver",
     "BaseLoader",
     "BaseSaver",
@@ -45,7 +44,6 @@ __all__ = [
     "setup_saver",
 ]
 
-from iden.io.auto import AutoFileLoader, register_auto_loaders
 from iden.io.base import (
     BaseFileSaver,
     BaseLoader,
@@ -69,5 +67,3 @@ from iden.io.registry import LoaderRegistry
 from iden.io.text import TextLoader, TextSaver, load_text, save_text
 from iden.io.torch import TorchLoader, TorchSaver, load_torch, save_torch
 from iden.io.yaml import YamlLoader, YamlSaver, load_yaml, save_yaml
-
-register_auto_loaders()
