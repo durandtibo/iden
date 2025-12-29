@@ -5,7 +5,6 @@ from __future__ import annotations
 __all__ = ["NumpySafetensorsShardGenerator", "TorchSafetensorsShardGenerator"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
-from unittest.mock import Mock
 
 from coola.utils.imports import (
     check_numpy,
@@ -26,12 +25,12 @@ from iden.utils.imports import check_safetensors
 if TYPE_CHECKING or is_numpy_available():
     import numpy as np
 else:  # pragma: no cover
-    np = Mock()
+    from coola.utils.fallback.numpy import numpy as np
 
 if TYPE_CHECKING or is_torch_available():
     import torch
 else:  # pragma: no cover
-    torch = Mock()
+    from coola.utils.fallback.torch import torch
 
 if TYPE_CHECKING:
     from pathlib import Path

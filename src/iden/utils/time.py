@@ -8,7 +8,6 @@ import logging
 import time
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
-from unittest.mock import Mock
 
 from coola.utils import is_torch_available
 
@@ -17,7 +16,7 @@ from iden.utils.format import human_time
 if is_torch_available():
     import torch
 else:  # pragma: no cover
-    torch = Mock()
+    from coola.utils.fallback.torch import torch
 
 
 if TYPE_CHECKING:
