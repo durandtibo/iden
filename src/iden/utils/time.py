@@ -19,6 +19,7 @@ if is_torch_available():
 else:  # pragma: no cover
     torch = Mock()
 
+
 if TYPE_CHECKING:
     from collections.abc import Generator
 
