@@ -28,7 +28,7 @@ class FileShardLoader(BaseShardLoader[T]):
         ...     shard = loader.load(uri)
         ...     shard
         ...
-        FileShard(uri=file:///.../my_uri)
+        JsonShard(uri=file:///.../my_uri)
 
         ```
     """

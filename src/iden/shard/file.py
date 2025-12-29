@@ -114,7 +114,7 @@ class FileShard(BaseShard[T]):
             ...     shard = FileShard.from_uri(uri)
             ...     shard
             ...
-            FileShard(uri=file:///.../my_uri)
+            JsonShard(uri=file:///.../my_uri)
 
             ```
         """

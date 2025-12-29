@@ -35,9 +35,10 @@ class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
         ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
         ...     create_json_shard([1, 2, 3], uri=uri)
         ...     loader = JsonShardLoader()
-        ...     loader
+        ...     shard = loader.load(uri)
+        ...     shard
         ...
-        JsonShardLoader()
+        JsonShard(uri=file:///.../my_uri)
 
         ```
     """
