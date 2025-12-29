@@ -4,7 +4,6 @@ from __future__ import annotations
 
 __all__ = ["NumpySafetensorsShardLoader", "TorchSafetensorsShardLoader"]
 
-from unittest.mock import Mock
 
 from coola.utils import check_numpy, check_torch, is_numpy_available, is_torch_available
 
@@ -15,12 +14,12 @@ from iden.utils.imports import check_safetensors
 if is_numpy_available():
     import numpy as np
 else:  # pragma: no cover
-    np = Mock()
+    from coola.utils.fallback.numpy import numpy as np
 
 if is_torch_available():
     import torch
 else:  # pragma: no cover
-    torch = Mock()
+    from coola.utils.fallback.torch import torch
 
 
 class NumpySafetensorsShardLoader(BaseShardLoader[dict[str, np.ndarray]]):

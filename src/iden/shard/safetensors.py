@@ -11,7 +11,6 @@ __all__ = [
 
 import logging
 from typing import TYPE_CHECKING, Any
-from unittest.mock import Mock
 
 from coola.utils import is_numpy_available, is_torch_available
 from coola.utils.path import sanitize_path
@@ -25,12 +24,12 @@ from iden.shard.file import FileShard
 if TYPE_CHECKING or is_numpy_available():
     import numpy as np
 else:  # pragma: no cover
-    np = Mock()
+    from coola.utils.fallback.numpy import numpy as np
 
 if TYPE_CHECKING or is_torch_available():
     import torch
 else:  # pragma: no cover
-    torch = Mock()
+    from coola.utils.fallback.torch import torch
 
 if TYPE_CHECKING:
     from pathlib import Path

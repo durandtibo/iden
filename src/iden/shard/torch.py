@@ -6,20 +6,13 @@ __all__ = ["TorchShard", "create_torch_shard"]
 
 import logging
 from typing import TYPE_CHECKING, Any, TypeVar
-from unittest.mock import Mock
 
-from coola.utils import is_torch_available
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER
 from iden.io import JsonSaver, TorchLoader, TorchSaver
 from iden.shard.file import FileShard
-
-if is_torch_available():
-    import torch
-else:  # pragma: no cover
-    torch = Mock()
 
 if TYPE_CHECKING:
     from pathlib import Path

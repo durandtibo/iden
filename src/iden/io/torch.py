@@ -5,7 +5,6 @@ from __future__ import annotations
 __all__ = ["TorchLoader", "TorchSaver", "get_loader_mapping", "load_torch", "save_torch"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
-from unittest.mock import Mock
 
 from coola import objects_are_equal
 from coola.utils import check_torch, is_torch_available
@@ -16,7 +15,7 @@ from iden.io.base import BaseFileSaver, BaseLoader
 if is_torch_available():
     import torch
 else:  # pragma: no cover
-    torch = Mock()
+    from coola.utils.fallback.torch import torch
 
 if TYPE_CHECKING:
     from pathlib import Path
