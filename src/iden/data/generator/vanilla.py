@@ -5,7 +5,9 @@ from __future__ import annotations
 __all__ = ["DataGenerator"]
 
 import copy
-from typing import TypeVar
+from typing import Any, TypeVar
+
+from coola import objects_are_equal
 
 from iden.data.generator.base import BaseDataGenerator
 
@@ -38,6 +40,13 @@ class DataGenerator(BaseDataGenerator[T]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}(copy={self._copy})"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if type(other) is not type(self):
+            return False
+        return objects_are_equal(
+            self._data, other._data, equal_nan=equal_nan
+        ) and objects_are_equal(self._copy, other._copy, equal_nan=equal_nan)
 
     def generate(self) -> T:
         data = self._data

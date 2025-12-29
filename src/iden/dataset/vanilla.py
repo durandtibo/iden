@@ -102,9 +102,7 @@ class VanillaDataset(BaseDataset[T]):
         ```
     """
 
-    def __init__(
-        self, uri: str, shards: ShardDict[ShardTuple[BaseShard[T]]], assets: ShardDict[Any]
-    ) -> None:
+    def __init__(self, uri: str, shards: ShardDict[ShardTuple[T]], assets: ShardDict[Any]) -> None:
         self._uri = str(uri)
         check_shards(shards)
         self._shards = shards
