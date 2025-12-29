@@ -5,7 +5,6 @@ from __future__ import annotations
 __all__ = [
     "CloudpickleLoader",
     "CloudpickleSaver",
-    "get_loader_mapping",
     "load_cloudpickle",
     "save_cloudpickle",
 ]
@@ -165,20 +164,3 @@ def save_cloudpickle(
         ```
     """
     CloudpickleSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
-
-
-def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
-    r"""Get a default mapping between the file extensions and loaders.
-
-    Returns:
-        The mapping between the file extensions and loaders.
-
-    Example:
-        ```pycon
-        >>> from iden.io.cloudpickle import get_loader_mapping
-        >>> get_loader_mapping()
-        {}
-
-        ```
-    """
-    return {}
