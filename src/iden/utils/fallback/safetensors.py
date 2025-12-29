@@ -26,11 +26,11 @@ def fake_function(*args: Any, **kwargs: Any) -> NoReturn:  # noqa: ARG001
 
 
 # Create fake submodules
-numpy = ModuleType("safetensors.numpy")
+numpy: ModuleType = ModuleType("safetensors.numpy")
 numpy.load_file = fake_function
 numpy.save_file = fake_function
 
-torch = ModuleType("safetensors.torch")
+torch: ModuleType = ModuleType("safetensors.torch")
 torch.load_file = fake_function
 torch.save_file = fake_function
 
