@@ -30,7 +30,7 @@ T = TypeVar("T")
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-class BaseLoader(ABC, Generic[T], metaclass=AbstractFactory):  # noqa: PLW1641
+class BaseLoader(ABC, Generic[T], metaclass=AbstractFactory):
     r"""Define the base class to implement a data loader.
 
     Example:
@@ -48,9 +48,6 @@ class BaseLoader(ABC, Generic[T], metaclass=AbstractFactory):  # noqa: PLW1641
 
         ```
     """
-
-    def __eq__(self, other: object) -> bool:
-        return self.equal(other)
 
     @abstractmethod
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
