@@ -2,7 +2,7 @@ r"""Contain YAML-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["YamlLoader", "YamlSaver", "get_loader_mapping", "load_yaml", "save_yaml"]
+__all__ = ["YamlLoader", "YamlSaver", "load_yaml", "save_yaml"]
 
 from pathlib import Path
 from typing import Any, TypeVar
@@ -144,23 +144,3 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
         ```
     """
     YamlSaver().save(to_save, path, exist_ok=exist_ok)
-
-
-def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
-    r"""Get a default mapping between the file extensions and loaders.
-
-    Returns:
-        The mapping between the file extensions and loaders.
-
-    Example:
-        ```pycon
-        >>> from iden.io.yaml import get_loader_mapping
-        >>> get_loader_mapping()
-        {'yaml': YamlLoader(), 'yml': YamlLoader()}
-
-        ```
-    """
-    if not is_yaml_available():
-        return {}
-    loader = YamlLoader()
-    return {"yaml": loader, "yml": loader}

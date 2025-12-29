@@ -6,7 +6,6 @@ from unittest.mock import patch
 import pytest
 
 from iden.io import YamlLoader, YamlSaver, load_yaml, save_yaml
-from iden.io.yaml import get_loader_mapping
 from iden.testing import yaml_available
 
 if TYPE_CHECKING:
@@ -208,18 +207,3 @@ def test_save_yaml_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
-
-
-########################################
-#     Tests for get_loader_mapping     #
-########################################
-
-
-@yaml_available
-def test_get_loader_mapping() -> None:
-    assert get_loader_mapping() == {"yaml": YamlLoader(), "yml": YamlLoader()}
-
-
-def test_get_loader_mapping_no_yaml() -> None:
-    with patch("iden.io.yaml.is_yaml_available", lambda: False):
-        assert get_loader_mapping() == {}

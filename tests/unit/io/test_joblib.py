@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from unittest.mock import patch
 
 import pytest
 
 from iden.io import JoblibLoader, JoblibSaver, load_joblib, save_joblib, save_text
-from iden.io.joblib import get_loader_mapping
 from iden.testing import joblib_available
 
 if TYPE_CHECKING:
@@ -237,18 +235,3 @@ def test_save_joblib_file_exist_ok_dir(tmp_path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
     with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
         save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
-
-
-########################################
-#     Tests for get_loader_mapping     #
-########################################
-
-
-@joblib_available
-def test_get_loader_mapping() -> None:
-    assert get_loader_mapping() == {"joblib": JoblibLoader()}
-
-
-def test_get_loader_mapping_no_joblib() -> None:
-    with patch("iden.io.joblib.is_joblib_available", lambda: False):
-        assert get_loader_mapping() == {}

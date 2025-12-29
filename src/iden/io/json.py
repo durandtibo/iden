@@ -2,7 +2,7 @@ r"""Contain JSON-based data loaders and savers."""
 
 from __future__ import annotations
 
-__all__ = ["JsonLoader", "JsonSaver", "get_loader_mapping", "load_json", "save_json"]
+__all__ = ["JsonLoader", "JsonSaver", "load_json", "save_json"]
 
 import json
 from pathlib import Path
@@ -132,20 +132,3 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
         ```
     """
     JsonSaver().save(to_save, path, exist_ok=exist_ok)
-
-
-def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
-    r"""Get a default mapping between the file extensions and loaders.
-
-    Returns:
-        The mapping between the file extensions and loaders.
-
-    Example:
-        ```pycon
-        >>> from iden.io.json import get_loader_mapping
-        >>> get_loader_mapping()
-        {'json': JsonLoader()}
-
-        ```
-    """
-    return {"json": JsonLoader()}

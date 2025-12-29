@@ -7,7 +7,6 @@ import pytest
 from coola import objects_are_equal
 
 from iden.io import PickleLoader, PickleSaver, load_pickle, save_pickle, save_text
-from iden.io.pickle import get_loader_mapping
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -211,12 +210,3 @@ def test_save_pickle_protocol(tmp_path: Path, protocol: int) -> None:
     save_pickle(data, path, protocol=protocol)
     assert path.is_file()
     assert objects_are_equal(load_pickle(path), data)
-
-
-########################################
-#     Tests for get_loader_mapping     #
-########################################
-
-
-def test_get_loader_mapping() -> None:
-    assert get_loader_mapping() == {"pickle": PickleLoader(), "pkl": PickleLoader()}
