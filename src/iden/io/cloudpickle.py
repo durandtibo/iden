@@ -12,7 +12,6 @@ __all__ = [
 
 from pathlib import Path
 from typing import Any
-from unittest.mock import Mock
 
 from coola import objects_are_equal
 from coola.utils.format import repr_mapping_line
@@ -23,7 +22,7 @@ from iden.utils.imports import check_cloudpickle, is_cloudpickle_available
 if is_cloudpickle_available():
     import cloudpickle
 else:  # pragma: no cover
-    cloudpickle = Mock()
+    from iden.utils.fallback.cloudpickle import cloudpickle
 
 
 class CloudpickleLoader(BaseLoader[Any]):
