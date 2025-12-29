@@ -15,22 +15,20 @@ T = TypeVar("T")
 class TextLoader(BaseLoader[str]):
     r"""Implement a data loader to load data in a text file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_text, TextLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.txt")
+        ...     save_text("hello", path)
+        ...     data = TextLoader().load(path)
+        ...     data
+        ...
+        'hello'
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_text, TextLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.txt")
-    ...     save_text("hello", path)
-    ...     data = TextLoader().load(path)
-    ...     data
-    ...
-    'hello'
-
-    ```
+        ```
     """
 
     def __repr__(self) -> str:
@@ -51,22 +49,20 @@ class TextSaver(BaseFileSaver[str]):
         If the data to save is not a string, it is converted to
             a string before to be saved by using ``str``.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import TextSaver, TextLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.txt")
+        ...     TextSaver().save("hello", path)
+        ...     data = TextLoader().load(path)
+        ...     data
+        ...
+        'hello'
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import TextSaver, TextLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.txt")
-    ...     TextSaver().save("hello", path)
-    ...     data = TextLoader().load(path)
-    ...     data
-    ...
-    'hello'
-
-    ```
+        ```
     """
 
     def __repr__(self) -> str:
@@ -89,22 +85,20 @@ def load_text(path: Path) -> str:
     Returns:
         The data from the text file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_text, load_text
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.txt")
+        ...     save_text("hello", path)
+        ...     data = load_text(path)
+        ...     data
+        ...
+        'hello'
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_text, load_text
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.txt")
-    ...     save_text("hello", path)
-    ...     data = load_text(path)
-    ...     data
-    ...
-    'hello'
-
-    ```
+        ```
     """
     return TextLoader().load(path)
 
@@ -129,22 +123,20 @@ def save_text(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
         If the data to save is not a string, it is converted to
             a string before to be saved by using ``str``.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_text, load_text
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.txt")
+        ...     save_text("hello", path)
+        ...     data = load_text(path)
+        ...     data
+        ...
+        'hello'
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_text, load_text
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.txt")
-    ...     save_text("hello", path)
-    ...     data = load_text(path)
-    ...     data
-    ...
-    'hello'
-
-    ```
+        ```
     """
     TextSaver().save(to_save, path, exist_ok=exist_ok)
 
@@ -155,14 +147,12 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.text import get_loader_mapping
+        >>> get_loader_mapping()
+        {'txt': TextLoader()}
 
-    ```pycon
-
-    >>> from iden.io.text import get_loader_mapping
-    >>> get_loader_mapping()
-    {'txt': TextLoader()}
-
-    ```
+        ```
     """
     return {"txt": TextLoader()}

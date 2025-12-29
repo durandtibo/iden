@@ -30,24 +30,22 @@ class FileShard(BaseShard[T]):
         path: The path to the pickle file.
         loader: The data loader or its configuration.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import FileShard
+        >>> from iden.io import save_json, JsonLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     file = Path(tmpdir).joinpath("data.json")
+        ...     save_json([1, 2, 3], file)
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     shard = FileShard(uri=uri, path=file, loader=JsonLoader())
+        ...     shard.get_data()
+        ...
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import FileShard
-    >>> from iden.io import save_json, JsonLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     file = Path(tmpdir).joinpath("data.json")
-    ...     save_json([1, 2, 3], file)
-    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-    ...     shard = FileShard(uri=uri, path=file, loader=JsonLoader())
-    ...     shard.get_data()
-    ...
-    [1, 2, 3]
-
-    ```
+        ```
     """
 
     def __init__(
@@ -105,21 +103,20 @@ class FileShard(BaseShard[T]):
         Returns:
             The instantiated shard.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.shard import FileShard, create_json_shard
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+            ...     create_json_shard([1, 2, 3], uri=uri)
+            ...     shard = FileShard.from_uri(uri)
+            ...     shard
+            ...
+            FileShard(uri=file:///.../my_uri)
 
-        ```pycon
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.shard import FileShard, create_json_shard
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-        ...     _ = create_json_shard([1, 2, 3], uri=uri)
-        ...     shard = FileShard.from_uri(uri)
-        ...     shard
-        ...
-        FileShard(uri=file:///.../my_uri)
-
-        ```
+            ```
         """
         config = load_json(sanitize_path(uri))
         return cls(uri=uri, **config[KWARGS])
@@ -137,20 +134,19 @@ class FileShard(BaseShard[T]):
         Returns:
             The minimal config to load the shard from its URI.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.shard import FileShard
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     file = Path(tmpdir).joinpath("data.json")
+            ...     FileShard.generate_uri_config(file)
+            ...
+            {'kwargs': {'path': '.../data.json'},
+             'loader': {'_target_': 'iden.shard.loader.FileShardLoader'}}
 
-        ```pycon
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.shard import FileShard
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     file = Path(tmpdir).joinpath("data.json")
-        ...     FileShard.generate_uri_config(file)
-        ...
-        {'kwargs': {'path': '.../data.json'},
-         'loader': {'_target_': 'iden.shard.loader.FileShardLoader'}}
-
-        ```
+            ```
         """
         return {
             KWARGS: {"path": sanitize_path(path).as_posix()},

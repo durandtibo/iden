@@ -20,18 +20,16 @@ class DataGenerator(BaseDataGenerator[T]):
         copy: If ``True``, it returns a copy of the data,
             otherwise it always returns the same data.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.data.generator import DataGenerator
+        >>> generator = DataGenerator([1, 2, 3])
+        >>> generator
+        DataGenerator(copy=False)
+        >>> generator.generate()
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> from iden.data.generator import DataGenerator
-    >>> generator = DataGenerator([1, 2, 3])
-    >>> generator
-    DataGenerator(copy=False)
-    >>> generator.generate()
-    [1, 2, 3]
-
-    ```
+        ```
     """
 
     def __init__(self, data: T, copy: bool = False) -> None:

@@ -25,23 +25,21 @@ class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
     A shard loader object allows to load a ``BaseShard`` object from
     its Uniform Resource Identifier (URI).
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_json_shard
+        >>> from iden.shard.loader import JsonShardLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     create_json_shard([1, 2, 3], uri=uri)
+        ...     loader = JsonShardLoader()
+        ...     loader
+        ...
+        JsonShardLoader()
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_json_shard
-    >>> from iden.shard.loader import JsonShardLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-    ...     _ = create_json_shard([1, 2, 3], uri=uri)
-    ...     loader = JsonShardLoader()
-    ...     loader
-    ...
-    JsonShardLoader()
-
-    ```
+        ```
     """
 
     @abstractmethod
@@ -54,23 +52,22 @@ class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
         Returns:
             The loaded shard.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.shard import create_json_shard
+            >>> from iden.shard.loader import JsonShardLoader
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+            ...     create_json_shard([1, 2, 3], uri=uri)
+            ...     loader = JsonShardLoader()
+            ...     shard = loader.load(uri)
+            ...     shard
+            ...
+            JsonShard(uri=file:///.../my_uri)
 
-        ```pycon
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.shard import create_json_shard
-        >>> from iden.shard.loader import JsonShardLoader
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-        ...     _ = create_json_shard([1, 2, 3], uri=uri)
-        ...     loader = JsonShardLoader()
-        ...     shard = loader.load(uri)
-        ...     shard
-        ...
-        JsonShard(uri=file:///.../my_uri)
-
-        ```
+            ```
         """
 
 
@@ -90,15 +87,13 @@ def is_shard_loader_config(config: dict[Any, Any]) -> bool:
         ``True`` if the input configuration is a configuration for a
             ``BaseShardLoader`` object.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.shard.loader import is_shard_loader_config
+        >>> is_shard_loader_config({"_target_": "iden.shard.loader.JsonShardLoader"})
+        True
 
-    ```pycon
-
-    >>> from iden.shard.loader import is_shard_loader_config
-    >>> is_shard_loader_config({"_target_": "iden.shard.loader.JsonShardLoader"})
-    True
-
-    ```
+        ```
     """
     return is_object_config(config, BaseShardLoader)
 
@@ -115,16 +110,14 @@ def setup_shard_loader(shard_loader: BaseShardLoader[T] | dict[Any, Any]) -> Bas
     Returns:
         The instantiated shard loader.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.shard.loader import setup_shard_loader
+        >>> shard_loader = setup_shard_loader({"_target_": "iden.shard.loader.JsonShardLoader"})
+        >>> shard_loader
+        JsonShardLoader()
 
-    ```pycon
-
-    >>> from iden.shard.loader import setup_shard_loader
-    >>> shard_loader = setup_shard_loader({"_target_": "iden.shard.loader.JsonShardLoader"})
-    >>> shard_loader
-    JsonShardLoader()
-
-    ```
+        ```
     """
     if isinstance(shard_loader, dict):
         logger.debug("Initializing a shard loader from its configuration...")

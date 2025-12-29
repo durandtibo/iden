@@ -41,7 +41,7 @@ def is_cloudpickle_available() -> bool:
     Returns:
         ``True`` if ``cloudpickle`` is available otherwise ``False``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import is_cloudpickle_available
         >>> is_cloudpickle_available()
@@ -57,7 +57,7 @@ def check_cloudpickle() -> None:
     Raises:
         RuntimeError: if the ``cloudpickle`` package is not installed.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import check_cloudpickle
         >>> check_cloudpickle()
@@ -79,7 +79,7 @@ def cloudpickle_available(fn: Callable[..., Any]) -> Callable[..., Any]:
         A wrapper around ``fn`` if ``cloudpickle`` package is installed,
             otherwise ``None``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import cloudpickle_available
         >>> @cloudpickle_available
@@ -115,7 +115,7 @@ def is_joblib_available() -> bool:
     Returns:
         ``True`` if ``joblib`` is available otherwise ``False``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import is_joblib_available
         >>> is_joblib_available()
@@ -131,7 +131,7 @@ def check_joblib() -> None:
     Raises:
         RuntimeError: if the ``joblib`` package is not installed.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import check_joblib
         >>> check_joblib()
@@ -153,7 +153,7 @@ def joblib_available(fn: Callable[..., Any]) -> Callable[..., Any]:
         A wrapper around ``fn`` if ``joblib`` package is installed,
             otherwise ``None``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import joblib_available
         >>> @joblib_available
@@ -189,7 +189,7 @@ def is_safetensors_available() -> bool:
     Returns:
         ``True`` if ``safetensors`` is available otherwise ``False``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import is_safetensors_available
         >>> is_safetensors_available()
@@ -205,7 +205,7 @@ def check_safetensors() -> None:
     Raises:
         RuntimeError: if the ``safetensors`` package is not installed.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import check_safetensors
         >>> check_safetensors()
@@ -227,7 +227,7 @@ def safetensors_available(fn: Callable[..., Any]) -> Callable[..., Any]:
         A wrapper around ``fn`` if ``safetensors`` package is installed,
             otherwise ``None``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import safetensors_available
         >>> @safetensors_available
@@ -263,7 +263,7 @@ def is_yaml_available() -> bool:
     Returns:
         ``True`` if ``yaml`` is available otherwise ``False``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import is_yaml_available
         >>> is_yaml_available()
@@ -279,7 +279,7 @@ def check_yaml() -> None:
     Raises:
         RuntimeError: if the ``yaml`` package is not installed.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import check_yaml
         >>> check_yaml()
@@ -301,7 +301,7 @@ def yaml_available(fn: Callable[..., Any]) -> Callable[..., Any]:
         A wrapper around ``fn`` if ``yaml`` package is installed,
             otherwise ``None``.
 
-    Example usage:
+    Example:
         ```pycon
         >>> from iden.utils.imports import yaml_available
         >>> @yaml_available

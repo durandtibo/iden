@@ -24,20 +24,18 @@ def generate_unique_tmp_path(path: Path) -> Path:
     Returns:
         The unique name.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io.utils import generate_unique_tmp_path
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = generate_unique_tmp_path(Path(tmpdir).joinpath("data.pt"))
+        ...     path
+        ...
+        PosixPath('/.../data-....pt')
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io.utils import generate_unique_tmp_path
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = generate_unique_tmp_path(Path(tmpdir).joinpath("data.pt"))
-    ...     path
-    ...
-    PosixPath('/.../data-....pt')
-
-    ```
+        ```
     """
     h = uuid.uuid4().hex
     extension = "".join(path.suffixes)[1:]
@@ -55,15 +53,13 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.utils import get_loader_mapping
+        >>> get_loader_mapping()
+        {...'json': JsonLoader(), 'pkl': PickleLoader(), 'pickle': PickleLoader(), ...}
 
-    ```pycon
-
-    >>> from iden.io.utils import get_loader_mapping
-    >>> get_loader_mapping()
-    {...'json': JsonLoader(), 'pkl': PickleLoader(), 'pickle': PickleLoader(), ...}
-
-    ```
+        ```
     """
     # Local import to avoid cyclic dependencies
     from iden import io  # noqa: PLC0415

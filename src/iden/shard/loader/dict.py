@@ -16,37 +16,35 @@ T = TypeVar("T")
 class ShardDictLoader(BaseShardLoader[dict[str, BaseShard[T]]]):
     r"""Implement a ``ShardDict`` loader.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_json_shard, create_shard_dict
+        >>> from iden.shard.loader import ShardDictLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("uri").as_uri()
+        ...     shards = {
+        ...         "train": create_json_shard(
+        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+        ...         ),
+        ...         "val": create_json_shard(
+        ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+        ...         ),
+        ...     }
+        ...     create_shard_dict(shards, uri=uri)
+        ...     loader = ShardDictLoader()
+        ...     shard = loader.load(uri)
+        ...     shard
+        ...
+        ShardDict(
+          (uri): file:///.../uri
+          (shards):
+            (train): JsonShard(uri=file:///.../shard/uri1)
+            (val): JsonShard(uri=file:///.../shard/uri2)
+        )
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_json_shard, create_shard_dict
-    >>> from iden.shard.loader import ShardDictLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     uri = Path(tmpdir).joinpath("uri").as_uri()
-    ...     shards = {
-    ...         "train": create_json_shard(
-    ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-    ...         ),
-    ...         "val": create_json_shard(
-    ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-    ...         ),
-    ...     }
-    ...     _ = create_shard_dict(shards, uri=uri)
-    ...     loader = ShardDictLoader()
-    ...     shard = loader.load(uri)
-    ...     shard
-    ...
-    ShardDict(
-      (uri): file:///.../uri
-      (shards):
-        (train): JsonShard(uri=file:///.../shard/uri1)
-        (val): JsonShard(uri=file:///.../shard/uri2)
-    )
-
-    ```
+        ```
     """
 
     def __repr__(self) -> str:

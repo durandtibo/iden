@@ -34,23 +34,22 @@ class TorchShard(FileShard[T]):
     Raises:
         RuntimeError: if ``torch`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> import torch
+        >>> from pathlib import Path
+        >>> from iden.shard import TorchShard
+        >>> from iden.io import TorchSaver
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     file = Path(tmpdir).joinpath("data.pt")
+        ...     TorchSaver().save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, file)
+        ...     shard = TorchShard(uri="file:///data/1234456789", path=file)
+        ...     shard.get_data()
+        ...
+        {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import TorchShard
-    >>> from iden.io import TorchSaver
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     file = Path(tmpdir).joinpath("data.pt")
-    ...     TorchSaver().save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, file)
-    ...     shard = TorchShard(uri="file:///data/1234456789", path=file)
-    ...     shard.get_data()
-    ...
-    {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
-
-    ```
+        ```
     """
 
     def __init__(self, uri: str, path: Path | str) -> None:
@@ -69,20 +68,19 @@ class TorchShard(FileShard[T]):
         Returns:
             The minimal config to load the shard from its URI.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.shard import TorchShard
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     file = Path(tmpdir).joinpath("data.pt")
+            ...     TorchShard.generate_uri_config(file)
+            ...
+            {'kwargs': {'path': '.../data.pt'},
+             'loader': {'_target_': 'iden.shard.loader.TorchShardLoader'}}
 
-        ```pycon
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.shard import TorchShard
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     file = Path(tmpdir).joinpath("data.pt")
-        ...     TorchShard.generate_uri_config(file)
-        ...
-        {'kwargs': {'path': '.../data.pt'},
-         'loader': {'_target_': 'iden.shard.loader.TorchShardLoader'}}
-
-        ```
+            ```
         """
         return {
             KWARGS: {"path": sanitize_path(path).as_posix()},
@@ -110,24 +108,22 @@ def create_torch_shard(data: T, uri: str, path: Path | None = None) -> TorchShar
     Raises:
         RuntimeError: if ``torch`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> import torch
+        >>> from iden.shard import create_torch_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shard = create_torch_shard(
+        ...         data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
+        ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
+        ...     )
+        ...     shard.get_data()
+        ...
+        {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> import torch
-    >>> from iden.shard import create_torch_shard
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shard = create_torch_shard(
-    ...         data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
-    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
-    ...     )
-    ...     shard.get_data()
-    ...
-    {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
-
-    ```
+        ```
     """
     if path is None:
         path = sanitize_path(uri + ".pt")

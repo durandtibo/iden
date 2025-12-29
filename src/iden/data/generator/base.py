@@ -19,18 +19,16 @@ logger: logging.Logger = logging.getLogger(__name__)
 class BaseDataGenerator(ABC, Generic[T], metaclass=AbstractFactory):
     r"""Define the base class to generate data.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.data.generator import DataGenerator
+        >>> generator = DataGenerator([1, 2, 3])
+        >>> generator
+        DataGenerator(copy=False)
+        >>> generator.generate()
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> from iden.data.generator import DataGenerator
-    >>> generator = DataGenerator([1, 2, 3])
-    >>> generator
-    DataGenerator(copy=False)
-    >>> generator.generate()
-    [1, 2, 3]
-
-    ```
+        ```
     """
 
     @abstractmethod
@@ -40,15 +38,14 @@ class BaseDataGenerator(ABC, Generic[T], metaclass=AbstractFactory):
         Returns:
             The generated data.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> from iden.data.generator import DataGenerator
+            >>> generator = DataGenerator([1, 2, 3])
+            >>> generator.generate()
+            [1, 2, 3]
 
-        ```pycon
-        >>> from iden.data.generator import DataGenerator
-        >>> generator = DataGenerator([1, 2, 3])
-        >>> generator.generate()
-        [1, 2, 3]
-
-        ```
+            ```
         """
 
 
@@ -68,15 +65,13 @@ def is_data_generator_config(config: dict[Any, Any]) -> bool:
         ``True`` if the input configuration is a configuration for a
             ``BaseDataGenerator`` object.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.data.generator import is_data_generator_config
+        >>> is_data_generator_config({"_target_": "iden.data.generator.DataGenerator"})
+        True
 
-    ```pycon
-
-    >>> from iden.data.generator import is_data_generator_config
-    >>> is_data_generator_config({"_target_": "iden.data.generator.DataGenerator"})
-    True
-
-    ```
+        ```
     """
     return is_object_config(config, BaseDataGenerator)
 
@@ -95,18 +90,16 @@ def setup_data_generator(
     Returns:
         The instantiated data generator.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.data.generator import is_data_generator_config
+        >>> generator = setup_data_generator(
+        ...     {"_target_": "iden.data.generator.DataGenerator", "data": [1, 2, 3]}
+        ... )
+        >>> generator
+        DataGenerator(copy=False)
 
-    ```pycon
-
-    >>> from iden.data.generator import is_data_generator_config
-    >>> generator = setup_data_generator(
-    ...     {"_target_": "iden.data.generator.DataGenerator", "data": [1, 2, 3]}
-    ... )
-    >>> generator
-    DataGenerator(copy=False)
-
-    ```
+        ```
     """
     if isinstance(data_generator, dict):
         logger.debug("Initializing a data generator from its configuration...")

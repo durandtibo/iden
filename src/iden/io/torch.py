@@ -29,22 +29,20 @@ class TorchLoader(BaseLoader[T]):
     Args:
         **kwargs: Additional arguments passed to ``torch.load``.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_torch, TorchLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pt")
+        ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = TorchLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_torch, TorchLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
-    ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = TorchLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self, **kwargs: Any) -> None:
@@ -69,22 +67,20 @@ class TorchSaver(BaseFileSaver[T]):
     Args:
         **kwargs: Additional arguments passed to ``torch.save``.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import TorchSaver, TorchLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pt")
+        ...     TorchSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = TorchLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import TorchSaver, TorchLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
-    ...     TorchSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = TorchLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self, **kwargs: Any) -> None:
@@ -113,22 +109,20 @@ def load_torch(path: Path, **kwargs: Any) -> Any:
     Returns:
         The data from the PyTorch file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_torch, load_torch
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pt")
+        ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_torch(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_torch, load_torch
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
-    ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_torch(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     return TorchLoader(**kwargs).load(path)
 
@@ -150,22 +144,20 @@ def save_torch(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: An
     Raises:
         FileExistsError: if the file already exists.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_torch, load_torch
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pt")
+        ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_torch(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_torch, load_torch
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pt")
-    ...     save_torch({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_torch(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     TorchSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
@@ -176,15 +168,13 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.torch import get_loader_mapping
+        >>> get_loader_mapping()
+        {'pt': TorchLoader()}
 
-    ```pycon
-
-    >>> from iden.io.torch import get_loader_mapping
-    >>> get_loader_mapping()
-    {'pt': TorchLoader()}
-
-    ```
+        ```
     """
     if not is_torch_available():
         return {}

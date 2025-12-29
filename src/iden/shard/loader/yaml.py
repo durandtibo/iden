@@ -16,24 +16,22 @@ T = TypeVar("T")
 class YamlShardLoader(BaseShardLoader[T]):
     r"""Implement a YAML shard loader.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_yaml_shard
+        >>> from iden.shard.loader import YamlShardLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     create_yaml_shard([1, 2, 3], uri=uri)
+        ...     loader = YamlShardLoader()
+        ...     shard = loader.load(uri)
+        ...     shard
+        ...
+        YamlShard(uri=file:///.../my_uri)
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_yaml_shard
-    >>> from iden.shard.loader import YamlShardLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-    ...     _ = create_yaml_shard([1, 2, 3], uri=uri)
-    ...     loader = YamlShardLoader()
-    ...     shard = loader.load(uri)
-    ...     shard
-    ...
-    YamlShard(uri=file:///.../my_uri)
-
-    ```
+        ```
     """
 
     def __init__(self) -> None:

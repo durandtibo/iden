@@ -29,22 +29,20 @@ def load_from_uri(uri: str) -> BaseShard[Any]:
     Raises:
         FileNotFoundError: if the URI file does not exist.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_json_shard, load_from_uri
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     create_json_shard([1, 2, 3], uri=uri)
+        ...     shard = load_from_uri(uri)
+        ...     shard
+        ...
+        JsonShard(uri=file:///.../my_uri)
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_json_shard, load_from_uri
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-    ...     _ = create_json_shard([1, 2, 3], uri=uri)
-    ...     shard = load_from_uri(uri)
-    ...     shard
-    ...
-    JsonShard(uri=file:///.../my_uri)
-
-    ```
+        ```
     """
     path = sanitize_path(uri)
     if not path.is_file():

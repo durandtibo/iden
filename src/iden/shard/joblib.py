@@ -34,24 +34,21 @@ class JoblibShard(FileShard[T]):
     Raises:
         RuntimeError: if ``joblib`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import JoblibShard
+        >>> from iden.io import save_pickle
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     file = Path(tmpdir).joinpath("data.joblib")
+        ...     save_pickle([1, 2, 3], file)
+        ...     shard = JoblibShard(uri="file:///data/1234456789", path=file)
+        ...     shard.get_data()
+        ...
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> import tempfile
-
-    >>> from pathlib import Path
-    >>> from iden.shard import JoblibShard
-    >>> from iden.io import save_pickle
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     file = Path(tmpdir).joinpath("data.joblib")
-    ...     save_pickle([1, 2, 3], file)
-    ...     shard = JoblibShard(uri="file:///data/1234456789", path=file)
-    ...     shard.get_data()
-    ...
-    [1, 2, 3]
-
-    ```
+        ```
     """
 
     def __init__(self, uri: str, path: Path | str) -> None:
@@ -70,20 +67,19 @@ class JoblibShard(FileShard[T]):
         Returns:
             The minimal config to load the shard from its URI.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.shard import JoblibShard
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     file = Path(tmpdir).joinpath("data.joblib")
+            ...     JoblibShard.generate_uri_config(file)
+            ...
+            {'kwargs': {'path': '.../data.joblib'},
+             'loader': {'_target_': 'iden.shard.loader.JoblibShardLoader'}}
 
-        ```pycon
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.shard import JoblibShard
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     file = Path(tmpdir).joinpath("data.joblib")
-        ...     JoblibShard.generate_uri_config(file)
-        ...
-        {'kwargs': {'path': '.../data.joblib'},
-         'loader': {'_target_': 'iden.shard.loader.JoblibShardLoader'}}
-
-        ```
+            ```
         """
         return {
             KWARGS: {"path": sanitize_path(path).as_posix()},
@@ -111,20 +107,18 @@ def create_joblib_shard(data: T, uri: str, path: Path | None = None) -> JoblibSh
     Raises:
         RuntimeError: if ``joblib`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_pickle_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shard = create_pickle_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
+        ...     shard.get_data()
+        ...
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_pickle_shard
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shard = create_pickle_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
-    ...     shard.get_data()
-    ...
-    [1, 2, 3]
-
-    ```
+        ```
     """
     if path is None:
         path = sanitize_path(uri + ".joblib")

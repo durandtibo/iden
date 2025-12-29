@@ -24,19 +24,17 @@ def human_time(seconds: float) -> str:
     Returns:
         The number of seconds in a string format (``hh:mm:ss``).
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.utils.format import human_time
+        >>> human_time(1.2)
+        '0:00:01.200000'
+        >>> human_time(61.2)
+        '0:01:01.200000'
+        >>> human_time(3661.2)
+        '1:01:01.200000'
 
-    ```pycon
-
-    >>> from iden.utils.format import human_time
-    >>> human_time(1.2)
-    '0:00:01.200000'
-    >>> human_time(61.2)
-    '0:01:01.200000'
-    >>> human_time(3661.2)
-    '1:01:01.200000'
-
-    ```
+        ```
     """
     return str(datetime.timedelta(seconds=seconds))
 
@@ -53,17 +51,15 @@ def str_kwargs(mapping: Mapping[Any, Any]) -> str:
     Returns:
         The generated string.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.utils.format import str_kwargs
+        >>> str_kwargs({"key1": 1})
+        ', key1=1'
+        >>> str_kwargs({"key1": 1, "key2": 2})
+        ', key1=1, key2=2'
 
-    ```pycon
-
-    >>> from iden.utils.format import str_kwargs
-    >>> str_kwargs({"key1": 1})
-    ', key1=1'
-    >>> str_kwargs({"key1": 1, "key2": 2})
-    ', key1=1, key2=2'
-
-    ```
+        ```
     """
     args = ", ".join([f"{key}={value}" for key, value in mapping.items()])
     if args:

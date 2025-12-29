@@ -19,16 +19,14 @@ class InMemoryShard(BaseShard[T]):
     This shard does not have valid URI as the data are stored
     in-memory.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.shard import InMemoryShard
+        >>> shard = InMemoryShard([1, 2, 3])
+        >>> shard.get_data()
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> from iden.shard import InMemoryShard
-    >>> shard = InMemoryShard([1, 2, 3])
-    >>> shard.get_data()
-    [1, 2, 3]
-
-    ```
+        ```
     """
 
     def __init__(self, data: T) -> None:

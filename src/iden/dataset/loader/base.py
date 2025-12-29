@@ -25,16 +25,14 @@ class BaseDatasetLoader(ABC, Generic[T], metaclass=AbstractFactory):
     A dataset loader object allows to load a ``BaseDataset`` object from
     its Uniform Resource Identifier (URI).
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.dataset.loader import VanillaDatasetLoader
+        >>> loader = VanillaDatasetLoader()
+        >>> loader
+        VanillaDatasetLoader()
 
-    ```pycon
-
-    >>> from iden.dataset.loader import VanillaDatasetLoader
-    >>> loader = VanillaDatasetLoader()
-    >>> loader
-    VanillaDatasetLoader()
-
-    ```
+        ```
     """
 
     @abstractmethod
@@ -47,73 +45,72 @@ class BaseDatasetLoader(ABC, Generic[T], metaclass=AbstractFactory):
         Returns:
             The loaded dataset.
 
-        Example usage:
-
-        ```pycon
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import create_vanilla_dataset
-        >>> from iden.dataset.loader import VanillaDatasetLoader
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     uri = Path(tmpdir).joinpath("uri").as_uri()
-        ...     _ = create_vanilla_dataset(uri=uri, shards=shards, assets=assets)
-        ...     loader = VanillaDatasetLoader()
-        ...     dataset = loader.load(uri)
-        ...     dataset
-        ...
-        VanillaDataset(
-          (uri): file:///.../uri
-          (shards): ShardDict(
-              (uri): file:///.../uri_shards
-              (shards):
-                (train): ShardTuple(
-                    (uri): file:///.../uri_train
-                    (shards):
-                      (0): JsonShard(uri=file:///.../shard/uri1)
-                      (1): JsonShard(uri=file:///.../shard/uri2)
-                  )
-                (val): ShardTuple(
-                    (uri): file:///.../uri_val
-                    (shards):
-                  )
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import create_vanilla_dataset
+            >>> from iden.dataset.loader import VanillaDatasetLoader
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     uri = Path(tmpdir).joinpath("uri").as_uri()
+            ...     create_vanilla_dataset(uri=uri, shards=shards, assets=assets)
+            ...     loader = VanillaDatasetLoader()
+            ...     dataset = loader.load(uri)
+            ...     dataset
+            ...
+            VanillaDataset(
+              (uri): file:///.../uri
+              (shards): ShardDict(
+                  (uri): file:///.../uri_shards
+                  (shards):
+                    (train): ShardTuple(
+                        (uri): file:///.../uri_train
+                        (shards):
+                          (0): JsonShard(uri=file:///.../shard/uri1)
+                          (1): JsonShard(uri=file:///.../shard/uri2)
+                      )
+                    (val): ShardTuple(
+                        (uri): file:///.../uri_val
+                        (shards):
+                      )
+                )
+              (assets): ShardDict(
+                  (uri): file:///.../uri_assets
+                  (shards):
+                    (stats): JsonShard(uri=file:///.../uri_stats)
+                )
             )
-          (assets): ShardDict(
-              (uri): file:///.../uri_assets
-              (shards):
-                (stats): JsonShard(uri=file:///.../uri_stats)
-            )
-        )
 
-        ```
+            ```
         """
 
 
@@ -133,15 +130,13 @@ def is_dataset_loader_config(config: dict[Any, Any]) -> bool:
         ``True`` if the input configuration is a configuration for a
             ``BaseDatasetLoader`` object.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.dataset.loader import is_dataset_loader_config
+        >>> is_dataset_loader_config({"_target_": "iden.dataset.loader.VanillaDatasetLoader"})
+        True
 
-    ```pycon
-
-    >>> from iden.dataset.loader import is_dataset_loader_config
-    >>> is_dataset_loader_config({"_target_": "iden.dataset.loader.VanillaDatasetLoader"})
-    True
-
-    ```
+        ```
     """
     return is_object_config(config, BaseDatasetLoader)
 
@@ -160,18 +155,16 @@ def setup_dataset_loader(
     Returns:
         The instantiated dataset loader.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.dataset.loader import setup_dataset_loader
+        >>> dataset_loader = setup_dataset_loader(
+        ...     {"_target_": "iden.dataset.loader.VanillaDatasetLoader"}
+        ... )
+        >>> dataset_loader
+        VanillaDatasetLoader()
 
-    ```pycon
-
-    >>> from iden.dataset.loader import setup_dataset_loader
-    >>> dataset_loader = setup_dataset_loader(
-    ...     {"_target_": "iden.dataset.loader.VanillaDatasetLoader"}
-    ... )
-    >>> dataset_loader
-    VanillaDatasetLoader()
-
-    ```
+        ```
     """
     if isinstance(dataset_loader, dict):
         logger.debug("Initializing a dataset loader from its configuration...")

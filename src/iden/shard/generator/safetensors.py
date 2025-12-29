@@ -48,33 +48,31 @@ class NumpySafetensorsShardGenerator(BaseFileShardGenerator[dict[str, np.ndarray
         path_uri: The path where to save the URI file.
         path_shard: The path where to save the shard data.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> import numpy as np
+        >>> from pathlib import Path
+        >>> from iden.data.generator import DataGenerator
+        >>> from iden.shard.generator import NumpySafetensorsShardGenerator
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     generator = NumpySafetensorsShardGenerator(
+        ...         data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.arange(5)}),
+        ...         path_uri=Path(tmpdir).joinpath("uri"),
+        ...         path_shard=Path(tmpdir).joinpath("data"),
+        ...     )
+        ...     generator
+        ...     shard = generator.generate("shard1")
+        ...     shard
+        ...
+        NumpySafetensorsShardGenerator(
+          (path_uri): PosixPath('/.../uri')
+          (path_shard): PosixPath('/.../data')
+          (data): DataGenerator(copy=False)
+        )
+        NumpySafetensorsShard(uri=file:///.../uri/shard1)
 
-    ```pycon
-
-    >>> import tempfile
-    >>> import numpy as np
-    >>> from pathlib import Path
-    >>> from iden.data.generator import DataGenerator
-    >>> from iden.shard.generator import NumpySafetensorsShardGenerator
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     generator = NumpySafetensorsShardGenerator(
-    ...         data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.arange(5)}),
-    ...         path_uri=Path(tmpdir).joinpath("uri"),
-    ...         path_shard=Path(tmpdir).joinpath("data"),
-    ...     )
-    ...     generator
-    ...     shard = generator.generate("shard1")
-    ...     shard
-    ...
-    NumpySafetensorsShardGenerator(
-      (path_uri): PosixPath('/.../uri')
-      (path_shard): PosixPath('/.../data')
-      (data): DataGenerator(copy=False)
-    )
-    NumpySafetensorsShard(uri=file:///.../uri/shard1)
-
-    ```
+        ```
     """
 
     def __init__(
@@ -103,33 +101,31 @@ class TorchSafetensorsShardGenerator(BaseFileShardGenerator[dict[str, torch.Tens
         path_uri: The path where to save the URI file.
         path_shard: The path where to save the shard data.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> import torch
+        >>> from pathlib import Path
+        >>> from iden.data.generator import DataGenerator
+        >>> from iden.shard.generator import TorchSafetensorsShardGenerator
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     generator = TorchSafetensorsShardGenerator(
+        ...         data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
+        ...         path_uri=Path(tmpdir).joinpath("uri"),
+        ...         path_shard=Path(tmpdir).joinpath("data"),
+        ...     )
+        ...     generator
+        ...     shard = generator.generate("shard1")
+        ...     shard
+        ...
+        TorchSafetensorsShardGenerator(
+          (path_uri): PosixPath('/.../uri')
+          (path_shard): PosixPath('/.../data')
+          (data): DataGenerator(copy=False)
+        )
+        TorchSafetensorsShard(uri=file:///.../uri/shard1)
 
-    ```pycon
-
-    >>> import tempfile
-    >>> import torch
-    >>> from pathlib import Path
-    >>> from iden.data.generator import DataGenerator
-    >>> from iden.shard.generator import TorchSafetensorsShardGenerator
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     generator = TorchSafetensorsShardGenerator(
-    ...         data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
-    ...         path_uri=Path(tmpdir).joinpath("uri"),
-    ...         path_shard=Path(tmpdir).joinpath("data"),
-    ...     )
-    ...     generator
-    ...     shard = generator.generate("shard1")
-    ...     shard
-    ...
-    TorchSafetensorsShardGenerator(
-      (path_uri): PosixPath('/.../uri')
-      (path_shard): PosixPath('/.../data')
-      (data): DataGenerator(copy=False)
-    )
-    TorchSafetensorsShard(uri=file:///.../uri/shard1)
-
-    ```
+        ```
     """
 
     def __init__(
