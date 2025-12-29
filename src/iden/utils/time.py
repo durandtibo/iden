@@ -13,14 +13,6 @@ from coola.utils import is_torch_available
 
 from iden.utils.format import human_time
 
-if is_torch_available():
-    import torch
-else:  # pragma: no cover
-    from coola.utils.fallback.torch import fake_function, torch
-
-    torch.cuda.is_available = fake_function
-
-
 if TYPE_CHECKING:
     from collections.abc import Generator
 
@@ -49,8 +41,13 @@ def sync_perf_counter() -> float:
 
     ```
     """
-    if is_torch_available() and torch.cuda.is_available():
-        torch.cuda.synchronize()
+    if is_torch_available():
+        # local import because it is an optional dependency
+        # use coola fallback after 0.11.1 release
+        import torch  # noqa: PLC0415
+
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
     return time.perf_counter()
 
 
