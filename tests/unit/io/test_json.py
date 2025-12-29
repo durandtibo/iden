@@ -26,14 +26,6 @@ def test_json_loader_str() -> None:
     assert str(JsonLoader()).startswith("JsonLoader(")
 
 
-def test_json_loader_eq_true() -> None:
-    assert JsonLoader() == JsonLoader()
-
-
-def test_json_loader_eq_false() -> None:
-    assert JsonLoader() != JsonSaver()
-
-
 def test_json_loader_equal_true() -> None:
     assert JsonLoader().equal(JsonLoader())
 
@@ -64,14 +56,6 @@ def test_json_loader_load(path_json: Path) -> None:
 
 def test_json_saver_str() -> None:
     assert str(JsonSaver()).startswith("JsonSaver(")
-
-
-def test_json_saver_eq_true() -> None:
-    assert JsonSaver() == JsonSaver()
-
-
-def test_json_saver_eq_false() -> None:
-    assert JsonSaver() != JsonLoader()
 
 
 def test_json_saver_equal_true() -> None:

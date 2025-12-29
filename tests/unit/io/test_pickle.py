@@ -32,14 +32,6 @@ def test_pickle_loader_str() -> None:
     assert str(PickleLoader()) == "PickleLoader()"
 
 
-def test_pickle_loader_eq_true() -> None:
-    assert PickleLoader() == PickleLoader()
-
-
-def test_pickle_loader_eq_false() -> None:
-    assert PickleLoader() != PickleSaver()
-
-
 def test_pickle_loader_equal_true() -> None:
     assert PickleLoader().equal(PickleLoader())
 
@@ -82,18 +74,6 @@ def test_pickle_saver_str() -> None:
 
 def test_pickle_saver_str_with_kwargs() -> None:
     assert str(PickleSaver(protocol=5)) == "PickleSaver(protocol=5)"
-
-
-def test_pickle_saver_eq_true() -> None:
-    assert PickleSaver() == PickleSaver()
-
-
-def test_pickle_saver_eq_false_different_kwargs() -> None:
-    assert PickleSaver(protocol=5) != PickleSaver(protocol=4)
-
-
-def test_pickle_saver_eq_false_different_type() -> None:
-    assert PickleSaver() != PickleLoader()
 
 
 def test_pickle_saver_equal_true() -> None:

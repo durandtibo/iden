@@ -53,21 +53,6 @@ def test_torch_loader_str_with_kwargs() -> None:
 
 
 @torch_available
-def test_torch_loader_eq_true() -> None:
-    assert TorchLoader() == TorchLoader()
-
-
-@torch_available
-def test_torch_loader_eq_false_different_kwargs() -> None:
-    assert TorchLoader(weights_only=True) != TorchLoader(weights_only=False)
-
-
-@torch_available
-def test_torch_loader_eq_false_different_type() -> None:
-    assert TorchLoader() != TorchSaver()
-
-
-@torch_available
 def test_torch_loader_equal_true() -> None:
     assert TorchLoader().equal(TorchLoader())
 
@@ -151,21 +136,6 @@ def test_torch_saver_str() -> None:
 @torch_available
 def test_torch_saver_str_with_kwargs() -> None:
     assert str(TorchSaver(pickle_protocol=5)) == "TorchSaver(pickle_protocol=5)"
-
-
-@torch_available
-def test_torch_saver_eq_true() -> None:
-    assert TorchSaver() == TorchSaver()
-
-
-@torch_available
-def test_torch_saver_eq_false_different_kwargs() -> None:
-    assert TorchSaver(pickle_protocol=5) != TorchSaver(pickle_protocol=4)
-
-
-@torch_available
-def test_torch_saver_eq_false_different_type() -> None:
-    assert TorchSaver() != TorchLoader()
 
 
 @torch_available

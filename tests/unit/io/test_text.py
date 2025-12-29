@@ -26,14 +26,6 @@ def test_text_loader_str() -> None:
     assert str(TextLoader()).startswith("TextLoader(")
 
 
-def test_text_loader_eq_true() -> None:
-    assert TextLoader() == TextLoader()
-
-
-def test_text_loader_eq_false() -> None:
-    assert TextLoader() != TextSaver()
-
-
 def test_text_loader_equal_true() -> None:
     assert TextLoader().equal(TextLoader())
 
@@ -64,14 +56,6 @@ def test_text_loader_load(path_text: Path) -> None:
 
 def test_text_saver_str() -> None:
     assert str(TextSaver()).startswith("TextSaver(")
-
-
-def test_text_saver_eq_true() -> None:
-    assert TextSaver() == TextSaver()
-
-
-def test_text_saver_eq_false() -> None:
-    assert TextSaver() != TextLoader()
 
 
 def test_text_saver_equal_true() -> None:

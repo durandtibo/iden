@@ -30,16 +30,6 @@ def test_yaml_loader_str() -> None:
 
 
 @yaml_available
-def test_yaml_loader_eq_true() -> None:
-    assert YamlLoader() == YamlLoader()
-
-
-@yaml_available
-def test_yaml_loader_eq_false() -> None:
-    assert YamlLoader() != YamlSaver()
-
-
-@yaml_available
 def test_yaml_loader_equal_true() -> None:
     assert YamlLoader().equal(YamlLoader())
 
@@ -83,16 +73,6 @@ def test_yaml_loader_no_yaml() -> None:
 @yaml_available
 def test_yaml_saver_str() -> None:
     assert str(YamlSaver()).startswith("YamlSaver(")
-
-
-@yaml_available
-def test_yaml_saver_eq_true() -> None:
-    assert YamlSaver() == YamlSaver()
-
-
-@yaml_available
-def test_yaml_saver_eq_false() -> None:
-    assert YamlSaver() != YamlLoader()
 
 
 @yaml_available

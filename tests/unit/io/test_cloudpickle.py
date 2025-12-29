@@ -47,16 +47,6 @@ def test_cloudpickle_loader_str() -> None:
 
 
 @cloudpickle_available
-def test_cloudpickle_loader_eq_true() -> None:
-    assert CloudpickleLoader() == CloudpickleLoader()
-
-
-@cloudpickle_available
-def test_cloudpickle_loader_eq_false() -> None:
-    assert CloudpickleLoader() != CloudpickleSaver()
-
-
-@cloudpickle_available
 def test_cloudpickle_loader_equal_true() -> None:
     assert CloudpickleLoader().equal(CloudpickleLoader())
 
@@ -115,21 +105,6 @@ def test_cloudpickle_saver_str() -> None:
 @cloudpickle_available
 def test_cloudpickle_saver_str_with_kwargs() -> None:
     assert str(CloudpickleSaver(protocol=5)) == "CloudpickleSaver(protocol=5)"
-
-
-@cloudpickle_available
-def test_cloudpickle_saver_eq_true() -> None:
-    assert CloudpickleSaver() == CloudpickleSaver()
-
-
-@cloudpickle_available
-def test_cloudpickle_saver_eq_false_different_protocol() -> None:
-    assert CloudpickleSaver(protocol=5) != CloudpickleSaver(protocol=4)
-
-
-@cloudpickle_available
-def test_cloudpickle_saver_eq_false_different_type() -> None:
-    assert CloudpickleSaver() != CloudpickleLoader()
 
 
 @cloudpickle_available

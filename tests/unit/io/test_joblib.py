@@ -34,16 +34,6 @@ def test_joblib_loader_str() -> None:
 
 
 @joblib_available
-def test_joblib_loader_eq_true() -> None:
-    assert JoblibLoader() == JoblibLoader()
-
-
-@joblib_available
-def test_joblib_loader_eq_false() -> None:
-    assert JoblibLoader() != JoblibSaver()
-
-
-@joblib_available
 def test_joblib_loader_equal_true() -> None:
     assert JoblibLoader().equal(JoblibLoader())
 
@@ -94,21 +84,6 @@ def test_joblib_saver_str() -> None:
 @joblib_available
 def test_joblib_saver_str_with_kwargs() -> None:
     assert str(JoblibSaver(compress=3)) == "JoblibSaver(compress=3)"
-
-
-@joblib_available
-def test_joblib_saver_eq_true() -> None:
-    assert JoblibSaver() == JoblibSaver()
-
-
-@joblib_available
-def test_joblib_saver_eq_false_different_kwargs() -> None:
-    assert JoblibSaver(compress=3) != JoblibSaver(compress=2)
-
-
-@joblib_available
-def test_joblib_saver_eq_false_different_type() -> None:
-    assert JoblibSaver() != JoblibLoader()
 
 
 @joblib_available
