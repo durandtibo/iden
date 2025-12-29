@@ -31,23 +31,21 @@ class YamlShard(FileShard[T]):
         uri: The shard's URI.
         path: The path to the YAML file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import YamlShard
+        >>> from iden.io import save_yaml
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     file = Path(tmpdir).joinpath("data.yaml")
+        ...     save_yaml([1, 2, 3], file)
+        ...     shard = YamlShard(uri="file:///data/1234456789", path=file)
+        ...     shard.get_data()
+        ...
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import YamlShard
-    >>> from iden.io import save_yaml
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     file = Path(tmpdir).joinpath("data.yaml")
-    ...     save_yaml([1, 2, 3], file)
-    ...     shard = YamlShard(uri="file:///data/1234456789", path=file)
-    ...     shard.get_data()
-    ...
-    [1, 2, 3]
-
-    ```
+        ```
     """
 
     def __init__(self, uri: str, path: Path | str) -> None:
@@ -66,21 +64,20 @@ class YamlShard(FileShard[T]):
         Returns:
             The minimal config to load the shard from its URI.
 
-        Example usage:
+        Example:
+            ```pycon
 
-        ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.shard import YamlShard
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     file = Path(tmpdir).joinpath("data.yaml")
+            ...     YamlShard.generate_uri_config(file)
+            ...
+            {'kwargs': {'path': '.../data.yaml'},
+             'loader': {'_target_': 'iden.shard.loader.YamlShardLoader'}}
 
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.shard import YamlShard
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     file = Path(tmpdir).joinpath("data.yaml")
-        ...     YamlShard.generate_uri_config(file)
-        ...
-        {'kwargs': {'path': '.../data.yaml'},
-         'loader': {'_target_': 'iden.shard.loader.YamlShardLoader'}}
-
-        ```
+            ```
         """
         return {
             KWARGS: {"path": sanitize_path(path).as_posix()},
@@ -105,20 +102,18 @@ def create_yaml_shard(data: T, uri: str, path: Path | None = None) -> YamlShard[
     Returns:
         The ``YamlShard`` object.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_yaml_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shard = create_yaml_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
+        ...     shard.get_data()
+        ...
+        [1, 2, 3]
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_yaml_shard
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shard = create_yaml_shard([1, 2, 3], uri=Path(tmpdir).joinpath("my_uri").as_uri())
-    ...     shard.get_data()
-    ...
-    [1, 2, 3]
-
-    ```
+        ```
     """
     if path is None:
         path = sanitize_path(uri + ".yaml")

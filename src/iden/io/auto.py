@@ -21,23 +21,21 @@ T = TypeVar("T")
 class AutoFileLoader(BaseLoader[T]):
     r"""Implement a data loader to load data based on the file extension.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json, AutoFileLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     loader = AutoFileLoader()
+        ...     data = loader.load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_json, AutoFileLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.json")
-    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     loader = AutoFileLoader()
-    ...     data = loader.load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     registry: ClassVar[dict[str, BaseLoader[T]]] = {}
@@ -68,13 +66,12 @@ class AutoFileLoader(BaseLoader[T]):
             RuntimeError: if a loader is already registered for the
                 extension and ``exist_ok=False``.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> from iden.io import AutoFileLoader, TextLoader
+            >>> AutoFileLoader.add_loader("text", TextLoader())
 
-        ```pycon
-        >>> from iden.io import AutoFileLoader, TextLoader
-        >>> AutoFileLoader.add_loader("text", TextLoader())
-
-        ```
+            ```
         """
         if extension in cls.registry and not exist_ok:
             msg = (
@@ -97,16 +94,15 @@ class AutoFileLoader(BaseLoader[T]):
             ``True`` if a loader comparator is registered,
                 otherwise ``False``.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> from iden.io import AutoFileLoader
+            >>> AutoFileLoader.has_loader("txt")
+            True
+            >>> AutoFileLoader.has_loader("newtxt")
+            False
 
-        ```pycon
-        >>> from iden.io import AutoFileLoader
-        >>> AutoFileLoader.has_loader("txt")
-        True
-        >>> AutoFileLoader.has_loader("newtxt")
-        False
-
-        ```
+            ```
         """
         return extension in cls.registry
 
@@ -123,16 +119,15 @@ class AutoFileLoader(BaseLoader[T]):
         Raises:
             TypeError: if the file extension is not registered.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> from iden.io import AutoFileLoader
+            >>> AutoFileLoader.find_loader("txt")
+            TextLoader()
+            >>> AutoFileLoader.find_loader("json")
+            JsonLoader()
 
-        ```pycon
-        >>> from iden.io import AutoFileLoader
-        >>> AutoFileLoader.find_loader("txt")
-        TextLoader()
-        >>> AutoFileLoader.find_loader("json")
-        JsonLoader()
-
-        ```
+            ```
         """
         if (loader := cls.registry.get(extension, None)) is not None:
             return loader

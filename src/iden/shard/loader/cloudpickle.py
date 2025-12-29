@@ -15,24 +15,22 @@ T = TypeVar("T")
 class CloudpickleShardLoader(BaseShardLoader[T]):
     r"""Implement a cloudpickle shard loader.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_cloudpickle_shard
+        >>> from iden.shard.loader import CloudpickleShardLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     create_cloudpickle_shard([1, 2, 3], uri=uri)
+        ...     loader = CloudpickleShardLoader()
+        ...     shard = loader.load(uri)
+        ...     shard
+        ...
+        CloudpickleShard(uri=file:///.../my_uri)
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_cloudpickle_shard
-    >>> from iden.shard.loader import CloudpickleShardLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-    ...     _ = create_cloudpickle_shard([1, 2, 3], uri=uri)
-    ...     loader = CloudpickleShardLoader()
-    ...     shard = loader.load(uri)
-    ...     shard
-    ...
-    CloudpickleShard(uri=file:///.../my_uri)
-
-    ```
+        ```
     """
 
     def __repr__(self) -> str:

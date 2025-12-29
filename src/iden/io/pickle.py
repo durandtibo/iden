@@ -19,22 +19,20 @@ T = TypeVar("T")
 class PickleLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a pickle file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_pickle, PickleLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = PickleLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_pickle, PickleLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = PickleLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __repr__(self) -> str:
@@ -54,22 +52,20 @@ class PickleSaver(BaseFileSaver[T]):
     Args:
         **kwargs: Additional arguments passed to ``pickle.dump``.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import PickleSaver, PickleLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     PickleSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = PickleLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import PickleSaver, PickleLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     PickleSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = PickleLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self, **kwargs: Any) -> None:
@@ -97,22 +93,20 @@ def load_pickle(path: Path) -> Any:
     Returns:
         The data from the pickle file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_pickle, load_pickle
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_pickle(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_pickle, load_pickle
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_pickle(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     return PickleLoader().load(path)
 
@@ -134,22 +128,20 @@ def save_pickle(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: A
     Raises:
         FileExistsError: if the file already exists.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_pickle, load_pickle
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_pickle(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_pickle, load_pickle
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_pickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_pickle(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     PickleSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
@@ -160,15 +152,13 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.pickle import get_loader_mapping
+        >>> get_loader_mapping()
+        {'pkl': PickleLoader(), 'pickle': PickleLoader()}
 
-    ```pycon
-
-    >>> from iden.io.pickle import get_loader_mapping
-    >>> get_loader_mapping()
-    {'pkl': PickleLoader(), 'pickle': PickleLoader()}
-
-    ```
+        ```
     """
     loader = PickleLoader()
     return {"pkl": loader, "pickle": loader}

@@ -30,34 +30,32 @@ class ShardDict(BaseShard[T]):
         uri: The shard's URI.
         shards: The dictionary of shards.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.dataset import VanillaDataset
+        >>> from iden.shard import create_json_shard, ShardDict
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shards = {
+        ...         "train": create_json_shard(
+        ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shards/uri1").as_uri()
+        ...         ),
+        ...         "val": create_json_shard(
+        ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shards/uri2").as_uri()
+        ...         ),
+        ...     }
+        ...     sd = ShardDict(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
+        ...     sd
+        ...
+        ShardDict(
+          (uri): file:///.../uri
+          (shards):
+            (train): JsonShard(uri=file:///.../shards/uri1)
+            (val): JsonShard(uri=file:///.../shards/uri2)
+        )
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.dataset import VanillaDataset
-    >>> from iden.shard import create_json_shard, ShardDict
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shards = {
-    ...         "train": create_json_shard(
-    ...             [1, 2, 3], uri=Path(tmpdir).joinpath("shards/uri1").as_uri()
-    ...         ),
-    ...         "val": create_json_shard(
-    ...             [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shards/uri2").as_uri()
-    ...         ),
-    ...     }
-    ...     sd = ShardDict(uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards)
-    ...     sd
-    ...
-    ShardDict(
-      (uri): file:///.../uri
-      (shards):
-        (train): JsonShard(uri=file:///.../shards/uri1)
-        (val): JsonShard(uri=file:///.../shards/uri2)
-    )
-
-    ```
+        ```
     """
 
     def __init__(self, uri: str, shards: dict[str, BaseShard[T]]) -> None:
@@ -112,8 +110,7 @@ class ShardDict(BaseShard[T]):
         Raises:
             ShardNotFoundError: if the shard does not exist.
 
-        Example usage:
-
+        Example:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
@@ -146,8 +143,7 @@ class ShardDict(BaseShard[T]):
         Returns:
             The shard IDs.
 
-        Example usage:
-
+        Example:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
@@ -179,8 +175,7 @@ class ShardDict(BaseShard[T]):
         Returns:
             ``True`` if the shard exists, otherwise ``False``
 
-        Example usage:
-
+        Example:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
@@ -218,8 +213,7 @@ class ShardDict(BaseShard[T]):
         Returns:
             The instantiated shard.
 
-        Example usage:
-
+        Example:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
@@ -234,7 +228,7 @@ class ShardDict(BaseShard[T]):
         ...         ),
         ...     }
         ...     uri = Path(tmpdir).joinpath("uri").as_uri()
-        ...     _ = create_shard_dict(shards, uri=uri)
+        ...     create_shard_dict(shards, uri=uri)
         ...     shard = ShardDict.from_uri(uri)
         ...     shard
         ...
@@ -267,8 +261,7 @@ class ShardDict(BaseShard[T]):
         Returns:
             The minimal config to load the shard from its URI.
 
-        Example usage:
-
+        Example:
         ```pycon
         >>> import tempfile
         >>> from pathlib import Path
@@ -310,10 +303,8 @@ def create_shard_dict(shards: dict[str, BaseShard[T]], uri: str) -> ShardDict[T]
     Returns:
         The ``ShardDict`` object.
 
-    Example usage:
-
+    Example:
     ```pycon
-
     >>> import tempfile
     >>> from pathlib import Path
     >>> from iden.shard import ShardDict, create_json_shard, create_shard_dict

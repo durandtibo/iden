@@ -23,90 +23,8 @@ class BaseDataset(ABC, Generic[T]):
     class because it has a different goal. One of the goals is to help
     to organize and manage shards.
 
-    Example usage:
-
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.dataset import VanillaDataset
-    >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shards = create_shard_dict(
-    ...         shards={
-    ...             "train": create_shard_tuple(
-    ...                 [
-    ...                     create_json_shard(
-    ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-    ...                     ),
-    ...                     create_json_shard(
-    ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-    ...                     ),
-    ...                 ],
-    ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-    ...             ),
-    ...             "val": create_shard_tuple(
-    ...                 shards=[],
-    ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-    ...             ),
-    ...         },
-    ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-    ...     )
-    ...     assets = create_shard_dict(
-    ...         shards={
-    ...             "stats": create_json_shard(
-    ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-    ...             )
-    ...         },
-    ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-    ...     )
-    ...     dataset = VanillaDataset(
-    ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-    ...     )
-    ...     dataset
-    ...
-    VanillaDataset(
-      (uri): file:///.../uri
-      (shards): ShardDict(
-          (uri): file:///.../uri_shards
-          (shards):
-            (train): ShardTuple(
-                (uri): file:///.../uri_train
-                (shards):
-                  (0): JsonShard(uri=file:///.../shard/uri1)
-                  (1): JsonShard(uri=file:///.../shard/uri2)
-              )
-            (val): ShardTuple(
-                (uri): file:///.../uri_val
-                (shards):
-              )
-        )
-      (assets): ShardDict(
-          (uri): file:///.../uri_assets
-          (shards):
-            (stats): JsonShard(uri=file:///.../uri_stats)
-        )
-    )
-
-    ```
-    """
-
-    @abstractmethod
-    def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        r"""Indicate if two datasets are equal or not.
-
-        Args:
-            other: The object to compare with.
-            equal_nan: If ``True``, then two ``NaN``s will be
-                considered equal.
-
-        Returns:
-            ``True`` if the two datasets are equal, otherwise ``False``.
-
-        Example usage:
-
+    Example:
         ```pycon
-
         >>> import tempfile
         >>> from pathlib import Path
         >>> from iden.dataset import VanillaDataset
@@ -140,17 +58,95 @@ class BaseDataset(ABC, Generic[T]):
         ...         },
         ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
         ...     )
-        ...     dataset1 = VanillaDataset(
+        ...     dataset = VanillaDataset(
         ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
         ...     )
-        ...     dataset2 = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri2").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     dataset1.equal(dataset2)
+        ...     dataset
         ...
-        False
+        VanillaDataset(
+          (uri): file:///.../uri
+          (shards): ShardDict(
+              (uri): file:///.../uri_shards
+              (shards):
+                (train): ShardTuple(
+                    (uri): file:///.../uri_train
+                    (shards):
+                      (0): JsonShard(uri=file:///.../shard/uri1)
+                      (1): JsonShard(uri=file:///.../shard/uri2)
+                  )
+                (val): ShardTuple(
+                    (uri): file:///.../uri_val
+                    (shards):
+                  )
+            )
+          (assets): ShardDict(
+              (uri): file:///.../uri_assets
+              (shards):
+                (stats): JsonShard(uri=file:///.../uri_stats)
+            )
+        )
 
         ```
+    """
+
+    @abstractmethod
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two datasets are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two datasets are equal, otherwise ``False``.
+
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 [1, 2, 3], uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset1 = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset2 = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri2").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset1.equal(dataset2)
+            ...
+            False
+
+            ```
         """
 
     @abstractmethod
@@ -169,51 +165,49 @@ class BaseDataset(ABC, Generic[T]):
         Raises:
             AssetNotFoundError: if the asset does not exist.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset.get_asset("stats").get_data()
+            ...
+            {'mean': 42}
 
-        ```pycon
-
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     dataset = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     dataset.get_asset("stats").get_data()
-        ...
-        {'mean': 42}
-
-        ```
+            ```
         """
 
     @abstractmethod
@@ -226,53 +220,51 @@ class BaseDataset(ABC, Generic[T]):
         Returns:
             ``True`` if the asset exists, otherwise ``False``.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset.has_asset("stats")
+            ...     dataset.has_asset("missing")
+            ...
+            True
+            False
 
-        ```pycon
-
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     dataset = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     dataset.has_asset("stats")
-        ...     dataset.has_asset("missing")
-        ...
-        True
-        False
-
-        ```
+            ```
         """
 
     @abstractmethod
@@ -286,53 +278,51 @@ class BaseDataset(ABC, Generic[T]):
         Raises:
             SplitNotFoundError: if the split does not exist.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset.get_shards("train")
+            ...     dataset.get_shards("val")
+            ...
+            (JsonShard(uri=file:///.../uri1), JsonShard(uri=file:///.../uri2))
+            ()
 
-        ```pycon
-
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     dataset = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     dataset.get_shards("train")
-        ...     dataset.get_shards("val")
-        ...
-        (JsonShard(uri=file:///.../uri1), JsonShard(uri=file:///.../uri2))
-        ()
-
-        ```
+            ```
         """
 
     @abstractmethod
@@ -348,53 +338,51 @@ class BaseDataset(ABC, Generic[T]):
         Returns:
             The dataset splits.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset.get_num_shards("train")
+            ...     dataset.get_num_shards("val")
+            ...
+            2
+            0
 
-        ```pycon
-
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     dataset = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     dataset.get_num_shards("train")
-        ...     dataset.get_num_shards("val")
-        ...
-        2
-        0
-
-        ```
+            ```
         """
 
     @abstractmethod
@@ -404,51 +392,49 @@ class BaseDataset(ABC, Generic[T]):
         Returns:
             The dataset splits.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     sorted(dataset.get_splits())
+            ...
+            ['train', 'val']
 
-        ```pycon
-
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     dataset = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     sorted(dataset.get_splits())
-        ...
-        ['train', 'val']
-
-        ```
+            ```
         """
 
     @abstractmethod
@@ -458,53 +444,51 @@ class BaseDataset(ABC, Generic[T]):
         Returns:
             ``True`` of the split exists, otherwise ``False``
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset.has_split("train")
+            ...     dataset.has_split("missing")
+            ...
+            True
+            False
 
-        ```pycon
-
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     dataset = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     dataset.has_split("train")
-        ...     dataset.has_split("missing")
-        ...
-        True
-        False
-
-        ```
+            ```
         """
 
     @abstractmethod
@@ -514,49 +498,47 @@ class BaseDataset(ABC, Generic[T]):
         Returns:
             The dataset's URI.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset import VanillaDataset
+            >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = create_shard_dict(
+            ...         shards={
+            ...             "train": create_shard_tuple(
+            ...                 [
+            ...                     create_json_shard(
+            ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
+            ...                     ),
+            ...                     create_json_shard(
+            ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
+            ...                     ),
+            ...                 ],
+            ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
+            ...             ),
+            ...             "val": create_shard_tuple(
+            ...                 shards=[],
+            ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
+            ...             ),
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
+            ...     )
+            ...     assets = create_shard_dict(
+            ...         shards={
+            ...             "stats": create_json_shard(
+            ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
+            ...             )
+            ...         },
+            ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
+            ...     )
+            ...     dataset = VanillaDataset(
+            ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
+            ...     )
+            ...     dataset.get_uri()
+            ...
+            file:///.../uri
 
-        ```pycon
-
-        >>> import tempfile
-        >>> from pathlib import Path
-        >>> from iden.dataset import VanillaDataset
-        >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     shards = create_shard_dict(
-        ...         shards={
-        ...             "train": create_shard_tuple(
-        ...                 [
-        ...                     create_json_shard(
-        ...                         [1, 2, 3], uri=Path(tmpdir).joinpath("shard/uri1").as_uri()
-        ...                     ),
-        ...                     create_json_shard(
-        ...                         [4, 5, 6, 7], uri=Path(tmpdir).joinpath("shard/uri2").as_uri()
-        ...                     ),
-        ...                 ],
-        ...                 uri=Path(tmpdir).joinpath("uri_train").as_uri(),
-        ...             ),
-        ...             "val": create_shard_tuple(
-        ...                 shards=[],
-        ...                 uri=Path(tmpdir).joinpath("uri_val").as_uri(),
-        ...             ),
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_shards").as_uri(),
-        ...     )
-        ...     assets = create_shard_dict(
-        ...         shards={
-        ...             "stats": create_json_shard(
-        ...                 {"mean": 42}, uri=Path(tmpdir).joinpath("uri_stats").as_uri()
-        ...             )
-        ...         },
-        ...         uri=Path(tmpdir).joinpath("uri_assets").as_uri(),
-        ...     )
-        ...     dataset = VanillaDataset(
-        ...         uri=Path(tmpdir).joinpath("uri").as_uri(), shards=shards, assets=assets
-        ...     )
-        ...     dataset.get_uri()
-        ...
-        file:///.../uri
-
-        ```
+            ```
         """

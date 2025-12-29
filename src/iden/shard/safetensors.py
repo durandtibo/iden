@@ -49,24 +49,22 @@ class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
     Raises:
         RuntimeError: if ``safetensors`` or ``numpy`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> import numpy as np
+        >>> from pathlib import Path
+        >>> from iden.shard import NumpySafetensorsShard
+        >>> from iden.io.safetensors import NumpySaver
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     file = Path(tmpdir).joinpath("data.safetensors")
+        ...     NumpySaver().save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, file)
+        ...     shard = NumpySafetensorsShard(uri="file:///data/1234456789", path=file)
+        ...     dict(sorted(shard.get_data().items()))
+        ...
+        {'key1': array([[1., 1., 1.], [1., 1., 1.]]), 'key2': array([0, 1, 2, 3, 4])}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> import numpy as np
-    >>> from pathlib import Path
-    >>> from iden.shard import NumpySafetensorsShard
-    >>> from iden.io.safetensors import NumpySaver
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     file = Path(tmpdir).joinpath("data.safetensors")
-    ...     NumpySaver().save({"key1": np.ones((2, 3)), "key2": np.arange(5)}, file)
-    ...     shard = NumpySafetensorsShard(uri="file:///data/1234456789", path=file)
-    ...     dict(sorted(shard.get_data().items()))
-    ...
-    {'key1': array([[1., 1., 1.], [1., 1., 1.]]), 'key2': array([0, 1, 2, 3, 4])}
-
-    ```
+        ```
     """
 
     def __init__(self, uri: str, path: Path | str) -> None:
@@ -85,21 +83,20 @@ class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
         Returns:
             The minimal config to load the shard from its URI.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> import torch
+            >>> from pathlib import Path
+            >>> from iden.shard import NumpySafetensorsShard
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     file = Path(tmpdir).joinpath("data.safetensors")
+            ...     NumpySafetensorsShard.generate_uri_config(file)
+            ...
+            {'kwargs': {'path': '.../data.safetensors'},
+             'loader': {'_target_': 'iden.shard.loader.NumpySafetensorsShardLoader'}}
 
-        ```pycon
-        >>> import tempfile
-        >>> import torch
-        >>> from pathlib import Path
-        >>> from iden.shard import NumpySafetensorsShard
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     file = Path(tmpdir).joinpath("data.safetensors")
-        ...     NumpySafetensorsShard.generate_uri_config(file)
-        ...
-        {'kwargs': {'path': '.../data.safetensors'},
-         'loader': {'_target_': 'iden.shard.loader.NumpySafetensorsShardLoader'}}
-
-        ```
+            ```
         """
         return {
             KWARGS: {"path": sanitize_path(path).as_posix()},
@@ -119,24 +116,22 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
     Raises:
         RuntimeError: if ``safetensors`` or ``torch`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> import torch
+        >>> from pathlib import Path
+        >>> from iden.shard import TorchSafetensorsShard
+        >>> from iden.io.safetensors import TorchSaver
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     file = Path(tmpdir).joinpath("data.safetensors")
+        ...     TorchSaver().save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, file)
+        ...     shard = TorchSafetensorsShard(uri="file:///data/1234456789", path=file)
+        ...     dict(sorted(shard.get_data().items()))
+        ...
+        {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> import torch
-    >>> from pathlib import Path
-    >>> from iden.shard import TorchSafetensorsShard
-    >>> from iden.io.safetensors import TorchSaver
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     file = Path(tmpdir).joinpath("data.safetensors")
-    ...     TorchSaver().save({"key1": torch.ones(2, 3), "key2": torch.arange(5)}, file)
-    ...     shard = TorchSafetensorsShard(uri="file:///data/1234456789", path=file)
-    ...     dict(sorted(shard.get_data().items()))
-    ...
-    {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
-
-    ```
+        ```
     """
 
     def __init__(self, uri: str, path: Path | str) -> None:
@@ -155,21 +150,20 @@ class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
         Returns:
             The minimal config to load the shard from its URI.
 
-        Example usage:
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> import torch
+            >>> from pathlib import Path
+            >>> from iden.shard import TorchSafetensorsShard
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     file = Path(tmpdir).joinpath("data.safetensors")
+            ...     TorchSafetensorsShard.generate_uri_config(file)
+            ...
+            {'kwargs': {'path': '.../data.safetensors'},
+             'loader': {'_target_': 'iden.shard.loader.TorchSafetensorsShardLoader'}}
 
-        ```pycon
-        >>> import tempfile
-        >>> import torch
-        >>> from pathlib import Path
-        >>> from iden.shard import TorchSafetensorsShard
-        >>> with tempfile.TemporaryDirectory() as tmpdir:
-        ...     file = Path(tmpdir).joinpath("data.safetensors")
-        ...     TorchSafetensorsShard.generate_uri_config(file)
-        ...
-        {'kwargs': {'path': '.../data.safetensors'},
-         'loader': {'_target_': 'iden.shard.loader.TorchSafetensorsShardLoader'}}
-
-        ```
+            ```
         """
         return {
             KWARGS: {"path": sanitize_path(path).as_posix()},
@@ -199,24 +193,22 @@ def create_numpy_safetensors_shard(
     Raises:
         RuntimeError: if ``safetensors`` or ``torch`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> import torch
+        >>> from pathlib import Path
+        >>> from iden.shard import create_numpy_safetensors_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shard = create_numpy_safetensors_shard(
+        ...         data={"key1": np.ones((2, 3)), "key2": np.arange(5)},
+        ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
+        ...     )
+        ...     dict(sorted(shard.get_data().items()))
+        ...
+        {'key1': array([[1., 1., 1.], [1., 1., 1.]]), 'key2': array([0, 1, 2, 3, 4])}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> import torch
-    >>> from pathlib import Path
-    >>> from iden.shard import create_numpy_safetensors_shard
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shard = create_numpy_safetensors_shard(
-    ...         data={"key1": np.ones((2, 3)), "key2": np.arange(5)},
-    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
-    ...     )
-    ...     dict(sorted(shard.get_data().items()))
-    ...
-    {'key1': array([[1., 1., 1.], [1., 1., 1.]]), 'key2': array([0, 1, 2, 3, 4])}
-
-    ```
+        ```
     """
     if path is None:
         path = sanitize_path(uri + ".safetensors")
@@ -249,24 +241,22 @@ def create_torch_safetensors_shard(
     Raises:
         RuntimeError: if ``safetensors`` or ``torch`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> import torch
+        >>> from pathlib import Path
+        >>> from iden.shard import create_torch_safetensors_shard
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     shard = create_torch_safetensors_shard(
+        ...         data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
+        ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
+        ...     )
+        ...     dict(sorted(shard.get_data().items()))
+        ...
+        {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> import torch
-    >>> from pathlib import Path
-    >>> from iden.shard import create_torch_safetensors_shard
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     shard = create_torch_safetensors_shard(
-    ...         data={"key1": torch.ones(2, 3), "key2": torch.arange(5)},
-    ...         uri=Path(tmpdir).joinpath("my_uri").as_uri(),
-    ...     )
-    ...     dict(sorted(shard.get_data().items()))
-    ...
-    {'key1': tensor([[1., 1., 1.], [1., 1., 1.]]), 'key2': tensor([0, 1, 2, 3, 4])}
-
-    ```
+        ```
     """
     if path is None:
         path = sanitize_path(uri + ".safetensors")

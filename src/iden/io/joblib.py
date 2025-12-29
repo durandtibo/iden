@@ -31,22 +31,20 @@ class JoblibLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a pickle file with
     joblib.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_joblib, JoblibLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.joblib")
+        ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = JoblibLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_joblib, JoblibLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.joblib")
-    ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = JoblibLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self) -> None:
@@ -70,22 +68,20 @@ class JoblibSaver(BaseFileSaver[T]):
     Args:
         **kwargs: Additional arguments passed to ``joblib.dump``.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import JoblibSaver, JoblibLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.joblib")
+        ...     JoblibSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = JoblibLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import JoblibSaver, JoblibLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.joblib")
-    ...     JoblibSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = JoblibLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self, **kwargs: Any) -> None:
@@ -114,22 +110,20 @@ def load_joblib(path: Path) -> Any:
     Returns:
         The data from the pickle file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_joblib, load_joblib
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.joblib")
+        ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_joblib(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_joblib, load_joblib
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.joblib")
-    ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_joblib(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     return JoblibLoader().load(path)
 
@@ -151,22 +145,20 @@ def save_joblib(to_save: Any, path: Path, *, exist_ok: bool = False, **kwargs: A
     Raises:
         FileExistsError: if the file already exists.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_joblib, load_joblib
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.joblib")
+        ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_joblib(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_joblib, load_joblib
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.joblib")
-    ...     save_joblib({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_joblib(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     JoblibSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
@@ -177,15 +169,13 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.joblib import get_loader_mapping
+        >>> get_loader_mapping()
+        {'joblib': JoblibLoader()}
 
-    ```pycon
-
-    >>> from iden.io.joblib import get_loader_mapping
-    >>> get_loader_mapping()
-    {'joblib': JoblibLoader()}
-
-    ```
+        ```
     """
     if not is_joblib_available():
         return {}

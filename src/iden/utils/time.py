@@ -36,17 +36,15 @@ def sync_perf_counter() -> float:
             See https://docs.python.org/3/library/time.html#time.perf_counter
             for more information.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.utils.time import sync_perf_counter
+        >>> tic = sync_perf_counter()
+        >>> x = [1, 2, 3]
+        >>> toc = sync_perf_counter()
+        >>> toc - tic
 
-    ```pycon
-
-    >>> from iden.utils.time import sync_perf_counter
-    >>> tic = sync_perf_counter()
-    >>> x = [1, 2, 3]
-    >>> toc = sync_perf_counter()
-    >>> toc - tic
-
-    ```
+        ```
     """
     if is_torch_available() and torch.cuda.is_available():
         torch.cuda.synchronize()
@@ -61,19 +59,17 @@ def timeblock(message: str = "Total time: {time}") -> Generator[None, None, None
     Args:
         message: The message displayed when the time is logged.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.utils.time import timeblock
+        >>> with timeblock():
+        ...     x = [1, 2, 3]
+        ...
+        >>> with timeblock("Training: {time}"):
+        ...     y = [1, 2, 3]
+        ...
 
-    ```pycon
-
-    >>> from iden.utils.time import timeblock
-    >>> with timeblock():
-    ...     x = [1, 2, 3]
-    ...
-    >>> with timeblock("Training: {time}"):
-    ...     y = [1, 2, 3]
-    ...
-
-    ```
+        ```
     """
     if "{time}" not in message:
         msg = f"{{time}} is missing in the message (received: {message})"

@@ -22,22 +22,20 @@ T = TypeVar("T")
 class YamlLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a YAML file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_yaml, YamlLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.yaml")
+        ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = YamlLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_yaml, YamlLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.yaml")
-    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = YamlLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self) -> None:
@@ -57,22 +55,20 @@ class YamlLoader(BaseLoader[T]):
 class YamlSaver(BaseFileSaver[T]):
     r"""Implement a file saver to save data with a YAML file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import YamlSaver, YamlLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.yaml")
+        ...     YamlSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = YamlLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import YamlSaver, YamlLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.yaml")
-    ...     YamlSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = YamlLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self) -> None:
@@ -98,22 +94,20 @@ def load_yaml(path: Path) -> Any:
     Returns:
         The data from the YAML file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import load_yaml, save_yaml
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.yaml")
+        ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_yaml(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import load_yaml, save_yaml
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.yaml")
-    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_yaml(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     return YamlLoader().load(path)
 
@@ -134,22 +128,20 @@ def save_yaml(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Raises:
         FileExistsError: if the file already exists.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import load_yaml, save_yaml
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.yaml")
+        ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_yaml(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import load_yaml, save_yaml
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.yaml")
-    ...     save_yaml({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_yaml(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     YamlSaver().save(to_save, path, exist_ok=exist_ok)
 
@@ -160,15 +152,13 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.yaml import get_loader_mapping
+        >>> get_loader_mapping()
+        {'yaml': YamlLoader(), 'yml': YamlLoader()}
 
-    ```pycon
-
-    >>> from iden.io.yaml import get_loader_mapping
-    >>> get_loader_mapping()
-    {'yaml': YamlLoader(), 'yml': YamlLoader()}
-
-    ```
+        ```
     """
     if not is_yaml_available():
         return {}

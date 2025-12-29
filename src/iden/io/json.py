@@ -16,22 +16,20 @@ T = TypeVar("T")
 class JsonLoader(BaseLoader[T]):
     r"""Implement a data loader to load data in a JSON file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json, JsonLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = JsonLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_json, JsonLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.json")
-    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = JsonLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __repr__(self) -> str:
@@ -48,22 +46,20 @@ class JsonLoader(BaseLoader[T]):
 class JsonSaver(BaseFileSaver[T]):
     r"""Implement a file saver to save data with a JSON file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import JsonSaver, JsonLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = JsonLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import JsonSaver, JsonLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.json")
-    ...     JsonSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = JsonLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __repr__(self) -> str:
@@ -86,22 +82,20 @@ def load_json(path: Path) -> Any:
     Returns:
         The data from the JSON file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json, load_json
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_json(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_json, load_json
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.json")
-    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_json(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     return JsonLoader().load(path)
 
@@ -122,22 +116,20 @@ def save_json(to_save: Any, path: Path, *, exist_ok: bool = False) -> None:
     Raises:
         FileExistsError: if the file already exists.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_json, load_json
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.json")
+        ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_json(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_json, load_json
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.json")
-    ...     save_json({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_json(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     JsonSaver().save(to_save, path, exist_ok=exist_ok)
 
@@ -148,14 +140,12 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.json import get_loader_mapping
+        >>> get_loader_mapping()
+        {'json': JsonLoader()}
 
-    ```pycon
-
-    >>> from iden.io.json import get_loader_mapping
-    >>> get_loader_mapping()
-    {'json': JsonLoader()}
-
-    ```
+        ```
     """
     return {"json": JsonLoader()}

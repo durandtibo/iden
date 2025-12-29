@@ -29,22 +29,20 @@ class CloudpickleLoader(BaseLoader[Any]):
     r"""Implement a data loader to load data in a pickle file with
     cloudpickle.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_cloudpickle, CloudpickleLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = CloudpickleLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_cloudpickle, CloudpickleLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = CloudpickleLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self) -> None:
@@ -68,22 +66,20 @@ class CloudpickleSaver(BaseFileSaver[Any]):
     Args:
         **kwargs: Additional arguments passed to ``cloudpickle.dump``.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import CloudpickleSaver, CloudpickleLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     CloudpickleSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = CloudpickleLoader().load(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import CloudpickleSaver, CloudpickleLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     CloudpickleSaver().save({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = CloudpickleLoader().load(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
 
     def __init__(self, **kwargs: Any) -> None:
@@ -112,22 +108,20 @@ def load_cloudpickle(path: Path) -> Any:
     Returns:
         The data from the pickle file.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_cloudpickle, load_cloudpickle
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_cloudpickle(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_cloudpickle, load_cloudpickle
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_cloudpickle(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     return CloudpickleLoader().load(path)
 
@@ -155,22 +149,20 @@ def save_cloudpickle(
     Raises:
         FileExistsError: if the file already exists.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.io import save_cloudpickle, load_cloudpickle
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     path = Path(tmpdir).joinpath("data.pkl")
+        ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
+        ...     data = load_cloudpickle(path)
+        ...     data
+        ...
+        {'key1': [1, 2, 3], 'key2': 'abc'}
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.io import save_cloudpickle, load_cloudpickle
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     path = Path(tmpdir).joinpath("data.pkl")
-    ...     save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, path)
-    ...     data = load_cloudpickle(path)
-    ...     data
-    ...
-    {'key1': [1, 2, 3], 'key2': 'abc'}
-
-    ```
+        ```
     """
     CloudpickleSaver(**kwargs).save(to_save, path, exist_ok=exist_ok)
 
@@ -181,14 +173,12 @@ def get_loader_mapping() -> dict[str, BaseLoader[Any]]:
     Returns:
         The mapping between the file extensions and loaders.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> from iden.io.cloudpickle import get_loader_mapping
+        >>> get_loader_mapping()
+        {}
 
-    ```pycon
-
-    >>> from iden.io.cloudpickle import get_loader_mapping
-    >>> get_loader_mapping()
-    {}
-
-    ```
+        ```
     """
     return {}

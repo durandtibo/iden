@@ -20,24 +20,22 @@ class TorchShardLoader(BaseShardLoader[T]):
     Raises:
         RuntimeError: if ``torch`` is not installed.
 
-    Example usage:
+    Example:
+        ```pycon
+        >>> import tempfile
+        >>> from pathlib import Path
+        >>> from iden.shard import create_torch_shard
+        >>> from iden.shard.loader import TorchShardLoader
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
+        ...     create_torch_shard([1, 2, 3], uri=uri)
+        ...     loader = TorchShardLoader()
+        ...     shard = loader.load(uri)
+        ...     shard
+        ...
+        TorchShard(uri=file:///.../my_uri)
 
-    ```pycon
-
-    >>> import tempfile
-    >>> from pathlib import Path
-    >>> from iden.shard import create_torch_shard
-    >>> from iden.shard.loader import TorchShardLoader
-    >>> with tempfile.TemporaryDirectory() as tmpdir:
-    ...     uri = Path(tmpdir).joinpath("my_uri").as_uri()
-    ...     _ = create_torch_shard([1, 2, 3], uri=uri)
-    ...     loader = TorchShardLoader()
-    ...     shard = loader.load(uri)
-    ...     shard
-    ...
-    TorchShard(uri=file:///.../my_uri)
-
-    ```
+        ```
     """
 
     def __init__(self) -> None:
