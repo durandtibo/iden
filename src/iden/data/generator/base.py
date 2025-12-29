@@ -32,6 +32,29 @@ class BaseDataGenerator(ABC, Generic[T], metaclass=AbstractFactory):
     """
 
     @abstractmethod
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two objects are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two objects are equal, otherwise ``False``.
+
+        Example:
+            ```pycon
+            >>> from iden.data.generator import DataGenerator
+            >>> DataGenerator([1, 2, 3]).equal(DataGenerator([1, 2, 3]))
+            True
+            >>> DataGenerator([1, 2, 3]).equal(DataGenerator([]))
+            False
+
+            ```
+        """
+
+    @abstractmethod
     def generate(self) -> T:
         r"""Generate data.
 
