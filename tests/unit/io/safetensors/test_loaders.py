@@ -120,13 +120,19 @@ def test_torch_loader_equal_true() -> None:
 
 @safetensors_available
 @torch_available
-def test_torch_loader_equal_false() -> None:
+def test_torch_loader_equal_false_different_args() -> None:
+    assert not TorchLoader().equal(TorchLoader(device="cuda"))
+
+
+@safetensors_available
+@torch_available
+def test_torch_loader_equal_false_different_type() -> None:
     assert not TorchLoader().equal(42.0)
 
 
 @safetensors_available
 @torch_available
-def test_torch_loader_equal_false_child() -> None:
+def test_torch_loader_equal_false_different_type_child() -> None:
     class Child(TorchLoader): ...
 
     assert not TorchLoader().equal(Child())

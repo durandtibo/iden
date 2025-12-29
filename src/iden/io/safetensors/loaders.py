@@ -6,6 +6,7 @@ __all__ = ["NumpySafetensorsLoader", "TorchSafetensorsLoader"]
 
 from typing import TYPE_CHECKING, Any
 
+from coola import objects_are_equal
 from coola.utils import check_numpy, check_torch, is_numpy_available, is_torch_available
 from coola.utils.path import sanitize_path
 
@@ -61,7 +62,7 @@ class TorchSafetensorsLoader(BaseLoader[dict[str, torch.Tensor]]):
     Link: https://huggingface.co/docs/safetensors/en/index
     """
 
-    def __init__(self, device: str | dict[Any, Any] = "cpu") -> None:
+    def __init__(self, device: str | int = "cpu") -> None:
         check_safetensors()
         check_torch()
         self._device = device
@@ -69,8 +70,10 @@ class TorchSafetensorsLoader(BaseLoader[dict[str, torch.Tensor]]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}(device={self._device})"
 
-    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
-        return type(other) is type(self)
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if type(other) is not type(self):
+            return False
+        return objects_are_equal(self._device, other._device, equal_nan=equal_nan)
 
     def load(self, path: Path) -> dict[str, torch.Tensor]:
         return st.load_file(sanitize_path(path), device=self._device)
