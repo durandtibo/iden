@@ -15,6 +15,10 @@ from iden.utils.imports import (
     is_safetensors_available,
     is_yaml_available,
     joblib_available,
+    raise_error_cloudpickle_missing,
+    raise_error_joblib_missing,
+    raise_error_safetensors_missing,
+    raise_error_yaml_missing,
     safetensors_available,
     yaml_available,
 )
@@ -78,6 +82,11 @@ def test_cloudpickle_available_decorator_without_package() -> None:
         assert fn(2) is None
 
 
+def test_raise_error_cloudpickle_missing() -> None:
+    with pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."):
+        raise_error_cloudpickle_missing()
+
+
 ##################
 #     joblib     #
 ##################
@@ -130,6 +139,11 @@ def test_joblib_available_decorator_without_package() -> None:
             return 42 + n
 
         assert fn(2) is None
+
+
+def test_raise_error_joblib_missing() -> None:
+    with pytest.raises(RuntimeError, match=r"'joblib' package is required but not installed."):
+        raise_error_joblib_missing()
 
 
 #######################
@@ -186,6 +200,11 @@ def test_safetensors_available_decorator_without_package() -> None:
         assert fn(2) is None
 
 
+def test_raise_error_safetensors_missing() -> None:
+    with pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."):
+        raise_error_safetensors_missing()
+
+
 ################
 #     yaml     #
 ################
@@ -238,3 +257,8 @@ def test_yaml_available_decorator_without_package() -> None:
             return 42 + n
 
         assert fn(2) is None
+
+
+def test_raise_error_yaml_missing() -> None:
+    with pytest.raises(RuntimeError, match=r"'yaml' package is required but not installed."):
+        raise_error_yaml_missing()

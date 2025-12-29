@@ -13,12 +13,16 @@ __all__ = [
     "is_safetensors_available",
     "is_yaml_available",
     "joblib_available",
+    "raise_error_cloudpickle_missing",
+    "raise_error_joblib_missing",
+    "raise_error_safetensors_missing",
+    "raise_error_yaml_missing",
     "safetensors_available",
     "yaml_available",
 ]
 
 from importlib.util import find_spec
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, NoReturn
 
 from coola.utils.imports import decorator_package_available
 
@@ -38,13 +42,11 @@ def is_cloudpickle_available() -> bool:
         ``True`` if ``cloudpickle`` is available otherwise ``False``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import is_cloudpickle_available
+        >>> is_cloudpickle_available()
 
-    ```pycon
-
-    >>> from iden.utils.imports import is_cloudpickle_available
-    >>> is_cloudpickle_available()
-
-    ```
+        ```
     """
     return find_spec("cloudpickle") is not None
 
@@ -56,21 +58,14 @@ def check_cloudpickle() -> None:
         RuntimeError: if the ``cloudpickle`` package is not installed.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import check_cloudpickle
+        >>> check_cloudpickle()
 
-    ```pycon
-
-    >>> from iden.utils.imports import check_cloudpickle
-    >>> check_cloudpickle()
-
-    ```
+        ```
     """
     if not is_cloudpickle_available():
-        msg = (
-            "'cloudpickle' package is required but not installed. "
-            "You can install 'cloudpickle' package with the command:\n\n"
-            "pip install cloudpickle\n"
-        )
-        raise RuntimeError(msg)
+        raise_error_cloudpickle_missing()
 
 
 def cloudpickle_available(fn: Callable[..., Any]) -> Callable[..., Any]:
@@ -85,19 +80,28 @@ def cloudpickle_available(fn: Callable[..., Any]) -> Callable[..., Any]:
             otherwise ``None``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import cloudpickle_available
+        >>> @cloudpickle_available
+        ... def my_function(n: int = 0) -> int:
+        ...     return 42 + n
+        ...
+        >>> my_function()
 
-    ```pycon
-
-    >>> from iden.utils.imports import cloudpickle_available
-    >>> @cloudpickle_available
-    ... def my_function(n: int = 0) -> int:
-    ...     return 42 + n
-    ...
-    >>> my_function()
-
-    ```
+        ```
     """
     return decorator_package_available(fn, is_cloudpickle_available)
+
+
+def raise_error_cloudpickle_missing() -> NoReturn:
+    r"""Raise a RuntimeError to indicate the ``cloudpickle`` package is
+    missing."""
+    msg = (
+        "'cloudpickle' package is required but not installed. "
+        "You can install 'cloudpickle' package with the command:\n\n"
+        "pip install cloudpickle\n"
+    )
+    raise RuntimeError(msg)
 
 
 ##################
@@ -112,13 +116,11 @@ def is_joblib_available() -> bool:
         ``True`` if ``joblib`` is available otherwise ``False``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import is_joblib_available
+        >>> is_joblib_available()
 
-    ```pycon
-
-    >>> from iden.utils.imports import is_joblib_available
-    >>> is_joblib_available()
-
-    ```
+        ```
     """
     return find_spec("joblib") is not None
 
@@ -130,21 +132,14 @@ def check_joblib() -> None:
         RuntimeError: if the ``joblib`` package is not installed.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import check_joblib
+        >>> check_joblib()
 
-    ```pycon
-
-    >>> from iden.utils.imports import check_joblib
-    >>> check_joblib()
-
-    ```
+        ```
     """
     if not is_joblib_available():
-        msg = (
-            "'joblib' package is required but not installed. "
-            "You can install 'joblib' package with the command:\n\n"
-            "pip install joblib\n"
-        )
-        raise RuntimeError(msg)
+        raise_error_joblib_missing()
 
 
 def joblib_available(fn: Callable[..., Any]) -> Callable[..., Any]:
@@ -159,19 +154,28 @@ def joblib_available(fn: Callable[..., Any]) -> Callable[..., Any]:
             otherwise ``None``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import joblib_available
+        >>> @joblib_available
+        ... def my_function(n: int = 0) -> int:
+        ...     return 42 + n
+        ...
+        >>> my_function()
 
-    ```pycon
-
-    >>> from iden.utils.imports import joblib_available
-    >>> @joblib_available
-    ... def my_function(n: int = 0) -> int:
-    ...     return 42 + n
-    ...
-    >>> my_function()
-
-    ```
+        ```
     """
     return decorator_package_available(fn, is_joblib_available)
+
+
+def raise_error_joblib_missing() -> NoReturn:
+    r"""Raise a RuntimeError to indicate the ``joblib`` package is
+    missing."""
+    msg = (
+        "'joblib' package is required but not installed. "
+        "You can install 'joblib' package with the command:\n\n"
+        "pip install joblib\n"
+    )
+    raise RuntimeError(msg)
 
 
 #######################
@@ -186,13 +190,11 @@ def is_safetensors_available() -> bool:
         ``True`` if ``safetensors`` is available otherwise ``False``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import is_safetensors_available
+        >>> is_safetensors_available()
 
-    ```pycon
-
-    >>> from iden.utils.imports import is_safetensors_available
-    >>> is_safetensors_available()
-
-    ```
+        ```
     """
     return find_spec("safetensors") is not None
 
@@ -204,21 +206,14 @@ def check_safetensors() -> None:
         RuntimeError: if the ``safetensors`` package is not installed.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import check_safetensors
+        >>> check_safetensors()
 
-    ```pycon
-
-    >>> from iden.utils.imports import check_safetensors
-    >>> check_safetensors()
-
-    ```
+        ```
     """
     if not is_safetensors_available():
-        msg = (
-            "'safetensors' package is required but not installed. "
-            "You can install 'safetensors' package with the command:\n\n"
-            "pip install safetensors\n"
-        )
-        raise RuntimeError(msg)
+        raise_error_safetensors_missing()
 
 
 def safetensors_available(fn: Callable[..., Any]) -> Callable[..., Any]:
@@ -233,19 +228,28 @@ def safetensors_available(fn: Callable[..., Any]) -> Callable[..., Any]:
             otherwise ``None``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import safetensors_available
+        >>> @safetensors_available
+        ... def my_function(n: int = 0) -> int:
+        ...     return 42 + n
+        ...
+        >>> my_function()
 
-    ```pycon
-
-    >>> from iden.utils.imports import safetensors_available
-    >>> @safetensors_available
-    ... def my_function(n: int = 0) -> int:
-    ...     return 42 + n
-    ...
-    >>> my_function()
-
-    ```
+        ```
     """
     return decorator_package_available(fn, is_safetensors_available)
+
+
+def raise_error_safetensors_missing() -> NoReturn:
+    r"""Raise a RuntimeError to indicate the ``safetensors`` package is
+    missing."""
+    msg = (
+        "'safetensors' package is required but not installed. "
+        "You can install 'safetensors' package with the command:\n\n"
+        "pip install safetensors\n"
+    )
+    raise RuntimeError(msg)
 
 
 ################
@@ -260,13 +264,11 @@ def is_yaml_available() -> bool:
         ``True`` if ``yaml`` is available otherwise ``False``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import is_yaml_available
+        >>> is_yaml_available()
 
-    ```pycon
-
-    >>> from iden.utils.imports import is_yaml_available
-    >>> is_yaml_available()
-
-    ```
+        ```
     """
     return find_spec("yaml") is not None
 
@@ -278,21 +280,14 @@ def check_yaml() -> None:
         RuntimeError: if the ``yaml`` package is not installed.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import check_yaml
+        >>> check_yaml()
 
-    ```pycon
-
-    >>> from iden.utils.imports import check_yaml
-    >>> check_yaml()
-
-    ```
+        ```
     """
     if not is_yaml_available():
-        msg = (
-            "'yaml' package is required but not installed. "
-            "You can install 'yaml' package with the command:\n\n"
-            "pip install pyyaml\n"
-        )
-        raise RuntimeError(msg)
+        raise_error_yaml_missing()
 
 
 def yaml_available(fn: Callable[..., Any]) -> Callable[..., Any]:
@@ -307,16 +302,25 @@ def yaml_available(fn: Callable[..., Any]) -> Callable[..., Any]:
             otherwise ``None``.
 
     Example usage:
+        ```pycon
+        >>> from iden.utils.imports import yaml_available
+        >>> @yaml_available
+        ... def my_function(n: int = 0) -> int:
+        ...     return 42 + n
+        ...
+        >>> my_function()
 
-    ```pycon
-
-    >>> from iden.utils.imports import yaml_available
-    >>> @yaml_available
-    ... def my_function(n: int = 0) -> int:
-    ...     return 42 + n
-    ...
-    >>> my_function()
-
-    ```
+        ```
     """
     return decorator_package_available(fn, is_yaml_available)
+
+
+def raise_error_yaml_missing() -> NoReturn:
+    r"""Raise a RuntimeError to indicate the ``yaml`` package is
+    missing."""
+    msg = (
+        "'yaml' package is required but not installed. "
+        "You can install 'yaml' package with the command:\n\n"
+        "pip install pyyaml\n"
+    )
+    raise RuntimeError(msg)
