@@ -13,6 +13,7 @@ __all__ = [
     "JoblibSaver",
     "JsonLoader",
     "JsonSaver",
+    "LoaderRegistry",
     "PickleLoader",
     "PickleSaver",
     "TextLoader",
@@ -60,6 +61,7 @@ from iden.io.cloudpickle import (
 from iden.io.joblib import JoblibLoader, JoblibSaver, load_joblib, save_joblib
 from iden.io.json import JsonLoader, JsonSaver, load_json, save_json
 from iden.io.pickle import PickleLoader, PickleSaver, load_pickle, save_pickle
+from iden.io.registry import LoaderRegistry
 from iden.io.text import TextLoader, TextSaver, load_text, save_text
 from iden.io.torch import TorchLoader, TorchSaver, load_torch, save_torch
 from iden.io.yaml import YamlLoader, YamlSaver, load_yaml, save_yaml
