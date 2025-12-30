@@ -9,7 +9,7 @@ from typing import Any, Generic, TypeVar
 
 from coola.equality.testers import EqualityTester
 
-from iden.utils.comparator import IdenEqualityComparator
+from iden.utils.comparator import ObjectEqualityComparator
 
 T = TypeVar("T")
 
@@ -186,4 +186,4 @@ class BaseShard(ABC, Generic[T]):
 
 
 if not EqualityTester.has_comparator(BaseShard):  # pragma: no cover
-    EqualityTester.add_comparator(BaseShard, IdenEqualityComparator())
+    EqualityTester.add_comparator(BaseShard, ObjectEqualityComparator())
