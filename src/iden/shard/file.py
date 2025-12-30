@@ -76,11 +76,11 @@ class FileShard(BaseShard[T]):
         self._data = None
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+        if type(other) is not type(self):
             return False
-        return objects_are_equal(
-            self.get_uri(), other.get_uri(), equal_nan=equal_nan
-        ) and objects_are_equal(self.path, other.path, equal_nan=equal_nan)
+        return self.get_uri() == other.get_uri() and objects_are_equal(
+            self.path, other.path, equal_nan=equal_nan
+        )
 
     def get_data(self, cache: bool = False) -> T:
         if not self._is_cached:
