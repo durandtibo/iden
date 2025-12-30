@@ -43,6 +43,30 @@ class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
         ```
     """
 
+    # @abstractmethod
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two objects are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two objects are equal, otherwise ``False``.
+
+        Example:
+            ```pycon
+            >>> from iden.shard.loader import JsonShardLoader, PickleShardLoader
+            >>> JsonShardLoader().equal(JsonShardLoader())
+            True
+            >>> JsonShardLoader().equal(PickleShardLoader())
+            False
+
+            ```
+        """
+        raise NotImplementedError
+
     @abstractmethod
     def load(self, uri: str) -> BaseShard[T]:
         r"""Load a shard from its Uniform Resource Identifier (URI).
