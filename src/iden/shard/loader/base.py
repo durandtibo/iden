@@ -8,8 +8,11 @@ import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
+from coola.equality.testers import EqualityTester
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
+
+from iden.utils.comparator import IdenEqualityComparator
 
 if TYPE_CHECKING:
     from iden.shard import BaseShard
@@ -149,3 +152,7 @@ def setup_shard_loader(shard_loader: BaseShardLoader[T] | dict[Any, Any]) -> Bas
     if not isinstance(shard_loader, BaseShardLoader):
         logger.warning(f"shard loader is not a BaseShardLoader (received: {type(shard_loader)})")
     return shard_loader
+
+
+if not EqualityTester.has_comparator(BaseShardLoader):  # pragma: no cover
+    EqualityTester.add_comparator(BaseShardLoader, IdenEqualityComparator())
