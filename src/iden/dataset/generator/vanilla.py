@@ -114,7 +114,7 @@ class VanillaDatasetGenerator(BaseDatasetGenerator[tuple[BaseShard[T], ...]]):
         if type(other) is not type(self):
             return False
         return (
-            objects_are_equal(self._path_uri, other._path_uri, equal_nan=equal_nan)
+            self._path_uri == other._path_uri
             and objects_are_equal(self._shards, other._shards, equal_nan=equal_nan)
             and objects_are_equal(self._assets, other._assets, equal_nan=equal_nan)
         )
