@@ -7,7 +7,6 @@ __all__ = ["VanillaDataset", "check_shards", "create_vanilla_dataset"]
 import logging
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from coola import objects_are_equal
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
@@ -136,9 +135,9 @@ class VanillaDataset(BaseDataset[T]):
         if type(other) is not type(self):
             return False
         return (
-            objects_are_equal(self.get_uri(), other.get_uri(), equal_nan=equal_nan)
-            and objects_are_equal(self._shards, other._shards, equal_nan=equal_nan)
-            and objects_are_equal(self._assets, other._assets, equal_nan=equal_nan)
+            self.get_uri() == other.get_uri()
+            and self._shards.equal(other._shards, equal_nan=equal_nan)
+            and self._assets.equal(other._assets, equal_nan=equal_nan)
         )
 
     def get_asset(self, asset_id: str) -> BaseShard[Any]:

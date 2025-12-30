@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from coola import objects_are_equal
@@ -14,6 +14,7 @@ from iden.dataset.vanilla import check_shards, create_vanilla_dataset
 from iden.io import JsonSaver
 from iden.shard import (
     BaseShard,
+    InMemoryShard,
     ShardDict,
     ShardTuple,
     create_json_shard,
@@ -97,6 +98,22 @@ def dataset(
     return VanillaDataset(uri=uri, shards=shards, assets=assets)
 
 
+def create_dataset(path: Path, data: Any) -> VanillaDataset:
+    return VanillaDataset(
+        uri=path.joinpath("uri").as_uri(),
+        shards=ShardDict(
+            uri=path.joinpath("shards").as_uri(),
+            shards={
+                "key": ShardTuple(
+                    uri=path.joinpath("shards/key").as_uri(),
+                    shards=[InMemoryShard(data)],
+                )
+            },
+        ),
+        assets=ShardDict(uri=path.joinpath("assets").as_uri(), shards={}),
+    )
+
+
 ####################################
 #     Tests for VanillaDataset     #
 ####################################
@@ -163,6 +180,18 @@ def test_vanilla_dataset_equal_false_different_type_child(
 
     assert not VanillaDataset(uri=uri, shards=shards, assets=assets).equal(
         Child(uri=uri, shards=shards, assets=assets)
+    )
+
+
+def test_vanilla_dataset_equal_true_equal_nan(tmp_path: Path) -> None:
+    assert create_dataset(path=tmp_path, data=[1, 2, 3, float("nan")]).equal(
+        create_dataset(path=tmp_path, data=[1, 2, 3, float("nan")]), equal_nan=True
+    )
+
+
+def test_vanilla_dataset_equal_false_equal_nan(tmp_path: Path) -> None:
+    assert not create_dataset(path=tmp_path, data=[1, 2, 3, float("nan")]).equal(
+        create_dataset(path=tmp_path, data=[1, 2, 3, float("nan")])
     )
 
 
