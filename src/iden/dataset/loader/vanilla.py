@@ -5,7 +5,7 @@ from __future__ import annotations
 
 __all__ = ["VanillaDatasetLoader"]
 
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from iden.dataset.loader.base import BaseDatasetLoader
 from iden.dataset.vanilla import VanillaDataset
@@ -86,6 +86,9 @@ class VanillaDatasetLoader(BaseDatasetLoader[T]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return type(other) is type(self)
 
     def load(self, uri: str) -> VanillaDataset[T]:
         return VanillaDataset.from_uri(uri)
