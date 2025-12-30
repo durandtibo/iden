@@ -36,6 +36,115 @@ def test_json_shard_generator_str(tmp_path: Path) -> None:
     ).startswith("JsonShardGenerator(")
 
 
+def test_json_shard_generator_equal_true(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert generator1.equal(generator2)
+
+
+def test_json_shard_generator_equal_false_different_data(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_json_shard_generator_equal_false_different_path_uri(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("other/uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_json_shard_generator_equal_false_different_path_shard(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("other/shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_json_shard_generator_equal_false_different_type(tmp_path: Path) -> None:
+    generator = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator.equal(42)
+
+
+def test_json_shard_generator_equal_false_different_type_child(tmp_path: Path) -> None:
+    class Child(JsonShardGenerator): ...
+
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = Child(
+        data=DataGenerator([1, 2, 3]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_json_shard_generator_equal_true_equal_nan(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert generator1.equal(generator2, equal_nan=True)
+
+
+def test_json_shard_generator_equal_false_equal_nan(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
 def test_json_shard_generator_generate(tmp_path: Path) -> None:
     generator = JsonShardGenerator(
         data=DataGenerator([1, 2, 3]),

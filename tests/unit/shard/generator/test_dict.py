@@ -53,6 +53,166 @@ def test_shard_dict_generator_str(tmp_path: Path) -> None:
     assert str(generator).startswith("ShardDictGenerator(")
 
 
+def test_shard_dict_generator_equal_true(tmp_path: Path) -> None:
+    generator1 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    generator2 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    assert generator1.equal(generator2)
+
+
+def test_shard_dict_generator_equal_false_different_shards(tmp_path: Path) -> None:
+    generator1 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    generator2 = ShardDictGenerator(
+        shards={
+            "val": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_shard_dict_generator_equal_false_different_path_uri(tmp_path: Path) -> None:
+    generator1 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    generator2 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path.joinpath("other"),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_shard_dict_generator_equal_false_different_type(tmp_path: Path) -> None:
+    generator = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    assert not generator.equal(42)
+
+
+def test_shard_dict_generator_equal_false_different_type_child(tmp_path: Path) -> None:
+    class Child(ShardDictGenerator): ...
+
+    generator1 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    generator2 = Child(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_shard_dict_generator_equal_true_equal_nan(tmp_path: Path) -> None:
+    generator1 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3, float("nan")]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    generator2 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3, float("nan")]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    assert generator1.equal(generator2, equal_nan=True)
+
+
+def test_shard_dict_generator_equal_false_equal_nan(tmp_path: Path) -> None:
+    generator1 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3, float("nan")]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    generator2 = ShardDictGenerator(
+        shards={
+            "train": JsonShardGenerator(
+                path_shard=tmp_path.joinpath("shards/data"),
+                path_uri=tmp_path.joinpath("shards/uri"),
+                data=DataGenerator([1, 2, 3, float("nan")]),
+            ),
+        },
+        path_uri=tmp_path,
+    )
+    assert not generator1.equal(generator2)
+
+
 def test_shard_dict_generator_generate(tmp_path: Path) -> None:
     generator = ShardDictGenerator(
         shards={

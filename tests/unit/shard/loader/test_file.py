@@ -29,8 +29,31 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 #####################################
 
 
+def test_file_shard_loader_repr() -> None:
+    assert repr(FileShardLoader()).startswith("FileShardLoader(")
+
+
 def test_file_shard_loader_str() -> None:
     assert str(FileShardLoader()).startswith("FileShardLoader(")
+
+
+def test_file_shard_loader_equal_true() -> None:
+    assert FileShardLoader().equal(FileShardLoader())
+
+
+def test_file_shard_loader_equal_false_different_type() -> None:
+    assert not FileShardLoader().equal(42)
+
+
+def test_file_shard_loader_equal_false_different_type_child() -> None:
+    class Child(FileShardLoader): ...
+
+    assert not FileShardLoader().equal(Child())
+
+
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_file_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert FileShardLoader().equal(FileShardLoader(), equal_nan=equal_nan)
 
 
 def test_file_shard_loader_load(uri: str, path: Path) -> None:

@@ -32,8 +32,36 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 
 
 @yaml_available
+def test_yaml_shard_loader_repr() -> None:
+    assert repr(YamlShardLoader()).startswith("YamlShardLoader(")
+
+
+@yaml_available
 def test_yaml_shard_loader_str() -> None:
     assert str(YamlShardLoader()).startswith("YamlShardLoader(")
+
+
+@yaml_available
+def test_yaml_shard_loader_equal_true() -> None:
+    assert YamlShardLoader().equal(YamlShardLoader())
+
+
+@yaml_available
+def test_yaml_shard_loader_equal_false_different_type() -> None:
+    assert not YamlShardLoader().equal(42)
+
+
+@yaml_available
+def test_yaml_shard_loader_equal_false_different_type_child() -> None:
+    class Child(YamlShardLoader): ...
+
+    assert not YamlShardLoader().equal(Child())
+
+
+@yaml_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_yaml_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert YamlShardLoader().equal(YamlShardLoader(), equal_nan=equal_nan)
 
 
 @yaml_available
@@ -43,7 +71,7 @@ def test_yaml_shard_loader_load(uri: str, path: Path) -> None:
     assert objects_are_equal(shard.get_data(), {"key1": [1, 2, 3], "key2": "abc"})
 
 
-def test_torch_shard_loader_no_torch() -> None:
+def test_yaml_shard_loader_no_torch() -> None:
     with (
         patch("iden.utils.imports.is_yaml_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'yaml' package is required but not installed."),

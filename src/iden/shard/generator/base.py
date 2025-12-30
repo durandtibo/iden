@@ -8,8 +8,11 @@ import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
+from coola.equality.testers import EqualityTester
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
+
+from iden.utils.comparator import IdenEqualityComparator
 
 if TYPE_CHECKING:
     from iden.shard import BaseShard
@@ -47,6 +50,49 @@ class BaseShardGenerator(ABC, Generic[T], metaclass=AbstractFactory):
 
         ```
     """
+
+    @abstractmethod
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two objects are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two objects are equal, otherwise ``False``.
+
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.data.generator import DataGenerator
+            >>> from iden.shard.generator import JsonShardGenerator
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     generator1 = JsonShardGenerator(
+            ...         data=DataGenerator([1, 2, 3]),
+            ...         path_uri=Path(tmpdir).joinpath("uri"),
+            ...         path_shard=Path(tmpdir).joinpath("data"),
+            ...     )
+            ...     generator2 = JsonShardGenerator(
+            ...         data=DataGenerator([1, 2, 3]),
+            ...         path_uri=Path(tmpdir).joinpath("uri"),
+            ...         path_shard=Path(tmpdir).joinpath("data"),
+            ...     )
+            ...     generator3 = JsonShardGenerator(
+            ...         data=DataGenerator([]),
+            ...         path_uri=Path(tmpdir).joinpath("uri"),
+            ...         path_shard=Path(tmpdir).joinpath("data"),
+            ...     )
+            ...     generator1.equal(generator2)
+            ...     generator1.equal(generator3)
+            ...
+            True
+            False
+
+            ```
+        """
 
     @abstractmethod
     def generate(self, shard_id: str) -> BaseShard[T]:
@@ -152,3 +198,7 @@ def setup_shard_generator(
             f"shard generator is not a BaseShardGenerator (received: {type(shard_generator)})"
         )
     return shard_generator
+
+
+if not EqualityTester.has_comparator(BaseShardGenerator):  # pragma: no cover
+    EqualityTester.add_comparator(BaseShardGenerator, IdenEqualityComparator())

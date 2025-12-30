@@ -4,6 +4,7 @@ from __future__ import annotations
 
 __all__ = ["NumpySafetensorsShardLoader", "TorchSafetensorsShardLoader"]
 
+from typing import Any
 
 from coola.utils import check_numpy, check_torch, is_numpy_available, is_torch_available
 
@@ -56,6 +57,9 @@ class NumpySafetensorsShardLoader(BaseShardLoader[dict[str, np.ndarray]]):
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
 
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return type(other) is type(self)
+
     def load(self, uri: str) -> NumpySafetensorsShard:
         return NumpySafetensorsShard.from_uri(uri)
 
@@ -93,6 +97,9 @@ class TorchSafetensorsShardLoader(BaseShardLoader[dict[str, torch.Tensor]]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return type(other) is type(self)
 
     def load(self, uri: str) -> TorchSafetensorsShard:
         return TorchSafetensorsShard.from_uri(uri)

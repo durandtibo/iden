@@ -3,11 +3,13 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from coola.equality.testers import EqualityTester
 from objectory import OBJECT_TARGET
 
 from iden.data.generator import DataGenerator
 from iden.shard import JsonShard
 from iden.shard.generator import (
+    BaseShardGenerator,
     JsonShardGenerator,
     is_shard_generator_config,
     setup_shard_generator,
@@ -72,3 +74,7 @@ def test_setup_shard_generator_incorrect_type(
             JsonShard,
         )
         assert caplog.messages
+
+
+def test_equality_tester_has_comparator() -> None:
+    assert EqualityTester.has_comparator(BaseShardGenerator)

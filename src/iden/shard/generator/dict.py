@@ -6,6 +6,7 @@ __all__ = ["ShardDictGenerator"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
+from coola import objects_are_equal
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 
 from iden.shard import BaseShard, ShardDict, create_shard_dict
@@ -91,6 +92,14 @@ class ShardDictGenerator(BaseShardGenerator[dict[str, BaseShard[T]]]):
             )
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if type(other) is not type(self):
+            return False
+        return (
+            objects_are_equal(self._shards, other._shards, equal_nan=equal_nan)
+            and self._path_uri == other._path_uri
+        )
 
     def generate(self, shard_id: str) -> ShardDict[T]:
         shards = {key: shard.generate(str(key)) for key, shard in self._shards.items()}

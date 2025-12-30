@@ -22,12 +22,10 @@ if is_numpy_available():
 else:  # pragma: no cover
     np = Mock()
 
-
 if is_torch_available():
     import torch
 else:  # pragma: no cover
     torch = Mock()
-
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -68,8 +66,41 @@ def uri_torch(tmp_path_factory: pytest.TempPathFactory, path_torch: Path) -> str
 
 @safetensors_available
 @numpy_available
+def test_numpy_safetensors_shard_loader_repr() -> None:
+    assert repr(NumpySafetensorsShardLoader()).startswith("NumpySafetensorsShardLoader(")
+
+
+@safetensors_available
+@numpy_available
 def test_numpy_safetensors_shard_loader_str() -> None:
     assert str(NumpySafetensorsShardLoader()).startswith("NumpySafetensorsShardLoader(")
+
+
+@safetensors_available
+@numpy_available
+def test_numpy_safetensors_shard_loader_equal_true() -> None:
+    assert NumpySafetensorsShardLoader().equal(NumpySafetensorsShardLoader())
+
+
+@safetensors_available
+@numpy_available
+def test_numpy_safetensors_shard_loader_equal_false_different_type() -> None:
+    assert not NumpySafetensorsShardLoader().equal(42)
+
+
+@safetensors_available
+@numpy_available
+def test_numpy_safetensors_shard_loader_equal_false_different_type_child() -> None:
+    class Child(NumpySafetensorsShardLoader): ...
+
+    assert not NumpySafetensorsShardLoader().equal(Child())
+
+
+@safetensors_available
+@numpy_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_numpy_safetensors_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert NumpySafetensorsShardLoader().equal(NumpySafetensorsShardLoader(), equal_nan=equal_nan)
 
 
 @safetensors_available
@@ -104,8 +135,41 @@ def test_numpy_safetensors_shard_loader_no_numpy() -> None:
 
 @safetensors_available
 @torch_available
+def test_torch_safetensors_shard_loader_repr() -> None:
+    assert repr(TorchSafetensorsShardLoader()).startswith("TorchSafetensorsShardLoader(")
+
+
+@safetensors_available
+@torch_available
 def test_torch_safetensors_shard_loader_str() -> None:
     assert str(TorchSafetensorsShardLoader()).startswith("TorchSafetensorsShardLoader(")
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_loader_equal_true() -> None:
+    assert TorchSafetensorsShardLoader().equal(TorchSafetensorsShardLoader())
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_loader_equal_false_different_type() -> None:
+    assert not TorchSafetensorsShardLoader().equal(42)
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_loader_equal_false_different_type_child() -> None:
+    class Child(TorchSafetensorsShardLoader): ...
+
+    assert not TorchSafetensorsShardLoader().equal(Child())
+
+
+@safetensors_available
+@torch_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_torch_safetensors_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert TorchSafetensorsShardLoader().equal(TorchSafetensorsShardLoader(), equal_nan=equal_nan)
 
 
 @safetensors_available
