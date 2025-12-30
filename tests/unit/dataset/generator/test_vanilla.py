@@ -134,6 +134,86 @@ def test_vanilla_dataset_generator_equal_false_different_type_child(tmp_path: Pa
     assert not generator1.equal(generator2)
 
 
+def test_vanilla_dataset_generator_equal_true_equal_nan(tmp_path: Path) -> None:
+    generator1 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(
+            path_uri=tmp_path.joinpath("uri/shards"),
+            shards={
+                "train": ShardTupleGenerator(
+                    shard=JsonShardGenerator(
+                        path_shard=tmp_path.joinpath("data/shards/train/shards"),
+                        path_uri=tmp_path.joinpath("uri/shards/train/shards"),
+                        data=DataGenerator([1, 2, 3, float("nan")]),
+                    ),
+                    num_shards=2,
+                    path_uri=tmp_path.joinpath("uri/shards/train"),
+                ),
+            },
+        ),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    generator2 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(
+            path_uri=tmp_path.joinpath("uri/shards"),
+            shards={
+                "train": ShardTupleGenerator(
+                    shard=JsonShardGenerator(
+                        path_shard=tmp_path.joinpath("data/shards/train/shards"),
+                        path_uri=tmp_path.joinpath("uri/shards/train/shards"),
+                        data=DataGenerator([1, 2, 3, float("nan")]),
+                    ),
+                    num_shards=2,
+                    path_uri=tmp_path.joinpath("uri/shards/train"),
+                ),
+            },
+        ),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    assert generator1.equal(generator2, equal_nan=True)
+
+
+def test_vanilla_dataset_generator_equal_false_equal_nan(tmp_path: Path) -> None:
+    generator1 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(
+            path_uri=tmp_path.joinpath("uri/shards"),
+            shards={
+                "train": ShardTupleGenerator(
+                    shard=JsonShardGenerator(
+                        path_shard=tmp_path.joinpath("data/shards/train/shards"),
+                        path_uri=tmp_path.joinpath("uri/shards/train/shards"),
+                        data=DataGenerator([1, 2, 3, float("nan")]),
+                    ),
+                    num_shards=2,
+                    path_uri=tmp_path.joinpath("uri/shards/train"),
+                ),
+            },
+        ),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    generator2 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(
+            path_uri=tmp_path.joinpath("uri/shards"),
+            shards={
+                "train": ShardTupleGenerator(
+                    shard=JsonShardGenerator(
+                        path_shard=tmp_path.joinpath("data/shards/train/shards"),
+                        path_uri=tmp_path.joinpath("uri/shards/train/shards"),
+                        data=DataGenerator([1, 2, 3, float("nan")]),
+                    ),
+                    num_shards=2,
+                    path_uri=tmp_path.joinpath("uri/shards/train"),
+                ),
+            },
+        ),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    assert not generator1.equal(generator2)
+
+
 def test_vanilla_dataset_generator_generate(tmp_path: Path) -> None:
     generator = create_dataset_generator(tmp_path)
     dataset = generator.generate("001111")
