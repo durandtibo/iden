@@ -6,6 +6,7 @@ import pytest
 from coola.equality import EqualityConfig
 from coola.equality.testers import EqualityTester
 
+from iden.io import JsonLoader, JsonSaver, PickleSaver
 from iden.shard import InMemoryShard
 from iden.utils.comparator import ObjectEqualityComparator
 from tests.unit.helpers import ExamplePair
@@ -17,6 +18,14 @@ def config() -> EqualityConfig:
 
 
 OBJECT_EQUAL = [
+    pytest.param(
+        ExamplePair(actual=JsonLoader(), expected=JsonLoader()),
+        id="json loader",
+    ),
+    pytest.param(
+        ExamplePair(actual=JsonSaver(), expected=JsonSaver()),
+        id="json saver",
+    ),
     pytest.param(
         ExamplePair(actual=InMemoryShard([]), expected=InMemoryShard([])),
         id="shard list empty",
@@ -37,6 +46,22 @@ OBJECT_EQUAL = [
     ),
 ]
 OBJECT_NOT_EQUAL = [
+    pytest.param(
+        ExamplePair(
+            actual=PickleSaver(protocol=5),
+            expected=PickleSaver(),
+            expected_message="objects are not equal:",
+        ),
+        id="saver different values",
+    ),
+    pytest.param(
+        ExamplePair(
+            actual=JsonSaver(),
+            expected=JsonLoader(),
+            expected_message="objects have different types:",
+        ),
+        id="saver different types",
+    ),
     pytest.param(
         ExamplePair(
             actual=InMemoryShard([1, 2, 3]),
@@ -64,6 +89,14 @@ OBJECT_NOT_EQUAL = [
 ]
 OBJECT_EQUAL_TOLERANCE = [
     pytest.param(
+        ExamplePair(actual=JsonLoader(), expected=JsonLoader(), atol=1.0),
+        id="loader atol=1",
+    ),
+    pytest.param(
+        ExamplePair(actual=JsonLoader(), expected=JsonLoader(), rtol=1.0),
+        id="loader rtol=1",
+    ),
+    pytest.param(
         ExamplePair(actual=InMemoryShard([1, 2, 3]), expected=InMemoryShard([1, 2, 4]), atol=1.0),
         id="shard atol=1",
     ),
@@ -79,8 +112,12 @@ OBJECT_EQUAL_TOLERANCE = [
 ##############################################
 
 
+def test_object_equality_comparator_repr() -> None:
+    assert repr(ObjectEqualityComparator()) == "ObjectEqualityComparator()"
+
+
 def test_object_equality_comparator_str() -> None:
-    assert str(ObjectEqualityComparator()) == "IdenEqualityComparator()"
+    assert str(ObjectEqualityComparator()) == "ObjectEqualityComparator()"
 
 
 def test_object_equality_comparator__eq__true() -> None:
