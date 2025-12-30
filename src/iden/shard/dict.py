@@ -86,11 +86,11 @@ class ShardDict(BaseShard[T]):
             shard.clear()
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+        if type(other) is not type(self):
             return False
-        return objects_are_equal(
-            self.get_uri(), other.get_uri(), equal_nan=equal_nan
-        ) and objects_are_equal(self.get_data(), other.get_data(), equal_nan=equal_nan)
+        return self.get_uri() == other.get_uri() and objects_are_equal(
+            self.get_data(), other.get_data(), equal_nan=equal_nan
+        )
 
     def get_data(self, cache: bool = False) -> dict[str, BaseShard[T]]:  # noqa: ARG002
         return self._shards.copy()
