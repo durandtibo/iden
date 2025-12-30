@@ -36,6 +36,27 @@ class BaseDatasetLoader(ABC, Generic[T], metaclass=AbstractFactory):
     """
 
     @abstractmethod
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two objects are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two objects are equal, otherwise ``False``.
+
+        Example:
+            ```pycon
+            >>> from iden.dataset.loader import VanillaDatasetLoader
+            >>> VanillaDatasetLoader().equal(VanillaDatasetLoader())
+            True
+
+            ```
+        """
+
+    @abstractmethod
     def load(self, uri: str) -> BaseDataset[T]:
         r"""Load a dataset from its Uniform Resource Identifier (URI).
 

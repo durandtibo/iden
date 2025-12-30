@@ -93,8 +93,26 @@ def dataset(
 ##########################################
 
 
+def test_vanilla_dataset_loader_repr() -> None:
+    assert str(VanillaDatasetLoader()).startswith("VanillaDatasetLoader(")
+
+
 def test_vanilla_dataset_loader_str() -> None:
     assert str(VanillaDatasetLoader()).startswith("VanillaDatasetLoader(")
+
+
+def test_vanilla_dataset_loader_equal_true() -> None:
+    assert VanillaDatasetLoader().equal(VanillaDatasetLoader())
+
+
+def test_vanilla_dataset_loader_equal_false_different_type() -> None:
+    assert not VanillaDatasetLoader().equal(42)
+
+
+def test_vanilla_dataset_loader_equal_false_different_type_child() -> None:
+    class Child(VanillaDatasetLoader): ...
+
+    assert not VanillaDatasetLoader().equal(Child())
 
 
 def test_vanilla_dataset_loader_load(uri: str, dataset: VanillaDataset) -> None:
