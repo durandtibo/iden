@@ -69,6 +69,51 @@ class BaseDatasetGenerator(ABC, Generic[T], metaclass=AbstractFactory):
     """
 
     @abstractmethod
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        r"""Indicate if two objects are equal or not.
+
+        Args:
+            other: The object to compare with.
+            equal_nan: If ``True``, then two ``NaN``s will be
+                considered equal.
+
+        Returns:
+            ``True`` if the two objects are equal, otherwise ``False``.
+
+        Example:
+            ```pycon
+            >>> import tempfile
+            >>> from pathlib import Path
+            >>> from iden.dataset.generator import VanillaDatasetGenerator
+            >>> from iden.shard.generator import ShardDictGenerator
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     shards = ShardDictGenerator(path_uri=Path(tmpdir).joinpath("uri/shards"), shards={})
+            ...     assets = ShardDictGenerator(path_uri=Path(tmpdir).joinpath("uri/assets"), shards={})
+            ...     generator1 = VanillaDatasetGenerator(
+            ...         path_uri=Path(tmpdir).joinpath("uri"),
+            ...         shards=shards,
+            ...         assets=assets,
+            ...     )
+            ...     generator2 = VanillaDatasetGenerator(
+            ...         path_uri=Path(tmpdir).joinpath("uri"),
+            ...         shards=shards,
+            ...         assets=assets,
+            ...     )
+            ...     generator3 = VanillaDatasetGenerator(
+            ...         path_uri=Path(tmpdir).joinpath("uri2"),
+            ...         shards=shards,
+            ...         assets=assets,
+            ...     )
+            ...     generator1.equal(generator2)
+            ...     generator1.equal(generator3)
+            ...
+            True
+            False
+
+            ```
+        """
+
+    @abstractmethod
     def generate(self, dataset_id: str) -> BaseDataset[T]:
         r"""Generate a dataset.
 
