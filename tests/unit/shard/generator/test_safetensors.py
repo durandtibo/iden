@@ -154,6 +154,38 @@ def test_numpy_safetensors_shard_generator_equal_false_different_type_child(tmp_
 
 @safetensors_available
 @numpy_available
+def test_numpy_safetensors_shard_generator_equal_true_equal_nan(tmp_path: Path) -> None:
+    generator1 = NumpySafetensorsShardGenerator(
+        data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.array([float("nan")])}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = NumpySafetensorsShardGenerator(
+        data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.array([float("nan")])}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert generator1.equal(generator2, equal_nan=True)
+
+
+@safetensors_available
+@numpy_available
+def test_numpy_safetensors_shard_generator_equal_false_equal_nan(tmp_path: Path) -> None:
+    generator1 = NumpySafetensorsShardGenerator(
+        data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.array([float("nan")])}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = NumpySafetensorsShardGenerator(
+        data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.array([float("nan")])}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
+@safetensors_available
+@numpy_available
 def test_numpy_safetensors_shard_generator_generate(tmp_path: Path) -> None:
     generator = NumpySafetensorsShardGenerator(
         data=DataGenerator({"key1": np.ones((2, 3)), "key2": np.arange(5)}),
@@ -311,6 +343,38 @@ def test_torch_safetensors_shard_generator_equal_false_different_type_child(tmp_
     )
     generator2 = Child(
         data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.arange(5)}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_generator_equal_true_equal_nan(tmp_path: Path) -> None:
+    generator1 = TorchSafetensorsShardGenerator(
+        data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.tensor([float("nan")])}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = TorchSafetensorsShardGenerator(
+        data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.tensor([float("nan")])}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert generator1.equal(generator2, equal_nan=True)
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_generator_equal_false_equal_nan(tmp_path: Path) -> None:
+    generator1 = TorchSafetensorsShardGenerator(
+        data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.tensor([float("nan")])}),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = TorchSafetensorsShardGenerator(
+        data=DataGenerator({"key1": torch.ones(2, 3), "key2": torch.tensor([float("nan")])}),
         path_uri=tmp_path.joinpath("uri"),
         path_shard=tmp_path.joinpath("shard"),
     )

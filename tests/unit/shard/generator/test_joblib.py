@@ -129,6 +129,36 @@ def test_joblib_shard_generator_equal_false_different_type_child(tmp_path: Path)
 
 
 @joblib_available
+def test_joblib_shard_generator_equal_true_equal_nan(tmp_path: Path) -> None:
+    generator1 = JoblibShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JoblibShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert generator1.equal(generator2, equal_nan=True)
+
+
+@joblib_available
+def test_joblib_shard_generator_equal_false_equal_nan(tmp_path: Path) -> None:
+    generator1 = JoblibShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JoblibShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not generator1.equal(generator2)
+
+
+@joblib_available
 def test_joblib_shard_generator_generate(tmp_path: Path) -> None:
     generator = JoblibShardGenerator(
         data=DataGenerator([1, 2, 3]),
