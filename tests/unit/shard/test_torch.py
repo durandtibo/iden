@@ -42,6 +42,11 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 
 
 @torch_available
+def test_torch_shard_repr(uri: str, path: Path) -> None:
+    assert repr(TorchShard(uri=uri, path=path)).startswith("TorchShard(")
+
+
+@torch_available
 def test_torch_shard_str(uri: str, path: Path) -> None:
     assert str(TorchShard(uri=uri, path=path)).startswith("TorchShard(")
 
@@ -88,6 +93,13 @@ def test_torch_shard_equal_false_different_path(uri: str, path: Path, tmp_path: 
 @torch_available
 def test_torch_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not TorchShard(uri=uri, path=path).equal(42)
+
+
+@torch_available
+def test_torch_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+    class Child(TorchShard): ...
+
+    assert not TorchShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
 
 
 @torch_available
