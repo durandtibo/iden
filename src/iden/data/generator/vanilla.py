@@ -44,9 +44,10 @@ class DataGenerator(BaseDataGenerator[T]):
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         if type(other) is not type(self):
             return False
-        return objects_are_equal(
-            self._data, other._data, equal_nan=equal_nan
-        ) and objects_are_equal(self._copy, other._copy, equal_nan=equal_nan)
+        return (
+            objects_are_equal(self._data, other._data, equal_nan=equal_nan)
+            and self._copy == other._copy
+        )
 
     def generate(self) -> T:
         data = self._data

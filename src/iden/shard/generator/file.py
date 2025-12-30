@@ -77,6 +77,15 @@ class BaseFileShardGenerator(BaseShardGenerator[T]):
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if type(other) is not type(self):
+            return False
+        return (
+            self._data.equal(other._data, equal_nan=equal_nan)
+            and self._path_uri == other._path_uri
+            and self._path_shard == other._path_shard
+        )
+
     def generate(self, shard_id: str) -> BaseShard[T]:
         data = self._data.generate()
         return self._generate(data=data, shard_id=shard_id)
