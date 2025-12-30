@@ -43,7 +43,7 @@ class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
         ```
     """
 
-    # @abstractmethod
+    @abstractmethod
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
         r"""Indicate if two objects are equal or not.
 
@@ -65,7 +65,6 @@ class BaseShardLoader(ABC, Generic[T], metaclass=AbstractFactory):
 
             ```
         """
-        raise NotImplementedError
 
     @abstractmethod
     def load(self, uri: str) -> BaseShard[T]:
