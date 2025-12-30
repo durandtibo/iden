@@ -58,6 +58,12 @@ def test_joblib_shard_loader_equal_false_different_type_child() -> None:
 
 
 @joblib_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_joblib_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert JoblibShardLoader().equal(JoblibShardLoader(), equal_nan=equal_nan)
+
+
+@joblib_available
 def test_joblib_shard_loader_load(uri: str, path: Path) -> None:
     shard = JoblibShardLoader().load(uri)
     assert shard.equal(JoblibShard(uri=uri, path=path))
