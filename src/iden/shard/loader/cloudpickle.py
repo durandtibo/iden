@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["CloudpickleShardLoader"]
 
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from iden.shard.cloudpickle import CloudpickleShard
 from iden.shard.loader.base import BaseShardLoader
@@ -35,6 +35,9 @@ class CloudpickleShardLoader(BaseShardLoader[T]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return type(other) is type(self)
 
     def load(self, uri: str) -> CloudpickleShard[T]:
         return CloudpickleShard.from_uri(uri)

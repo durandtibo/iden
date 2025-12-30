@@ -31,8 +31,30 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 
 
 @cloudpickle_available
+def test_cloudpickle_shard_loader_repr() -> None:
+    assert repr(CloudpickleShardLoader()).startswith("CloudpickleShardLoader(")
+
+
+@cloudpickle_available
 def test_cloudpickle_shard_loader_str() -> None:
     assert str(CloudpickleShardLoader()).startswith("CloudpickleShardLoader(")
+
+
+@cloudpickle_available
+def test_cloudpickle_shard_loader_equal_true() -> None:
+    assert CloudpickleShardLoader().equal(CloudpickleShardLoader())
+
+
+@cloudpickle_available
+def test_cloudpickle_shard_loader_equal_false_different_type() -> None:
+    assert not CloudpickleShardLoader().equal(42)
+
+
+@cloudpickle_available
+def test_cloudpickle_shard_loader_equal_false_different_type_child() -> None:
+    class Child(CloudpickleShardLoader): ...
+
+    assert not CloudpickleShardLoader().equal(Child())
 
 
 @cloudpickle_available
