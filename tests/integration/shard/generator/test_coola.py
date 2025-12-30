@@ -41,3 +41,31 @@ def test_objects_are_equal_false(tmp_path: Path) -> None:
         path_shard=tmp_path.joinpath("shard"),
     )
     assert not objects_are_equal(generator1, generator2)
+
+
+def test_objects_are_equal_true_equal_nan(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert objects_are_equal(generator1, generator2, equal_nan=True)
+
+
+def test_objects_are_equal_false_equal_nan(tmp_path: Path) -> None:
+    generator1 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    generator2 = JsonShardGenerator(
+        data=DataGenerator([1, 2, 3, float("nan")]),
+        path_uri=tmp_path.joinpath("uri"),
+        path_shard=tmp_path.joinpath("shard"),
+    )
+    assert not objects_are_equal(generator1, generator2)
