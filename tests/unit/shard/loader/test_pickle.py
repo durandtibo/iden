@@ -29,8 +29,26 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 #######################################
 
 
+def test_pickle_shard_loader_repr() -> None:
+    assert repr(PickleShardLoader()).startswith("PickleShardLoader(")
+
+
 def test_pickle_shard_loader_str() -> None:
     assert str(PickleShardLoader()).startswith("PickleShardLoader(")
+
+
+def test_pickle_shard_loader_equal_true() -> None:
+    assert PickleShardLoader().equal(PickleShardLoader())
+
+
+def test_pickle_shard_loader_equal_false_different_type() -> None:
+    assert not PickleShardLoader().equal(42)
+
+
+def test_pickle_shard_loader_equal_false_different_type_child() -> None:
+    class Child(PickleShardLoader): ...
+
+    assert not PickleShardLoader().equal(Child())
 
 
 def test_pickle_shard_loader_load(uri: str, path: Path) -> None:
