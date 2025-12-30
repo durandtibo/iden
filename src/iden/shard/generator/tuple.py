@@ -88,6 +88,15 @@ class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard[T], ...]]):
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if type(other) is not type(self):
+            return False
+        return (
+            self._shard.equal(other._shard, equal_nan=equal_nan)
+            and self._num_shards == other._num_shards
+            and self._path_uri == other._path_uri
+        )
+
     def generate(self, shard_id: str) -> ShardTuple[T]:
         shards = [self._shard.generate(f"{i + 1:09}") for i in range(self._num_shards)]
         return create_shard_tuple(uri=self._path_uri.joinpath(shard_id).as_uri(), shards=shards)

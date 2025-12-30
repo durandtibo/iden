@@ -41,6 +41,131 @@ def test_shard_tuple_generator_str(tmp_path: Path) -> None:
     assert str(generator).startswith("ShardTupleGenerator(")
 
 
+def test_shard_tuple_generator_equal_true(tmp_path: Path) -> None:
+    generator1 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    generator2 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    assert generator1.equal(generator2)
+
+
+def test_shard_tuple_generator_equal_false_different_shard(tmp_path: Path) -> None:
+    generator1 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    generator2 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_shard_tuple_generator_equal_false_different_num_shards(tmp_path: Path) -> None:
+    generator1 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    generator2 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=1,
+        path_uri=tmp_path,
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_shard_tuple_generator_equal_false_different_path_uri(tmp_path: Path) -> None:
+    generator1 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    generator2 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path.joinpath("other"),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_shard_tuple_generator_equal_false_different_type(tmp_path: Path) -> None:
+    generator = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    assert not generator.equal(42)
+
+
+def test_shard_tuple_generator_equal_false_different_type_child(tmp_path: Path) -> None:
+    class Child(ShardTupleGenerator): ...
+
+    generator1 = ShardTupleGenerator(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    generator2 = Child(
+        shard=JsonShardGenerator(
+            path_shard=tmp_path.joinpath("shards/data"),
+            path_uri=tmp_path.joinpath("shards/uri"),
+            data=DataGenerator([1, 2, 3]),
+        ),
+        num_shards=4,
+        path_uri=tmp_path,
+    )
+    assert not generator1.equal(generator2)
+
+
 def test_shard_tuple_generator_generate(tmp_path: Path) -> None:
     generator = ShardTupleGenerator(
         shard=JsonShardGenerator(
