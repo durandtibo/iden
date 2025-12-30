@@ -33,6 +33,11 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 
 
 @cloudpickle_available
+def test_cloudpickle_shard_repr(uri: str, path: Path) -> None:
+    assert str(CloudpickleShard(uri=uri, path=path)).startswith("CloudpickleShard(")
+
+
+@cloudpickle_available
 def test_cloudpickle_shard_str(uri: str, path: Path) -> None:
     assert str(CloudpickleShard(uri=uri, path=path)).startswith("CloudpickleShard(")
 
@@ -76,6 +81,13 @@ def test_cloudpickle_shard_equal_false_different_path(uri: str, path: Path, tmp_
 @cloudpickle_available
 def test_cloudpickle_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not CloudpickleShard(uri=uri, path=path).equal(42)
+
+
+@cloudpickle_available
+def test_cloudpickle_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+    class Child(CloudpickleShard): ...
+
+    assert not CloudpickleShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
 
 
 @cloudpickle_available
