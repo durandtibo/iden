@@ -12,7 +12,7 @@ from coola.equality.testers import EqualityTester
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
 
-from iden.utils.comparator import IdenEqualityComparator
+from iden.utils.comparator import ObjectEqualityComparator
 
 if TYPE_CHECKING:
     from iden.shard import BaseShard
@@ -201,4 +201,4 @@ def setup_shard_generator(
 
 
 if not EqualityTester.has_comparator(BaseShardGenerator):  # pragma: no cover
-    EqualityTester.add_comparator(BaseShardGenerator, IdenEqualityComparator())
+    EqualityTester.add_comparator(BaseShardGenerator, ObjectEqualityComparator())

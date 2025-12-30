@@ -6,7 +6,6 @@ __all__ = ["FileShard"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from coola import objects_are_equal
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
@@ -75,12 +74,10 @@ class FileShard(BaseShard[T]):
         self._is_cached = False
         self._data = None
 
-    def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        if type(other) is not type(self):
             return False
-        return objects_are_equal(
-            self.get_uri(), other.get_uri(), equal_nan=equal_nan
-        ) and objects_are_equal(self.path, other.path, equal_nan=equal_nan)
+        return self.get_uri() == other.get_uri() and self.path == other.path
 
     def get_data(self, cache: bool = False) -> T:
         if not self._is_cached:

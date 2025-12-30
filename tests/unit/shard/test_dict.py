@@ -110,6 +110,14 @@ def test_shard_dict_equal_false_different_type(uri: str, shards: dict[str, BaseS
     assert not ShardDict(uri=uri, shards=shards).equal({})
 
 
+def test_shard_tuple_equal_false_different_type_child(
+    uri: str, shards: dict[str, BaseShard]
+) -> None:
+    class Child(ShardDict): ...
+
+    assert not ShardDict(uri=uri, shards=shards).equal(Child(uri=uri, shards=shards))
+
+
 def test_shard_dict_get_data(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
     assert objects_are_equal(
         ShardDict(uri=uri, shards=shards).get_data(),

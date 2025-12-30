@@ -8,7 +8,13 @@ from objectory import OBJECT_TARGET
 
 from iden.constants import LOADER, SHARDS
 from iden.io import load_json
-from iden.shard import JsonShard, ShardTuple, create_json_shard, create_shard_tuple
+from iden.shard import (
+    InMemoryShard,
+    JsonShard,
+    ShardTuple,
+    create_json_shard,
+    create_shard_tuple,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -83,6 +89,35 @@ def test_shard_tuple_equal_false_different_shards(uri: str, shards: Sequence[Bas
 
 def test_shard_tuple_equal_false_different_type(uri: str, shards: Sequence[BaseShard]) -> None:
     assert not ShardTuple(uri=uri, shards=shards).equal([])
+
+
+def test_shard_tuple_equal_false_different_type_child(
+    uri: str, shards: Sequence[BaseShard]
+) -> None:
+    class Child(ShardTuple): ...
+
+    assert not ShardTuple(uri=uri, shards=shards).equal(Child(uri=uri, shards=shards))
+
+
+def test_shard_tuple_equal_true_equal_nan(tmp_path: Path) -> None:
+    assert ShardTuple(
+        uri=tmp_path.joinpath("uri").as_uri(), shards=[InMemoryShard([1, 2, 3, float("nan")])]
+    ).equal(
+        ShardTuple(
+            uri=tmp_path.joinpath("uri").as_uri(), shards=[InMemoryShard([1, 2, 3, float("nan")])]
+        ),
+        equal_nan=True,
+    )
+
+
+def test_shard_tuple_equal_false_equal_nan(tmp_path: Path) -> None:
+    assert not ShardTuple(
+        uri=tmp_path.joinpath("uri").as_uri(), shards=[InMemoryShard([1, 2, 3, float("nan")])]
+    ).equal(
+        ShardTuple(
+            uri=tmp_path.joinpath("uri").as_uri(), shards=[InMemoryShard([1, 2, 3, float("nan")])]
+        ),
+    )
 
 
 def test_shard_tuple_get(uri: str, shards: Sequence[BaseShard], path_shard: Path) -> None:

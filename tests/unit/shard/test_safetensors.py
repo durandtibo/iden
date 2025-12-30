@@ -132,6 +132,14 @@ def test_numpy_safetensors_shard_equal_false_different_type(uri_np: str, path_np
 
 @safetensors_available
 @numpy_available
+def test_numpy_safetensors_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+    class Child(NumpySafetensorsShard): ...
+
+    assert not NumpySafetensorsShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
+
+
+@safetensors_available
+@numpy_available
 @pytest.mark.parametrize("equal_nan", [True, False])
 def test_numpy_safetensors_shard_equal_nan(tmp_path: Path, equal_nan: bool) -> None:
     shard = create_numpy_safetensors_shard(
@@ -329,6 +337,14 @@ def test_torch_safetensors_shard_equal_false_different_path(
 @torch_available
 def test_torch_safetensors_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not TorchSafetensorsShard(uri=uri, path=path).equal(42)
+
+
+@safetensors_available
+@torch_available
+def test_torch_safetensors_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+    class Child(TorchSafetensorsShard): ...
+
+    assert not TorchSafetensorsShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
 
 
 @safetensors_available

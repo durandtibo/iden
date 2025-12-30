@@ -3,7 +3,7 @@ r"""Contain a generic comparator for iden objects to be used with
 
 from __future__ import annotations
 
-__all__ = ["IdenEqualityComparator"]
+__all__ = ["ObjectEqualityComparator"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
@@ -15,10 +15,10 @@ if TYPE_CHECKING:
 
 
 T = TypeVar("T")
-S = TypeVar("S", bound="IdenEqualityComparator")
+S = TypeVar("S", bound="ObjectEqualityComparator")
 
 
-class IdenEqualityComparator(BaseEqualityComparator[T]):  # noqa: PLW1641
+class ObjectEqualityComparator(BaseEqualityComparator[T]):  # noqa: PLW1641
     r"""Implement an equality comparator for ``BaseLoader`` objects."""
 
     def __init__(self) -> None:
