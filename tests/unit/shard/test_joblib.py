@@ -33,6 +33,11 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 
 
 @joblib_available
+def test_joblib_shard_repr(uri: str, path: Path) -> None:
+    assert repr(JoblibShard(uri=uri, path=path)).startswith("JoblibShard(")
+
+
+@joblib_available
 def test_joblib_shard_str(uri: str, path: Path) -> None:
     assert str(JoblibShard(uri=uri, path=path)).startswith("JoblibShard(")
 
@@ -76,6 +81,13 @@ def test_joblib_shard_equal_false_different_path(uri: str, path: Path, tmp_path:
 @joblib_available
 def test_joblib_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not JoblibShard(uri=uri, path=path).equal(42)
+
+
+@joblib_available
+def test_joblib_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+    class Child(JoblibShard): ...
+
+    assert not JoblibShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
 
 
 @joblib_available
