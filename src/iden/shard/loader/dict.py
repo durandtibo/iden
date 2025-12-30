@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["ShardDictLoader"]
 
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from iden.shard.base import BaseShard
 from iden.shard.dict import ShardDict
@@ -49,6 +49,9 @@ class ShardDictLoader(BaseShardLoader[dict[str, BaseShard[T]]]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return type(other) is type(self)
 
     def load(self, uri: str) -> ShardDict[T]:
         return ShardDict.from_uri(uri)
