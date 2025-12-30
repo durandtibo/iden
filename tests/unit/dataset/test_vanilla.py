@@ -156,6 +156,16 @@ def test_vanilla_dataset_equal_false_different_type(
     assert not VanillaDataset(uri=uri, shards=shards, assets=assets).equal("meow")
 
 
+def test_vanilla_dataset_equal_false_different_type_child(
+    uri: str, shards: ShardDict[ShardTuple[BaseShard]], assets: ShardDict
+) -> None:
+    class Child(VanillaDataset): ...
+
+    assert not VanillaDataset(uri=uri, shards=shards, assets=assets).equal(
+        Child(uri=uri, shards=shards, assets=assets)
+    )
+
+
 def test_vanilla_dataset_get_asset(dataset: VanillaDataset) -> None:
     assert objects_are_equal(dataset.get_asset("stats").get_data(), {"mean": 42})
 

@@ -133,7 +133,7 @@ class VanillaDataset(BaseDataset[T]):
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+        if type(other) is not type(self):
             return False
         return (
             objects_are_equal(self.get_uri(), other.get_uri(), equal_nan=equal_nan)
