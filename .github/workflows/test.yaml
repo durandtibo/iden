@@ -14,7 +14,7 @@ jobs:
   # Test with all dependencies across multiple Python versions and operating systems
   all:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 2
+    timeout-minutes: 5
     strategy:
       max-parallel: 8
       fail-fast: false
