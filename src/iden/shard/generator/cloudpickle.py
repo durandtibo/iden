@@ -4,10 +4,16 @@ from __future__ import annotations
 
 __all__ = ["CloudpickleShardGenerator"]
 
-from typing import TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from iden.shard import CloudpickleShard, create_cloudpickle_shard
 from iden.shard.generator.file import BaseFileShardGenerator
+from iden.utils.imports import check_cloudpickle
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from iden.data.generator import BaseDataGenerator
 
 T = TypeVar("T")
 
@@ -45,6 +51,12 @@ class CloudpickleShardGenerator(BaseFileShardGenerator[T]):
 
         ```
     """
+
+    def __init__(
+        self, data: BaseDataGenerator[T] | dict[Any, Any], path_uri: Path, path_shard: Path
+    ) -> None:
+        check_cloudpickle()
+        super().__init__(data=data, path_uri=path_uri, path_shard=path_shard)
 
     def _generate(self, data: T, shard_id: str) -> CloudpickleShard[T]:
         return create_cloudpickle_shard(
