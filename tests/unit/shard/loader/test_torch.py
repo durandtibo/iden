@@ -68,6 +68,12 @@ def test_torch_shard_loader_equal_false_different_type_child() -> None:
 
 
 @torch_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_torch_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert TorchShardLoader().equal(TorchShardLoader(), equal_nan=equal_nan)
+
+
+@torch_available
 def test_torch_shard_loader_load(uri: str, path: Path) -> None:
     shard = TorchShardLoader().load(uri)
     assert shard.equal(TorchShard(uri=uri, path=path))

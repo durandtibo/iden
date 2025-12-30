@@ -66,6 +66,11 @@ def test_shard_dict_loader_equal_false_different_type_child() -> None:
     assert not ShardDictLoader().equal(Child())
 
 
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_shard_dict_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert ShardDictLoader().equal(ShardDictLoader(), equal_nan=equal_nan)
+
+
 def test_shard_dict_loader_load(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:
     shard = ShardDictLoader().load(uri)
     assert shard.equal(ShardDict(uri=uri, shards=shards))

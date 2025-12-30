@@ -51,6 +51,11 @@ def test_pickle_shard_loader_equal_false_different_type_child() -> None:
     assert not PickleShardLoader().equal(Child())
 
 
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_pickle_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert PickleShardLoader().equal(PickleShardLoader(), equal_nan=equal_nan)
+
+
 def test_pickle_shard_loader_load(uri: str, path: Path) -> None:
     shard = PickleShardLoader().load(uri)
     assert shard.equal(PickleShard(uri=uri, path=path))

@@ -51,6 +51,11 @@ def test_json_shard_loader_equal_false_different_type_child() -> None:
     assert not JsonShardLoader().equal(Child())
 
 
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_json_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert JsonShardLoader().equal(JsonShardLoader(), equal_nan=equal_nan)
+
+
 def test_json_shard_loader_load(uri: str, path: Path) -> None:
     shard = JsonShardLoader().load(uri)
     assert shard.equal(JsonShard(uri=uri, path=path))

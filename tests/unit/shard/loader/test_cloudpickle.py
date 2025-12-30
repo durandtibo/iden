@@ -58,6 +58,12 @@ def test_cloudpickle_shard_loader_equal_false_different_type_child() -> None:
 
 
 @cloudpickle_available
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_cloudpickle_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert CloudpickleShardLoader().equal(CloudpickleShardLoader(), equal_nan=equal_nan)
+
+
+@cloudpickle_available
 def test_cloudpickle_shard_loader_load(uri: str, path: Path) -> None:
     shard = CloudpickleShardLoader().load(uri)
     assert shard.equal(CloudpickleShard(uri=uri, path=path))

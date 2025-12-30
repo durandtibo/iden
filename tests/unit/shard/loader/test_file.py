@@ -51,6 +51,11 @@ def test_file_shard_loader_equal_false_different_type_child() -> None:
     assert not FileShardLoader().equal(Child())
 
 
+@pytest.mark.parametrize("equal_nan", [True, False])
+def test_file_shard_loader_equal_true_equal_nan(equal_nan: bool) -> None:
+    assert FileShardLoader().equal(FileShardLoader(), equal_nan=equal_nan)
+
+
 def test_file_shard_loader_load(uri: str, path: Path) -> None:
     shard = FileShardLoader().load(uri)
     assert shard.equal(FileShard(uri=uri, path=path))
