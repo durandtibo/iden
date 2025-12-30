@@ -3,9 +3,11 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from coola.equality.testers import EqualityTester
 from objectory import OBJECT_TARGET
 
 from iden.data.generator import (
+    BaseDataGenerator,
     DataGenerator,
     is_data_generator_config,
     setup_data_generator,
@@ -65,3 +67,7 @@ def test_setup_data_generator_incorrect_type(
             JsonShardGenerator,
         )
         assert caplog.messages
+
+
+def test_equality_tester_has_comparator() -> None:
+    assert EqualityTester.has_comparator(BaseDataGenerator)
