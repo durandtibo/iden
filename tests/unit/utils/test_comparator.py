@@ -7,7 +7,7 @@ from coola.equality import EqualityConfig
 from coola.equality.testers import EqualityTester
 
 from iden.shard import InMemoryShard
-from iden.utils.comparator import IdenEqualityComparator
+from iden.utils.comparator import ObjectEqualityComparator
 from tests.unit.helpers import ExamplePair
 
 
@@ -74,90 +74,90 @@ OBJECT_EQUAL_TOLERANCE = [
 ]
 
 
-############################################
-#     Tests for IdenEqualityComparator     #
-############################################
+##############################################
+#     Tests for ObjectEqualityComparator     #
+##############################################
 
 
-def test_iden_equality_comparator_str() -> None:
-    assert str(IdenEqualityComparator()) == "IdenEqualityComparator()"
+def test_object_equality_comparator_str() -> None:
+    assert str(ObjectEqualityComparator()) == "IdenEqualityComparator()"
 
 
-def test_iden_equality_comparator__eq__true() -> None:
-    assert IdenEqualityComparator() == IdenEqualityComparator()
+def test_object_equality_comparator__eq__true() -> None:
+    assert ObjectEqualityComparator() == ObjectEqualityComparator()
 
 
-def test_iden_equality_comparator__eq__false() -> None:
-    assert IdenEqualityComparator() != 123
+def test_object_equality_comparator__eq__false() -> None:
+    assert ObjectEqualityComparator() != 123
 
 
-def test_iden_equality_comparator_clone() -> None:
-    op = IdenEqualityComparator()
+def test_object_equality_comparator_clone() -> None:
+    op = ObjectEqualityComparator()
     op_cloned = op.clone()
     assert op is not op_cloned
     assert op == op_cloned
 
 
-def test_iden_equality_comparator_equal_true_same_object(config: EqualityConfig) -> None:
+def test_object_equality_comparator_equal_true_same_object(config: EqualityConfig) -> None:
     iden = InMemoryShard([1, 2, 3])
-    assert IdenEqualityComparator().equal(iden, iden, config)
+    assert ObjectEqualityComparator().equal(iden, iden, config)
 
 
 @pytest.mark.parametrize("example", OBJECT_EQUAL)
-def test_iden_equality_comparator_equal_yes(
+def test_object_equality_comparator_equal_yes(
     example: ExamplePair,
     config: EqualityConfig,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
-    comparator = IdenEqualityComparator()
+    comparator = ObjectEqualityComparator()
     with caplog.at_level(logging.INFO):
         assert comparator.equal(actual=example.actual, expected=example.expected, config=config)
         assert not caplog.messages
 
 
 @pytest.mark.parametrize("example", OBJECT_EQUAL)
-def test_iden_equality_comparator_equal_yes_show_difference(
+def test_object_equality_comparator_equal_yes_show_difference(
     example: ExamplePair,
     config: EqualityConfig,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     config.show_difference = True
-    comparator = IdenEqualityComparator()
+    comparator = ObjectEqualityComparator()
     with caplog.at_level(logging.INFO):
         assert comparator.equal(actual=example.actual, expected=example.expected, config=config)
         assert not caplog.messages
 
 
 @pytest.mark.parametrize("example", OBJECT_NOT_EQUAL)
-def test_iden_equality_comparator_equal_false(
+def test_object_equality_comparator_equal_false(
     example: ExamplePair,
     config: EqualityConfig,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
-    comparator = IdenEqualityComparator()
+    comparator = ObjectEqualityComparator()
     with caplog.at_level(logging.INFO):
         assert not comparator.equal(actual=example.actual, expected=example.expected, config=config)
         assert not caplog.messages
 
 
 @pytest.mark.parametrize("example", OBJECT_NOT_EQUAL)
-def test_iden_equality_comparator_equal_false_show_difference(
+def test_object_equality_comparator_equal_false_show_difference(
     example: ExamplePair,
     config: EqualityConfig,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     config.show_difference = True
-    comparator = IdenEqualityComparator()
+    comparator = ObjectEqualityComparator()
     with caplog.at_level(logging.INFO):
         assert not comparator.equal(actual=example.actual, expected=example.expected, config=config)
         assert caplog.messages[-1].startswith(example.expected_message)
 
 
 @pytest.mark.parametrize("equal_nan", [False, True])
-def test_iden_equality_comparator_equal_nan(config: EqualityConfig, equal_nan: bool) -> None:
+def test_object_equality_comparator_equal_nan(config: EqualityConfig, equal_nan: bool) -> None:
     config.equal_nan = equal_nan
     assert (
-        IdenEqualityComparator().equal(
+        ObjectEqualityComparator().equal(
             actual=InMemoryShard([1, 2, float("nan")]),
             expected=InMemoryShard([1, 2, float("nan")]),
             config=config,
