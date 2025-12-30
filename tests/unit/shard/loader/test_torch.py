@@ -41,8 +41,30 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 
 
 @torch_available
+def test_torch_shard_loader_repr() -> None:
+    assert repr(TorchShardLoader()).startswith("TorchShardLoader(")
+
+
+@torch_available
 def test_torch_shard_loader_str() -> None:
     assert str(TorchShardLoader()).startswith("TorchShardLoader(")
+
+
+@torch_available
+def test_torch_shard_loader_equal_true() -> None:
+    assert TorchShardLoader().equal(TorchShardLoader())
+
+
+@torch_available
+def test_torch_shard_loader_equal_false_different_type() -> None:
+    assert not TorchShardLoader().equal(42)
+
+
+@torch_available
+def test_torch_shard_loader_equal_false_different_type_child() -> None:
+    class Child(TorchShardLoader): ...
+
+    assert not TorchShardLoader().equal(Child())
 
 
 @torch_available

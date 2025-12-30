@@ -44,8 +44,26 @@ def uri(tmp_path_factory: pytest.TempPathFactory, shards: dict[str, BaseShard]) 
 #####################################
 
 
+def test_shard_dict_loader_repr() -> None:
+    assert repr(ShardDictLoader()).startswith("ShardDictLoader(")
+
+
 def test_shard_dict_loader_str() -> None:
     assert str(ShardDictLoader()).startswith("ShardDictLoader(")
+
+
+def test_shard_dict_loader_equal_true() -> None:
+    assert ShardDictLoader().equal(ShardDictLoader())
+
+
+def test_shard_dict_loader_equal_false_different_type() -> None:
+    assert not ShardDictLoader().equal(42)
+
+
+def test_shard_dict_loader_equal_false_different_type_child() -> None:
+    class Child(ShardDictLoader): ...
+
+    assert not ShardDictLoader().equal(Child())
 
 
 def test_shard_dict_loader_load(uri: str, shards: dict[str, BaseShard], path_shard: Path) -> None:

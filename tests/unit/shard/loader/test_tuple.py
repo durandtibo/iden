@@ -45,8 +45,26 @@ def uri(tmp_path_factory: pytest.TempPathFactory, shards: Sequence[BaseShard]) -
 ######################################
 
 
+def test_shard_tuple_loader_repr() -> None:
+    assert repr(ShardTupleLoader()).startswith("ShardTupleLoader(")
+
+
 def test_shard_tuple_loader_str() -> None:
     assert str(ShardTupleLoader()).startswith("ShardTupleLoader(")
+
+
+def test_shard_tuple_loader_equal_true() -> None:
+    assert ShardTupleLoader().equal(ShardTupleLoader())
+
+
+def test_shard_tuple_loader_equal_false_different_type() -> None:
+    assert not ShardTupleLoader().equal(42)
+
+
+def test_shard_tuple_loader_equal_false_different_type_child() -> None:
+    class Child(ShardTupleLoader): ...
+
+    assert not ShardTupleLoader().equal(Child())
 
 
 def test_shard_tuple_loader_load(uri: str, shards: Sequence[BaseShard], path_shard: Path) -> None:

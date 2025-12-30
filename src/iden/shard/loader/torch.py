@@ -4,7 +4,7 @@ from __future__ import annotations
 
 __all__ = ["TorchShardLoader"]
 
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from coola.utils import check_torch
 
@@ -43,6 +43,9 @@ class TorchShardLoader(BaseShardLoader[T]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}()"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:  # noqa: ARG002
+        return type(other) is type(self)
 
     def load(self, uri: str) -> TorchShard[T]:
         return TorchShard.from_uri(uri)
