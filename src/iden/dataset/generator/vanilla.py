@@ -6,6 +6,7 @@ __all__ = ["VanillaDatasetGenerator"]
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
+from coola import objects_are_equal
 from coola.utils import repr_indent, repr_mapping, str_indent, str_mapping
 
 from iden.dataset import VanillaDataset, create_vanilla_dataset
@@ -108,6 +109,15 @@ class VanillaDatasetGenerator(BaseDatasetGenerator[tuple[BaseShard[T], ...]]):
             )
         )
         return f"{self.__class__.__qualname__}(\n  {args}\n)"
+
+    def equal(self, other: Any, equal_nan: bool = False) -> bool:
+        if type(other) is not type(self):
+            return False
+        return (
+            objects_are_equal(self._path_uri, other._path_uri, equal_nan=equal_nan)
+            and objects_are_equal(self._shards, other._shards, equal_nan=equal_nan)
+            and objects_are_equal(self._assets, other._assets, equal_nan=equal_nan)
+        )
 
     def generate(self, dataset_id: str) -> VanillaDataset[T]:
         shards = self._shards.generate(shard_id="shards")

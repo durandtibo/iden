@@ -61,6 +61,79 @@ def test_vanilla_dataset_generator_str(tmp_path: Path) -> None:
     assert str(generator).startswith("VanillaDatasetGenerator(")
 
 
+def test_vanilla_dataset_generator_equal_true(tmp_path: Path) -> None:
+    generator1 = create_dataset_generator(tmp_path)
+    generator2 = create_dataset_generator(tmp_path)
+    assert generator1.equal(generator2)
+
+
+def test_vanilla_dataset_generator_equal_false_different_path_uri(tmp_path: Path) -> None:
+    generator1 = VanillaDatasetGenerator(
+        path_uri=tmp_path.joinpath("one"),
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    generator2 = VanillaDatasetGenerator(
+        path_uri=tmp_path.joinpath("two"),
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_vanilla_dataset_generator_equal_false_different_shards(tmp_path: Path) -> None:
+    generator1 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("one/uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    generator2 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("two/uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("uri/assets")),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_vanilla_dataset_generator_equal_false_different_assets(tmp_path: Path) -> None:
+    generator1 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("one/uri/assets")),
+    )
+    generator2 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("two/uri/assets")),
+    )
+    assert not generator1.equal(generator2)
+
+
+def test_vanilla_dataset_generator_equal_false_different_type(tmp_path: Path) -> None:
+    generator = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("one/uri/assets")),
+    )
+    assert not generator.equal(42)
+
+
+def test_vanilla_dataset_generator_equal_false_different_type_child(tmp_path: Path) -> None:
+    class Child(VanillaDatasetGenerator): ...
+
+    generator1 = VanillaDatasetGenerator(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("one/uri/assets")),
+    )
+    generator2 = Child(
+        path_uri=tmp_path,
+        shards=ShardDictGenerator(path_uri=tmp_path.joinpath("uri/shards"), shards={}),
+        assets=ShardDictGenerator(shards={}, path_uri=tmp_path.joinpath("two/uri/assets")),
+    )
+    assert not generator1.equal(generator2)
+
+
 def test_vanilla_dataset_generator_generate(tmp_path: Path) -> None:
     generator = create_dataset_generator(tmp_path)
     dataset = generator.generate("001111")
