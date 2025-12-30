@@ -35,6 +35,10 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 ###############################
 
 
+def test_file_shard_repr(uri: str, path: Path) -> None:
+    assert repr(FileShard(uri=uri, path=path)).startswith("FileShard(")
+
+
 def test_file_shard_str(uri: str, path: Path) -> None:
     assert str(FileShard(uri=uri, path=path)).startswith("FileShard(")
 
@@ -75,6 +79,12 @@ def test_file_shard_equal_false_different_path(uri: str, path: Path, tmp_path: P
 
 def test_file_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not FileShard(uri=uri, path=path).equal(42)
+
+
+def test_file_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+    class Child(FileShard): ...
+
+    assert not FileShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
 
 
 @pytest.mark.parametrize("equal_nan", [True, False])
