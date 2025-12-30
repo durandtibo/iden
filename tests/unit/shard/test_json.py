@@ -31,6 +31,10 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 ###############################
 
 
+def test_json_shard_repr(uri: str, path: Path) -> None:
+    assert repr(JsonShard(uri=uri, path=path)).startswith("JsonShard(")
+
+
 def test_json_shard_str(uri: str, path: Path) -> None:
     assert str(JsonShard(uri=uri, path=path)).startswith("JsonShard(")
 
@@ -67,6 +71,12 @@ def test_json_shard_equal_false_different_path(uri: str, path: Path, tmp_path: P
 
 def test_json_shard_equal_false_different_type(uri: str, path: Path) -> None:
     assert not JsonShard(uri=uri, path=path).equal(42)
+
+
+def test_json_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+    class Child(JsonShard): ...
+
+    assert not JsonShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
 
 
 @pytest.mark.parametrize("equal_nan", [True, False])
