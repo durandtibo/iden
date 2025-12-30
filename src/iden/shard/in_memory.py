@@ -39,7 +39,7 @@ class InMemoryShard(BaseShard[T]):
         r"""Do nothing because it is an in-memory shard."""
 
     def equal(self, other: Any, equal_nan: bool = False) -> bool:
-        if not isinstance(other, self.__class__):
+        if type(other) is not type(self):
             return False
         return objects_are_equal(self._data, other._data, equal_nan=equal_nan)
 

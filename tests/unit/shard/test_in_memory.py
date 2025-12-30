@@ -7,6 +7,10 @@ from iden.shard import InMemoryShard
 ###################################
 
 
+def test_in_memory_shard_repr() -> None:
+    assert repr(InMemoryShard([1, 2, 3])) == "InMemoryShard()"
+
+
 def test_in_memory_shard_str() -> None:
     assert str(InMemoryShard([1, 2, 3])) == "InMemoryShard()"
 
@@ -40,6 +44,12 @@ def test_in_memory_shard_equal_equal_nan_false() -> None:
 
 def test_in_memory_shard_equal_false_different_type() -> None:
     assert not InMemoryShard([1, 2, 3]).equal([1, 2, 4])
+
+
+def test_in_memory_shard_equal_false_different_type_child() -> None:
+    class Child(InMemoryShard): ...
+
+    assert not InMemoryShard([1, 2, 3]).equal(Child([1, 2, 3]))
 
 
 def test_in_memory_shard_get_data() -> None:
