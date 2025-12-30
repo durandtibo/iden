@@ -31,8 +31,30 @@ def uri(tmp_path_factory: pytest.TempPathFactory, path: Path) -> str:
 
 
 @joblib_available
+def test_joblib_shard_loader_repr() -> None:
+    assert repr(JoblibShardLoader()).startswith("JoblibShardLoader(")
+
+
+@joblib_available
 def test_joblib_shard_loader_str() -> None:
     assert str(JoblibShardLoader()).startswith("JoblibShardLoader(")
+
+
+@joblib_available
+def test_joblib_shard_loader_equal_true() -> None:
+    assert JoblibShardLoader().equal(JoblibShardLoader())
+
+
+@joblib_available
+def test_joblib_shard_loader_equal_false_different_type() -> None:
+    assert not JoblibShardLoader().equal(42)
+
+
+@joblib_available
+def test_joblib_shard_loader_equal_false_different_type_child() -> None:
+    class Child(JoblibShardLoader): ...
+
+    assert not JoblibShardLoader().equal(Child())
 
 
 @joblib_available
