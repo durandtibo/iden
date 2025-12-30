@@ -17,10 +17,12 @@ import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
+from coola.equality.testers import EqualityTester
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
 
 from iden.io.utils import generate_unique_tmp_path
+from iden.utils.comparator import ObjectEqualityComparator
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -359,3 +361,9 @@ def setup_saver(saver: BaseSaver[T] | dict[Any, Any]) -> BaseSaver[T]:
     if not isinstance(saver, BaseSaver):
         logger.warning(f"data saver is not a BaseSaver (received: {type(saver)})")
     return saver
+
+
+if not EqualityTester.has_comparator(BaseLoader):  # pragma: no cover
+    EqualityTester.add_comparator(BaseLoader, ObjectEqualityComparator())
+if not EqualityTester.has_comparator(BaseSaver):  # pragma: no cover
+    EqualityTester.add_comparator(BaseSaver, ObjectEqualityComparator())
