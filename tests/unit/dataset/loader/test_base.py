@@ -4,11 +4,13 @@ import logging
 from typing import TYPE_CHECKING
 
 import pytest
+from coola.equality.testers import EqualityTester
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
 from iden.dataset import VanillaDataset
 from iden.dataset.loader import (
+    BaseDatasetLoader,
     VanillaDatasetLoader,
     is_dataset_loader_config,
     setup_dataset_loader,
@@ -141,3 +143,7 @@ def test_setup_dataset_loader_incorrect_type(
             PickleShard,
         )
         assert caplog.messages
+
+
+def test_equality_tester_has_comparator() -> None:
+    assert EqualityTester.has_comparator(BaseDatasetLoader)
