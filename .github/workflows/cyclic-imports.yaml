@@ -24,10 +24,13 @@ jobs:
       - name: check iden.data
         run: |
           python -c "from iden import data"
+          python -c "from iden.data import generator"
 
       - name: check iden.dataset
         run: |
           python -c "from iden import dataset"
+          python -c "from iden.dataset import generator"
+          python -c "from iden.dataset import loader"
 
       - name: check iden.io
         run: |
@@ -36,6 +39,8 @@ jobs:
       - name: check iden.shard
         run: |
           python -c "from iden import shard"
+          python -c "from iden.shard import generator"
+          python -c "from iden.shard import loader"
 
       - name: check iden.testing
         run: |
