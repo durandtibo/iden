@@ -51,7 +51,7 @@ The simplest way to save and load data is using format-specific convenience func
 ...     loaded = load_yaml(path)
 ...     loaded
 ...
-{'model': 'resnet50', 'epochs': 100, 'lr': 0.001}
+{'epochs': 100, 'lr': 0.001, 'model': 'resnet50'}
 
 ```
 
@@ -103,7 +103,7 @@ You can register custom loaders for specific file extensions:
 >>> from iden.io import get_default_loader_registry, JsonLoader
 >>> registry = get_default_loader_registry()
 >>> # Register loader for .jsonl extension
->>> registry.register_loader("jsonl", JsonLoader())
+>>> registry.register("jsonl", JsonLoader())
 >>> # Check registered loaders
 >>> registry.has_loader("jsonl")
 True
@@ -181,26 +181,4 @@ class CustomSaver(BaseFileSaver):
         """Process data before saving."""
         # Custom processing logic
         return str(data)
-```
-
-## Working with safetensors
-
-For efficient storage of NumPy arrays or PyTorch tensors, use safetensors format:
-
-```pycon
->>> import tempfile
->>> from pathlib import Path
->>> import torch
->>> from iden.io.safetensors import save_safetensors, load_safetensors
->>> with tempfile.TemporaryDirectory() as tmpdir:
-...     path = Path(tmpdir).joinpath("tensors.safetensors")
-...     # Save tensors
-...     tensors = {"layer1": torch.randn(100, 100), "layer2": torch.randn(50, 50)}
-...     save_safetensors(tensors, path)
-...     # Load tensors
-...     loaded = load_safetensors(path)
-...     loaded.keys()
-...
-dict_keys(['layer1', 'layer2'])
-
 ```
