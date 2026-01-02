@@ -227,10 +227,7 @@ class BaseFileSaver(BaseSaver[T]):
             msg = f"path ({path}) is a directory"
             raise IsADirectoryError(msg)
         if path.is_file() and not exist_ok:
-            msg = (
-                f"path ({path}) already exists. "
-                f"Please use `exist_ok=True` if you want to overwrite the setter for this name"
-            )
+            msg = f"path ({path}) already exists. Use `exist_ok=True` to overwrite the file"
             raise FileExistsError(msg)
         path.parent.mkdir(exist_ok=True, parents=True)
 

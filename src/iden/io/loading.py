@@ -56,7 +56,7 @@ def load(path: Path, registry: LoaderRegistry | None = None) -> Any:
 
 
 def register_loaders(mapping: Mapping[str, BaseLoader[Any]], exist_ok: bool = False) -> None:
-    """Register custom loaders to the default global registry.
+    r"""Register custom loaders to the default global registry.
 
     This allows users to add support for custom file extensions without
     modifying global state directly.
@@ -77,7 +77,7 @@ def register_loaders(mapping: Mapping[str, BaseLoader[Any]], exist_ok: bool = Fa
 
 
 def get_default_loader_registry() -> LoaderRegistry:
-    """Get or create the default global registry.
+    r"""Get or create the default global registry.
 
     Returns:
         A LoaderRegistry instance with default loaders registered for
@@ -86,8 +86,8 @@ def get_default_loader_registry() -> LoaderRegistry:
 
     Notes:
         The singleton pattern means modifications to the returned registry
-        affect all future calls to this function. If you need an isolated
-        registry, create a new LoaderRegistry instance directly.
+        affect all future calls to this function. An isolated registry can
+        be created by instantiating a new LoaderRegistry directly.
 
     Example:
         ```pycon
@@ -113,7 +113,7 @@ def get_default_loader_registry() -> LoaderRegistry:
 
 
 def _register_default_loaders(registry: LoaderRegistry) -> None:
-    """Register default loaders for common file formats.
+    r"""Register default loaders for common file formats.
 
     Args:
         registry: The registry to populate with default loaders
