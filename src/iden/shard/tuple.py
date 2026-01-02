@@ -155,7 +155,8 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
         r"""Instantiate a shard from its URI.
 
         Args:
-            uri: The URI.
+            uri: The Uniform Resource Identifier (URI) of the shard
+                tuple to load.
 
         Returns:
             The instantiated shard.
@@ -201,7 +202,8 @@ class ShardTuple(BaseShard[tuple[BaseShard[T], ...]]):
         The config must be compatible with the JSON format.
 
         Args:
-            shards: The shards.
+            shards: The sequence of shards to include in the
+                configuration.
 
         Returns:
             The minimal config to load the shard from its URI.
@@ -240,8 +242,9 @@ def create_shard_tuple(shards: Iterable[BaseShard[T]], uri: str) -> ShardTuple[T
             in other ways.
 
     Args:
-        shards: The shards.
-        uri: The shard's URI.
+        shards: The sequence of shards to include in the tuple.
+        uri: The Uniform Resource Identifier (URI) for the shard
+            tuple.
 
     Returns:
         The ``ShardTuple`` object.

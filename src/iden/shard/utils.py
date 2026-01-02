@@ -92,7 +92,7 @@ def get_list_uris(shards: Iterable[BaseShard[Any]]) -> list[str]:
     r"""Get the list of shard URIs.
 
     Args:
-        shards: The shards.
+        shards: The iterable of shards from which to extract URIs.
 
     Returns:
         The list of shard URIs.

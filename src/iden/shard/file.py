@@ -100,7 +100,8 @@ class FileShard(BaseShard[T]):
         r"""Instantiate a shard from its URI.
 
         Args:
-            uri: The URI.
+            uri: The Uniform Resource Identifier (URI) of the file
+                shard to load.
 
         Returns:
             The instantiated shard.

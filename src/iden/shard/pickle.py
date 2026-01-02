@@ -24,9 +24,11 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class PickleShard(FileShard[T]):
-    r"""Implement a pickle shard.
+    r"""Implement a pickle shard for Python object serialization.
 
-    The data are stored in a pickle file.
+    This shard stores data using Python's pickle protocol, which allows
+    serialization of arbitrary Python objects. The data are stored in a
+    pickle file.
 
     Args:
         uri: The shard's URI.

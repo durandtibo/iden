@@ -26,10 +26,15 @@ T = TypeVar("T")
 
 
 class VanillaDataset(BaseDataset[T]):
-    r"""Implement a simple dataset.
+    r"""Implement a simple dataset for managing shards and assets.
+
+    This dataset provides a straightforward implementation for organizing
+    data into shards (training, validation, test splits) and assets
+    (metadata, statistics, etc.).
 
     Args:
-        uri: The URI associated to the dataset.
+        uri: The Uniform Resource Identifier (URI) associated with the
+            dataset, used for identification and persistence.
         shards: The dataset's shards. Each item in the mapping
             represent a dataset split, where the key is the dataset
             split and the value is the shards.
@@ -175,7 +180,8 @@ class VanillaDataset(BaseDataset[T]):
         r"""Instantiate a shard from its URI.
 
         Args:
-            uri: The URI.
+            uri: The Uniform Resource Identifier (URI) of the dataset
+                to load.
 
         Returns:
             The instantiated shard.
