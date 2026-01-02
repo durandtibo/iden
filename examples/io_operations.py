@@ -80,26 +80,17 @@ def main() -> None:
         print("Example 3: Pickle format (complex objects)")
         print("=" * 60)
         
-        class CustomObject:
-            def __init__(self, name: str, value: int) -> None:
-                self.name = name
-                self.value = value
-            
-            def __eq__(self, other: object) -> bool:
-                if not isinstance(other, CustomObject):
-                    return False
-                return self.name == other.name and self.value == other.value
-            
-            def __repr__(self) -> str:
-                return f"CustomObject(name={self.name!r}, value={self.value})"
-        
+        # Pickle supports Python objects that JSON doesn't
         pickle_data = {
-            "objects": [
-                CustomObject("obj1", 10),
-                CustomObject("obj2", 20),
-            ],
+            "list": [1, 2, 3],
+            "dict": {"key": "value"},
             "set": {1, 2, 3, 4, 5},
             "tuple": (1, 2, 3),
+            "nested": {
+                "deep": {
+                    "data": [{"id": i} for i in range(10)],
+                },
+            },
         }
         
         pickle_path = base_path.joinpath("data.pkl")
@@ -107,7 +98,7 @@ def main() -> None:
         print(f"Saved Pickle to: {pickle_path}")
         
         loaded_pickle = load_pickle(pickle_path)
-        print(f"Loaded Pickle objects: {loaded_pickle['objects']}")
+        print(f"Loaded Pickle set: {loaded_pickle['set']}")
         print(f"Data matches: {pickle_data == loaded_pickle}")
         print()
 
