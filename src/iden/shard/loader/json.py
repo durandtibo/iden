@@ -13,7 +13,10 @@ T = TypeVar("T")
 
 
 class JsonShardLoader(BaseShardLoader[T]):
-    r"""Implement a JSON shard loader.
+    r"""Implement a JSON shard loader for loading shards from JSON files.
+
+    This loader reads shard configuration from a URI and instantiates a
+    JSON shard with the specified data file path.
 
     Example:
         ```pycon

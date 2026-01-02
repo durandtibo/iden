@@ -23,9 +23,11 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class YamlShard(FileShard[T]):
-    r"""Implement a YAML shard.
+    r"""Implement a YAML shard for human-readable configuration storage.
 
-    The data are stored in a YAML file.
+    This shard stores data in YAML (YAML Ain't Markup Language) format,
+    which provides a readable text-based serialization commonly used for
+    configuration files. The data are stored in a YAML file.
 
     Args:
         uri: The shard's URI.

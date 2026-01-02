@@ -46,7 +46,8 @@ def str_kwargs(mapping: Mapping[Any, Any]) -> str:
     ``__str__`` methods.
 
     Args:
-        mapping: The mapping.
+        mapping: The mapping of key-value pairs to format as a
+            string.
 
     Returns:
         The generated string.

@@ -15,7 +15,10 @@ T = TypeVar("T")
 
 
 class DataGenerator(BaseDataGenerator[T]):
-    r"""Implement a simple data generator.
+    r"""Implement a simple data generator that wraps existing data.
+
+    This generator provides a straightforward way to create data on demand
+    by storing and optionally copying the data when requested.
 
     Args:
         data: The data to return.

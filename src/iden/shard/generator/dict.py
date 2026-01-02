@@ -19,7 +19,10 @@ T = TypeVar("T")
 
 
 class ShardDictGenerator(BaseShardGenerator[dict[str, BaseShard[T]]]):
-    r"""Implement a ``ShardDict`` generator.
+    r"""Implement a shard dictionary generator for creating dictionaries of shards.
+
+    This generator creates ShardDict instances containing multiple named
+    shards, useful for organizing data splits or related datasets.
 
     Args:
         shards: The shard generators or their configurations.

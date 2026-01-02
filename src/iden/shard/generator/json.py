@@ -13,7 +13,10 @@ T = TypeVar("T")
 
 
 class JsonShardGenerator(BaseFileShardGenerator[T]):
-    r"""Implement a JSON shard generator.
+    r"""Implement a JSON shard generator for creating shards with JSON persistence.
+
+    This generator creates shards that store data in JSON format, providing
+    human-readable serialization suitable for structured data.
 
     Args:
         data: The data to save in the shard.

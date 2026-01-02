@@ -23,9 +23,11 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class TorchShard(FileShard[T]):
-    r"""Implement a PyTorch shard for ``torch.Tensor``s.
+    r"""Implement a PyTorch shard for efficient tensor storage.
 
-    The data are stored in a PyTorch file.
+    This shard stores data in PyTorch's native file format, optimized for
+    ``torch.Tensor`` objects and PyTorch state dictionaries. The data are
+    stored in a PyTorch file.
 
     Args:
         uri: The shard's URI.

@@ -23,9 +23,11 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class JsonShard(FileShard[T]):
-    r"""Implement a JSON shard.
+    r"""Implement a JSON shard for human-readable data persistence.
 
-    The data are stored in a JSON file.
+    This shard stores data in JSON (JavaScript Object Notation) format,
+    providing a text-based, human-readable serialization. The data are
+    stored in a JSON file.
 
     Args:
         uri: The shard's URI.
