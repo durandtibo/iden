@@ -7,9 +7,7 @@ import logging
 from pathlib import Path
 
 from feu.utils.io import save_json
-from feu.version import (
-    fetch_latest_minor_versions,
-)
+from feu.version import fetch_latest_minor_versions
 
 logger: logging.Logger = logging.getLogger(__name__)
 

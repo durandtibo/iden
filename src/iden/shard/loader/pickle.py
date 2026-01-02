@@ -13,7 +13,8 @@ T = TypeVar("T")
 
 
 class PickleShardLoader(BaseShardLoader[T]):
-    r"""Implement a pickle shard loader for loading shards from pickle files.
+    r"""Implement a pickle shard loader for loading shards from pickle
+    files.
 
     This loader reads shard configuration from a URI and instantiates a
     pickle shard with the specified data file path.

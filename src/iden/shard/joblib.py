@@ -23,7 +23,8 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class JoblibShard(FileShard[T]):
-    r"""Implement a joblib shard for efficient persistence of Python objects.
+    r"""Implement a joblib shard for efficient persistence of Python
+    objects.
 
     This shard stores data in a joblib file format, which provides efficient
     serialization for numerical data and scikit-learn models. The data are

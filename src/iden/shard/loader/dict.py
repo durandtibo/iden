@@ -14,7 +14,8 @@ T = TypeVar("T")
 
 
 class ShardDictLoader(BaseShardLoader[dict[str, BaseShard[T]]]):
-    r"""Implement a shard dictionary loader for loading dictionary-structured shards.
+    r"""Implement a shard dictionary loader for loading dictionary-
+    structured shards.
 
     This loader reads shard configuration from a URI and instantiates a
     ShardDict containing multiple named shards.
