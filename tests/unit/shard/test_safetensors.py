@@ -132,10 +132,14 @@ def test_numpy_safetensors_shard_equal_false_different_type(uri_np: str, path_np
 
 @safetensors_available
 @numpy_available
-def test_numpy_safetensors_shard_equal_false_different_type_child(uri: str, path: Path) -> None:
+def test_numpy_safetensors_shard_equal_false_different_type_child(
+    uri_np: str, path_np: Path
+) -> None:
     class Child(NumpySafetensorsShard): ...
 
-    assert not NumpySafetensorsShard(uri=uri, path=path).equal(Child(uri=uri, path=path))
+    assert not NumpySafetensorsShard(uri=uri_np, path=path_np).equal(
+        Child(uri=uri_np, path=path_np)
+    )
 
 
 @safetensors_available
