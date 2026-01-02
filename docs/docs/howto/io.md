@@ -171,7 +171,7 @@ class CustomSaver(BaseFileSaver):
         """
         # Ensure parent directory exists
         self._create_parent_dir(path)
-        
+
         # Implement custom saving logic
         processed = self._process_data(data)
         with open(path, "w") as f:

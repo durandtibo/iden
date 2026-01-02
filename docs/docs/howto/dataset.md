@@ -65,14 +65,6 @@ class CustomDataset(BaseDataset[Any]):
         return split in self._data
 ```
 
-### Best practices
-
-1. **Lazy loading**: Load data only when needed (e.g., in `get_data()` method of shards)
-2. **URI management**: Use unique URIs for datasets and their components
-3. **Validation**: Validate split names and asset names before accessing
-4. **Error handling**: Provide clear error messages when splits or assets are not found
-5. **Documentation**: Document the expected structure and behavior of your custom dataset
-
 ## How to create a dataset loader?
 
 Dataset loaders enable instantiating datasets from their URI configuration files.
@@ -96,13 +88,4 @@ class CustomDatasetLoader(BaseDatasetLoader):
         # Load dataset configuration from URI
         # Instantiate and return the dataset
         pass
-```
-
-Then register your loader with the dataset loader registry:
-
-```python
-from iden.dataset.loader import get_default_dataset_loader_registry
-
-registry = get_default_dataset_loader_registry()
-registry.register_loader("custom", CustomDatasetLoader())
 ```

@@ -4,7 +4,9 @@
 
 ### What is `iden`?
 
-`iden` is a Python library for managing datasets of shards when training machine learning models. It provides a lazy loading approach to handle large datasets efficiently without loading everything into memory at once.
+`iden` is a Python library for managing datasets of shards when training machine learning models. It
+provides a lazy loading approach to handle large datasets efficiently without loading everything
+into memory at once.
 
 ### Why use `iden`?
 
@@ -13,20 +15,18 @@
 - **Flexible**: Support for multiple data formats (JSON, YAML, Pickle, PyTorch, etc.)
 - **Organized**: Split datasets into train/val/test with associated metadata
 - **Easy to Use**: Simple API for creating, loading, and managing shards
-
-### Is `iden` production-ready?
-
-`iden` is currently in beta (version 0.2.x). While it's stable and functional, the API may change before the 1.0.0 release. Use it with caution in production environments and pin your version.
+-
 
 ## Installation Questions
 
 ### What Python versions are supported?
 
-`iden` requires Python 3.10 or higher. We test on Python 3.10, 3.11, 3.12, 3.13, and 3.14.
+`iden` requires Python 3.10 or higher.
 
 ### Do I need to install all dependencies?
 
-No! `iden` has a minimal installation that only includes core dependencies. Optional dependencies can be installed as needed:
+No! `iden` has a minimal installation that only includes core dependencies.
+Optional dependencies can be installed as needed:
 
 ```shell
 pip install iden              # Minimal installation
@@ -36,35 +36,39 @@ pip install 'iden[all]'       # All optional dependencies
 
 ### Can I use `iden` with my existing PyTorch/TensorFlow workflow?
 
-Yes! `iden` is framework-agnostic. You can store PyTorch tensors, TensorFlow tensors, NumPy arrays, or any serializable Python objects.
+Yes! `iden` is framework-agnostic. You can store PyTorch tensors, TensorFlow tensors, NumPy arrays,
+or any serializable Python objects.
 
 ## Usage Questions
 
 ### What's the difference between a shard and a dataset?
 
 - **Shard**: A single unit of data (e.g., one file containing samples)
-- **Dataset**: A collection of shards organized into splits (train/val/test) with optional assets (metadata, statistics)
+- **Dataset**: A collection of shards organized into splits (train/val/test) with optional assets (
+  metadata, statistics)
 
 ### How do I choose the right shard format?
 
 Consider these factors:
 
-| Format | Best For | Pros | Cons |
-|--------|----------|------|------|
-| JSON | Simple data, configs | Human-readable, universal | Slow for large data |
-| Pickle | Python objects | Supports any Python object | Not cross-language |
-| PyTorch | PyTorch tensors | Fast, PyTorch integration | Requires PyTorch |
-| safetensors | Large tensors | Fast, safe, efficient | Tensors only |
-| YAML | Configurations | Human-readable, config files | Slow for large data |
+| Format      | Best For             | Pros                         | Cons                |
+|-------------|----------------------|------------------------------|---------------------|
+| JSON        | Simple data, configs | Human-readable, universal    | Slow for large data |
+| Pickle      | Python objects       | Supports any Python object   | Not cross-language  |
+| PyTorch     | PyTorch tensors      | Fast, PyTorch integration    | Requires PyTorch    |
+| safetensors | Large tensors        | Fast, safe, efficient        | Tensors only        |
+| YAML        | Configurations       | Human-readable, config files | Slow for large data |
 
 ### Should I cache shard data?
 
 Use caching when:
+
 - The shard is accessed multiple times
 - The data is small enough to fit in memory
 - Loading is slow (e.g., from network storage)
 
 Don't cache when:
+
 - You have many shards (risk of OOM)
 - The data is only used once
 - Memory is limited
@@ -78,9 +82,10 @@ Don't cache when:
 5. **Clear cache**: Call `shard.clear()` after processing
 
 Example:
+
 ```python
 for i in range(0, len(shards), batch_size):
-    batch_shards = shards[i:i+batch_size]
+    batch_shards = shards[i : i + batch_size]
     for shard in batch_shards:
         data = shard.get_data()
         process(data)
@@ -91,10 +96,12 @@ for i in range(0, len(shards), batch_size):
 
 ### What is a URI in `iden`?
 
-A URI (Uniform Resource Identifier) is a unique identifier for each shard or dataset. It's typically a file path converted to a URI format:
+A URI (Uniform Resource Identifier) is a unique identifier for each shard or dataset.
+It's typically a file path converted to a URI format:
 
 ```python
 from pathlib import Path
+
 uri = Path("/path/to/data.json").as_uri()
 # Result: "file:///path/to/data.json"
 ```
@@ -102,19 +109,10 @@ uri = Path("/path/to/data.json").as_uri()
 ### Can I use `iden` with remote storage (S3, GCS, etc.)?
 
 Currently, `iden` primarily supports local file systems. However, you can:
+
 1. Download data locally first, then use `iden`
 2. Use file-like objects with compatible loaders
 3. Extend `iden` with custom loaders for remote storage
-
-### How does `iden` compare to other dataset libraries?
-
-| Feature | iden | torch.utils.data | tensorflow.data | Hugging Face datasets |
-|---------|------|------------------|-----------------|----------------------|
-| Lazy loading | ✓ | ✓ | ✓ | Partial |
-| Multiple formats | ✓ | Limited | Limited | ✓ |
-| Framework agnostic | ✓ | ✗ | ✗ | ✓ |
-| Shard management | ✓ | Manual | Manual | ✓ |
-| Simple API | ✓ | Complex | Complex | Medium |
 
 ### Can I extend `iden` with custom shard types?
 
@@ -123,28 +121,17 @@ Yes! Implement a custom shard by extending `BaseShard`:
 ```python
 from iden.shard import BaseShard
 
+
 class CustomShard(BaseShard):
     def get_data(self, cache: bool = False):
         # Your implementation
         pass
-    
+
     def clear(self):
         # Your implementation
         pass
-    
+
     # Implement other required methods...
-```
-
-### How do I migrate from version 0.1.x to 0.2.x?
-
-Key changes:
-1. Python 3.9 support dropped, minimum is now 3.10
-2. Updated dependency versions
-3. See the [CHANGELOG](https://github.com/durandtibo/iden/blob/main/CHANGELOG.md) for details
-
-Update your dependencies:
-```shell
-pip install --upgrade 'iden>=0.2.0'
 ```
 
 ## Performance Questions
@@ -152,22 +139,16 @@ pip install --upgrade 'iden>=0.2.0'
 ### Why is loading slow?
 
 Possible reasons:
+
 1. Using inefficient format (e.g., JSON for large arrays)
 2. Loading from slow storage (network drive, slow disk)
 3. Large files without compression
 4. Not using caching for repeated access
 
-### How can I speed up data loading?
-
-1. Use efficient formats (`safetensors` for tensors)
-2. Enable caching for frequently accessed shards
-3. Use SSD storage instead of HDD
-4. Parallelize loading with threading/multiprocessing
-5. Compress large files
-
 ### How much memory does `iden` use?
 
 `iden` itself is lightweight. Memory usage depends on:
+
 - How many shards you cache
 - The size of your data
 - Whether you use lazy loading properly
@@ -182,14 +163,15 @@ See [CONTRIBUTING.md](https://github.com/durandtibo/iden/blob/main/CONTRIBUTING.
 
 1. Check if it's already reported in [issues](https://github.com/durandtibo/iden/issues)
 2. If not, open a new issue with:
-   - Python version
-   - `iden` version  
-   - Minimal code to reproduce
-   - Full error traceback
+    - Python version
+    - `iden` version
+    - Minimal code to reproduce
+    - Full error traceback
 
 ### Can I add support for a new file format?
 
 Yes! We welcome contributions. Open an issue to discuss, then submit a PR with:
+
 - New shard class
 - New loader class
 - Tests
@@ -208,4 +190,6 @@ Yes! We welcome contributions. Open an issue to discuss, then submit a PR with:
 
 ### How do I report a security vulnerability?
 
-Please email the maintainers privately rather than opening a public issue. See [SECURITY.md](https://github.com/durandtibo/iden/blob/main/SECURITY.md) if it exists, or contact through GitHub.
+Please email the maintainers privately rather than opening a public issue.
+See [SECURITY.md](https://github.com/durandtibo/iden/blob/main/SECURITY.md) if it exists, or contact
+through GitHub.

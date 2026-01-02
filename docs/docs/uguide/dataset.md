@@ -109,10 +109,16 @@ Assets allow you to store metadata, statistics, or other auxiliary information a
 >>> with tempfile.TemporaryDirectory() as tmpdir:
 ...     # Create minimal shards
 ...     shards = create_shard_dict(
-...         shards={"train": create_shard_tuple(
-...             [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("data").as_uri())],
-...             uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
-...         )},
+...         shards={
+...             "train": create_shard_tuple(
+...                 [
+...                     create_json_shard(
+...                         [1, 2, 3], uri=Path(tmpdir).joinpath("data").as_uri()
+...                     )
+...                 ],
+...                 uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+...             )
+...         },
 ...         uri=Path(tmpdir).joinpath("shards").as_uri(),
 ...     )
 ...     # Create assets
@@ -155,15 +161,27 @@ You can check which splits are available in your dataset using `get_splits()`:
 ...     shards = create_shard_dict(
 ...         shards={
 ...             "train": create_shard_tuple(
-...                 [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri())],
+...                 [
+...                     create_json_shard(
+...                         [1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri()
+...                     )
+...                 ],
 ...                 uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
 ...             ),
 ...             "val": create_shard_tuple(
-...                 [create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("val").as_uri())],
+...                 [
+...                     create_json_shard(
+...                         [4, 5, 6], uri=Path(tmpdir).joinpath("val").as_uri()
+...                     )
+...                 ],
 ...                 uri=Path(tmpdir).joinpath("val_tuple").as_uri(),
 ...             ),
 ...             "test": create_shard_tuple(
-...                 [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("test").as_uri())],
+...                 [
+...                     create_json_shard(
+...                         [7, 8, 9], uri=Path(tmpdir).joinpath("test").as_uri()
+...                     )
+...                 ],
 ...                 uri=Path(tmpdir).joinpath("test_tuple").as_uri(),
 ...             ),
 ...         },
@@ -193,10 +211,16 @@ Datasets are automatically saved when created with `create_vanilla_dataset` and 
 >>> with tempfile.TemporaryDirectory() as tmpdir:
 ...     # Create and save dataset
 ...     shards = create_shard_dict(
-...         shards={"train": create_shard_tuple(
-...             [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri())],
-...             uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
-...         )},
+...         shards={
+...             "train": create_shard_tuple(
+...                 [
+...                     create_json_shard(
+...                         [1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri()
+...                     )
+...                 ],
+...                 uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+...             )
+...         },
 ...         uri=Path(tmpdir).joinpath("shards").as_uri(),
 ...     )
 ...     assets = create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("assets").as_uri())

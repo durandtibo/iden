@@ -83,8 +83,12 @@ with tempfile.TemporaryDirectory() as tmpdir:
     # Create shards
     train_tuple = create_shard_tuple(
         [
-            create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train1.json").as_uri()),
-            create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("train2.json").as_uri()),
+            create_json_shard(
+                [1, 2, 3], uri=Path(tmpdir).joinpath("train1.json").as_uri()
+            ),
+            create_json_shard(
+                [4, 5, 6], uri=Path(tmpdir).joinpath("train2.json").as_uri()
+            ),
         ],
         uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
     )
@@ -92,21 +96,21 @@ with tempfile.TemporaryDirectory() as tmpdir:
         [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("val1.json").as_uri())],
         uri=Path(tmpdir).joinpath("val_tuple").as_uri(),
     )
-    
+
     # Organize shards into splits
     shards = create_shard_dict(
         shards={"train": train_tuple, "val": val_tuple},
         uri=Path(tmpdir).joinpath("shards").as_uri(),
     )
     assets = create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("assets").as_uri())
-    
+
     # Create dataset
     dataset = create_vanilla_dataset(
         shards=shards,
         assets=assets,
         uri=Path(tmpdir).joinpath("my_dataset").as_uri(),
     )
-    
+
     # Access data
     train_shards = dataset.get_shards("train")
     print(train_shards[0].get_data())  # Output: [1, 2, 3]
@@ -149,10 +153,7 @@ install only some specific dependencies or other alternatives to install the lib
 from iden.shard import create_json_shard
 
 # Create a shard
-shard = create_json_shard(
-    data={"key": "value"},
-    uri="file:///path/to/data.json"
-)
+shard = create_json_shard(data={"key": "value"}, uri="file:///path/to/data.json")
 
 # Get data from shard
 data = shard.get_data()

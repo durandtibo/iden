@@ -25,8 +25,9 @@ nav:
   - Home: index.md
   - Get Started: get_started.md
   - User Guide:
-      - Shards: guide/shard.md
-      - Datasets: guide/dataset.md
+      - Shards: uguide/shard.md
+      - Datasets: uguide/dataset.md
+      - FAQ: uguide/faq.md
   - How to:
       - Shards: howto/shard.md
       - Datasets: howto/dataset.md
@@ -39,8 +40,7 @@ nav:
       - iden.shard: refs/shard.md
       - iden.testing: refs/testing.md
       - iden.utils: refs/utils.md
-  - FAQ: faq.md
-  - Troubleshooting: troubleshooting.md
+
   - GitHub: https://github.com/durandtibo/iden
 
 repo_url: https://github.com/durandtibo/iden

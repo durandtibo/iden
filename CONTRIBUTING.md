@@ -34,7 +34,7 @@ Once you implement and test your feature or bug-fix, please submit a Pull Reques
    ```shell
    # Install uv if you haven't already
    pip install uv
-   
+
    # Create and activate virtual environment with dependencies
    make setup-venv
    source .venv/bin/activate  # On Unix/macOS
