@@ -142,8 +142,8 @@ SplitNotFoundError: Split 'validation' not found
 
 1. Check available splits:
    ```python
-   splits = dataset.get_split_names()
-   print(f"Available splits: {splits}")
+   splits = dataset.get_splits()
+   print(f"Available splits: {sorted(splits)}")
    ```
 
 2. Use the correct split name:
@@ -162,13 +162,7 @@ AssetNotFoundError: Asset 'statistics' not found
 
 **Solution**:
 
-1. Check available assets:
-   ```python
-   assets = dataset.get_asset_names()
-   print(f"Available assets: {assets}")
-   ```
-
-2. Verify the asset was created:
+1. Check if the asset exists:
    ```python
    if dataset.has_asset("statistics"):
        stats = dataset.get_asset("statistics")

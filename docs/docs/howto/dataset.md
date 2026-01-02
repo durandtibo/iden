@@ -9,11 +9,9 @@ A new dataset can be implemented by extending the `iden.dataset.BaseDataset` cla
 
 - `equal` - Compare two datasets for equality
 - `get_asset` - Get an asset by name
-- `get_asset_names` - Get all asset names
 - `get_num_shards` - Get the number of shards in a split
-- `get_shard` - Get a shard by split and index
 - `get_shards` - Get all shards for a split
-- `get_split_names` - Get all split names
+- `get_splits` - Get all split names as a set
 - `get_uri` - Get the dataset URI
 - `has_asset` - Check if an asset exists
 - `has_split` - Check if a split exists
@@ -47,26 +45,15 @@ class CustomDataset(BaseDataset[Any]):
         # Implement asset retrieval
         raise NotImplementedError
 
-    def get_asset_names(self) -> tuple[str, ...]:
-        # Implement asset name retrieval
-        return ()
-
     def get_num_shards(self, split: str) -> int:
         return len(self._data.get(split, []))
 
-    def get_shard(self, split: str, index: int) -> BaseShard:
-        return self._data[split][index]
+    def get_shards(self, split: str) -> tuple[BaseShard[T], ...]:
+        # Return shards as a tuple
+        return tuple(self._data.get(split, []))
 
-    def get_shards(self, split: str) -> BaseShard:
-        # Return a shard container (e.g., ShardTuple)
-        from iden.shard import ShardTuple
-        return ShardTuple(
-            uri=f"{self._uri}/shards/{split}",
-            shards=self._data[split],
-        )
-
-    def get_split_names(self) -> tuple[str, ...]:
-        return tuple(sorted(self._data.keys()))
+    def get_splits(self) -> set[str]:
+        return set(self._data.keys())
 
     def get_uri(self) -> str:
         return self._uri
