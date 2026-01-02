@@ -127,7 +127,7 @@ It is possible to extend `iden` to support more shard implementation.
 [This page](../howto/shard.md) explains how to add a new shard implementation.
 
 Each shard implementation is different and has different properties.
-You need to choose the best shard based on your requirements. It is not a one size fits all.
+The best shard should be chosen based on the requirements. It is not a one size fits all.
 For example, the `PickleShard` implementation supports a lot of types of data whereas
 the `TorchSafetensorsShard` implementation only supports dictionary of ``torch.Tensor``s.
 The following table shows a summary of supported data for some of the built-in shards.
