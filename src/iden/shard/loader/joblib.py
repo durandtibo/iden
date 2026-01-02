@@ -13,7 +13,10 @@ T = TypeVar("T")
 
 
 class JoblibShardLoader(BaseShardLoader[T]):
-    r"""Implement a joblib shard loader.
+    r"""Implement a joblib shard loader for loading shards from joblib files.
+
+    This loader reads shard configuration from a URI and instantiates a
+    joblib shard with the specified data file path.
 
     Example:
         ```pycon

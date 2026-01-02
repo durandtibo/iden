@@ -14,7 +14,10 @@ T = TypeVar("T")
 
 
 class ShardTupleLoader(BaseShardLoader[tuple[BaseShard[T], ...]]):
-    r"""Implement a ``ShardTuple`` loader.
+    r"""Implement a shard tuple loader for loading sequence-structured shards.
+
+    This loader reads shard configuration from a URI and instantiates a
+    ShardTuple containing an ordered sequence of shards.
 
     Example:
         ```pycon

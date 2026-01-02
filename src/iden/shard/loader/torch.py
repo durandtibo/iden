@@ -15,7 +15,10 @@ T = TypeVar("T")
 
 
 class TorchShardLoader(BaseShardLoader[T]):
-    r"""Implement a PyTorch shard loader.
+    r"""Implement a PyTorch shard loader for loading shards from PyTorch files.
+
+    This loader reads shard configuration from a URI and instantiates a
+    PyTorch shard with the specified data file path.
 
     Raises:
         RuntimeError: if ``torch`` is not installed.
