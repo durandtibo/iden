@@ -73,7 +73,7 @@ pip install iden
 
 To make the package as slim as possible, only the minimal packages required to use `iden` are
 installed.
-To include all the dependencies, you can use the following command:
+To include all the dependencies, the following command can be used:
 
 ```shell
 pip install iden[all]
@@ -106,9 +106,9 @@ Please check the instructions in [CONTRIBUTING.md](CONTRIBUTING.md).
 ## Suggestions and Communication
 
 Everyone is welcome to contribute to the community.
-If you have any questions or suggestions, you can
-submit [Github Issues](https://github.com/durandtibo/iden/issues).
-We will reply to you as soon as possible. Thank you very much.
+For any questions or suggestions,
+[Github Issues](https://github.com/durandtibo/iden/issues) can be submitted.
+All issues will be addressed as soon as possible.
 
 ## API stability
 
