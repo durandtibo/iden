@@ -111,33 +111,6 @@ We actively welcome your pull requests.
 6. If you've added a new feature, add an example to the `examples/` directory.
 7. Update the documentation in the `docs/` directory if needed.
 
-### Code Style Guidelines
-
-- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide
-- Use [Black](https://github.com/psf/black) for code formatting (line length: 100)
-- Use [Ruff](https://github.com/astral-sh/ruff) for linting
-- Follow [Google style](https://google.github.io/styleguide/pyguide.html#s3.8-comments-and-docstrings) for docstrings
-- Add type hints to all functions and methods
-
-### Commit Message Guidelines
-
-- Use clear and descriptive commit messages
-- Start with a verb in the imperative mood (e.g., "Add", "Fix", "Update")
-- Keep the first line under 72 characters
-- Reference issues and pull requests when relevant
-
-Example:
-```
-Add support for HDF5 shard format
-
-- Implement HDF5Shard class
-- Add HDF5ShardLoader
-- Update documentation with HDF5 examples
-- Add tests for HDF5 functionality
-
-Fixes #123
-```
-
 ## Issues
 
 We use GitHub issues to track public bugs or feature requests.
