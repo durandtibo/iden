@@ -28,15 +28,15 @@ The simplest way to save and load data is using format-specific convenience func
 
 `iden` supports multiple data formats:
 
-| Format | Save function | Load function | Required package |
-|--------|---------------|---------------|------------------|
-| JSON | `save_json` | `load_json` | `json` (built-in) |
-| Pickle | `save_pickle` | `load_pickle` | `pickle` (built-in) |
-| YAML | `save_yaml` | `load_yaml` | `pyyaml` |
-| PyTorch | `save_torch` | `load_torch` | `torch` |
-| Cloudpickle | `save_cloudpickle` | `load_cloudpickle` | `cloudpickle` |
-| Joblib | `save_joblib` | `load_joblib` | `joblib` |
-| Text | `save_text` | `load_text` | - |
+| Format      | Save function      | Load function      | Required package    |
+|-------------|--------------------|--------------------|---------------------|
+| JSON        | `save_json`        | `load_json`        | `json` (built-in)   |
+| Pickle      | `save_pickle`      | `load_pickle`      | `pickle` (built-in) |
+| YAML        | `save_yaml`        | `load_yaml`        | `pyyaml`            |
+| PyTorch     | `save_torch`       | `load_torch`       | `torch`             |
+| Cloudpickle | `save_cloudpickle` | `load_cloudpickle` | `cloudpickle`       |
+| Joblib      | `save_joblib`      | `load_joblib`      | `joblib`            |
+| Text        | `save_text`        | `load_text`        | -                   |
 
 ### Example: YAML format
 
@@ -103,9 +103,9 @@ You can register custom loaders for specific file extensions:
 >>> from iden.io import get_default_loader_registry, JsonLoader
 >>> registry = get_default_loader_registry()
 >>> # Register loader for .jsonl extension
->>> registry.register_loader(".jsonl", JsonLoader())
+>>> registry.register_loader("jsonl", JsonLoader())
 >>> # Check registered loaders
->>> registry.has_loader(".jsonl")
+>>> registry.has_loader("jsonl")
 True
 
 ```
@@ -204,12 +204,3 @@ For efficient storage of NumPy arrays or PyTorch tensors, use safetensors format
 dict_keys(['layer1', 'layer2'])
 
 ```
-
-## Best practices
-
-1. **Use appropriate formats**: Choose the format based on your data type and requirements
-2. **Handle errors**: Always wrap I/O operations in try-except blocks
-3. **Validate paths**: Ensure directories exist before saving
-4. **Close resources**: Use context managers when working with files
-5. **Consider compression**: For large datasets, consider compressed formats
-6. **Version your data**: Include version information in saved files for compatibility
