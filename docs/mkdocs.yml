@@ -23,11 +23,14 @@ theme:
 
 nav:
   - Home: index.md
-  - get_started.md
+  - Get Started: get_started.md
   - User Guide:
-      - guide/shard.md
+      - Shards: guide/shard.md
+      - Datasets: guide/dataset.md
   - How to:
-      - howto/shard.md
+      - Shards: howto/shard.md
+      - Datasets: howto/dataset.md
+      - I/O Operations: howto/io.md
   - Reference:
       - iden.constants: refs/constants.md
       - iden.data: refs/data.md
@@ -36,6 +39,8 @@ nav:
       - iden.shard: refs/shard.md
       - iden.testing: refs/testing.md
       - iden.utils: refs/utils.md
+  - FAQ: faq.md
+  - Troubleshooting: troubleshooting.md
   - GitHub: https://github.com/durandtibo/iden
 
 repo_url: https://github.com/durandtibo/iden

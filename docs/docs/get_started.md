@@ -19,33 +19,50 @@ It is possible to install all the optional dependencies by running the following
 pip install 'iden[all]'
 ```
 
-This command also installed NumPy and PyTorch.
-It is also possible to install the optional packages manually or to select the packages to install.
-In the following example, only NumPy is installed:
+This command also installs NumPy and PyTorch.
+It is also possible to install the optional packages manually or to select specific packages to install.
+
+### Installing specific optional dependencies
+
+You can install individual optional dependencies as needed:
 
 ```shell
-pip install iden numpy
+# Install with NumPy support
+pip install 'iden[numpy]'
+
+# Install with PyTorch support
+pip install 'iden[torch]'
+
+# Install with YAML support
+pip install 'iden[pyyaml]'
+
+# Install with safetensors support
+pip install 'iden[safetensors]'
+
+# Install with cloudpickle support
+pip install 'iden[cloudpickle]'
+
+# Install with joblib support
+pip install 'iden[joblib]'
 ```
 
 ## Installing from source
 
-To install `iden` from source, the steps below can be followed. First, [`poetry`](https://python-poetry.org/docs/master/) needs to be installed. `poetry` is used to manage and install
-the dependencies.
-If `poetry` is already installed on the machine, this step can be skipped. There are several ways to
-install `poetry`, and any preferred method can be used. The `poetry` installation can be checked by
-running the following command:
+To install `iden` from source, you'll need [`uv`](https://docs.astral.sh/uv/) for dependency management.
+If `uv` is not already installed, you can install it using:
 
 ```shell
-poetry --version
+pip install uv
 ```
 
-Then, the git repository can be cloned:
+Then, clone the git repository:
 
 ```shell
 git clone git@github.com:durandtibo/iden.git
+cd iden
 ```
 
-It is recommended to create a Python 3.8+ virtual environment. This step is optional and
+It is recommended to create a Python 3.10+ virtual environment. This step is optional and
 can be skipped. To create a virtual environment, the following command can be used:
 
 ```shell
@@ -59,17 +76,24 @@ can be activated with the following command:
 conda activate iden
 ```
 
-This example uses `conda` to create a virtual environment, but other tools or
-configurations can be used. Then, the required packages to use `iden` should be installed with the following
+Alternatively, you can use `uv` to create a virtual environment:
+
+```shell
+make setup-venv
+```
+
+This will create a virtual environment using `uv` and install all development dependencies.
+
+## Verifying the installation
+
+After installation, the required packages can be installed or updated with the following
 command:
 
 ```shell
 make install
 ```
 
-This command will install all the required packages. This command can also be used to update the
-required packages. This command will check if there is a more recent package available and will
-install it. Finally, the installation can be tested with the following command:
+Finally, the installation can be verified with the following command:
 
 ```shell
 make unit-test-cov
