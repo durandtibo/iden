@@ -13,7 +13,8 @@ T = TypeVar("T")
 
 
 class PickleShardGenerator(BaseFileShardGenerator[T]):
-    r"""Implement a pickle shard generator for creating shards with pickle persistence.
+    r"""Implement a pickle shard generator for creating shards with
+    pickle persistence.
 
     This generator creates shards that store data using Python's pickle
     protocol, suitable for arbitrary Python objects.
