@@ -76,26 +76,40 @@ loading their data.
 import tempfile
 from pathlib import Path
 from iden.dataset import create_vanilla_dataset
-from iden.shard import create_json_shard
+from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
 
 # Create a simple dataset
 with tempfile.TemporaryDirectory() as tmpdir:
+    # Create shards
+    train_tuple = create_shard_tuple(
+        [
+            create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train1.json").as_uri()),
+            create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("train2.json").as_uri()),
+        ],
+        uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+    )
+    val_tuple = create_shard_tuple(
+        [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("val1.json").as_uri())],
+        uri=Path(tmpdir).joinpath("val_tuple").as_uri(),
+    )
+    
+    # Organize shards into splits
+    shards = create_shard_dict(
+        shards={"train": train_tuple, "val": val_tuple},
+        uri=Path(tmpdir).joinpath("shards").as_uri(),
+    )
+    assets = create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("assets").as_uri())
+    
+    # Create dataset
     dataset = create_vanilla_dataset(
+        shards=shards,
+        assets=assets,
         uri=Path(tmpdir).joinpath("my_dataset").as_uri(),
-        shards={
-            "train": [
-                create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train1.json").as_uri()),
-                create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("train2.json").as_uri()),
-            ],
-            "val": [
-                create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("val1.json").as_uri()),
-            ],
-        },
     )
     
     # Access data
-    train_data = dataset.get_shard("train", 0).get_data()
-    print(train_data)  # Output: [1, 2, 3]
+    train_shards = dataset.get_shards("train")
+    print(train_shards[0].get_data())  # Output: [1, 2, 3]
 ```
 
 ## Installation
@@ -151,20 +165,27 @@ data = shard.get_data(cache=True)
 
 ```python
 from iden.dataset import create_vanilla_dataset
-from iden.shard import create_json_shard
+from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
 
 # Create a dataset with train/val splits
+train_tuple = create_shard_tuple([shard1, shard2, shard3], uri="file:///train_tuple")
+val_tuple = create_shard_tuple([shard4, shard5], uri="file:///val_tuple")
+
+shards = create_shard_dict(
+    shards={"train": train_tuple, "val": val_tuple},
+    uri="file:///shards",
+)
+assets = create_shard_dict(shards={}, uri="file:///assets")
+
 dataset = create_vanilla_dataset(
+    shards=shards,
+    assets=assets,
     uri="file:///path/to/dataset",
-    shards={
-        "train": [shard1, shard2, shard3],
-        "val": [shard4, shard5],
-    },
 )
 
 # Access shards
 train_shards = dataset.get_shards("train")
-first_shard = dataset.get_shard("train", 0)
+first_shard_data = train_shards[0].get_data()
 ```
 
 The following is the corresponding `iden` versions and tested dependencies.

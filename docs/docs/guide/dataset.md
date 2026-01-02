@@ -7,52 +7,47 @@ The dataset is an abstraction to manage collections of shards organized into spl
 
 ## Creating a dataset
 
-A dataset can be created using the `VanillaDataset` class, which requires:
+A dataset can be created using the `create_vanilla_dataset` function or directly using the `VanillaDataset` class.
 
-- **uri**: A unique identifier for the dataset
-- **shards**: A dictionary of shards organized by split names
-- **assets**: A dictionary of assets (optional)
+### Using create_vanilla_dataset
 
-Here's a simple example:
+The `create_vanilla_dataset` function is the recommended way to create datasets:
 
 ```pycon
 >>> import tempfile
 >>> from pathlib import Path
->>> from iden.dataset import VanillaDataset
+>>> from iden.dataset import create_vanilla_dataset
 >>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
 >>> with tempfile.TemporaryDirectory() as tmpdir:
-...     # Create shards for training data
+...     # Create shards using create_shard_tuple
 ...     train_shards = create_shard_tuple(
 ...         [
-...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train/shard1").as_uri()),
-...             create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("train/shard2").as_uri()),
+...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train1").as_uri()),
+...             create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("train2").as_uri()),
 ...         ],
-...         uri=Path(tmpdir).joinpath("train_shards").as_uri(),
+...         uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
 ...     )
 ...     # Create shards dictionary
 ...     shards = create_shard_dict(
 ...         shards={"train": train_shards},
 ...         uri=Path(tmpdir).joinpath("shards").as_uri(),
 ...     )
+...     # Create assets (can be empty)
+...     assets = create_shard_dict(
+...         shards={},
+...         uri=Path(tmpdir).joinpath("assets").as_uri(),
+...     )
 ...     # Create dataset
-...     dataset = VanillaDataset(
-...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
+...     dataset = create_vanilla_dataset(
 ...         shards=shards,
+...         assets=assets,
+...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
 ...     )
 ...     dataset
 ...
 VanillaDataset(
   (uri): file:///.../dataset
-  (shards): ShardDict(
-      (uri): file:///.../shards
-      (shards):
-        (train): ShardTuple(
-            (uri): file:///.../train_shards
-            (shards):
-              (0): JsonShard(uri=file:///.../train/shard1)
-              (1): JsonShard(uri=file:///.../train/shard2)
-          )
-    )
+  (shards): ShardDict(...)
   (assets): ShardDict(...)
 )
 
@@ -60,36 +55,45 @@ VanillaDataset(
 
 ## Accessing shards
 
-You can access shards by split name using the `get_shards` method:
+You can access shards by split name using the `get_shards` method, which returns a tuple of shards:
 
 ```pycon
 >>> import tempfile
 >>> from pathlib import Path
 >>> from iden.dataset import create_vanilla_dataset
->>> from iden.shard import create_json_shard
+>>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
 >>> with tempfile.TemporaryDirectory() as tmpdir:
+...     train_shards = create_shard_tuple(
+...         [
+...             create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train1").as_uri()),
+...             create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("train2").as_uri()),
+...         ],
+...         uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+...     )
+...     val_shards = create_shard_tuple(
+...         [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("val1").as_uri())],
+...         uri=Path(tmpdir).joinpath("val_tuple").as_uri(),
+...     )
+...     shards = create_shard_dict(
+...         shards={"train": train_shards, "val": val_shards},
+...         uri=Path(tmpdir).joinpath("shards").as_uri(),
+...     )
+...     assets = create_shard_dict(
+...         shards={},
+...         uri=Path(tmpdir).joinpath("assets").as_uri(),
+...     )
 ...     dataset = create_vanilla_dataset(
+...         shards=shards,
+...         assets=assets,
 ...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
-...         shards={
-...             "train": [
-...                 create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train1").as_uri()),
-...                 create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("train2").as_uri()),
-...             ],
-...             "val": [
-...                 create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("val1").as_uri()),
-...             ],
-...         },
 ...     )
 ...     # Get training shards
-...     train_shards = dataset.get_shards("train")
-...     train_shards
+...     train_data = dataset.get_shards("train")
+...     # Access individual shards by index
+...     first_shard = train_data[0]
+...     first_shard.get_data()
 ...
-ShardTuple(
-  (uri): file:///.../dataset/shards/train
-  (shards):
-    (0): JsonShard(uri=file:///.../train1)
-    (1): JsonShard(uri=file:///.../train2)
-)
+[1, 2, 3]
 
 ```
 
@@ -100,9 +104,17 @@ Assets allow you to store metadata, statistics, or other auxiliary information a
 ```pycon
 >>> import tempfile
 >>> from pathlib import Path
->>> from iden.dataset import VanillaDataset
->>> from iden.shard import create_json_shard, create_shard_dict
+>>> from iden.dataset import create_vanilla_dataset
+>>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
 >>> with tempfile.TemporaryDirectory() as tmpdir:
+...     # Create minimal shards
+...     shards = create_shard_dict(
+...         shards={"train": create_shard_tuple(
+...             [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("data").as_uri())],
+...             uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+...         )},
+...         uri=Path(tmpdir).joinpath("shards").as_uri(),
+...     )
 ...     # Create assets
 ...     assets = create_shard_dict(
 ...         shards={
@@ -117,10 +129,10 @@ Assets allow you to store metadata, statistics, or other auxiliary information a
 ...         },
 ...         uri=Path(tmpdir).joinpath("assets").as_uri(),
 ...     )
-...     dataset = VanillaDataset(
-...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
-...         shards=create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("shards").as_uri()),
+...     dataset = create_vanilla_dataset(
+...         shards=shards,
 ...         assets=assets,
+...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
 ...     )
 ...     # Access assets
 ...     metadata = dataset.get_asset("metadata")
@@ -132,87 +144,71 @@ Assets allow you to store metadata, statistics, or other auxiliary information a
 
 ## Available splits
 
-You can check which splits are available in your dataset:
+You can check which splits are available in your dataset using `get_splits()`:
 
 ```pycon
 >>> import tempfile
 >>> from pathlib import Path
 >>> from iden.dataset import create_vanilla_dataset
->>> from iden.shard import create_json_shard
+>>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
 >>> with tempfile.TemporaryDirectory() as tmpdir:
-...     dataset = create_vanilla_dataset(
-...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
+...     shards = create_shard_dict(
 ...         shards={
-...             "train": [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri())],
-...             "val": [create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("val").as_uri())],
-...             "test": [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("test").as_uri())],
+...             "train": create_shard_tuple(
+...                 [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri())],
+...                 uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+...             ),
+...             "val": create_shard_tuple(
+...                 [create_json_shard([4, 5, 6], uri=Path(tmpdir).joinpath("val").as_uri())],
+...                 uri=Path(tmpdir).joinpath("val_tuple").as_uri(),
+...             ),
+...             "test": create_shard_tuple(
+...                 [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("test").as_uri())],
+...                 uri=Path(tmpdir).joinpath("test_tuple").as_uri(),
+...             ),
 ...         },
+...         uri=Path(tmpdir).joinpath("shards").as_uri(),
 ...     )
-...     dataset.get_split_names()
+...     assets = create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("assets").as_uri())
+...     dataset = create_vanilla_dataset(
+...         shards=shards,
+...         assets=assets,
+...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
+...     )
+...     sorted(dataset.get_splits())
 ...
-('test', 'train', 'val')
+['test', 'train', 'val']
 
 ```
 
 ## Saving and loading datasets
 
-Datasets can be saved to disk and loaded back:
+Datasets are automatically saved when created with `create_vanilla_dataset` and can be loaded using `load_from_uri`:
 
 ```pycon
 >>> import tempfile
 >>> from pathlib import Path
 >>> from iden.dataset import create_vanilla_dataset, load_from_uri
->>> from iden.shard import create_json_shard
+>>> from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
 >>> with tempfile.TemporaryDirectory() as tmpdir:
 ...     # Create and save dataset
+...     shards = create_shard_dict(
+...         shards={"train": create_shard_tuple(
+...             [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri())],
+...             uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+...         )},
+...         uri=Path(tmpdir).joinpath("shards").as_uri(),
+...     )
+...     assets = create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("assets").as_uri())
 ...     dataset = create_vanilla_dataset(
+...         shards=shards,
+...         assets=assets,
 ...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
-...         shards={
-...             "train": [create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train").as_uri())],
-...         },
 ...     )
 ...     # Load dataset from URI
 ...     loaded_dataset = load_from_uri(Path(tmpdir).joinpath("dataset").as_uri())
-...     loaded_dataset
+...     loaded_dataset.get_uri()
 ...
-VanillaDataset(
-  (uri): file:///.../dataset
-  (shards): ShardDict(...)
-  (assets): ShardDict(...)
-)
-
-```
-
-## Helper function
-
-The `create_vanilla_dataset` function provides a convenient way to create datasets:
-
-```pycon
->>> import tempfile
->>> from pathlib import Path
->>> from iden.dataset import create_vanilla_dataset
->>> from iden.shard import create_json_shard
->>> with tempfile.TemporaryDirectory() as tmpdir:
-...     dataset = create_vanilla_dataset(
-...         uri=Path(tmpdir).joinpath("dataset").as_uri(),
-...         shards={
-...             "train": [
-...                 create_json_shard([1, 2, 3], uri=Path(tmpdir).joinpath("train1").as_uri()),
-...             ],
-...         },
-...         assets={
-...             "metadata": create_json_shard(
-...                 {"version": "1.0"},
-...                 uri=Path(tmpdir).joinpath("metadata").as_uri(),
-...             ),
-...         },
-...     )
-...     dataset
-...
-VanillaDataset(
-  (uri): file:///.../dataset
-  (shards): ShardDict(...)
-  (assets): ShardDict(...)
-)
+'file:///.../dataset'
 
 ```
