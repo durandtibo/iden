@@ -38,9 +38,11 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
-    r"""Implement a safetensors shard for ``numpy.ndarray``s.
+    r"""Implement a safetensors shard for secure NumPy array storage.
 
-    The data are stored in a safetensors file.
+    This shard stores NumPy arrays using the safetensors format, which
+    provides fast and secure serialization without arbitrary code execution
+    risks. The data are stored in a safetensors file.
 
     Args:
         uri: The shard's URI.
@@ -105,9 +107,11 @@ class NumpySafetensorsShard(FileShard[dict[str, np.ndarray]]):
 
 
 class TorchSafetensorsShard(FileShard[dict[str, torch.Tensor]]):
-    r"""Implement a safetensors shard for ``torch.Tensor``s.
+    r"""Implement a safetensors shard for secure PyTorch tensor storage.
 
-    The data are stored in a safetensors file.
+    This shard stores PyTorch tensors using the safetensors format, which
+    provides fast and secure serialization without arbitrary code execution
+    risks. The data are stored in a safetensors file.
 
     Args:
         uri: The shard's URI.
