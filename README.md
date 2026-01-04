@@ -123,7 +123,7 @@ a [virtual environment](https://packaging.python.org/guides/installing-using-pip
 `iden` can be installed from pip using the following command:
 
 ```shell
-pip install iden
+uv pip install iden
 ```
 
 To make the package as slim as possible, only the minimal packages required to use `iden` are
@@ -131,7 +131,7 @@ installed.
 To include all the dependencies, the following command can be used:
 
 ```shell
-pip install iden[all]
+uv pip install iden[all]
 ```
 
 Please check the [get started page](https://durandtibo.github.io/iden/get_started) to see how to
@@ -193,8 +193,8 @@ The following is the corresponding `iden` versions and tested dependencies.
 
 | `iden`  | `coola`         | `objectory`  | `numpy`<sup>*</sup> | `pyyaml`<sup>*</sup> | `safetensors`<sup>*</sup> | `torch`<sup>*</sup> | `python`      |
 |---------|-----------------|--------------|---------------------|----------------------|---------------------------|---------------------|---------------|
-| `main`  | `>=0.11.0,<1.0` | `>=0.3,<1.0` | `>=1.24,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.10`      |
-| `0.3.0` | `>=0.11.0,<1.0` | `>=0.3,<1.0` | `>=1.24,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.10`      |
+| `main`  | `>=0.11.0,<1.0` | `>=0.3,<1.0` | `>=1.24,<2.0`       | `>=6.0,<7.0`         | `>=0.6,<1.0`              | `>=2.0,<3.0`        | `>=3.10`      |
+| `0.3.0` | `>=0.11.0,<1.0` | `>=0.3,<1.0` | `>=1.24,<2.0`       | `>=6.0,<7.0`         | `>=0.6,<1.0`              | `>=2.0,<3.0`        | `>=3.10`      |
 | `0.2.0` | `>=0.8.4,<1.0`  | `>=0.2,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.14` |
 | `0.1.0` | `>=0.8.4,<1.0`  | `>=0.2,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.14` |
 | `0.0.4` | `>=0.3,<1.0`    | `>=0.1,<1.0` | `>=1.22,<2.0`       | `>=6.0,<7.0`         | `>=0.4,<1.0`              | `>=2.0,<3.0`        | `>=3.9,<3.13` |
