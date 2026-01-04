@@ -89,11 +89,11 @@ wheels = [
 
 [[package]]
 name = "certifi"
-version = "2025.11.12"
+version = "2026.1.4"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a2/8c/58f469717fa48465e4a50c014a0400602d3c437d7c0c468e17ada824da3a/certifi-2025.11.12.tar.gz", hash = "sha256:d8ab5478f2ecd78af242878415affce761ca6bc54a22a27e026d7c25357c3316", size = 160538, upload-time = "2025-11-12T02:54:51.517Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e0/2d/a891ca51311197f6ad14a7ef42e2399f36cf2f9bd44752b3dc4eab60fdc5/certifi-2026.1.4.tar.gz", hash = "sha256:ac726dd470482006e014ad384921ed6438c457018f4b3d204aea4281258b2120", size = 154268, upload-time = "2026-01-04T02:42:41.825Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/7d/9bc192684cea499815ff478dfcdc13835ddf401365057044fb721ec6bddb/certifi-2025.11.12-py3-none-any.whl", hash = "sha256:97de8790030bbd5c2d96b7ec782fc2f7820ef8dba6db909ccf95449f2d062d4b", size = 159438, upload-time = "2025-11-12T02:54:49.735Z" },
+    { url = "https://files.pythonhosted.org/packages/e6/ad/3cc14f097111b4de0040c83a525973216457bbeeb63739ef1ed275c1c021/certifi-2026.1.4-py3-none-any.whl", hash = "sha256:9943707519e4add1115f44c2bc244f782c0249876bf51b6599fee1ffbedd685c", size = 152900, upload-time = "2026-01-04T02:42:40.15Z" },
 ]
 
 [[package]]
@@ -226,11 +226,11 @@ wheels = [
 
 [[package]]
 name = "coola"
-version = "0.11.0"
+version = "0.11.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9c/c7/6f351774cdc5b888cf66ebc7d9ae117f18326c2210b94e076843caeba981/coola-0.11.0.tar.gz", hash = "sha256:c1969cc2ec9edd3f077e7e2bb913adacc2c7029eeb19864417de0e106a799574", size = 62347, upload-time = "2025-12-27T02:49:34.387Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/ef/a0cb63d160fe7983b62383feb575c6b2f9cd51d3102cf46092cfb0d1c829/coola-0.11.1.tar.gz", hash = "sha256:015f1c135b6f3c375cc25af1d171bcee643060d44e30ff679a450a03295ab9db", size = 62416, upload-time = "2026-01-04T10:26:10.336Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/31/1a/2ec69317a215f09cdd2bb25daf44dbb0aee569680f46ab4bdbfb2f6c5b6a/coola-0.11.0-py3-none-any.whl", hash = "sha256:adfc0298a427bd470c9c48d09b6b78e4fe50606d416114e29dc4c429f16d1fcb", size = 122725, upload-time = "2025-12-27T02:49:33.037Z" },
+    { url = "https://files.pythonhosted.org/packages/33/b1/3d4e0c3096a7725a3d8c0ac84e726a636b1c2157d75e53bfb87ba464d07b/coola-0.11.1-py3-none-any.whl", hash = "sha256:5177a8f78ba518637cec924857cd08aaf4b79905aaeb32c3e2d078e4c44fa56c", size = 122802, upload-time = "2026-01-04T10:26:09.215Z" },
 ]
 
 [[package]]
@@ -525,7 +525,7 @@ requires-dist = [
     { name = "numpy", marker = "extra == 'numpy'", specifier = ">=1.24,<3.0" },
     { name = "objectory", specifier = ">=0.3.0,<1.0" },
     { name = "pyyaml", marker = "extra == 'pyyaml'", specifier = ">=6.0,<7.0" },
-    { name = "safetensors", marker = "extra == 'safetensors'", specifier = ">=0.4,<1.0" },
+    { name = "safetensors", marker = "extra == 'safetensors'", specifier = ">=0.5,<1.0" },
     { name = "torch", marker = "(platform_machine == 'arm64' and sys_platform == 'darwin' and extra == 'torch') or (sys_platform == 'linux' and extra == 'torch')", specifier = ">=2.0,<3.0" },
     { name = "torch", marker = "python_full_version < '3.13' and platform_machine != 'arm64' and sys_platform == 'darwin' and extra == 'torch'", specifier = ">=2.0,<2.3" },
 ]

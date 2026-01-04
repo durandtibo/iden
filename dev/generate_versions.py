@@ -25,7 +25,7 @@ def fetch_package_versions() -> dict[str, list[str]]:
         "joblib": list(fetch_latest_minor_versions("joblib", lower="1.3")),
         "numpy": list(fetch_latest_minor_versions("numpy", lower="1.24")),
         "pyyaml": list(fetch_latest_minor_versions("pyyaml", lower="6.0")),
-        "safetensors": list(fetch_latest_minor_versions("safetensors", lower="0.4")),
+        "safetensors": list(fetch_latest_minor_versions("safetensors", lower="0.5")),
         "torch": list(fetch_latest_minor_versions("torch", lower="2.0")),
     }
 
