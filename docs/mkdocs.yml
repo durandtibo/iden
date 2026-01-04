@@ -27,7 +27,6 @@ nav:
   - User Guide:
       - Shards: uguide/shard.md
       - Datasets: uguide/dataset.md
-      - FAQ: uguide/faq.md
   - How to:
       - Shards: howto/shard.md
       - Datasets: howto/dataset.md
