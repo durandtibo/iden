@@ -17,10 +17,18 @@ Once you implement and test your feature or bug-fix, please submit a Pull Reques
 ### Prerequisites
 
 - Python 3.10 or higher
-- [`uv`](https://docs.astral.sh/uv/) for dependency management
+- [`uv`](https://docs.astral.sh/uv/) for dependency management (see [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/))
 - Git
 
 ### Setting up your development environment
+
+Please refer to the [Get Started guide](https://durandtibo.github.io/iden/get_started) for detailed instructions on setting up your development environment, including:
+
+- Creating and activating virtual environments
+- Installing dependencies
+- Verifying the installation
+
+**Quick setup:**
 
 1. **Fork the repository** on GitHub
 
@@ -30,23 +38,14 @@ Once you implement and test your feature or bug-fix, please submit a Pull Reques
    cd iden
    ```
 
-3. **Set up the development environment**:
+3. **Set up the development environment** (requires `uv` to be installed):
    ```shell
-   # Install uv if you haven't already
-   pip install uv
-
    # Create and activate virtual environment with dependencies
-   make setup-venv
+   inv create-venv
+   inv install --docs-deps
    source .venv/bin/activate  # On Unix/macOS
    # or
    .venv\Scripts\activate  # On Windows
-   ```
-
-   Alternatively, use conda:
-   ```shell
-   make conda
-   conda activate iden
-   make install-all
    ```
 
 4. **Install pre-commit hooks**:
@@ -58,23 +57,23 @@ Once you implement and test your feature or bug-fix, please submit a Pull Reques
 
 ```shell
 # Run unit tests
-make unit-test
+inv unit-test
 
 # Run unit tests with coverage
-make unit-test-cov
+inv unit-test --cov
 
 # Run integration tests
-make integration-test
+inv integration-test
 ```
 
 ### Code quality checks
 
 ```shell
 # Check code formatting
-make format
+inv check-format
 
 # Check linting
-make lint
+inv check-lint
 
 # Run all pre-commit hooks
 pre-commit run --all-files
@@ -83,9 +82,6 @@ pre-commit run --all-files
 ### Building documentation
 
 ```shell
-# Install documentation dependencies (if not already installed)
-make install-all
-
 # Build and serve documentation locally
 cd docs
 mkdocs serve
@@ -102,7 +98,7 @@ We actively welcome your pull requests.
 3. If you've changed APIs, update the documentation.
 4. Ensure the test suite passes. You can use the following command to run the tests:
    ```shell
-   make unit-test-cov
+   inv unit-test --cov
    ```
 5. Make sure your code lints. The following commands can help you to format the code:
    ```shell

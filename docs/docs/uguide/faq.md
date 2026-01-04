@@ -26,13 +26,9 @@ into memory at once.
 ### Do I need to install all dependencies?
 
 No! `iden` has a minimal installation that only includes core dependencies.
-Optional dependencies can be installed as needed:
+Optional dependencies can be installed as needed.
 
-```shell
-pip install iden              # Minimal installation
-pip install 'iden[torch]'     # Add PyTorch support
-pip install 'iden[all]'       # All optional dependencies
-```
+For detailed installation instructions and examples, please refer to the [Get Started guide](https://durandtibo.github.io/iden/get_started).
 
 ### Can I use `iden` with my existing PyTorch/TensorFlow workflow?
 
@@ -157,7 +153,12 @@ Possible reasons:
 
 ### How can I contribute?
 
-See [CONTRIBUTING.md](https://github.com/durandtibo/iden/blob/main/CONTRIBUTING.md) for details.
+Please refer to the [CONTRIBUTING.md](https://github.com/durandtibo/iden/blob/main/CONTRIBUTING.md) guide for detailed instructions on:
+
+- Setting up your development environment
+- Running tests
+- Code quality checks
+- Submitting pull requests
 
 ### I found a bug, what should I do?
 

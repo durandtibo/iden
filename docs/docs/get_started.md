@@ -4,19 +4,19 @@ It is highly recommended to install in
 a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 to keep the system in order.
 
-## Installing with `pip` (recommended)
+## Installing with `uv pip` (recommended)
 
 The following command installs the latest version of the library:
 
 ```shell
-pip install iden
+uv pip install iden
 ```
 
 To make the package as slim as possible, only the packages required to use `iden` are installed.
 It is possible to install all the optional dependencies by running the following command:
 
 ```shell
-pip install 'iden[all]'
+uv pip install 'iden[all]'
 ```
 
 This command also installs NumPy and PyTorch.
@@ -28,32 +28,28 @@ You can install individual optional dependencies as needed:
 
 ```shell
 # Install with NumPy support
-pip install 'iden[numpy]'
+uv pip install 'iden[numpy]'
 
 # Install with PyTorch support
-pip install 'iden[torch]'
+uv pip install 'iden[torch]'
 
 # Install with YAML support
-pip install 'iden[pyyaml]'
+uv pip install 'iden[pyyaml]'
 
 # Install with safetensors support
-pip install 'iden[safetensors]'
+uv pip install 'iden[safetensors]'
 
 # Install with cloudpickle support
-pip install 'iden[cloudpickle]'
+uv pip install 'iden[cloudpickle]'
 
 # Install with joblib support
-pip install 'iden[joblib]'
+uv pip install 'iden[joblib]'
 ```
 
 ## Installing from source
 
 To install `iden` from source, you'll need [`uv`](https://docs.astral.sh/uv/) for dependency management.
-If `uv` is not already installed, you can install it using:
-
-```shell
-pip install uv
-```
+If `uv` is not already installed, please refer to the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
 Then, clone the git repository:
 
@@ -66,7 +62,7 @@ It is recommended to create a Python 3.10+ virtual environment. This step is opt
 can be skipped. To create a virtual environment, the following command can be used:
 
 ```shell
-make conda
+inv conda
 ```
 
 This command automatically creates a conda virtual environment. When the virtual environment is created, it
@@ -79,10 +75,10 @@ conda activate iden
 Alternatively, you can use `uv` to create a virtual environment:
 
 ```shell
-make setup-venv
+inv create-venv
 ```
 
-This will create a virtual environment using `uv` and install all development dependencies.
+This will create a virtual environment using `uv` and install invoke for task management.
 
 ## Verifying the installation
 
@@ -90,11 +86,72 @@ After installation, the required packages can be installed or updated with the f
 command:
 
 ```shell
-make install
+inv install
 ```
 
 Finally, the installation can be verified with the following command:
 
 ```shell
-make unit-test-cov
+inv unit-test --cov
 ```
+
+## Development workflow
+
+For contributors, the following commands are commonly used:
+
+### Running tests
+
+```shell
+# Run unit tests
+inv unit-test
+
+# Run unit tests with coverage
+inv unit-test --cov
+
+# Run integration tests
+inv integration-test
+
+# Run all tests
+inv all-test
+```
+
+### Code quality checks
+
+```shell
+# Check code formatting
+inv check-format
+
+# Check linting
+inv check-lint
+
+# Check type hints
+inv check-types
+
+# Format docstrings
+inv docformat
+```
+
+### Building and testing documentation
+
+```shell
+# Install documentation dependencies (if not already installed)
+inv install --docs-deps
+
+# Build and serve documentation locally
+cd docs
+mkdocs serve
+```
+
+Then visit http://localhost:8000 in your browser.
+
+### Managing dependencies
+
+```shell
+# Update all dependencies to latest versions
+inv update
+
+# Show installed packages
+inv show-installed-packages
+```
+
+For more detailed contribution guidelines, please refer to [CONTRIBUTING.md](https://github.com/durandtibo/iden/blob/main/CONTRIBUTING.md).
