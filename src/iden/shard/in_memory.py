@@ -14,10 +14,10 @@ T = TypeVar("T")
 
 
 class InMemoryShard(BaseShard[T]):
-    r"""Implement an in-memory shard.
+    r"""Implement an in-memory shard for transient data storage.
 
-    This shard does not have valid URI as the data are stored
-    in-memory.
+    This shard stores data directly in memory without persistence to disk.
+    It does not have a valid URI as the data exists only during runtime.
 
     Example:
         ```pycon

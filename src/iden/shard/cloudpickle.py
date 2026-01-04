@@ -23,8 +23,11 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 class CloudpickleShard(FileShard[T]):
-    r"""Implement a cloudpickle shard.
+    r"""Implement a cloudpickle shard for advanced Python object
+    serialization.
 
+    This shard stores data using cloudpickle, which extends Python's pickle
+    to handle more complex objects like lambda functions and nested classes.
     The data are stored in a cloudpickle file.
 
     Args:

@@ -14,7 +14,10 @@ T = TypeVar("T")
 
 
 class YamlShardLoader(BaseShardLoader[T]):
-    r"""Implement a YAML shard loader.
+    r"""Implement a YAML shard loader for loading shards from YAML files.
+
+    This loader reads shard configuration from a URI and instantiates a
+    YAML shard with the specified data file path.
 
     Example:
         ```pycon

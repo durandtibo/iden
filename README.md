@@ -59,7 +59,62 @@
 model.
 `iden` uses a lazy loading approach to load the shard's data, so it is easy to manage shards without
 loading their data.
-`iden` supports different format to store shards on disk.
+`iden` supports different formats to store shards on disk.
+
+### Key Features
+
+- **Lazy Loading**: Shards are loaded only when needed, enabling efficient memory management
+- **Multiple Formats**: Support for JSON, YAML, Pickle, PyTorch, safetensors, and more
+- **Flexible Dataset Management**: Organize data into splits (train/val/test) with associated assets
+- **URI-based Identification**: Each shard has a unique URI for easy persistence and loading
+- **Caching Support**: Optional in-memory caching for frequently accessed shards
+- **Extensible**: Easy to add custom shard types and loaders
+
+### Quick Example
+
+```python
+import tempfile
+from pathlib import Path
+from iden.dataset import create_vanilla_dataset
+from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+
+# Create a simple dataset
+with tempfile.TemporaryDirectory() as tmpdir:
+    # Create shards
+    train_tuple = create_shard_tuple(
+        [
+            create_json_shard(
+                [1, 2, 3], uri=Path(tmpdir).joinpath("train1.json").as_uri()
+            ),
+            create_json_shard(
+                [4, 5, 6], uri=Path(tmpdir).joinpath("train2.json").as_uri()
+            ),
+        ],
+        uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+    )
+    val_tuple = create_shard_tuple(
+        [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("val1.json").as_uri())],
+        uri=Path(tmpdir).joinpath("val_tuple").as_uri(),
+    )
+
+    # Organize shards into splits
+    shards = create_shard_dict(
+        shards={"train": train_tuple, "val": val_tuple},
+        uri=Path(tmpdir).joinpath("shards").as_uri(),
+    )
+    assets = create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("assets").as_uri())
+
+    # Create dataset
+    dataset = create_vanilla_dataset(
+        shards=shards,
+        assets=assets,
+        uri=Path(tmpdir).joinpath("my_dataset").as_uri(),
+    )
+
+    # Access data
+    train_shards = dataset.get_shards("train")
+    print(train_shards[0].get_data())  # Output: [1, 2, 3]
+```
 
 ## Installation
 
@@ -73,7 +128,7 @@ pip install iden
 
 To make the package as slim as possible, only the minimal packages required to use `iden` are
 installed.
-To include all the dependencies, you can use the following command:
+To include all the dependencies, the following command can be used:
 
 ```shell
 pip install iden[all]
@@ -81,6 +136,59 @@ pip install iden[all]
 
 Please check the [get started page](https://durandtibo.github.io/iden/get_started) to see how to
 install only some specific dependencies or other alternatives to install the library.
+
+## Documentation
+
+- **[Get Started](https://durandtibo.github.io/iden/get_started)**: Installation instructions
+- **[User Guide](https://durandtibo.github.io/iden/guide/shard)**: Learn about shards and datasets
+- **[How-to Guides](https://durandtibo.github.io/iden/howto/shard)**: Step-by-step guides for common tasks
+- **[API Reference](https://durandtibo.github.io/iden/refs/shard)**: Complete API documentation
+- **[Examples](examples/)**: Practical code examples
+
+## Basic Usage
+
+### Working with Shards
+
+```python
+from iden.shard import create_json_shard
+
+# Create a shard
+shard = create_json_shard(data={"key": "value"}, uri="file:///path/to/data.json")
+
+# Get data from shard
+data = shard.get_data()
+
+# Cache data for faster access
+data = shard.get_data(cache=True)
+```
+
+### Managing Datasets
+
+```python
+from iden.dataset import create_vanilla_dataset
+from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+
+# Create a dataset with train/val splits
+train_tuple = create_shard_tuple([shard1, shard2, shard3], uri="file:///train_tuple")
+val_tuple = create_shard_tuple([shard4, shard5], uri="file:///val_tuple")
+
+shards = create_shard_dict(
+    shards={"train": train_tuple, "val": val_tuple},
+    uri="file:///shards",
+)
+assets = create_shard_dict(shards={}, uri="file:///assets")
+
+dataset = create_vanilla_dataset(
+    shards=shards,
+    assets=assets,
+    uri="file:///path/to/dataset",
+)
+
+# Access shards
+train_shards = dataset.get_shards("train")
+first_shard_data = train_shards[0].get_data()
+```
+
 The following is the corresponding `iden` versions and tested dependencies.
 
 | `iden`  | `coola`         | `objectory`  | `numpy`<sup>*</sup> | `pyyaml`<sup>*</sup> | `safetensors`<sup>*</sup> | `torch`<sup>*</sup> | `python`      |
@@ -107,9 +215,9 @@ Please check the instructions in [CONTRIBUTING.md](CONTRIBUTING.md).
 ## Suggestions and Communication
 
 Everyone is welcome to contribute to the community.
-If you have any questions or suggestions, you can
-submit [Github Issues](https://github.com/durandtibo/iden/issues).
-We will reply to you as soon as possible. Thank you very much.
+For any questions or suggestions,
+[Github Issues](https://github.com/durandtibo/iden/issues) can be submitted.
+All issues will be addressed as soon as possible.
 
 ## API stability
 

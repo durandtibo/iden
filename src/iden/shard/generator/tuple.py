@@ -18,7 +18,11 @@ if TYPE_CHECKING:
 
 
 class ShardTupleGenerator(BaseShardGenerator[tuple[BaseShard[T], ...]]):
-    r"""Implement a ``ShardTuple`` generator.
+    r"""Implement a shard tuple generator for creating sequences of
+    shards.
+
+    This generator creates ShardTuple instances containing an ordered
+    sequence of shards, useful for organizing sequential data batches.
 
     Args:
         shard: The shard generator or its configuration.

@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 class LoaderRegistry(BaseLoader[Any]):
-    """Registry that manages and dispatches loaders based on file
+    r"""Registry that manages and dispatches loaders based on file
     extension.
 
     This registry maps file extensions (e.g., "json", "txt") to loader instances
@@ -82,7 +82,7 @@ class LoaderRegistry(BaseLoader[Any]):
         loader: BaseLoader[Any],
         exist_ok: bool = False,
     ) -> None:
-        """Register a loader for a given file extension.
+        r"""Register a loader for a given file extension.
 
         This method associates a loader instance with a specific file extension.
         When loading files with this extension, the registered loader will be used.
@@ -121,7 +121,7 @@ class LoaderRegistry(BaseLoader[Any]):
         mapping: Mapping[str, BaseLoader[Any]],
         exist_ok: bool = False,
     ) -> None:
-        """Register multiple loaders at once.
+        r"""Register multiple loaders at once.
 
         This is a convenience method for bulk registration that internally calls
         register() for each extension-loader pair.
@@ -151,7 +151,7 @@ class LoaderRegistry(BaseLoader[Any]):
             self.register(ext, loader, exist_ok=exist_ok)
 
     def has_loader(self, extension: str) -> bool:
-        """Check if a loader is registered for the given extension.
+        r"""Check if a loader is registered for the given extension.
 
         Args:
             extension: The file extension to check (e.g., "json", "txt")
@@ -174,7 +174,7 @@ class LoaderRegistry(BaseLoader[Any]):
         return extension in self._registry
 
     def find_loader(self, extension: str) -> BaseLoader[Any]:
-        """Find the appropriate loader for a given file extension.
+        r"""Find the appropriate loader for a given file extension.
 
         Args:
             extension: The file extension to find a loader for (e.g., "json", "txt")

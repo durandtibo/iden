@@ -59,7 +59,62 @@
 model.
 `iden` uses a lazy loading approach to load the shard's data, so it is easy to manage shards without
 loading their data.
-`iden` supports different format to store shards on disk.
+`iden` supports different formats to store shards on disk.
+
+### Key Features
+
+- **Lazy Loading**: Shards are loaded only when needed, enabling efficient memory management
+- **Multiple Formats**: Support for JSON, YAML, Pickle, PyTorch, safetensors, and more
+- **Flexible Dataset Management**: Organize data into splits (train/val/test) with associated assets
+- **URI-based Identification**: Each shard has a unique URI for easy persistence and loading
+- **Caching Support**: Optional in-memory caching for frequently accessed shards
+- **Extensible**: Easy to add custom shard types and loaders
+
+### Quick Example
+
+```python
+import tempfile
+from pathlib import Path
+from iden.dataset import create_vanilla_dataset
+from iden.shard import create_json_shard, create_shard_dict, create_shard_tuple
+
+# Create a simple dataset
+with tempfile.TemporaryDirectory() as tmpdir:
+    # Create shards
+    train_tuple = create_shard_tuple(
+        [
+            create_json_shard(
+                [1, 2, 3], uri=Path(tmpdir).joinpath("train1.json").as_uri()
+            ),
+            create_json_shard(
+                [4, 5, 6], uri=Path(tmpdir).joinpath("train2.json").as_uri()
+            ),
+        ],
+        uri=Path(tmpdir).joinpath("train_tuple").as_uri(),
+    )
+    val_tuple = create_shard_tuple(
+        [create_json_shard([7, 8, 9], uri=Path(tmpdir).joinpath("val1.json").as_uri())],
+        uri=Path(tmpdir).joinpath("val_tuple").as_uri(),
+    )
+
+    # Organize shards into splits
+    shards = create_shard_dict(
+        shards={"train": train_tuple, "val": val_tuple},
+        uri=Path(tmpdir).joinpath("shards").as_uri(),
+    )
+    assets = create_shard_dict(shards={}, uri=Path(tmpdir).joinpath("assets").as_uri())
+
+    # Create dataset
+    dataset = create_vanilla_dataset(
+        shards=shards,
+        assets=assets,
+        uri=Path(tmpdir).joinpath("my_dataset").as_uri(),
+    )
+
+    # Access data
+    train_shards = dataset.get_shards("train")
+    print(train_shards[0].get_data())  # Output: [1, 2, 3]
+```
 
 ## API stability
 

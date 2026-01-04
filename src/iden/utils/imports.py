@@ -98,7 +98,7 @@ def raise_error_cloudpickle_missing() -> NoReturn:
     missing."""
     msg = (
         "'cloudpickle' package is required but not installed. "
-        "You can install 'cloudpickle' package with the command:\n\n"
+        "The 'cloudpickle' package can be installed with the command:\n\n"
         "pip install cloudpickle\n"
     )
     raise RuntimeError(msg)
@@ -172,7 +172,7 @@ def raise_error_joblib_missing() -> NoReturn:
     missing."""
     msg = (
         "'joblib' package is required but not installed. "
-        "You can install 'joblib' package with the command:\n\n"
+        "The 'joblib' package can be installed with the command:\n\n"
         "pip install joblib\n"
     )
     raise RuntimeError(msg)
@@ -246,7 +246,7 @@ def raise_error_safetensors_missing() -> NoReturn:
     missing."""
     msg = (
         "'safetensors' package is required but not installed. "
-        "You can install 'safetensors' package with the command:\n\n"
+        "The 'safetensors' package can be installed with the command:\n\n"
         "pip install safetensors\n"
     )
     raise RuntimeError(msg)
@@ -320,7 +320,7 @@ def raise_error_yaml_missing() -> NoReturn:
     missing."""
     msg = (
         "'yaml' package is required but not installed. "
-        "You can install 'yaml' package with the command:\n\n"
+        "The 'yaml' package can be installed with the command:\n\n"
         "pip install pyyaml\n"
     )
     raise RuntimeError(msg)
