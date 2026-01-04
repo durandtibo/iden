@@ -9,7 +9,7 @@ only-include = ["src"]
 
 [project]
 name = "iden"
-version = "0.2.1a1"
+version = "0.3.0"
 description = "simple library to manage a dataset of shards to train machine learning models"
 readme = "README.md"
 authors = [
