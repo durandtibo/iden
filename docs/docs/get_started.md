@@ -59,23 +59,10 @@ cd iden
 ```
 
 It is recommended to create a Python 3.10+ virtual environment. This step is optional and
-can be skipped. To create a virtual environment, the following command can be used:
+can be skipped. To create a virtual environment, you can use `uv` to create a virtual environment:
 
 ```shell
-inv conda
-```
-
-This command automatically creates a conda virtual environment. When the virtual environment is created, it
-can be activated with the following command:
-
-```shell
-conda activate iden
-```
-
-Alternatively, you can use `uv` to create a virtual environment:
-
-```shell
-inv create-venv
+make setup-venv
 ```
 
 This will create a virtual environment using `uv` and install invoke for task management.

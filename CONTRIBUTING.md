@@ -41,11 +41,9 @@ Please refer to the [Get Started guide](https://durandtibo.github.io/iden/get_st
 3. **Set up the development environment** (requires `uv` to be installed):
    ```shell
    # Create and activate virtual environment with dependencies
-   inv create-venv
+   make setup-venv
    inv install --docs-deps
    source .venv/bin/activate  # On Unix/macOS
-   # or
-   .venv\Scripts\activate  # On Windows
    ```
 
 4. **Install pre-commit hooks**:
