@@ -1,7 +1,5 @@
 ::: iden.utils
 
-::: iden.utils.comparator
-
 ::: iden.utils.fallback
 
 ::: iden.utils.format
