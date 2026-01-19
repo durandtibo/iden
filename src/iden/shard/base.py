@@ -7,7 +7,10 @@ __all__ = ["BaseShard"]
 from abc import ABC, abstractmethod
 from typing import Any, Generic, TypeVar
 
-from coola.equality.tester import EqualNanEqualityTester, get_default_registry
+from coola.equality.tester import (
+    EqualNanEqualityTester,
+    get_default_registry,
+)
 
 T = TypeVar("T")
 
@@ -183,6 +186,4 @@ class BaseShard(ABC, Generic[T]):
         """
 
 
-registry = get_default_registry()
-if not registry.has_equality_tester(BaseShard):  # pragma: no cover
-    registry.register(BaseShard, EqualNanEqualityTester())
+get_default_registry().register(BaseShard, EqualNanEqualityTester(), exist_ok=True)

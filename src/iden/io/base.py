@@ -362,8 +362,6 @@ def setup_saver(saver: BaseSaver[T] | dict[Any, Any]) -> BaseSaver[T]:
     return saver
 
 
-registry = get_default_registry()
-if not registry.has_equality_tester(BaseLoader):  # pragma: no cover
-    registry.register(BaseLoader, EqualNanEqualityTester())
-if not registry.has_equality_tester(BaseSaver):  # pragma: no cover
-    registry.register(BaseSaver, EqualNanEqualityTester())
+get_default_registry().register_many(
+    {BaseLoader: EqualNanEqualityTester(), BaseSaver: EqualNanEqualityTester()}, exist_ok=True
+)
