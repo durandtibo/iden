@@ -7,10 +7,7 @@ __all__ = ["BaseShard"]
 from abc import ABC, abstractmethod
 from typing import Any, Generic, TypeVar
 
-from coola.equality.tester import (
-    EqualNanEqualityTester,
-    get_default_registry,
-)
+from coola.equality.tester import EqualNanEqualityTester, get_default_registry
 
 T = TypeVar("T")
 

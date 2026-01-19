@@ -17,10 +17,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
-from coola.equality.tester import (
-    EqualNanEqualityTester,
-    get_default_registry,
-)
+from coola.equality.tester import EqualNanEqualityTester, get_default_registry
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
 
