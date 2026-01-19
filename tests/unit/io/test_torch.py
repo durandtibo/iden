@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
 
 import pytest
-from coola import objects_are_equal
-from coola.testing import torch_available
-from coola.utils import is_torch_available
+from coola.equality import objects_are_equal
+from coola.testing.fixtures import torch_available
+from coola.utils.imports import is_torch_available
 
 from iden.io import TorchLoader, TorchSaver, load_torch, save_torch
 from tests.conftest import torch_greater_equal_1_13

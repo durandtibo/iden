@@ -8,11 +8,9 @@ import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
-from coola.equality.testers import EqualityTester
+from coola.equality.tester import EqualNanEqualityTester, get_default_registry
 from objectory import AbstractFactory
 from objectory.utils import is_object_config
-
-from iden.utils.comparator import ObjectEqualityComparator
 
 if TYPE_CHECKING:
     from iden.dataset import BaseDataset
@@ -252,5 +250,6 @@ def setup_dataset_generator(
     return dataset_generator
 
 
-if not EqualityTester.has_comparator(BaseDatasetGenerator):  # pragma: no cover
-    EqualityTester.add_comparator(BaseDatasetGenerator, ObjectEqualityComparator())
+registry = get_default_registry()
+if not registry.has_equality_tester(BaseDatasetGenerator):  # pragma: no cover
+    registry.register(BaseDatasetGenerator, EqualNanEqualityTester())

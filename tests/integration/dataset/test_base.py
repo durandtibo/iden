@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from coola import objects_are_equal
+from coola.equality import objects_are_equal
 
 from tests.unit.dataset.test_vanilla import create_dataset
 

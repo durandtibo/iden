@@ -4,7 +4,7 @@ import pickle
 from typing import TYPE_CHECKING
 
 import pytest
-from coola import objects_are_equal
+from coola.equality import objects_are_equal
 
 from iden.io import PickleLoader, PickleSaver, load_pickle, save_pickle, save_text
 

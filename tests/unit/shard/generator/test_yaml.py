@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
-from coola import objects_are_equal
+from coola.equality import objects_are_equal
 
 from iden.data.generator import DataGenerator
 from iden.shard import YamlShard
