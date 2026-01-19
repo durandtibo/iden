@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from coola.equality.testers import EqualityTester
+from coola.equality.tester import get_default_registry
 from objectory import OBJECT_TARGET
 
 from iden.shard import JsonShard
@@ -62,5 +62,5 @@ def test_setup_shard_loader_incorrect_type(
         assert caplog.messages
 
 
-def test_equality_tester_has_comparator() -> None:
-    assert EqualityTester.has_comparator(BaseShardLoader)
+def test_equality_tester_registry_has_equality_tester() -> None:
+    assert get_default_registry().has_equality_tester(BaseShardLoader)

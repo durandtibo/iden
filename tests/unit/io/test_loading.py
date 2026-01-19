@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
-from coola.testing import torch_available
+from coola.testing.fixtures import torch_available
 
 from iden.io import (
     LoaderRegistry,

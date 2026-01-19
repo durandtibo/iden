@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from coola.equality.testers import EqualityTester
+from coola.equality.tester import get_default_registry
 from objectory import OBJECT_TARGET
 
 from iden.io import (
@@ -86,6 +86,6 @@ def test_setup_saver_incorrect_type(caplog: pytest.LogCaptureFixture) -> None:
         assert caplog.messages
 
 
-def test_equality_tester_has_comparator() -> None:
-    assert EqualityTester.has_comparator(BaseLoader)
-    assert EqualityTester.has_comparator(BaseSaver)
+def test_equality_tester_registry_has_equality_tester() -> None:
+    assert get_default_registry().has_equality_tester(BaseLoader)
+    assert get_default_registry().has_equality_tester(BaseSaver)

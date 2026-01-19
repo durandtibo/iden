@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
-from coola import objects_are_equal
+from coola.equality import objects_are_equal
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER

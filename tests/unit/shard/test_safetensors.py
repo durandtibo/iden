@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
 
 import pytest
-from coola import objects_are_equal
-from coola.testing import numpy_available, torch_available
-from coola.utils import is_numpy_available, is_torch_available
+from coola.equality import objects_are_equal
+from coola.testing.fixtures import numpy_available, torch_available
+from coola.utils.imports import is_numpy_available, is_torch_available
 from objectory import OBJECT_TARGET
 
 from iden.constants import KWARGS, LOADER

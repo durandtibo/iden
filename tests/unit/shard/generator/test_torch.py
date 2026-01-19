@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
-from coola import objects_are_equal
-from coola.testing import torch_available
+from coola.equality import objects_are_equal
+from coola.testing.fixtures import torch_available
 
 from iden.data.generator import DataGenerator
 from iden.shard import TorchShard

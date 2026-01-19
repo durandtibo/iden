@@ -4,7 +4,7 @@ import logging
 from typing import TYPE_CHECKING
 
 import pytest
-from coola.equality.testers import EqualityTester
+from coola.equality.tester import get_default_registry
 from coola.utils.path import sanitize_path
 from objectory import OBJECT_TARGET
 
@@ -145,5 +145,5 @@ def test_setup_dataset_loader_incorrect_type(
         assert caplog.messages
 
 
-def test_equality_tester_has_comparator() -> None:
-    assert EqualityTester.has_comparator(BaseDatasetLoader)
+def test_equality_tester_registry_has_equality_tester() -> None:
+    assert get_default_registry().has_equality_tester(BaseDatasetLoader)

@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
-from coola import objects_are_equal
+from coola.equality import objects_are_equal
 
 from iden.shard import JoblibShard, create_joblib_shard
 from iden.shard.loader import JoblibShardLoader
