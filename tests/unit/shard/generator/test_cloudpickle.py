@@ -177,7 +177,7 @@ def test_cloudpickle_shard_generator_generate(tmp_path: Path) -> None:
 
 def test_cloudpickle_shard_generator_no_cloudpickle(tmp_path: Path) -> None:
     with (
-        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        patch("iden.utils.imports.cloudpickle.is_cloudpickle_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         CloudpickleShardGenerator(

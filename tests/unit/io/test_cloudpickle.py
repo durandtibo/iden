@@ -76,7 +76,7 @@ def test_cloudpickle_loader_load(path_pickle: Path) -> None:
 
 def test_cloudpickle_loader_no_cloudpickle() -> None:
     with (
-        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        patch("iden.utils.imports.cloudpickle.is_cloudpickle_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         CloudpickleLoader()
@@ -182,7 +182,7 @@ def test_cloudpickle_saver_save_protocol(tmp_path: Path, protocol: int) -> None:
 
 def test_cloudpickle_saver_no_cloudpickle() -> None:
     with (
-        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        patch("iden.utils.imports.cloudpickle.is_cloudpickle_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         CloudpickleSaver()
@@ -200,7 +200,7 @@ def test_load_cloudpickle(path_pickle: Path) -> None:
 
 def test_load_cloudpickle_no_cloudpickle(tmp_path: Path) -> None:
     with (
-        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        patch("iden.utils.imports.cloudpickle.is_cloudpickle_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         load_cloudpickle(tmp_path.joinpath("data.pkl"))
@@ -253,7 +253,7 @@ def test_save_cloudpickle_file_exist_ok_dir(tmp_path: Path) -> None:
 
 def test_save_cloudpickle_no_cloudpickle(tmp_path: Path) -> None:
     with (
-        patch("iden.utils.imports.is_cloudpickle_available", lambda: False),
+        patch("iden.utils.imports.cloudpickle.is_cloudpickle_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'cloudpickle' package is required but not installed."),
     ):
         save_cloudpickle({"key1": [1, 2, 3], "key2": "abc"}, tmp_path.joinpath("data.pkl"))
