@@ -177,7 +177,7 @@ def test_joblib_shard_generator_generate(tmp_path: Path) -> None:
 
 def test_joblib_shard_generator_no_joblib(tmp_path: Path) -> None:
     with (
-        patch("iden.utils.imports.is_joblib_available", lambda: False),
+        patch("iden.utils.imports.joblib.is_joblib_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'joblib' package is required but not installed."),
     ):
         JoblibShardGenerator(

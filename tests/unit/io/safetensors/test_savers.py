@@ -104,7 +104,7 @@ def test_numpy_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 
 def test_numpy_saver_no_safetensors() -> None:
     with (
-        patch("iden.utils.imports.is_safetensors_available", lambda: False),
+        patch("iden.utils.imports.safetensors.is_safetensors_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."),
     ):
         NumpySaver()
@@ -112,7 +112,7 @@ def test_numpy_saver_no_safetensors() -> None:
 
 def test_numpy_saver_no_numpy() -> None:
     with (
-        patch("iden.utils.imports.is_safetensors_available", lambda: True),
+        patch("iden.utils.imports.safetensors.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_numpy_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'numpy' package is required but not installed."),
     ):
@@ -198,7 +198,7 @@ def test_torch_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 
 def test_torch_saver_no_safetensors() -> None:
     with (
-        patch("iden.utils.imports.is_safetensors_available", lambda: False),
+        patch("iden.utils.imports.safetensors.is_safetensors_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'safetensors' package is required but not installed."),
     ):
         TorchSaver()
@@ -206,7 +206,7 @@ def test_torch_saver_no_safetensors() -> None:
 
 def test_torch_saver_no_torch() -> None:
     with (
-        patch("iden.utils.imports.is_safetensors_available", lambda: True),
+        patch("iden.utils.imports.safetensors.is_safetensors_available", lambda: True),
         patch("coola.utils.imports.is_torch_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
