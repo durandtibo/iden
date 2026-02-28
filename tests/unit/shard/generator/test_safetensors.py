@@ -217,7 +217,7 @@ def test_numpy_safetensors_shard_generator_no_safetensors(tmp_path: Path) -> Non
 def test_numpy_safetensors_shard_generator_no_numpy(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.safetensors.is_safetensors_available", lambda: True),
-        patch("coola.utils.imports.is_numpy_available", lambda: False),
+        patch("coola.utils.imports.numpy.is_numpy_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'numpy' package is required but not installed."),
     ):
         NumpySafetensorsShardGenerator(
@@ -414,7 +414,7 @@ def test_torch_safetensors_shard_generator_no_safetensors(tmp_path: Path) -> Non
 def test_torch_safetensors_shard_generator_no_torch(tmp_path: Path) -> None:
     with (
         patch("iden.utils.imports.safetensors.is_safetensors_available", lambda: True),
-        patch("coola.utils.imports.is_torch_available", lambda: False),
+        patch("coola.utils.imports.torch.is_torch_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         TorchSafetensorsShardGenerator(

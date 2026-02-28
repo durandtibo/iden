@@ -82,7 +82,7 @@ def test_torch_shard_loader_load(uri: str, path: Path) -> None:
 
 def test_torch_shard_loader_no_torch() -> None:
     with (
-        patch("coola.utils.imports.is_torch_available", lambda: False),
+        patch("coola.utils.imports.torch.is_torch_available", lambda: False),
         pytest.raises(RuntimeError, match=r"'torch' package is required but not installed."),
     ):
         TorchShardLoader()
