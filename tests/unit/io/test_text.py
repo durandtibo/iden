@@ -21,9 +21,18 @@ def path_text(tmp_path_factory: pytest.TempPathFactory) -> Path:
 #     Tests for TextLoader     #
 ################################
 
+# --- str ---
+
 
 def test_text_loader_str() -> None:
     assert str(TextLoader()).startswith("TextLoader(")
+
+
+def test_text_loader_str_contains_encoding() -> None:
+    assert "utf-8" in str(TextLoader())
+
+
+# --- equal ---
 
 
 def test_text_loader_equal_true() -> None:
@@ -45,17 +54,44 @@ def test_text_loader_equal_nan(equal_nan: bool) -> None:
     assert TextLoader().equal(TextLoader(), equal_nan=equal_nan)
 
 
+def test_text_loader_equal_false_different_encoding() -> None:
+    assert not TextLoader(encoding="utf-8").equal(TextLoader(encoding="latin-1"))
+
+
+def test_text_loader_equal_true_same_encoding() -> None:
+    assert TextLoader(encoding="latin-1").equal(TextLoader(encoding="latin-1"))
+
+
+# --- load ---
+
+
 def test_text_loader_load(path_text: Path) -> None:
     assert TextLoader().load(path_text) == "hello"
+
+
+def test_text_loader_load_respects_encoding(tmp_path: Path) -> None:
+    content = "Résultats: €1.2B"
+    path = tmp_path / "data.txt"
+    path.write_text(content, encoding="utf-8")
+    assert TextLoader(encoding="utf-8").load(path) == content
 
 
 ###############################
 #     Tests for TextSaver     #
 ###############################
 
+# --- str ---
+
 
 def test_text_saver_str() -> None:
     assert str(TextSaver()).startswith("TextSaver(")
+
+
+def test_text_saver_str_contains_encoding() -> None:
+    assert "utf-8" in str(TextSaver())
+
+
+# --- equal ---
 
 
 def test_text_saver_equal_true() -> None:
@@ -77,34 +113,48 @@ def test_text_saver_equal_nan(equal_nan: bool) -> None:
     assert TextSaver().equal(TextSaver(), equal_nan=equal_nan)
 
 
+def test_text_saver_equal_false_different_encoding() -> None:
+    assert not TextSaver(encoding="utf-8").equal(TextSaver(encoding="latin-1"))
+
+
+def test_text_saver_equal_true_same_encoding() -> None:
+    assert TextSaver(encoding="latin-1").equal(TextSaver(encoding="latin-1"))
+
+
+# --- save ---
+
+
 def test_text_saver_save(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
-    saver = TextSaver()
-    saver.save("hello", path)
+    TextSaver().save("hello", path)
     assert path.is_file()
 
 
 def test_text_saver_save_list(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
-    saver = TextSaver()
-    saver.save([1, 2, 3], path)
+    TextSaver().save([1, 2, 3], path)
     assert path.is_file()
     assert load_text(path) == "[1, 2, 3]"
+
+
+def test_text_saver_save_respects_encoding(tmp_path: Path) -> None:
+    content = "Résultats: €1.2B"
+    path = tmp_path / "data.txt"
+    TextSaver(encoding="utf-8").save(content, path)
+    assert load_text(path, encoding="utf-8") == content
 
 
 def test_text_saver_save_file_exist(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
     save_text("hello", path)
-    saver = TextSaver()
     with pytest.raises(FileExistsError, match=r"path .* already exists."):
-        saver.save("hello", path)
+        TextSaver().save("hello", path)
 
 
 def test_text_saver_save_file_exist_ok(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
     save_text("hello", path)
-    saver = TextSaver()
-    saver.save("meow", path, exist_ok=True)
+    TextSaver().save("meow", path, exist_ok=True)
     assert path.is_file()
     assert load_text(path) == "meow"
 
@@ -112,9 +162,8 @@ def test_text_saver_save_file_exist_ok(tmp_path: Path) -> None:
 def test_text_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
     path = tmp_path.joinpath("tmp/data.txt")
     path.mkdir(parents=True, exist_ok=True)
-    saver = TextSaver()
     with pytest.raises(IsADirectoryError, match=r"path .* is a directory"):
-        saver.save("hello", path)
+        TextSaver().save("hello", path)
 
 
 ###############################
@@ -124,6 +173,13 @@ def test_text_saver_save_file_exist_ok_dir(tmp_path: Path) -> None:
 
 def test_load_text(path_text: Path) -> None:
     assert load_text(path_text) == "hello"
+
+
+def test_load_text_respects_encoding(tmp_path: Path) -> None:
+    content = "Résultats: €1.2B"
+    path = tmp_path / "data.txt"
+    path.write_text(content, encoding="utf-8")
+    assert load_text(path, encoding="utf-8") == content
 
 
 ###############################
@@ -142,6 +198,13 @@ def test_save_text_list(tmp_path: Path) -> None:
     save_text([1, 2, 3], path)
     assert path.is_file()
     assert load_text(path) == "[1, 2, 3]"
+
+
+def test_save_text_respects_encoding(tmp_path: Path) -> None:
+    content = "Résultats: €1.2B"
+    path = tmp_path / "data.txt"
+    save_text(content, path, encoding="utf-8")
+    assert load_text(path, encoding="utf-8") == content
 
 
 def test_save_text_file_exist(tmp_path: Path) -> None:
