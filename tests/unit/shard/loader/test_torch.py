@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytest
 from coola.equality import objects_are_equal
@@ -17,13 +17,11 @@ if TYPE_CHECKING:
 
 if is_torch_available():
     import torch
-else:  # pragma: no cover
-    torch = Mock()
 
 
 @pytest.fixture(scope="module")
 def path(tmp_path_factory: pytest.TempPathFactory) -> Path:
-    return tmp_path_factory.mktemp("tmp").joinpath("data.safetensors")
+    return tmp_path_factory.mktemp("tmp").joinpath("data.pt")
 
 
 @pytest.fixture(scope="module")
